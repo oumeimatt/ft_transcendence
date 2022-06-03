@@ -6,11 +6,11 @@
       <div id="container2" class="relative mb-11">
         <img class="w-16 md:w-32 lg:w-40 rounded-full absolute top-[264px] lg:top-52 left-11 md:top-56" src="../assets/oel-yous.jpeg" alt="">
       </div>
-      <div class="ml-11 font-semibold text-3xl top-12 absolute top-[440px] dark:text-gray-400 "> Oumaima El youssefi </div>
+      <div class="ml-11 font-semibold text-3xl top-12 absolute top-[440px] text-gray-400 "> Oumaima El youssefi </div>
       
       <div class="flex  my-0 mx-auto w-3/5 bg-neutral-500 h-6 mb-6 relative">
         <div class="bg-neutral-800 h-6 " style="width: 25%"> </div>
-        <p class="inline-block z-50 absolute left-2/4 -translate-x-2/4 text-slate-400" > level 25%  </p>
+        <p class="inline-block z-10 absolute left-2/4 -translate-x-2/4 text-slate-400" > level 25%  </p>
       </div>
       <div class="cent p-8 ">
         <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-2 lg-gap-2 text-center ml-11 mr-11 mt-8" >
@@ -52,7 +52,7 @@ export default defineComponent({
   //     const toggleDiv = () => (showMenu.value = !showMenu.value);
   //     return { showMenu, show, toggleDiv };
   // }
-  }
+  },
 });
 </script>
 

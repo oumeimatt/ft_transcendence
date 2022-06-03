@@ -6,8 +6,8 @@
           <h1 class="text-7xl font-bold text-center text-white">ENJOY PONG GAME </h1>
           <p class="pl-40 pr-40 pt-10 text-1xl font-bold text-center text-white"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua </p>
             <div class='flex items-center justify-center h-56 content-center space-x-10'>
-              <button type="button" class="text-white bg-cyan-600 hover:bg-sky-300	 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-whitefont-medium rounded-lg text-2xl px-5 py-2.5 text-center ">Play Online</button>
-              <button type="button" class="text-white bg-cyan-600 hover:bg-sky-300	 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-whitefont-medium rounded-lg text-2xl px-5 py-2.5 text-center ">Watch Games</button>
+              <button type="button" class="text-white bg-cyan-600 hover:bg-sky-300	 focus:ring-4 focus:outline-none focus:ring-blue-300 focus:ring-whitefont-medium rounded-lg text-2xl px-5 py-2.5 text-center ">Play Online</button>
+              <button type="button" class="text-white bg-cyan-600 hover:bg-sky-300	 focus:ring-4 focus:outline-none focus:ring-blue-300 focus:ring-whitefont-medium rounded-lg text-2xl px-5 py-2.5 text-center ">Watch Games</button>
             </div>
         </div>
       </div>
