@@ -1,6 +1,7 @@
 <template>
 
-<nav  class="border-gray-200 px-2 sm:px-4 py-2.5 rounded  bg-neutral-700 ">
+<!-- Bronze, Silver, Gold, and Platinum -->
+<nav class="border-gray-200 px-2 sm:px-4 py-2.5 rounded  bg-neutral-700 ">
   <div class="container flex flex-wrap justify-between items-center mx-auto">
 <!-- logo -->
     <a class="flex items-center"> 
