@@ -1,6 +1,6 @@
 <template>
   <div class="bg-black">
-    <navbar />
+    <navbar /> 
       <div id="container" >
         <div class="pt-40">
           <h1 class="text-7xl font-bold text-center text-white">ENJOY PONG GAME </h1>
@@ -55,21 +55,13 @@
         </div>
       </div>
   </div>
-  <Profile />
   <Footer />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { defineComponent,ref } from 'vue';
 import navbar from '../components/navbar.vue';
 import Footer from '../components/Footer.vue';
-export default defineComponent({
-  name: 'Home',
-  components: {
-    navbar,
-    Footer,
-}
-});
 </script>
 
 <style scoped>
