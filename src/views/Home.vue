@@ -55,13 +55,15 @@
         </div>
       </div>
   </div>
+
   <Footer />
 </template>
 
 <script lang="ts" setup>
-import { defineComponent,ref } from 'vue';
+import { defineComponent,ref, inject } from 'vue';
 import navbar from '../components/navbar.vue';
 import Footer from '../components/Footer.vue';
+const store = inject('store')
 </script>
 
 <style scoped>

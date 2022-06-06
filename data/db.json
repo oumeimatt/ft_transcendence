@@ -1,17 +1,44 @@
-[
-    {
-        "pdp" : "https://cdn.intra.42.fr/users/oel-ouar.jpg",
-        "id" : 1,
-        "name": "teslazap"
-    },
-    {
-        "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
-        "id" : 2,
-        "name": "ikrax"
-    },
-    {
-        "pdp" : "https://cdn.intra.42.fr/users/mgrissen.jpg",
-        "id" : 3,
-        "name": "fidus"
-    }
-]
+{
+    "users" :[
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/oel-ouar.jpg",
+            "id" : 1,
+            "name": "teslazap"
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "id" : 2,
+            "name": "ikrax"
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/mgrissen.jpg",
+            "id" : 3,
+            "name": "fidus"
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "id" : 4,
+            "name": "oel-yous"
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "id" : 5,
+            "name": "framdani"
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "id" : 6,
+            "name": "mashad"
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "id" : 7,
+            "name": "ikrap"
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "id" : 8,
+            "name": "ikram"
+        }
+    ]
+}
