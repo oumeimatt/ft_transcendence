@@ -3,42 +3,50 @@
         {
             "pdp" : "https://cdn.intra.42.fr/users/oel-ouar.jpg",
             "id" : 1,
-            "name": "teslazap"
+            "name": "teslazap",
+            "achievements": ["first" ,"bronze", "silver"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
             "id" : 2,
-            "name": "ikrax"
+            "name": "ikrax",
+            "achievements": ["first" ,"bronze"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/mgrissen.jpg",
             "id" : 3,
-            "name": "fidus"
+            "name": "fidus",
+            "achievements": ["first" ,"bronze", "silver", "gold"]
         },
         {
-            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "pdp" : "https://cdn.intra.42.fr/users/oel-yous.jpg",
             "id" : 4,
-            "name": "oel-yous"
+            "name": "oel-yous",
+            "achievements": ["first"]
         },
         {
-            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "pdp" : "https://cdn.intra.42.fr/users/framdani.jpg",
             "id" : 5,
-            "name": "framdani"
+            "name": "framdani",
+            "achievements": ["first" ,"bronze", "silver"]
         },
         {
-            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "pdp" : "https://cdn.intra.42.fr/users/mashad.jpg",
             "id" : 6,
-            "name": "mashad"
+            "name": "mashad",
+            "achievements": []
         },
         {
-            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "pdp" : "https://cdn.intra.42.fr/users/mlachheb.jpg",
             "id" : 7,
-            "name": "ikrap"
+            "name": "mlachheb",
+            "achievements": ["first" ,"bronze", "silver"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
             "id" : 8,
-            "name": "ikram"
+            "name": "ikram",
+            "achievements": ["first" ,"bronze", "silver"]
         }
     ]
 }
