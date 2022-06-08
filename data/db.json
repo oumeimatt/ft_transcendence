@@ -4,49 +4,50 @@
             "pdp" : "https://cdn.intra.42.fr/users/oel-ouar.jpg",
             "id" : 1,
             "name": "teslazap",
-            "achievements": ["first" ,"bronze", "silver"]
+            "achievements": ["first" ,"bronze", "silver"],
+            "friends": ["ikrax", "fidus","oel-yous","mashad","framdani"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
             "id" : 2,
             "name": "ikrax",
-            "achievements": ["first" ,"bronze"]
+            "achievements": ["first" ,"bronze"],
+            "friends": ["fidus","oel-yous","mashad","framdani"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/mgrissen.jpg",
             "id" : 3,
             "name": "fidus",
-            "achievements": ["first" ,"bronze", "silver", "gold"]
+            "achievements": ["first" ,"bronze", "silver", "gold"],
+            "friends": ["ikrax","oel-yous","mashad","framdani", "teslazap"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/oel-yous.jpg",
             "id" : 4,
             "name": "oel-yous",
-            "achievements": ["first"]
+            "achievements": ["first"],
+            "friends": ["teslazap","ikrax", "fidus","mashad","framdani"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/framdani.jpg",
             "id" : 5,
             "name": "framdani",
-            "achievements": ["first" ,"bronze", "silver"]
+            "achievements": ["first" ,"bronze", "silver"],
+            "friends": ["ikrax", "fidus","oel-yous"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/mashad.jpg",
             "id" : 6,
             "name": "mashad",
-            "achievements": []
+            "achievements": ["first", "bronze"],
+            "friends": ["ikrax", "fidus","oel-yous","teslazap","framdani"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/mlachheb.jpg",
             "id" : 7,
             "name": "mlachheb",
-            "achievements": ["first" ,"bronze", "silver"]
+            "achievements": ["first" ,"bronze", "silver"],
+            "friends": ["ikrax", "fidus","oel-yous","mashad","framdani"]
         },
-        {
-            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
-            "id" : 8,
-            "name": "ikram",
-            "achievements": ["first" ,"bronze", "silver"]
-        }
     ]
 }
