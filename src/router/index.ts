@@ -3,6 +3,8 @@ import Home from '../views/Home.vue'
 import Chat from '../views/Chat.vue'
 import Game from '../views/Game.vue'
 import Profile from '../views/Profile.vue'
+import User from '../views/User.vue'
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +26,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'profile',
     component: Profile
+  },
+  {
+    path: '/users/:username',
+    name: 'User',
+    component: User,
+    props: true
   }
   // {
   //   path: '/about',
