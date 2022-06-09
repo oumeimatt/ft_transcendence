@@ -8,16 +8,16 @@
        <!-- {{ props.nickname }} -->
       </div>
       <div v-if="usersInfo(username)" class="ml-20 font-semibold text-3xl top-12 absolute top-[440px] text-gray-400 "> {{ usersInfo(username).name }} </div>
-      <!-- <div class='flex   rounded top-[322px] lg:top-58 absolute left-32 md:left-56'>
+      <div class='flex   rounded top-[322px] lg:top-58 absolute left-32 md:left-56'>
           <button id='button' class=' mr-10 justify-center focus:outline-none space-between bg-neutral-500 hover:bg-neutral-800 font-small py-2 px-4 rounded inline-flex items-center'>
-            // add friend
-            <svg id='icon' class='w-4 h-4 mr-1' fill='#FFF' stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="white"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
-            <span id='text' class='text-white text-sm '>Add friend</span>
-            // friends
+            <!-- // add friend -->
+            <!-- <svg id='icon' class='w-4 h-4 mr-1' fill='#FFF' stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="white"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+            <span id='text' class='text-white text-sm '>Add friend</span> -->
+            <!-- // friends -->
             <svg xmlns="http://www.w3.org/2000/svg" class='w-4 h-4 mr-1' fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
             <span id='text' class='text-white text-sm '> Friends</span>
           </button>
-        </div> -->
+        </div>
       <div class="flex  my-0 mx-auto w-3/5 bg-neutral-500 h-6 mb-6 relative">
         <div class="bg-neutral-800 h-6 " style="width: 25%"> </div>
         <p class="inline-block z-10 absolute left-2/4 -translate-x-2/4 text-slate-400" > level 0 - 25%  </p>
