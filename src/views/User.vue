@@ -4,10 +4,10 @@
 
     <!-- <div class=" ml-20 mr-20 mb-100"> -->
       <div id="container2" class="relative mb-11 text-white">
-        <img class="w-16 md:w-32 lg:w-40 rounded-full absolute top-[264px] lg:top-52 left-11 md:top-56" :src="usersInfo(username).pdp" alt="">
+        <img v-if="usersInfo(username)" class="w-16 md:w-32 lg:w-40 rounded-full absolute top-[264px] lg:top-52 left-11 md:top-56" :src="usersInfo(username).pdp" alt="">
        <!-- {{ props.nickname }} -->
       </div>
-      <div class="ml-20 font-semibold text-3xl top-12 absolute top-[440px] text-gray-400 "> {{ usersInfo(username).name }} </div>
+      <div v-if="usersInfo(username)" class="ml-20 font-semibold text-3xl top-12 absolute top-[440px] text-gray-400 "> {{ usersInfo(username).name }} </div>
       <!-- <div class='flex   rounded top-[355px] lg:top-58 absolute left-32 md:top-56'>
         <button id='button' class=' mr-10 justify-center focus:outline-none space-between bg-blue-800 hover:bg-blue-900 font-medium py-2 px-4 rounded inline-flex items-center'>
             <svg id='icon' class='w-4 h-4 mr-1' fill='#FFF' stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="white"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
@@ -23,7 +23,7 @@
         <div class="grid md:grid-cols-1 lg:grid-cols-1 gap-1 lg-gap-1  text-center  ml-11 mr-11 mt-8" >
           <div class="p-4 bg-neutral-500 rounded-md " > 
             <p class="text-2xl font-semibold pb-4"> Friends </p>
-            <div class="pt-4 border-t border-neutral-800 flex items-scretch space-x-2">
+            <div v-if="usersInfo(username)" class="pt-4 border-t border-neutral-800 flex items-scretch space-x-2">
               <div v-for="friend in usersInfo(username).friends" :key="friend">
                 <router-link :to="{ name:'User', params: {username: friend}}"> <img  :src="usersInfo(friend).pdp" class="w-10 h-10 rounded-full"> </router-link>
               </div>
@@ -32,8 +32,8 @@
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-2 lg-gap-2 text-center ml-11 mr-11 mt-8" >
           <div class="p-4 bg-neutral-500 rounded-md " > 
-            <div > 
-              <p class="text-2xl font-semibold pb-4 border-b border-neutral-800"> Achievements </p>
+            <div v-if="usersInfo(username)"> 
+              <p  class="text-2xl font-semibold pb-4 border-b border-neutral-800"> Achievements </p>
               <!-- acheivement -->
               <div v-for="achievement in usersInfo(username).achievements" :key="achievement">
                 <div v-if="achievement == 'first'" class="grid grid-cols-8 justify-items-start bg-neutral-500 pt-4">
