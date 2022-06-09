@@ -71,11 +71,10 @@
             <img class="w-8 h-8 rounded-full" src="../assets/user.png" alt="">
             <div v-if="show" class=" z-10 bg-neutral-500 rounded-md shadow-xl lg:absolute top-11 right-0 w-44 absolute">
               <router-link  to="/Profile" class="block px-4 py-2 text-sm text-indigo-100 hover:bg-neutral-700 hover:text-indigo-100 border-b border-neutral-600">
-                
                 Profile </router-link> 
               <button type="button" @click="toggleModal()" class="w-44 block px-4 py-2 text-sm text-indigo-100 hover:bg-neutral-700 hover:text-indigo-100  border-b border-neutral-600">Settings
               </button>
-              <router-link to="/" class=" block px-4 py-2 text-sm text-indigo-100 hover:bg-neutral-700 hover:text-indigo-100">Log Out</router-link>
+              <button @click="store.state.logged = false" type="button" class=" w-44 block px-4 py-2 text-sm text-indigo-100 hover:bg-neutral-700 hover:text-indigo-100  border-b border-neutral-600">Logout</button>
             </div>
           </button>
         </li>
