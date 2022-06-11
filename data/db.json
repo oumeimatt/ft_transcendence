@@ -48,6 +48,13 @@
             "name": "mlachheb",
             "achievements": ["first" ,"bronze", "silver"],
             "friends": ["ikrax", "fidus","oel-yous","mashad","framdani"]
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/sel-fcht.jpg",
+            "id" : 8,
+            "name": "souhail",
+            "achievements": ["first" ,"bronze", "silver"],
+            "friends": ["teslazap", "fidus","oel-yous","mashad"]
         }
     ]
 }
