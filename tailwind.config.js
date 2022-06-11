@@ -4,11 +4,13 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
-      backgroundImage: {
-        'pong': "url('src/assets/bg1.jpg')"
-      }
-    }
+    extend: {}
   },
   plugins: [],
+  variants: {
+      extend: {},
+  },
+  plugins: [
+      require('ps-scrollbar-tailwind'),
+  ],
 }
