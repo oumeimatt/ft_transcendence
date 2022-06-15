@@ -55,6 +55,13 @@
             "name": "souhail",
             "achievements": ["first" ,"bronze", "silver"],
             "friends": ["teslazap", "fidus","oel-yous","mashad"]
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/zmeribaa.jpg",
+            "id" : 9,
+            "name": "Coca",
+            "achievements": ["first" ,"bronze", "silver", "gold"],
+            "friends": ["teslazap", "fidus","oel-yous","mashad", "souhail"]
         }
     ]
 }
