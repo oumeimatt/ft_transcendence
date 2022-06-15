@@ -56,7 +56,7 @@
               </div>
           </div>
         </div>
-        <div class="ml-8 h-screen-4 mt-4 border-b w-4/5 border-black  pb-8  ">
+        <div class="ml-8 h-screen-4 mt-4 w-4/5 border-black  pb-8  ">
           <h1 class="font-semibold text-xl mb-6">Friends</h1>
           <div class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600">
               <div class="flex justify-start items-center space-x-2 mt-2"> 
