@@ -1,12 +1,12 @@
 <template>
   <div class="bg-black">
     <navbar/> 
-    <div class="grid grid-cols-5 gap-px bg-black h-screen ">
+    <div class="grid grid-cols-6 gap-px bg-black ">
       <chatnavbar/>
-      <div class="col-span-3 bg-black">
+      <div class="col-span-4 bg-black">
 
       </div>
-      <div class="bg-black">
+      <div class=" mt-20">
 
       </div>
     </div>
