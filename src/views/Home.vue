@@ -1,4 +1,4 @@
-<template>
+<template >
   <div v-if="store.state.logged == false"> 
     <!-- <console class="log"> {{ logged }}  </console> -->
     <div id="notlogged" class="flex justify-center items-center text-center h-screen"> 
@@ -24,11 +24,11 @@
               </div>
           </div>
       </div>
-      <div class=" flex flex-col justify-center items-center text-center lg:ml-20 lg:mr-20 md:ml-10 md:mr-10" >
+      <div class="container flex flex-col justify-center items-center  lg:ml-20 lg:mr-20 md:ml-10 md:mr-10" >
         <div>
-          <h1 class="text-slate-300	 text-2xl">About </h1> </div>
+          <h1 class="text-slate-300	 text-2xl">About </h1>
 
-          <div class="flex"> <p class="text-slate-300	 text-m" > Pong is one of the first computer games that ever created, this simple "tennis like" game features two paddles and a ball, the goal is to defeat your opponent by being the first one to gain points, a player gets a point once the opponent misses a ball. The game can be played with two human players. The game was originally developed by Allan Alcorn and released in 1972 by Atari corporations. Soon, Pong became a huge success, and became the first commercially successful game, on 1975, Atari release a home edition of Pong (the first version was played on Arcade machines) which sold 150,000 units. Today, the Pong Game is considered to be the game which started the video games industry, as it proved that the video games market can produce significant revenues. </p>
+           <p class="text-slate-300	 text-m" > Pong is one of the first computer games that ever created, this simple "tennis like" game features two paddles and a ball, the goal is to defeat your opponent by being the first one to gain points, a player gets a point once the opponent misses a ball. The game can be played with two human players. The game was originally developed by Allan Alcorn and released in 1972 by Atari corporations. Soon, Pong became a huge success, and became the first commercially successful game, on 1975, Atari release a home edition of Pong (the first version was played on Arcade machines) which sold 150,000 units. Today, the Pong Game is considered to be the game which started the video games industry, as it proved that the video games market can produce significant revenues. </p>
         </div>
         <div class="cent p-8 ">
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 lg-gap-4 text-center ml-20 mr-20" >
