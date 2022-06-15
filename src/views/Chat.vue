@@ -1,9 +1,9 @@
 <template>
   <div class="bg-black">
     <navbar/> 
-    <div class="grid grid-cols-4 gap-px bg-black h-screen ">
+    <div class="grid grid-cols-5 gap-px bg-black h-screen ">
       <chatnavbar/>
-      <div class="col-span-2 bg-black">
+      <div class="col-span-3 bg-black">
 
       </div>
       <div class="bg-black">

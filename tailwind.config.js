@@ -7,6 +7,9 @@ module.exports = {
     extend: {
       height: {
         'screen-4' : '40vh'
+      },
+      colors: {
+        'myblue' : '#0A1544'
       }
     }
   },
