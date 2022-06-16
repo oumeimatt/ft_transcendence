@@ -1,16 +1,12 @@
 <template>
-  <div class="bg-black">
+  <div >
     <navbar/> 
-    <div class="grid grid-cols-6 gap-px bg-black ">
+    <div class="grid grid-cols-6 gap-px bg-gray-900 ">
       <chatnavbar/>
-      <div class="col-span-4 bg-black">
+      <conversation />
 
-      </div>
-      <div class=" mt-20">
-
-      </div>
+      <rightBar />
     </div>
-
   </div>
   <Footer />
 </template>
@@ -20,6 +16,9 @@ import { inject, ref} from 'vue';
 import navbar from '../components/navbar.vue';
 import Footer from '../components/Footer.vue';
 import chatnavbar from '../components/chatnavbar.vue'
+import rightBar from '../components/rightBar.vue'
+import conversation from '../components/conversation.vue'
+
 const store = inject('store')
 const channelName = ref('')
 const Select = ref(false)
