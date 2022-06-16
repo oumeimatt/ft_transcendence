@@ -4,6 +4,7 @@ import Chat from '../views/Chat.vue'
 import Game from '../views/Game.vue'
 import Profile from '../views/Profile.vue'
 import User from '../views/User.vue'
+import ChatGroup from '../views/ChatGroup.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -32,7 +33,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'User',
     component: User,
     props: true
-  }
+  },
+  {
+    path: '/chatgroup',
+    name: 'ChatGroup',
+    component: ChatGroup
+  },
   // {
   //   path: '/about',
   //   name: 'about',

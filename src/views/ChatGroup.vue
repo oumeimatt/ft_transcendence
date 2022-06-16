@@ -3,9 +3,8 @@
     <navbar/> 
     <div class="grid grid-cols-6 gap-px bg-gray-900 ">
       <chatnavbar/>
-      <conversation />
-
-      <rightBar />
+      <conversationGroup />
+      <rightbarGroup />
     </div>
   </div>
   <Footer />
@@ -16,8 +15,8 @@ import { inject, ref} from 'vue';
 import navbar from '../components/navbar.vue';
 import Footer from '../components/Footer.vue';
 import chatnavbar from '../components/chatnavbar.vue'
-import rightBar from '../components/rightBar.vue'
-import conversation from '../components/conversation.vue'
+import rightbarGroup from '../components/rightbarGroup.vue'
+import conversationGroup from '../components/conversationGroup.vue'
 
 const store = inject('store')
 const channelName = ref('')
