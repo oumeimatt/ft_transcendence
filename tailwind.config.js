@@ -9,7 +9,17 @@ module.exports = {
         'screen-4' : '40vh'
       },
       colors: {
-        'myblue' : '#0A1544'
+        'myblue' : '#0A1544',
+        'zho': '#5B68B3'
+      },
+      maxHeight: {
+        '1/3': '10vh',
+        '2/3': '30vh',
+        '4/5': '80vh'
+      },
+      height: {
+        'small': '5vh',
+        'screen': '95vh'
       }
     }
   },
