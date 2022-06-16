@@ -1,8 +1,8 @@
 <template>
     <div class="col-span-4 h-screen ">
-        <div class="relative h-small bg-slate-800">
-            <h1 class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> Friends </h1>
-            <button class="bg-red-800 rounded h-10 w-36 font-bold absolute right-6 bottom-2/4 translate-y-2/4" > Leave room </button>
+        <div class="relative h-small bg-slate-800 space-x-12">
+            <img src="../assets/framdani.jpeg" class="  absolute rounded-full left-4 h-12 w-12 bottom-2/4 translate-y-2/4 " alt="">
+            <h1 class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> framdani </h1>
         </div>
         <div class=" max-h-4/5 h-full scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 ">
             <div>
@@ -27,137 +27,10 @@
                         <span class="block">how are you?</span>
                       </div>
                     </li>
-                    <!-- <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/mlachheb.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">how are you?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">how are you?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">how are you?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">how are you?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">how are you?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/iidzim.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur . </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200  rounded-full shadow">
-                        <span class="block">Hiiii</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">how are you?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/mlachheb.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200  rounded-full shadow">
-                        <span class="block">Hiiii</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">how are you?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/mlachheb.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-2">
-                        <img src="../assets/mlachheb.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </span>
-                        </div>
-                    </li> -->
                   </ul>
 
                 </div>
 
-            
-          <!-- </div> -->
-        <!-- </div> -->
       </div>
     </div>
         </div>
