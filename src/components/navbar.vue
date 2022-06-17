@@ -62,7 +62,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{name:'Chat'}">
+          <router-link :to="{name:'Chat' , params: {name: 'framdani'}}">
             <a  class="block py-2 pr-4 pl-3 mt-1  border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:p-0 text-gray-300 md:hover:text-white hover:bg-gray-700 hover:text-white md:hover:bg-transparent border-gray-700">Chat</a>
           </router-link>
         </li>
@@ -121,7 +121,7 @@
 </template>
 
 <script lang="ts" setup>
-    import {  computed, ref, inject, onMounted } from 'vue';
+    import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
     const store = inject('store')
     const nickname = store.state.nickname   
 
@@ -145,13 +145,25 @@
         a.push(user.name)
       });
       return a.filter((name) => name.startsWith(search.value))
-    }) 
+    })
     onMounted(() => {
         fetch('http://localhost:5000/users') 
           .then(res => res.json())
           .then(data => store.state.users = data)
           .catch(err => console.log(err.message))
     })
+    onMounted(() => {
+		  fetch('http://localhost:5000/rooms') 
+			  .then(res => res.json())
+			  .then(data => store.state.rooms = data)
+			  .catch(err => console.log(err.message))
+		})
+	  onMounted(() => {
+		  fetch('http://localhost:5000/profile') 
+			  .then(res => res.json())
+			  .then(data => store.state.profile = data)
+			  .catch(err => console.log(err.message))
+		})
 
 
 </script>

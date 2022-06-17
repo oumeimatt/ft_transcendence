@@ -1,9 +1,11 @@
 import { reactive } from "vue";
 
 const state = reactive ({
-    nickname: 'oel-yous',
+    profile: {},
     users: [],
-    logged: false
+    rooms: [],
+    logged: false,
+
 })
 
 const methods = reactive({

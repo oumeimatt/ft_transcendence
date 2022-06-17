@@ -3,8 +3,8 @@
     <navbar/> 
     <div class="grid grid-cols-6 gap-px bg-gray-900 ">
       <chatnavbar/>
-      <conversationGroup />
-      <rightbarGroup />
+      <conversationGroup :name="name"/>
+      <rightbarGroup :name="name"/>
     </div>
   </div>
   <Footer />
@@ -18,6 +18,9 @@ import chatnavbar from '../components/chatnavbar.vue'
 import rightbarGroup from '../components/rightbarGroup.vue'
 import conversationGroup from '../components/conversationGroup.vue'
 
+const props = defineProps({
+    name: String
+})
 const store = inject('store')
 const channelName = ref('')
 

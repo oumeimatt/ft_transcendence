@@ -24,7 +24,7 @@
               </div>
           </div>
       </div>
-      <div class="container flex flex-col justify-center items-center  lg:ml-20 lg:mr-20 md:ml-10 md:mr-10" >
+      <div class="Container flex flex-col justify-center items-center  lg:ml-20 lg:mr-20 md:ml-10 md:mr-10" >
         <div>
           <h1 class="text-slate-300	 text-2xl">About </h1>
 

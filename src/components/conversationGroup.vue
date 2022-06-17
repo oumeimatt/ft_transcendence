@@ -1,14 +1,14 @@
 <template>
     <div class="col-span-4 h-screen ">
         <div class="relative h-small bg-slate-800">
-            <h1 class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> Friends </h1>
-            <button class="bg-red-800 rounded h-10 w-36 font-bold absolute right-6 bottom-2/4 translate-y-2/4" > Leave room </button>
+            <h1 class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> {{ name }} </h1>
+            <button class="bg-slate-900 rounded h-10 w-36 font-bold absolute text-red-700 right-6 bottom-2/4 translate-y-2/4" > Leave room </button>
         </div>
         <div class=" max-h-4/5 h-full scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 ">
             <div>
              <div class="w-full">
 
-                <div class="relative w-full p-6 overflow-y-auto">
+                <!-- <div class="relative w-full p-6 overflow-y-auto">
 
                   <ul class="space-y-2">
                     <li class="flex justify-start items-center space-x-4">
@@ -153,7 +153,7 @@
                     </li>
                   </ul>
 
-                </div>
+                </div> -->
 
             
           <!-- </div> -->
@@ -179,6 +179,9 @@
 </template>
 
 <script lang="ts" setup>
-import {inject, ref} from 'vue';
-const store = inject('store')
+    import {inject, ref} from 'vue';
+    const store = inject('store')
+    const props = defineProps({
+        name: String
+    })
 </script>
