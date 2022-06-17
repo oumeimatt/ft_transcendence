@@ -14,9 +14,10 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
-    path: '/chat',
+    path: '/chat/:name',
     name: 'Chat',
-    component: Chat
+    component: Chat,
+    props: true
   },
   {
     path: '/game',
@@ -35,9 +36,10 @@ const routes: Array<RouteRecordRaw> = [
     props: true
   },
   {
-    path: '/chatgroup',
+    path: '/chatgroup/:name',
     name: 'ChatGroup',
-    component: ChatGroup
+    component: ChatGroup,
+    props: true
   },
   // {
   //   path: '/about',

@@ -1,30 +1,36 @@
 {
+    "profile": {
+        "name": "oumixa",
+        "pdp" : "https://cdn.intra.42.fr/users/oel-yous.jpg",
+        "friends" :["teslazap", "fidus", "ikrax", "framdani", "coca", "shrooma", "mashad", "souhail"],
+        "achievements": ["first", "bronze", "silver", "gold"]
+    },
     "users" :[
         {
             "pdp" : "https://cdn.intra.42.fr/users/oel-ouar.jpg",
             "id" : 1,
             "name": "teslazap",
             "achievements": ["first" ,"bronze", "silver"],
-            "friends": ["ikrax", "fidus","oel-yous","mashad","framdani"]
+            "friends": ["ikrax", "fidus","oumixa","mashad","framdani"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
             "id" : 2,
             "name": "ikrax",
             "achievements": ["first" ,"bronze"],
-            "friends": ["fidus","oel-yous","mashad","framdani"]
+            "friends": ["fidus","oumixa","mashad","framdani"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/mgrissen.jpg",
             "id" : 3,
             "name": "fidus",
             "achievements": ["first" ,"bronze", "silver", "gold"],
-            "friends": ["ikrax","oel-yous","mashad","framdani", "teslazap"]
+            "friends": ["ikrax","oumixa","mashad","framdani", "teslazap"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/oel-yous.jpg",
             "id" : 4,
-            "name": "oel-yous",
+            "name": "oumixa",
             "achievements": ["first"],
             "friends": ["teslazap","ikrax", "fidus","mashad","framdani"]
         },
@@ -33,35 +39,72 @@
             "id" : 5,
             "name": "framdani",
             "achievements": ["first" ,"bronze", "silver"],
-            "friends": ["ikrax", "fidus","oel-yous"]
+            "friends": ["ikrax", "fidus","oumixa"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/mashad.jpg",
             "id" : 6,
             "name": "mashad",
             "achievements": ["first", "bronze"],
-            "friends": ["ikrax", "fidus","oel-yous","teslazap","framdani"]
+            "friends": ["ikrax", "fidus","oumixa","teslazap","framdani"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/mlachheb.jpg",
             "id" : 7,
             "name": "mlachheb",
             "achievements": ["first" ,"bronze", "silver"],
-            "friends": ["ikrax", "fidus","oel-yous","mashad","framdani"]
+            "friends": ["ikrax", "fidus","oumixa","mashad","framdani"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/sel-fcht.jpg",
             "id" : 8,
             "name": "souhail",
             "achievements": ["first" ,"bronze", "silver"],
-            "friends": ["teslazap", "fidus","oel-yous","mashad"]
+            "friends": ["teslazap", "fidus","oumixa","mashad"]
         },
         {
             "pdp" : "https://cdn.intra.42.fr/users/zmeribaa.jpg",
             "id" : 9,
-            "name": "Coca",
+            "name": "coca",
             "achievements": ["first" ,"bronze", "silver", "gold"],
-            "friends": ["teslazap", "fidus","oel-yous","mashad", "souhail"]
+            "friends": ["teslazap", "fidus","oumixa","mashad", "souhail"]
+        },
+        {
+            "pdp" : "https://cdn.intra.42.fr/users/hbouhsis.jpg",
+            "id" : 10,
+            "name": "shrooma",
+            "achievements": ["first" ,"bronze", "silver", "gold"],
+            "friends": ["teslazap", "fidus","oumixa","mashad", "souhail", "coca"]
+        }
+    ],
+    "rooms" :[
+        {
+            "id" : 1,
+            "name" : "Friends",
+            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "private"
+        },
+        {
+            "id" : 2,
+            "name" : "Ocp gang",
+            "members": ["teslazap", "mashad", "coca", "fidus"],
+            "admins": ["teslazap", "fidus"],
+            "type": "private"
+        },
+        {
+            "id" : 3,
+            "name" : "Ya memeni",
+            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis"],
+            "admins": ["mashad"],
+            "type": "public"
+        },
+        {
+            "id" : 4,
+            "name" : "Test",
+            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca", "mlachheb"],
+            "admins": ["coca"],
+            "type": "public"
         }
     ]
 }

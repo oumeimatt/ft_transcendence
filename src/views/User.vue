@@ -3,7 +3,7 @@
     <navbar /> 
 
     <!-- <div class=" ml-20 mr-20 mb-100"> -->
-      <div class="container">
+      <div class="Container">
       <div id="container2" class="relative mb-11 text-white">
         <div class="flex absolute top-48 left-5 items-center">
 
@@ -26,22 +26,22 @@
         <div class="bg-slate-700 h-6 " style="width: 25%"> </div>
         <p class="inline-block z-10 absolute left-2/4 -translate-x-2/4 text-slate-400" > level 0 - 25%  </p>
       </div>
-      <div class="cent p-8 ">
-        <div class="grid md:grid-cols-1 lg:grid-cols-1 gap-1 lg-gap-1  text-center  ml-11 mr-11 mt-8" >
+      <div class="cent pt-8 ">
+        <div class="grid md:grid-cols-1 lg:grid-cols-1 gap-1 lg-gap-1  text-center  mt-8" >
           <div class="p-4  bg-slate-500 rounded-md " > 
             <p class="text-2xl font-semibold pb-4"> Friends </p>
             <div v-if="usersInfo(username)" class="pt-4 border-t border-neutral-800 flex items-scretch space-x-2">
               <div v-for="friend in usersInfo(username).friends" :key="friend">
-                <router-link :to="{ name:'User', params: {username: friend}}"> <img  :src="usersInfo(friend).pdp" class="w-10 h-10 rounded-full"> </router-link>
+                <router-link  :to="{ name:'User', params: {username: friend}}"> <img v-if="usersInfo(friend)" :src="usersInfo(friend).pdp" class="w-10 h-10 rounded-full"> </router-link>
               </div>
             </div>
           </div>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-2 lg-gap-2 text-center ml-11 mr-11 mt-8" >
+        <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-2 lg-gap-2 text-center mt-8" >
           <div class="p-4  bg-slate-500 rounded-md " > 
+            <p  class="text-2xl font-semibold pb-4 border-b border-neutral-800"> Achievements </p>
             <div v-if="usersInfo(username)"> 
-              <p  class="text-2xl font-semibold pb-4 border-b border-neutral-800"> Achievements </p>
-              <!-- acheivement -->
+
               <div v-for="achievement in usersInfo(username).achievements" :key="achievement">
                 <div v-if="achievement == 'first'" class="grid grid-cols-8 justify-items-start  bg-slate-500 pt-4">
                     <div class="place-self-start" > <img src="../assets/medal.png" class="w-10 h-10"></div>
@@ -63,7 +63,6 @@
               
               
               </div>
-              <!--  -->
             </div>
           </div>
           <div class="p-4  bg-slate-500 rounded-md " > 
@@ -71,27 +70,27 @@
               <p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
               <!-- games  -->
               <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                <div class="text-neutral-900 font-semibold "> oel-yous</div>
+                <div class="text-neutral-900 font-semibold "> {{ username }} </div>
                 <div class="text-gray-900 font-black "> 5 - 2  </div>
                 <div class="text-neutral-900 font-semibold "> soepkdsds  </div>
               </div>
               <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                <div class="text-neutral-900 font-semibold "> oel-yous</div>
+                <div class="text-neutral-900 font-semibold "> {{ username }} </div>
                 <div class="text-gray-900 font-black "> 5 - 2  </div>
                 <div class="text-neutral-900 font-semibold "> iidzim  </div>
               </div>
               <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                <div class="text-neutral-900 font-semibold "> oel-yous</div>
+                <div class="text-neutral-900 font-semibold "> {{ username }} </div>
                 <div class="text-gray-900 font-black "> 5 - 2  </div>
                 <div class="text-neutral-900 font-semibold "> framdani  </div>
               </div>
               <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                <div class="text-neutral-900 font-semibold "> oel-yous</div>
+                <div class="text-neutral-900 font-semibold "> {{ username }} </div>
                 <div class="text-gray-900 font-black "> 5 - 2  </div>
                 <div class="text-neutral-900 font-semibold "> dkkdkksm  </div>
               </div>
               <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                <div class="text-neutral-900 font-semibold "> oel-yous</div>
+                <div class="text-neutral-900 font-semibold "> {{ username }} </div>
                 <div class="text-gray-900 font-black "> 5 - 2  </div>
                 <div class="text-neutral-900 font-semibold "> ndjbjdjds  </div>
               </div>
