@@ -18,13 +18,8 @@
 												 </div>
 										</li>
 										<li class="flex justify-end">
-											<div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200  rounded-full shadow">
-												<span class="block">Hiiii</span>
-											</div>
-										</li>
-										<li class="flex justify-end">
 											<div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-												<span class="block">how are you?</span>
+												<span class="block">allalalaljsjjsjd</span>
 											</div>
 										</li>
 									</ul>

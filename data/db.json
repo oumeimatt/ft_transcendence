@@ -77,7 +77,70 @@
             "friends": ["teslazap", "fidus","oumixa","mashad", "souhail", "coca"]
         }
     ],
-    "rooms" :[
+    "allRooms": [
+        {
+            "id" : 5,
+            "name" : "Friends 1",
+            "members": ["teslazap", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "public"
+        },
+        {
+            "id" : 6,
+            "name" : "Friends 2 ",
+            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "public"
+        },
+        {
+            "id" : 7,
+            "name" : "Friends 3",
+            "members": [ "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "private"
+        },
+        {
+            "id" : 8,
+            "name" : "Friends 4 ",
+            "members": ["teslazap", "oumixa", "fidus", "hbouhsis", "souhail",  "framdani"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "public"
+        },
+        {
+            "id" : 9,
+            "name" : "Friends 5",
+            "members": ["teslazap", "oumixa", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "private"
+        },
+        {
+            "id" : 10,
+            "name" : "Friends 6",
+            "members": [ "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "public"
+        },
+        {
+            "id" : 11,
+            "name" : "Friends 7",
+            "members": ["teslazap", "oumixa", "iidzim", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "private"
+        },
+        {
+            "id" : 12,
+            "name" : "Friends 8",
+            "members": [ "iidzim", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "public"
+        },
+        {
+            "id" : 13,
+            "name" : "Friends 9",
+            "members": ["teslazap", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "private"
+        },
         {
             "id" : 1,
             "name" : "Friends",
@@ -105,6 +168,41 @@
             "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca", "mlachheb"],
             "admins": ["coca"],
             "type": "public"
+        }
+
+    ],
+    "rooms" :[
+        {
+            "id" : 1,
+            "name" : "Friends",
+            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
+            "admins": ["oumixa" ,"teslazap"],
+            "type": "private",
+            "owner": "fidus"
+        },
+        {
+            "id" : 2,
+            "name" : "Ocp gang",
+            "members": ["teslazap", "mashad", "coca", "fidus"],
+            "admins": ["teslazap", "fidus"],
+            "type": "private",
+            "owner": "oumixa"
+        },
+        {
+            "id" : 3,
+            "name" : "Ya memeni",
+            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis"],
+            "admins": ["mashad"],
+            "type": "public",
+            "owner": "oumixa"
+        },
+        {
+            "id" : 4,
+            "name" : "Test",
+            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca", "mlachheb"],
+            "admins": ["coca"],
+            "type": "public",
+            "owner": "teslazap"
         }
     ]
 }

@@ -4,11 +4,9 @@
 		<div class="grid grid-cols-6 gap-px bg-gray-900 ">
 			<chatnavbar />
 			<conversation :name="name" />
-
 			<rightBar :name="name" />
 		</div>
 	</div>
-	<Footer />
 </template>
 
 <script lang="ts" setup>

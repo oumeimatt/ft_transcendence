@@ -25,10 +25,19 @@
         <input type="text" onfocus="this.value=''" id="search-navbar" class="block p-2 pl-10 w-full bg-slate-700 rounded-xl border border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-600 placeholder-gray-400 text-gray-300  focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." v-model="search">
           <div v-if="showSugg() == true"> 
             <div v-for="user in matchingNames" :key="user" class=" z-10 bg-slate-700 rounded-md shadow-xl lg:absolute top-11  w-full absolute">
-              <router-link :to="{ name:'User', params: {username: user}}"> 
+              <div v-if="user != store.state.profile.name">
+                <router-link  :to="{ name:'User', params: {username: user}}"> 
+                  <div class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-neutral-600">
+                    {{ user }} </div>
+                </router-link>
+              </div>
+              <div v-else>
+                <router-link :to="{name:'profile'}">
                 <div class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-neutral-600">
                   {{ user }} </div>
               </router-link>
+
+              </div>
               
             </div>
           </div>
@@ -68,7 +77,7 @@
         </li>
         <li>
             <button @click="show = !show" type="button" class="flex mr-3 text-sm rounded-full md:mr-0 focus:ring-2 focus:ring-gray-300 focus:ring-gray-600" id="user-menu-button" aria-expanded="false"  data-dropdown-toggle="dropdown">
-            <img class="w-8 h-8 rounded-full" src="../assets/oel-yous.jpeg" alt="">
+            <img class="w-8 h-8 rounded-full" :src="store.state.profile.pdp" alt="">
             <div v-if="show" class=" z-10 bg-slate-700 rounded-md shadow-xl lg:absolute top-11 right-0 w-44 absolute">
               <router-link  to="/Profile" class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-slate-800">
                 Profile </router-link> 
@@ -92,24 +101,25 @@
         </div>
         <div class=" grid gap-3 grid-cols-1  p-6 border-t border-solid border-slate-200 rounded-b">
            <button v-on:click="showChangeName = !showChangeName" class="pb-4 border-b text-gray-800 font-semibold" >Change Username</button> 
-            <div v-if="showChangeName" class="border-b p-2 pb-4 space-x-4">
-              <!-- <div> name: {{name}} </div> -->
-              <span class="text-s "> Username :</span>
-              <!-- v-model="store.state.nickname" -->
-              <input v-model="nickname" placeholder="max 10 letters" class=" border border-solid rounded" > 
+              <div v-if="showChangeName" class="border-b p-2 pb-4 space-x-4">
+                <span class="text-s "> Username :</span>
+                <input v-model="nickname" placeholder="max 10 letters" class=" border border-solid rounded" > 
+              </div>
+           <button v-on:click="showChangeAv = !showChangeAv" class="p-2 pb-4 border-b font-semibold text-gray-800">Change Avatar</button>
+            <div v-if="showChangeAv" class="border-b p-2 pb-4 space-x-4 w-full">
+              <input type="file" accept="image/*" @change="onChange" class=" border border-solid rounded" > 
             </div>
-           <button class="p-2 pb-4 border-b font-semibold text-gray-800">Change Avatar</button>
-           <button v-on:click="show2f = !show2f" class="pt-2 font-semibold text-gray-800">2FA Authentication</button>
+            <button v-on:click="show2f = !show2f" class="pt-2 font-semibold text-gray-800">2FA Authentication</button>
               <div v-if="show2f" class="border-t p-2 space-x-4">
                 You have not activated 2FA. <a  class="text-xs text-teal-700" href="https://authy.com/what-is-2fa/" target="_blank"> What is 2FA Authentication ? </a>
                 <button class="bg-neutral-300 rounded p-2 hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
               </div>
         </div>
         <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-          <button class="text-gray-800 border border-solid white hover:bg-black hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
+          <button class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
             Close
           </button>
-          <button @click="store.methods.changeNickname(nickname)" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-black uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
+          <button @click="store.methods.changeNickname(nickname)" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
             Save Changes
           </button>
         </div>
@@ -129,6 +139,7 @@
     const show = ref(false);
     const showModal = ref(false)
     const showChangeName= ref(false)
+    const showChangeAv = ref(false)
     const show2f = ref(false)
     const showSearch = ref(false)
     const toggleNav = () => (showMenu.value = !showMenu.value);
@@ -139,6 +150,19 @@
         return false
       return true
     }
+
+    const image = ref(null)
+    // const imageUrl = ref('')
+
+    function onChange(e){
+      console.log("innnnnnn")
+      const file = e.target.files[0]
+      image.value = file
+      store.state.imageUrl = URL.createObjectURL(file)
+      console.log(store.state.imageUrl)
+    }
+
+
     const matchingNames = computed(() => {
       const a=[]
       store.state.users.forEach(user => {
@@ -162,6 +186,12 @@
 		  fetch('http://localhost:5000/profile') 
 			  .then(res => res.json())
 			  .then(data => store.state.profile = data)
+			  .catch(err => console.log(err.message))
+		})
+    	onMounted(() => {
+		  fetch('http://localhost:5000/allRooms') 
+			  .then(res => res.json())
+			  .then(data => store.state.allRooms = data)
 			  .catch(err => console.log(err.message))
 		})
 

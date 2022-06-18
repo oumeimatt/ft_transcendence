@@ -8,7 +8,7 @@
 			 <!-- {{ props.nickname }} -->
 			 <div class="flex absolute top-48 left-5 items-center">
 
-					<img class="w-36 md:w-40 lg:w-40 mr-7 rounded-full lg:top-52 left-11" :src="store.state.profile.pdp" alt="">
+					<img class="w-36 h-36 md:w-40 md:h-40 lg:h-40 lg:w-40 mr-7 rounded-full lg:top-52 left-11" :src="store.state.profile.pdp" alt="">
 					<div class="  font-semibold text-3xl  text-gray-400 "> {{ store.state.profile.name }} </div>
 			 </div>
 			</div> 
