@@ -5,11 +5,24 @@
 
                 <!-- ********* chat room ********  -->
               <img src="../assets/group.png" class="mx-auto" >
-              <div class="font-bold text-2xl text-gray-400 -mt-[40px] "> {{ name }} </div>
-              
+              <div  class=" flex itmes-center justify-center text-center  -mt-[40px] "> 
+                <p class="font-bold lg:text-2xl md:text-2xl text-gray-400"> {{ name }} </p> 
+                <!-- <img @click="showEdit" v-if="store.state.owner" src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt=""> -->
+              </div>
+
+              <!-- <div v-if="store.state.owner">
+                    <div v-if="editRoom" class=" rounded-md mt-4">
+                        <div v-if="RoomInfo(name).type == 'public'" class=" block py-2 text-sm text-gray-300 hover:underline  ">Set Password
+                        </div>
+                        <div v-if="RoomInfo(name).type == 'private'" class=" block py-2 text-sm text-gray-300 hover:underline  ">Change Password
+                        </div>
+                        <div v-if="RoomInfo(name).type == 'private'" class=" block py-2 text-sm text-gray-300 hover:underline  ">Remove Password
+                        </div>
+                    </div>
+
+              </div> -->
 
           </div> 
-          
           <div class="mt-16 ">
             <h1 class="font-bold text-xl text-gray-300 mb-4"> Admins </h1>
              <div v-if="RoomInfo(name)" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
@@ -45,11 +58,15 @@
 </template>
 
 <script lang="ts" setup>
-    import {inject, ref} from 'vue';
+    import {inject, ref, onMounted, onUpdated} from 'vue';
     const store = inject('store')
     const props = defineProps({
-        name: String
+        name: String,
+        editRoom: Boolean
     })
+    const owner = ref(false)
+    // const edit= ref(false)
+    // const showEdit = () => (props.editRoom = !props.editRoom)
     function usersInfo(name: string){
         for (var user of store.state.users) {
             if (user.name == name){

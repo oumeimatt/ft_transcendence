@@ -1,31 +1,45 @@
 <template>
-		<div class="Container bg-slate-800 lg:ml-8   ">
-				<div class="  pb-8">
-					<button class="mt-12 flex justify-start items-center space-x-2" >
+		<div class="Container bg-slate-800 lg:ml-8  scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-screen ">
+				<div class=" pb-4">
+					<button class="mt-16 flex justify-start items-center space-x-2" >
 						<svg @click="createRoom" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 fill-slate-400" viewBox="0 0 20 20">
 							<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
 						</svg> 
-						 <div @click="createRoom" class="text-slate-400 lg:text-xl md:text-base text-sm font-bold hover:underline "> Create new Room </div> 
+						 <div @click="createRoom" class="text-slate-400 lg:text-xl md:text-base text-sm  font-bold hover:underline "> Create channel </div> 
 					</button>
-					<button class="mt-4 flex justify-start items-center space-x-2" >
+					<button @click="showRooms" class="mt-8 flex justify-start items-center space-x-2" >
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 fill-slate-400" fill="none" viewBox="0 0 24 24"  stroke-width="1">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
 						</svg>
-						<p class="text-slate-400 lg:text-xl md:text-base text-sm  font-bold hover:underline"> All rooms </p>
+						<p class="text-slate-400 lg:text-xl md:text-base text-sm  font-bold hover:underline"> All channels </p>
 					</button>
-				</div>
-				<div class=" mt-8  pb-8  ">
-					<h1 class="text-slate-300 font-semibold text-xl mb-4 ">Rooms</h1>
-					<div class="h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3 ">
-						<div v-for="room in store.state.rooms" :key="room" >
-							<div v-if="room.type == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
+					<div v-if="showAllRooms" class="h-5/6 scrollbar mt-4 scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/5 ">
+						<div v-for="room in store.state.allRooms" :key="room" >
+							<div   v-if="room.type == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
 								<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 								</svg>
 								<router-link :to="{name:'ChatGroup', params: {name: room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ room.name }} </router-link> 
 							</div>
 							<div v-if="room.type == 'public'" class="flex justify-start items-center space-x-2 mt-4"> 
-								<img src="../assets/public.png" class="lg:ml-7 h-10 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
+								<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
+								<router-link :to="{name:'ChatGroup', params: {name: room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ room.name }} </router-link>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class=" mt-8  pb-8  ">
+					<h1 class="text-slate-300 font-semibold text-xl  ">My channels</h1>/
+					<div class="h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3 ">
+						<div v-for="room in store.state.rooms" :key="room" >
+							<div @click="store.methods.roomOwner(RoomInfo(room.name).owner)" v-if="room.type == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
+								<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+								</svg>
+								<router-link :to="{name:'ChatGroup', params: {name: room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ room.name }} </router-link> 
+							</div>
+							<div @click="store.methods.roomOwner(RoomInfo(room.name).owner)"  v-if="room.type == 'public'" class="flex justify-start items-center space-x-2 mt-4"> 
+								<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
 								<router-link :to="{name:'ChatGroup', params: {name: room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ room.name }} </router-link>
 							</div>
 						</div>
@@ -88,10 +102,9 @@
 	import {inject, ref, onMounted} from 'vue';
 	const store = inject('store')
 	const showCreate = ref(false)
+	const showAllRooms = ref(false)
+	const showRooms = () => (showAllRooms.value = !showAllRooms.value)
 	const createRoom = () => (showCreate.value = true)
-	// const props = defineProps({
-  	// 	name: String
-	// })
     function usersInfo(name: string){
         for (var user of store.state.users) {
             if (user.name == name){
@@ -103,6 +116,14 @@
 
 	function RoomInfo(name: string){
 		for (var room of store.state.rooms) {
+			if (room.name == name){
+				return room
+			}
+		}
+		return null
+	}
+	function allRoomInfo(name: string){
+		for (var room of store.state.allRooms) {
 			if (room.name == name){
 				return room
 			}
