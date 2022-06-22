@@ -1,16 +1,15 @@
 <template>
 	<div>
-		<navbar /> 
-
-		<!-- <div class=" ml-20 mr-20 mb-100"> -->
+		<Header /> 
 		<div class="Container"> 
-			<div id="container2" class=" relative mb-11 text-white">
-			 <!-- {{ props.nickname }} -->
-			 <div class="flex absolute top-48 left-5 items-center">
+			<div id="bg" class=" relative mb-11 text-white">
+			 	<div class="flex absolute top-48 left-5 items-center">
 
-					<img class="w-36 h-36 md:w-40 md:h-40 lg:h-40 lg:w-40 mr-7 rounded-full lg:top-52 left-11" :src="store.state.profile.pdp" alt="">
-					<div class="  font-semibold text-3xl  text-gray-400 "> {{ store.state.profile.name }} </div>
-			 </div>
+						<img class="w-36 h-36 md:w-40 md:h-40 lg:h-40 lg:w-40 mr-7 rounded-full lg:top-52 left-11" :src="store.state.profile.pdp" alt="">
+						<div class="  font-semibold text-3xl  text-gray-400 "> {{ store.state.profile.name }} </div>
+			 	</div>
+
+  
 			</div> 
 			
 			<div class="flex  my-0 mx-auto  md:w-3/5 lg:w-3/5 bg-slate-500 h-6 mb-6 relative">
@@ -23,7 +22,7 @@
 						<p class="text-2xl font-semibold pb-4"> Friends </p>
 						<div  class="pt-4 border-t border-neutral-800 flex items-scretch space-x-2">
                             <div v-for="friend in store.state.profile.friends" :key="friend">
-							    <router-link  :to="{ name:'User', params: {username: friend}}"> <img v-if="usersInfo(friend)" :src="usersInfo(friend).pdp" class="w-10 h-10 rounded-full"> </router-link>
+							    <router-link  :to="{ name:'User', params: {username: friend}}"> <img v-if="store.methods.usersInfo(friend)" :src="store.methods.usersInfo(friend).pdp" class="w-10 h-10 rounded-full"> </router-link>
                             </div>
 						</div>
 					</div>
@@ -99,34 +98,18 @@
 <script lang="ts" setup>
     import { defineComponent , ref, inject, onMounted } from 'vue';
     import Footer from '../components/Footer.vue';
-    import navbar from '../components/navbar.vue'
+    import Header from '../components/Header.vue'
     const store = inject('store')
+	const addFriend = ref(false)
 
-    function usersInfo(name: string){
-        for (var user of store.state.users) {
-            if (user.name == name){
-                return user
-            }
-        }
-        return null
-    }
 </script>
 
-<style>
-	#container2 {
+<style scoped>
+	#bg {
 		background-image: url("../assets/cover.png");
 		background-attachment: scroll;
 		height: 300px;
 		background-size: cover;
 	}
-
-		/* div */
-	/* display: flex;
-		align-items: center;
-		position: absolute;
-		bottom: -38px;
-		left: 22px; */
-	/* img
-	mr-27px */
 
 </style>

@@ -155,7 +155,6 @@
     // const imageUrl = ref('')
 
     function onChange(e){
-      console.log("innnnnnn")
       const file = e.target.files[0]
       image.value = file
       store.state.imageUrl = URL.createObjectURL(file)
@@ -175,25 +174,20 @@
           .then(res => res.json())
           .then(data => store.state.users = data)
           .catch(err => console.log(err.message))
+        fetch('http://localhost:5000/rooms') 
+			    .then(res => res.json())
+			    .then(data => store.state.rooms = data)
+			    .catch(err => console.log(err.message))
+        fetch('http://localhost:5000/profile') 
+			    .then(res => res.json())
+			    .then(data => store.state.profile = data)
+			    .catch(err => console.log(err.message))
+        fetch('http://localhost:5000/allRooms') 
+			    .then(res => res.json())
+			    .then(data => store.state.allRooms = data)
+			    .catch(err => console.log(err.message))
     })
-    onMounted(() => {
-		  fetch('http://localhost:5000/rooms') 
-			  .then(res => res.json())
-			  .then(data => store.state.rooms = data)
-			  .catch(err => console.log(err.message))
-		})
-	  onMounted(() => {
-		  fetch('http://localhost:5000/profile') 
-			  .then(res => res.json())
-			  .then(data => store.state.profile = data)
-			  .catch(err => console.log(err.message))
-		})
-    	onMounted(() => {
-		  fetch('http://localhost:5000/allRooms') 
-			  .then(res => res.json())
-			  .then(data => store.state.allRooms = data)
-			  .catch(err => console.log(err.message))
-		})
+
 
 
 </script>

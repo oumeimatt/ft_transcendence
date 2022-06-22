@@ -1,21 +1,21 @@
 <template>
-  <div >
-    <navbar/> 
-    <div class="grid grid-cols-6 gap-px bg-gray-900 ">
+    <Header /> 
+  <div class="Container">
+    <div class="grid grid-cols-6 gap-px ">
       <chatnavbar/>
-      <conversationGroup :name="name"/>
-      <rightbarGroup :name="name" :editRoom="false"/>
+      <conversationRoom :name="name"/>
+      <membersBar :name="name" :editRoom="false"/>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { inject, ref} from 'vue';
-import navbar from '../components/navbar.vue';
+import Header  from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 import chatnavbar from '../components/chatnavbar.vue'
-import rightbarGroup from '../components/rightbarGroup.vue'
-import conversationGroup from '../components/conversationGroup.vue'
+import membersBar from '../components/membersBar.vue'
+import conversationRoom from '../components/conversationRoom.vue'
 
 const props = defineProps({
     name: String,

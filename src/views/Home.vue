@@ -13,8 +13,8 @@
     </div>
   </div>
   <div v-else class="bg-black ">
-    <navbar /> 
-      <div id="container" class="flex flex-col space-y-96" >
+    <Header /> 
+      <div id="bg" class="flex flex-col space-y-96" >
           <div id="opacity" class="h-screen w-screen pt-40">
             <h1 class="text-7xl font-bold text-center text-gray-300">ENJOY PONG GAME </h1>
             <p class="pl-40 pr-40 pt-10 text-1xl font-bold text-center text-gray-300"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua </p>
@@ -78,7 +78,7 @@
 
 <script lang="ts" setup>
 import { defineComponent ,ref, inject, onMounted } from 'vue';
-import navbar from '../components/navbar.vue';
+import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 const store = inject('store')
 
@@ -93,7 +93,7 @@ function islogged(){
   #opacity {
     background-color: rgba(0, 0, 0, 0.3);
   }
-  #container {
+  #bg {
     /* background: url("../assets/bg.jpg") no-repeat; */
     background-image: url("../assets/bg1.jpg");
     width: 100vw;
