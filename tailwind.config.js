@@ -22,7 +22,7 @@ module.exports = {
         
       },
       height: {
-        'small': '5vh',
+        'small': '6vh',
         'screen': '95vh'
       },
       padding: {
