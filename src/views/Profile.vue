@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Header /> 
-		<div class="Container"> 
+		<div v-if="store.state.logged" class="Container"> 
 			<div id="bg" class=" relative mb-11 text-white">
 			 	<div class="flex absolute top-48 left-5 items-center">
 
