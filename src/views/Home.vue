@@ -1,6 +1,7 @@
 <template >
   <div class="bg-black ">
-    <Header /> 
+    <Header />
+    <div v-if="store.state.logged">
       <div id="bg" class="flex flex-col space-y-96" >
           <div id="opacity" class="h-screen w-screen pt-40">
             <h1 class="text-7xl font-bold text-center text-gray-300">ENJOY PONG GAME </h1>
@@ -21,36 +22,36 @@
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 lg-gap-4 text-center ml-20 mr-20" >
             <div class="p-4 bg-gray-600 rounded-md " > 
               <div > 
-                <img src="../assets/oel-yous.jpeg" class="flex jusitfy-center rounded-full  md:ml-0 h-10 w-10 md:h-16 md:w-16 ">
-                <p>Oumaima El youssefi</p>
-                <p> Frontend & UI/UX design </p>
+                <img src="../assets/oel-yous.jpeg" class="flex jusitfy-center rounded-full mb-4 md:ml-0 h-10 w-10 md:h-16 md:w-16 ">
+                <p class="font-semibold text-neutral-900">Oumaima El youssefi</p>
+                <p class="font-semibold text-neutral-900 "> Frontend & UI/UX design </p>
                 <a href="http://github.com/oumeimatt" > 
-                  <img src="../assets/github.png" class="rounded-full   ml-3 md:ml-0 h-5 w-5 md:h-5 md:w-5  ">
+                  <img src="../assets/github.png" class="rounded-full mt-4  ml-3 md:ml-0 h-5 w-5 md:h-5 md:w-5  ">
                 </a>
               </div>
             </div>
             <div class="p-4 bg-gray-600 rounded-md " > 
-            <img src="../assets/iidzim.jpeg" class="rounded-full   ml-3 md:ml-0 h-10 w-10 md:h-16 md:w-16  ">
-            <p>Ikram Idzim</p>
-            <p> Backend & UI/UX design </p>
+            <img src="../assets/iidzim.jpeg" class="rounded-full mb-4  ml-3 md:ml-0 h-10 w-10 md:h-16 md:w-16  ">
+            <p class="font-semibold text-neutral-900 ">Ikram Idzim</p>
+            <p class="font-semibold text-neutral-900"> Backend & UI/UX design </p>
             <a href="http://github.com/iidzim" > 
-              <img src="../assets/github.png" class="rounded-full   ml-3 md:ml-0 h-5 w-5 md:h-5 md:w-5  ">
+              <img src="../assets/github.png" class="rounded-full mt-4  ml-3 md:ml-0 h-5 w-5 md:h-5 md:w-5  ">
             </a>
           </div>
           <div class="p-4 bg-gray-600 rounded-md " > 
-            <img src="../assets/framdani.jpeg" class="rounded-full   ml-3 md:ml-0 h-10 w-10 md:h-16 md:w-16  ">
-            <p>Fatima Zahra Ramdani</p>
-            <p> Chat</p>
+            <img src="../assets/framdani.jpeg" class="rounded-full mb-4  ml-3 md:ml-0 h-10 w-10 md:h-16 md:w-16  ">
+            <p class="font-semibold text-neutral-900">Fatima Zahra Ramdani</p>
+            <p class="font-semibold text-neutral-900 "> Chat</p>
             <a href="http://github.com/framdani" > 
-              <img src="../assets/github.png" class="rounded-full   ml-3 md:ml-0 h-5 w-5 md:h-5 md:w-5  ">
+              <img src="../assets/github.png" class="rounded-full mt-4  ml-3 md:ml-0 h-5 w-5 md:h-5 md:w-5  ">
             </a>
           </div>
           <div class="p-4 bg-gray-600 rounded-md " > 
-            <img src="../assets/mlachheb.jpeg" class="rounded-full   ml-3 md:ml-0 h-10 w-10 md:h-16 md:w-16  ">
-            <p>Mohamed amine Lachheb</p>
-            <p> Pong game </p>
+            <img src="../assets/mlachheb.jpeg" class="rounded-full  mb-4 ml-3 md:ml-0 h-10 w-10 md:h-16 md:w-16  ">
+            <p class="font-semibold text-neutral-900">Mohamed amine Lachheb</p>
+            <p class="font-semibold text-neutral-900"> Pong game </p>
             <a href="http://github.com/mohamedamine456" > 
-              <img src="../assets/github.png" class="rounded-full   ml-3 md:ml-0 h-5 w-5 md:h-5 md:w-5  ">
+              <img src="../assets/github.png" class="rounded-full mt-4  ml-3 md:ml-0 h-5 w-5 md:h-5 md:w-5  ">
             </a>
           </div>
         </div>
@@ -58,9 +59,8 @@
       </div>
 
   </div>
-
   <Footer />
-
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -70,10 +70,7 @@ import Footer from '../components/Footer.vue';
 import Game from '../components/Game.vue'
 const store = inject('store')
 
-function islogged(){
-  store.state.logged = true
-  console.log(store.state.logged)
-}
+
 </script>
 
 <style scoped>

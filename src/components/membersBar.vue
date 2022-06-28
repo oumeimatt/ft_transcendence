@@ -1,5 +1,5 @@
 <template>
-    <div class="Container bg-myblue col-span-2 md:col-span-1 lg:col-span-1 ">
+    <div class="Container bg-myblue col-span-2 md:col-span-1 rounded-lg lg:col-span-1 ">
        <div class=" h-screen">
           <div class="text-center items-center justify-center mx-auto">
 

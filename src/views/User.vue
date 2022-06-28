@@ -3,9 +3,9 @@
     <Header /> 
 
     <!-- <div class=" ml-20 mr-20 mb-100"> -->
-      <div class="Container">
-      <div id="container2" class="relative mb-11 text-white">
-        <div class="flex absolute top-48 left-5 items-center">
+      <div v-if="store.state.logged" class="Container">
+        <div id="container2" class="relative mb-11 text-white">
+          <div class="flex absolute top-48 left-5 items-center">
 
             <img v-if="store.methods.usersInfo(username)" class="w-36 md:w-40 lg:w-40 mr-7 rounded-full lg:top-52 left-11" :src="store.methods.usersInfo(username).pdp" alt="">
             <div v-if="store.methods.usersInfo(username)" class="font-semibold text-3xl  text-gray-400 "> {{ store.methods.usersInfo(username).name }} </div>
