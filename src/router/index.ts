@@ -5,9 +5,15 @@ import Game from '../views/Game.vue'
 import Profile from '../views/Profile.vue'
 import User from '../views/User.vue'
 import ChatRoom from '../views/ChatRoom.vue'
+import Signin from '../views/Signin.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/auth/login',
+    name: 'Signin',
+    component: Signin
+  },
   {
     path: '/',
     name: 'Home',
