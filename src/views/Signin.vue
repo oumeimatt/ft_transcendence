@@ -16,11 +16,12 @@
 
 <script lang="ts" setup>
     import { inject } from 'vue';
+    import axios from 'axios';
     const store = inject('store')
-    function islogged(){
-      fetch('http://localhost:3001/auth/login') 
-			    // .then(res => console.log(res))
-          // .then(res => console.log(res))
+    async function islogged(){
+      await axios
+          .get('http://10.11.8.2:3001/auth/login'), { withCredentials: true }
+          .catch(error => console.log(error));
     }
 
 </script>
