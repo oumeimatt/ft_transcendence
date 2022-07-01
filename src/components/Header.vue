@@ -157,11 +157,11 @@
       return a.filter((name) => name.startsWith(search.value))
     })
     onMounted(() => {
-      fetch('http://localhost:5000/profile') 
+      fetch('http://localhost:3001/profile') 
 			    .then(res => res.json())
 			    .then(data => store.state.player = data)
 			    .catch(err => console.log(err.message))
-      fetch('http://localhost:5000/users') 
+      fetch('http://localhost:3001/users') 
 			    .then(res => res.json())
 			    .then(data => store.state.users = data)
 			    .catch(err => console.log(err.message)) 
