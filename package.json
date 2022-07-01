@@ -8,11 +8,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "core-js": "^3.8.3",
     "json-server": "^0.17.0",
     "request": "^2.88.2",
     "sass": "^1.52.3",
     "vue": "^3.2.13",
+    "vue-axios": "^3.4.1",
     "vue-router": "^4.0.15"
   },
   "devDependencies": {

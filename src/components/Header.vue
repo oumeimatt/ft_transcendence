@@ -138,6 +138,16 @@
         return false
       return true
     }
+    // onMounted(async  () => {
+    //   await fetch('http://localhost:3001/profile', {mode:'cors'}) 
+		// 	    .then(res => res.json())
+		// 	    .then(data => store.state.player = data)
+		// 	    .catch(err => console.log(err.message))
+    //   await fetch('http://localhost:3001/users', {mode:'cors'}) 
+		// 	    .then(res => res.json())
+		// 	    .then(data => store.state.users = data)
+		// 	    .catch(err => console.log(err.message)) 
+    // })
 
     const image = ref(null)
 
@@ -156,16 +166,7 @@
       });
       return a.filter((name) => name.startsWith(search.value))
     })
-    onMounted(() => {
-      fetch('http://localhost:3001/profile') 
-			    .then(res => res.json())
-			    .then(data => store.state.player = data)
-			    .catch(err => console.log(err.message))
-      fetch('http://localhost:3001/users') 
-			    .then(res => res.json())
-			    .then(data => store.state.users = data)
-			    .catch(err => console.log(err.message)) 
-    })
+
 
 
 
