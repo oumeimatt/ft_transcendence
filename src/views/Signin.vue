@@ -21,8 +21,7 @@
     import { inject } from 'vue';
     const store = inject('store')
     function islogged(){
-        store.state.logged = true
-        console.log(store.state.logged)
+        store.state.player.status = true
     }
 </script>
 

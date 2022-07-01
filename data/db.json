@@ -1,208 +1,36 @@
 {
     "profile": {
-        "name": "oumixa",
-        "pdp" : "https://cdn.intra.42.fr/users/oel-yous.jpg",
-        "friends" :["teslazap", "fidus", "ikrax", "framdani", "coca", "shrooma", "mashad", "souhail"],
-        "achievements": ["first", "bronze", "silver", "gold"]
+        "id": 1,
+        "username": "oel-yous",
+        "avatar" : "https://cdn.intra.42.fr/users/oel-yous.jpg",
+        "level": 1,
+        "status": "online",
+        "two_fa": false
     },
     "users" :[
         {
-            "pdp" : "https://cdn.intra.42.fr/users/oel-ouar.jpg",
-            "id" : 1,
-            "name": "teslazap",
-            "achievements": ["first" ,"bronze", "silver"],
-            "friends": ["ikrax", "fidus","oumixa","mashad","framdani"]
+            "id": 1,
+            "username": "iidzim",
+            "avatar" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "level": 1,
+            "status": "online",
+            "two_fa": false
         },
         {
-            "pdp" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
-            "id" : 2,
-            "name": "ikrax",
-            "achievements": ["first" ,"bronze"],
-            "friends": ["fidus","oumixa","mashad","framdani"]
+            "id": 2,
+            "username": "framdani",
+            "avatar" : "https://cdn.intra.42.fr/users/framdani.jpg",
+            "level": 1,
+            "status": "online",
+            "two_fa": false
         },
         {
-            "pdp" : "https://cdn.intra.42.fr/users/mgrissen.jpg",
-            "id" : 3,
-            "name": "fidus",
-            "achievements": ["first" ,"bronze", "silver", "gold"],
-            "friends": ["ikrax","oumixa","mashad","framdani", "teslazap"]
-        },
-        {
-            "pdp" : "https://cdn.intra.42.fr/users/oel-yous.jpg",
-            "id" : 4,
-            "name": "oumixa",
-            "achievements": ["first"],
-            "friends": ["teslazap","ikrax", "fidus","mashad","framdani"]
-        },
-        {
-            "pdp" : "https://cdn.intra.42.fr/users/framdani.jpg",
-            "id" : 5,
-            "name": "framdani",
-            "achievements": ["first" ,"bronze", "silver"],
-            "friends": ["ikrax", "fidus","oumixa"]
-        },
-        {
-            "pdp" : "https://cdn.intra.42.fr/users/mashad.jpg",
-            "id" : 6,
-            "name": "mashad",
-            "achievements": ["first", "bronze"],
-            "friends": ["ikrax", "fidus","oumixa","teslazap","framdani"]
-        },
-        {
-            "pdp" : "https://cdn.intra.42.fr/users/mlachheb.jpg",
-            "id" : 7,
-            "name": "mlachheb",
-            "achievements": ["first" ,"bronze", "silver"],
-            "friends": ["ikrax", "fidus","oumixa","mashad","framdani"]
-        },
-        {
-            "pdp" : "https://cdn.intra.42.fr/users/sel-fcht.jpg",
-            "id" : 8,
-            "name": "souhail",
-            "achievements": ["first" ,"bronze", "silver"],
-            "friends": ["teslazap", "fidus","oumixa","mashad"]
-        },
-        {
-            "pdp" : "https://cdn.intra.42.fr/users/zmeribaa.jpg",
-            "id" : 9,
-            "name": "coca",
-            "achievements": ["first" ,"bronze", "silver", "gold"],
-            "friends": ["teslazap", "fidus","oumixa","mashad", "souhail"]
-        },
-        {
-            "pdp" : "https://cdn.intra.42.fr/users/hbouhsis.jpg",
-            "id" : 10,
-            "name": "shrooma",
-            "achievements": ["first" ,"bronze", "silver", "gold"],
-            "friends": ["teslazap", "fidus","oumixa","mashad", "souhail", "coca"]
-        }
-    ],
-    "allRooms": [
-        {
-            "id" : 5,
-            "name" : "Friends 1",
-            "members": ["teslazap", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "public"
-        },
-        {
-            "id" : 6,
-            "name" : "Friends 2 ",
-            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "public"
-        },
-        {
-            "id" : 7,
-            "name" : "Friends 3",
-            "members": [ "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "private"
-        },
-        {
-            "id" : 8,
-            "name" : "Friends 4 ",
-            "members": ["teslazap", "oumixa", "fidus", "hbouhsis", "souhail",  "framdani"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "public"
-        },
-        {
-            "id" : 9,
-            "name" : "Friends 5",
-            "members": ["teslazap", "oumixa", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "private"
-        },
-        {
-            "id" : 10,
-            "name" : "Friends 6",
-            "members": [ "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "public"
-        },
-        {
-            "id" : 11,
-            "name" : "Friends 7",
-            "members": ["teslazap", "oumixa", "iidzim", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "private"
-        },
-        {
-            "id" : 12,
-            "name" : "Friends 8",
-            "members": [ "iidzim", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "public"
-        },
-        {
-            "id" : 13,
-            "name" : "Friends 9",
-            "members": ["teslazap", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "private"
-        },
-        {
-            "id" : 1,
-            "name" : "Friends",
-            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "private"
-        },
-        {
-            "id" : 2,
-            "name" : "Ocp gang",
-            "members": ["teslazap", "mashad", "coca", "fidus"],
-            "admins": ["teslazap", "fidus"],
-            "type": "private"
-        },
-        {
-            "id" : 3,
-            "name" : "Ya memeni",
-            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis"],
-            "admins": ["mashad"],
-            "type": "public"
-        },
-        {
-            "id" : 4,
-            "name" : "Test",
-            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca", "mlachheb"],
-            "admins": ["coca"],
-            "type": "public"
-        }
-
-    ],
-    "rooms" :[
-        {
-            "id" : 1,
-            "name" : "Friends",
-            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca"],
-            "admins": ["oumixa" ,"teslazap"],
-            "type": "private",
-            "owner": "fidus"
-        },
-        {
-            "id" : 2,
-            "name" : "Ocp gang",
-            "members": ["teslazap", "mashad", "coca", "fidus"],
-            "admins": ["teslazap", "fidus"],
-            "type": "private",
-            "owner": "oumixa"
-        },
-        {
-            "id" : 3,
-            "name" : "Ya memeni",
-            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis"],
-            "admins": ["mashad"],
-            "type": "public",
-            "owner": "oumixa"
-        },
-        {
-            "id" : 4,
-            "name" : "Test",
-            "members": ["teslazap", "oumixa", "fidus", "mashad", "hbouhsis", "souhail", "iidzim", "framdani", "coca", "mlachheb"],
-            "admins": ["coca"],
-            "type": "public",
-            "owner": "teslazap"
+            "id": 3,
+            "username": "mlachheb",
+            "avatar" : "https://cdn.intra.42.fr/users/mlachheb.jpg",
+            "level": 1,
+            "status": "online",
+            "two_fa": false
         }
     ]
 }

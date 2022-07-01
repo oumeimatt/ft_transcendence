@@ -1,12 +1,22 @@
 import { reactive } from "vue";
 
-const state = reactive ({
-    profile: {},
+interface Profile {
+    id: number,
+    username: string
+    avatar: string,
+    level: number,
+    status: string,
+    two_fa: boolean,
+    recievers: Profile[],
+    senders: Profile[]
+}
+
+const state = reactive<{player: Profile, users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean}> ({
+    player :{id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     users: [],
     rooms: [],
     allRooms: [],
     imageUrl: '',
-    logged: false,
     owner: false,
     editRoom: false
 
@@ -17,39 +27,42 @@ const state = reactive ({
 const methods = reactive({
     changeNickname(newnickname: string){
         if (newnickname.length > 0 && newnickname.length <= 10){
-            state.profile.name = newnickname ;
+            state.player.username = newnickname ;
         }
         // 
     },
     changeAvatar(){
-        state.profile.pdp = state.imageUrl
+        state.player.avatar = state.imageUrl
     },
-    roomOwner(owner: string){
-        if (state.profile.name == owner){
-            state.owner = true
-        }
-        else
-            state.owner = false
+    logout(){
+
     },
-    RoomInfo(name: string){
-		for (var room of state.rooms) {
-			if (room.name == name){
-				return room
-			}
-		}
-		return null
-	},
-    allRoomInfo(name: string){
-		for (var room of state.allRooms) {
-			if (room.name == name){
-				return room
-			}
-		}
-		return null
-	},
+    // roomOwner(owner: string){
+    //     if (state.player.username == owner){
+    //         state.owner = true
+    //     }
+    //     else
+    //         state.owner = false
+    // },
+    // RoomInfo(name: string){
+	// 	for (var room of state.rooms) {
+	// 		if (room.name == name){
+	// 			return room
+	// 		}
+	// 	}
+	// 	return null
+	// },
+    // allRoomInfo(name: string){
+	// 	for (var room of state.allRooms) {
+	// 		if (room.name == name){
+	// 			return room
+	// 		}
+	// 	}
+	// 	return null
+	// },
     usersInfo(name: string){
         for (var user of state.users) {
-            if (user.name == name){
+            if (user.username == name){
                 return user
             }
         }
