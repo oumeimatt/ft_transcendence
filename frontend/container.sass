@@ -1,0 +1,41 @@
+.Container,
+.Container-fluid,
+.Container-xxl,
+.Container-xl,
+.Container-lg,
+.Container-md,
+.Container-sm
+  width: 100%
+  padding-right: var(--bs-gutter-x, 0.75rem)
+  padding-left: var(--bs-gutter-x, 0.75rem)
+  margin-right: auto
+  margin-left: auto
+
+@media (min-width:640px)
+  .Container- sm, .Container
+    max-width: 639px
+@media (min-width: 768px)
+  .Container-md, .Container-sm, .Container
+    max-width: 767px
+@media (min-width: 1024px)
+  .Container-lg, .Container-md, .Container-sm, .Container
+    max-width: 1023px
+@media (min-width: 1280px)
+  .Container-xl, .Container-lg, .Container-md, .Container-sm, .Container
+    max-width: 1279px
+@media (min-width: 1536px)
+  .Container-xxl, .Container-xl, .Container-lg, .Container-md, .Container-sm, .Container
+    max-width: 1535px
+
+.underline
+  position: relative
+  color: #FFCD9F
+  &::after
+    content: ""
+    position: absolute
+    bottom: -5px
+    left: 0
+    right: 0
+    width: 100%
+    height: 3px
+    background: linear-gradient(90deg,rgba(255, 142, 38, 0) -0.85%,#ffcd9f 45.9%,rgba(255, 142, 38, 0) 100%)

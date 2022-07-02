@@ -1,0 +1,36 @@
+{
+    "profile": {
+        "id": 1,
+        "username": "oel-yous",
+        "avatar" : "https://cdn.intra.42.fr/users/oel-yous.jpg",
+        "level": 1,
+        "status": "online",
+        "two_fa": false
+    },
+    "users" :[
+        {
+            "id": 1,
+            "username": "iidzim",
+            "avatar" : "https://cdn.intra.42.fr/users/iidzim.jpeg",
+            "level": 1,
+            "status": "online",
+            "two_fa": false
+        },
+        {
+            "id": 2,
+            "username": "framdani",
+            "avatar" : "https://cdn.intra.42.fr/users/framdani.jpg",
+            "level": 1,
+            "status": "online",
+            "two_fa": false
+        },
+        {
+            "id": 3,
+            "username": "mlachheb",
+            "avatar" : "https://cdn.intra.42.fr/users/mlachheb.jpg",
+            "level": 1,
+            "status": "online",
+            "two_fa": false
+        }
+    ]
+}
