@@ -9,7 +9,7 @@
   <!-- logo -->
       <a class="flex items-center"> 
         <router-link :to="{name:'Home'}">
-          <img src="../assets/pong.png" class="mr-3 h-6 sm:h-9" alt="" />
+          <img src="../assets/pong.png" class="mr-3 h-6 sm:h-9 " alt="" />
         </router-link>
         <router-link :to="{name:'Home'}">
           <span class="self-center text-xl font-semibold md:whitespace-nowrap text-gray-300"> <span class="logo">YDA PONG </span></span>
@@ -26,7 +26,7 @@
             <div v-if="showSugg() == true"> 
               <div v-for="user in matchingNames" :key="user" class=" z-10 bg-slate-700 rounded-md shadow-xl lg:absolute top-11  w-full absolute">
                 <div v-if="user != store.state.player.username">
-                  <router-link  :to="{ name:'User', params: {username: user}}"> 
+                  <router-link  :to="{ name:'User', params: {id: store.methods.usersInfo()}}"> 
                     <div class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-neutral-600">
                       {{ user }} </div>
                   </router-link>
@@ -66,7 +66,7 @@
           </li>
           <li>
               <button @click="show = !show" type="button" class="translate-y-1/4 bottom-2/4  flex mr-3 text-sm rounded-full md:mr-0 focus:ring-2 focus:ring-gray-300 focus:ring-gray-600"   data-dropdown-toggle="dropdown">
-              <img class="w-8 h-8 rounded-full  " :src="store.state.player.avatar" alt="">
+              <img class="w-8 h-8 rounded-full bg-white " :src="store.state.player.avatar" alt="">
               <div v-if="show" class=" z-10 bg-slate-700 rounded-md shadow-xl lg:absolute top-11 right-0 w-44 absolute">
                 <router-link  to="/Profile" class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-slate-800">
                   Profile </router-link> 
@@ -119,7 +119,8 @@
 </template>
 
 <script lang="ts" setup>
-    import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
+    import axios from 'axios';
+import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
     import Signin from '../views/Signin.vue'
     const store = inject('store')
 
@@ -138,16 +139,25 @@
         return false
       return true
     }
-    // onMounted(async  () => {
-    //   await fetch('http://localhost:3001/profile', {mode:'cors'}) 
-		// 	    .then(res => res.json())
-		// 	    .then(data => store.state.player = data)
-		// 	    .catch(err => console.log(err.message))
-    //   await fetch('http://localhost:3001/users', {mode:'cors'}) 
-		// 	    .then(res => res.json())
-		// 	    .then(data => store.state.users = data)
-		// 	    .catch(err => console.log(err.message)) 
-    // })
+    onMounted(async  () => {
+      await axios
+          .get('http://localhost:3001/profile' ,{ withCredentials: true })
+          .then(data =>{ store.state.player = data.data.profile} ) 
+          .catch(err => console.log(err.message))
+      await axios
+          .get('http://localhost:3001/users' ,{ withCredentials: true })
+          .then(data =>{ store.state.users = data.data.users} ) 
+          .catch(err => console.log(err.message))
+
+      // await fetch('http://localhost:3001/profile') 
+			//     .then(res => res.json())
+			//     .then(data => store.state.player = data)
+			//     .catch(err => console.log(err.message))
+      // await fetch('http://localhost:3001/users') 
+			//     .then(res => res.json())
+			//     .then(data => store.state.users = data)
+			//     .catch(err => console.log(err.message)) 
+    })
 
     const image = ref(null)
 

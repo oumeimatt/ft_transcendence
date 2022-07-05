@@ -4,7 +4,7 @@
 		<div  v-if="store.state.player.status == 'online'" class="Container"> 
 			<div id="bg" class=" relative mb-11 text-white">
 			 	<div class="flex absolute top-48 left-5 items-center">
-						<img class="w-36 h-36 md:w-40 md:h-40 lg:h-40 lg:w-40 mr-7 rounded-full lg:top-52 left-11" :src="store.state.player.avatar" alt="">
+						<img class="w-36 h-36 md:w-40 md:h-40 bg-white  lg:h-40 lg:w-40 mr-7 rounded-full lg:top-52 left-11" :src="store.state.player.avatar" alt="">
 						<div class="  font-semibold text-3xl  text-gray-400 "> {{ store.state.player.username }} </div>
 			 	</div>
 			</div> 
