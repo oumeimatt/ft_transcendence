@@ -38,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Profile
   },
   {
-    path: '/users/:username',
+    path: '/users/:id',
     name: 'User',
     component: User,
     props: true

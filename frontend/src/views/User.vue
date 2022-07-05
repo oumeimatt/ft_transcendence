@@ -7,7 +7,7 @@
         <div id="container2" class="relative mb-11 text-white">
           <div class="flex absolute top-48 left-5 items-center">
 
-            <img v-if="store.methods.usersInfo(username)" class="w-36 md:w-40 lg:w-40  rounded-full lg:top-52 left-11" :src="store.methods.usersInfo(username).avatar" alt="">
+            <img v-if="store.methods.usersInfo(username)" class="w-36 md:w-40 lg:w-40 bg-white   rounded-full lg:top-52 left-11" :src="store.methods.usersInfo(username).avatar" alt="">
             <div v-if="store.methods.usersInfo(username)" class="ml-6 font-semibold text-3xl  text-gray-400 "> {{ store.methods.usersInfo(username).username }} </div>
             <!-- <div class="h-4 w-4 bg-green-600 mt-2 rounded-full  ml-4">
               <p class="opacity-0 text-gray-400 hover:opacity-100 pl-6 -mt-1">

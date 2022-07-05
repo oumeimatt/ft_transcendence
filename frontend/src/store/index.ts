@@ -60,9 +60,9 @@ const methods = reactive({
 	// 	}
 	// 	return null
 	// },
-    usersInfo(name: string){
+    usersInfo(id: number){
         for (var user of state.users) {
-            if (user.username == name){
+            if (user.id == id){
                 return user
             }
         }
