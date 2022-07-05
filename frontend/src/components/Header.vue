@@ -60,7 +60,7 @@
             </router-link>
           </li>
           <li>
-            <router-link :to="{name:'Chat' , params: {name: 'framdani'}}">
+            <router-link :to="{name:'EmptyChat'}">
               <a  class="block py-2  pl-3 mt-1 pr-4  border-0 p-0 text-gray-300 hover:text-white hover:bg-transparent border-gray-700">Chat</a>
             </router-link>
           </li>
@@ -120,7 +120,7 @@
 
 <script lang="ts" setup>
     import axios from 'axios';
-import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
+    import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
     import Signin from '../views/Signin.vue'
     const store = inject('store')
 
