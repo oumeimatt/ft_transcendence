@@ -13,7 +13,7 @@
 						</svg>
 						<p class="text-slate-400 lg:text-xl md:text-base text-sm  font-bold hover:underline"> All channels </p>
 					</button>
-					<div v-if="showAllRooms" class="h-5/6 scrollbar mt-4 scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/5 ">
+					<!--<div v-if="showAllRooms" class="h-5/6 scrollbar mt-4 scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/5 ">
 						<div v-for="room in store.state.allRooms" :key="room" >
 							<div   v-if="room.type == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
 								<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
@@ -26,12 +26,12 @@
 								<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ room.name }} </router-link>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 				<div class=" mt-8  pb-8  ">
 					<h1 class="text-slate-300 font-semibold text-xl  ">My channels</h1>/
 					<div class="h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3 ">
-						<div v-for="room in store.state.rooms" :key="room" >
+						<!-- <div v-for="room in store.state.rooms" :key="room" >
 							<div @click="store.methods.roomOwner(store.methods.RoomInfo(room.name).owner)" v-if="room.type == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
 								<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -42,19 +42,15 @@
 								<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
 								<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ room.name }} </router-link>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="  mt-8  pb-8  ">
 					<h1 class="text-slate-300 font-semibold text-xl mb-6">Friends</h1>
-					<div v-if="store.state.profile.friends" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
-						<!-- <router-link :to="{ name:'User', params: {username: user}}">  -->
-						<div v-for="friend in store.state.profile.friends" :key="friend">
-							<div   v-if="store.methods.usersInfo(friend)" class="flex justify-start items-center space-x-2 mt-2"> 
-								<!-- <router-link :to="{name:'Chat', params: {id: usersInfo(friend).id}}" > -->
-									<img  :src="store.methods.usersInfo(friend).pdp" class="lg:ml-8 h-8 w-8 rounded-full">  <router-link :to="{name:'Chat', params: {name: store.methods.usersInfo(friend).name}}" class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 "> {{ store.methods.usersInfo(friend).name }} </router-link> 
-
-								<!-- </router-link> -->
+					<div v-if="store.state.player.senders" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
+						<div v-for="friend in store.state.player.senders" :key="friend">
+							<div v-if="store.methods.usersInfo(friend)" class="flex justify-start items-center space-x-2 mt-2"> 
+									<img  :src="store.methods.usersInfo(friend).avatar" class="lg:ml-8 h-8 w-8 rounded-full">  <router-link :to="{name:'Chat', params: {name: store.methods.usersInfo(friend).username}}" class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 "> {{ store.methods.usersInfo(friend).username }} </router-link> 
 							</div>
 						</div>
 
@@ -100,7 +96,9 @@
 
 <script lang="ts" setup>
 	import {inject, ref, onMounted} from 'vue';
+	import io from "socket.io-client";
 	const store = inject('store')
+	store.state.connection = io('http://127.0.0.1:3001', { withCredentials: true })
 	const showCreate = ref(false)
 	const showAllRooms = ref(false)
 	const showRooms = () => (showAllRooms.value = !showAllRooms.value)

@@ -18,7 +18,8 @@ const state = reactive<{player: Profile, users: Profile[], rooms:string[], allRo
     allRooms: [],
     imageUrl: '',
     owner: false,
-    editRoom: false
+    editRoom: false,
+    connection: ''
 
 })
 
