@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Game
   },
   {
-    path: '/emptychat',
+    path: '/chat',
     name: 'EmptyChat',
     component: EmptyChat
   },

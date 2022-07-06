@@ -26,7 +26,7 @@
             <div v-if="showSugg() == true"> 
               <div v-for="user in matchingNames" :key="user" class=" z-10 bg-slate-700 rounded-md shadow-xl lg:absolute top-11  w-full absolute">
                 <div v-if="user != store.state.player.username">
-                  <router-link  :to="{ name:'User', params: {id: store.methods.usersInfo()}}"> 
+                  <router-link  :to="{ name:'User', params: {id: getUser(user)}}"> 
                     <div class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-neutral-600">
                       {{ user }} </div>
                   </router-link>
@@ -72,7 +72,7 @@
                   Profile </router-link> 
                 <button type="button" @click="toggleModal()" class="w-44 block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100  border-b border-slate-800">Settings
                 </button>
-                <button @click="store.methods.logout" type="button" class=" w-44 block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100  ">Logout</button>
+                <a  href="http://localhost:3001/auth/logout" class=" w-44 block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100  ">Logout</a>
               </div>
             </button>
           </li>
@@ -90,7 +90,7 @@
             <button v-on:click="showChangeName = !showChangeName" class="pb-4 border-b text-gray-800 font-semibold" >Change Username</button> 
                 <div v-if="showChangeName" class="border-b p-2 pb-4 space-x-4">
                   <span class="text-s "> Username :</span>
-                  <input v-model="nickname" placeholder="max 10 letters" class=" border border-solid rounded" > 
+                  <input v-model="name" placeholder="max 10 letters" class=" border border-solid rounded" > 
                 </div>
             <button v-on:click="showChangeAv = !showChangeAv" class="p-2 pb-4 border-b font-semibold text-gray-800">Change Avatar</button>
               <div v-if="showChangeAv" class="border-b p-2 pb-4 space-x-4 w-full">
@@ -106,7 +106,7 @@
             <button class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
               Close
             </button>
-            <button @click="store.methods.changeNickname(nickname)" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
+            <button @click="changename(name)" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
               Save Changes
             </button>
           </div>
@@ -123,7 +123,7 @@
     import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
     import Signin from '../views/Signin.vue'
     const store = inject('store')
-
+    const name = ref('')
     const showMenu = ref(false);
     const show = ref(false);
     const showModal = ref(false)
@@ -133,11 +133,17 @@
     const showSearch = ref(false)
     const toggleNav = () => (showMenu.value = !showMenu.value);
     const toggleModal = () => (showModal.value = !showModal.value)
+    const id = ref(0)
     const search = ref('search...')
     function showSugg(){
       if (this.search == '' || this.search == "search...")
         return false
       return true
+    }
+
+    function getUser(username: string){
+      var result = store.state.users.find( x=> x.username === username)
+      return result.id
     }
     onMounted(async  () => {
       await axios
@@ -146,20 +152,20 @@
           .catch(err => console.log(err.message))
       await axios
           .get('http://localhost:3001/users' ,{ withCredentials: true })
-          .then(data =>{ store.state.users = data.data.users} ) 
+          .then(data =>{ store.state.users = data.data })
           .catch(err => console.log(err.message))
 
-      // await fetch('http://localhost:3001/profile') 
-			//     .then(res => res.json())
-			//     .then(data => store.state.player = data)
-			//     .catch(err => console.log(err.message))
-      // await fetch('http://localhost:3001/users') 
-			//     .then(res => res.json())
-			//     .then(data => store.state.users = data)
-			//     .catch(err => console.log(err.message)) 
     })
-
     const image = ref(null)
+
+    async function changeNickname(newnickname: String){
+        if (newnickname.length > 0 && newnickname.length <= 10){
+            store.state.player.username = newnickname ;
+            await axios
+            .post('http://localhost.3001/settings/username', newnickname,{ withCredentials: true } )
+            .catch(err => console.log(err.message))
+        }
+    }
 
     function onChange(e){
       const file = e.target.files[0]

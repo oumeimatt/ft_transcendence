@@ -61,10 +61,10 @@ let AuthService = class AuthService {
         res.redirect('http://localhost:3000/home');
     }
     async logout(id, req, res) {
-        console.log('logout');
         await this.playerService.updateStatus(id, player_status_enum_1.UserStatus.OFFLINE);
+        console.log('logout');
         req.logout();
-        return res.redirect('/auth/login');
+        return res.redirect('http://localhost:3000/home');
     }
 };
 __decorate([

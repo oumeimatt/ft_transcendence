@@ -16,7 +16,7 @@ import { room } from '../room.entity';
 
 
 //enable the client to communicate with the server
-@WebSocketGateway({cors: {origin: 'http://localhost:3000'}}) //'https://hoppscotch.io', 
+@WebSocketGateway() //'https://hoppscotch.io', 
 export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
 
   // create a server instance from the WebSocketServer decorators.

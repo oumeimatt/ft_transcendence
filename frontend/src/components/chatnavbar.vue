@@ -1,5 +1,5 @@
 <template>
-		<div class="Container bg-myblue col-span-2 md:col-span-2 lg:col-span-1  scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-screen  rounded-lg ">
+		<div class="Container h-screen bg-myblue col-span-2 md:col-span-2 lg:col-span-1  scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-screen  rounded-lg ">
 				<div class="pb-4">
 					<button class="mt-8 flex justify-start items-center space-x-2" >
 						<svg @click="createRoom" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 fill-slate-400" viewBox="0 0 20 20">
@@ -13,25 +13,28 @@
 						</svg>
 						<p class="text-slate-400 lg:text-xl md:text-base text-sm  font-bold hover:underline"> All channels </p>
 					</button>
-					<!--<div v-if="showAllRooms" class="h-5/6 scrollbar mt-4 scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/5 ">
-						<div v-for="room in store.state.allRooms" :key="room" >
-							<div   v-if="room.type == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
-								<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-								</svg>
-								<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ room.name }} </router-link> 
+					<div class="h-5/6 scrollbar mt-4 scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/5 ">
+						<!--<div v-if="showAllRooms" >
+							<div v-for="room in store.state.allRooms" :key="room" >
+								<div   v-if="room.type == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
+									<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+									</svg>
+									<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ room.name }} </router-link> 
+								</div>
+								<div v-if="room.type == 'public'" class="flex justify-start items-center space-x-2 mt-4"> 
+									<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
+									<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ room.name }} </router-link>
+								</div>
 							</div>
-							<div v-if="room.type == 'public'" class="flex justify-start items-center space-x-2 mt-4"> 
-								<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-								<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ room.name }} </router-link>
-							</div>
-						</div>
-					</div> -->
+						</div> -->
+
+					</div>
 				</div>
 				<div class=" mt-8  pb-8  ">
 					<h1 class="text-slate-300 font-semibold text-xl  ">My channels</h1>/
 					<div class="h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3 ">
-						<!-- <div v-for="room in store.state.rooms" :key="room" >
+						<div v-for="room in store.state.rooms" :key="room" >
 							<div @click="store.methods.roomOwner(store.methods.RoomInfo(room.name).owner)" v-if="room.type == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
 								<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -42,7 +45,7 @@
 								<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
 								<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ room.name }} </router-link>
 							</div>
-						</div> -->
+						</div>
 					</div>
 				</div>
 				<div class="  mt-8  pb-8  ">
@@ -98,12 +101,17 @@
 	import {inject, ref, onMounted} from 'vue';
 	import io from "socket.io-client";
 	const store = inject('store')
-	store.state.connection = io('http://127.0.0.1:3001', { withCredentials: true })
+	store.state.connection = io('http://127.0.0.1:3001')
 	const showCreate = ref(false)
 	const showAllRooms = ref(false)
 	const showRooms = () => (showAllRooms.value = !showAllRooms.value)
 	const createRoom = () => (showCreate.value = true)
 
-
+	 onMounted(() => {
+	// 	store.state.connection.on("message", (data) => {store.state.rooms = data;
+    //   if (store.state.rooms.length !== 0){
+    //   store.state.messageDto.id = store.state.rooms[0].id;
+    //   store.state.roomName = store.state.rooms[0].name;}});
+    })
 
 </script>
