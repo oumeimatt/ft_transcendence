@@ -19,6 +19,8 @@ const player_entity_1 = require("../players/player.entity");
 const players_service_1 = require("../players/players.service");
 const player_status_enum_1 = require("../players/player_status.enum");
 const dotenv = require("dotenv");
+const passportHttp = require('passport-http');
+const logout = require('express-passport-logout');
 dotenv.config({ path: `.env` });
 const passport = require('passport');
 const FortyTwoStrategy = require('passport-42').Strategy;
@@ -51,7 +53,7 @@ let AuthService = class AuthService {
         return this.cb(req, res, player);
     }
     async cb(req, res, player) {
-        console.log("called");
+        console.log("callback");
         passport.authenticate('42', { failureRedirect: `/auth/login` });
         const id = player.id;
         const username = player.username;
@@ -61,9 +63,9 @@ let AuthService = class AuthService {
         res.redirect('http://localhost:3000/home');
     }
     async logout(id, req, res) {
-        await this.playerService.updateStatus(id, player_status_enum_1.UserStatus.OFFLINE);
         console.log('logout');
-        req.logout();
+        await this.playerService.updateStatus(id, player_status_enum_1.UserStatus.OFFLINE);
+        logout();
         return res.redirect('http://localhost:3000/home');
     }
 };

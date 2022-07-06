@@ -24,8 +24,8 @@ __decorate([
     __metadata("design:type", String)
 ], Relation.prototype, "status", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(type => player_entity_1.Player, player => player.receivers),
-    __metadata("design:type", player_entity_1.Player)
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
 ], Relation.prototype, "receiver", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(type => player_entity_1.Player, player => player.senders),

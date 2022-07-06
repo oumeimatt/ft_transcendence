@@ -1,6 +1,8 @@
 import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
+import { RelationRepository } from "../relations/relation.repository";
+import { RelationStatus } from "../relations/relation_status.enum";
 import { GetPlayersFilterDto } from "./dto-players/get-player-filter.dto";
 import { Player } from "./player.entity";
 import { PlayerRepository } from "./player.repository";
@@ -36,28 +38,30 @@ export class UsersService {
 		}
 		return found;
 	}
-	async getUserByUsername(username:string): Promise<Player> {
-		const found = await this.userRepository.findOne(username);
-		if (!found){
-			throw new NotFoundException(`User with ID "${username}" not found`);
-		}
-		return found;
-	}
 
 	async getUsers(FilterDto: GetPlayersFilterDto):Promise<Player[]> {
 		return this.userRepository.getUsers(FilterDto);
 	}
 
 	async updateUsername(id: number, username: string): Promise<Player> {
+
 		const updated = await this.getUserById(id);
 		updated.username = username;
-		await updated.save();
+		try {
+			await updated.save();
+		} catch (error) {
+			console.log(error.code);
+			if (error.code === '23505') {
+				throw new ConflictException('Username already exists');
+			} else {
+				throw new InternalServerErrorException();
+			}
+		}
 		return updated;
 	}
 
 	async updateAvatar(id: number, avatar: string): Promise<Player> {
 
-		console.log(avatar);
 		const updated = await this.getUserById(id);
 		updated.avatar = avatar;
 		await updated.save();
@@ -103,6 +107,17 @@ export class UsersService {
 		return achievements.slice(s);
 	}
 
+	// async getAllFriends(user: Player) : Promise<Player[]> {
+
+	// 	const friend_relations = await this.relationRepository.getRelationByUser(user, RelationStatus.FRIEND);
+	// 	var friends = new Array();
+	// 	for (var relation of friend_relations) {
+	// 		const player = await this.getUserById(relation.receiver);
+	// 		friends.push(player);
+	// 	}
+	// 	return friends;
+	// }
+
 	async findOrCreate(id: number, login: string): Promise<Player> {
 		console.log("find or create > number of arguments passed: ", arguments.length);
 		console.log(id, login);
@@ -123,17 +138,7 @@ export class UsersService {
 		newUser.losses = 0;
 		newUser.status = UserStatus.ONLINE;
 		newUser.two_fa = false;
-		// await newUser.save();
-		try {
-			await newUser.save();
-		} catch (error) {
-			console.log(error.code);
-			if (error.code === '23505') {
-				throw new ConflictException('Username already exists');
-			} else {
-				throw new InternalServerErrorException();
-			}
-		}
+		await newUser.save();
 		console.log('new User saved successfully ' + newUser);
 		if (typeof(newUser) == 'undefined') {
 			console.log('newUser is undefined');
@@ -144,7 +149,6 @@ export class UsersService {
 	async verifyToken(token: string): Promise<Player> {
 
 		try {
-			// const decoded = await this.jwtService.verify(token);
 			const decoded = await this.jwtService.verify(token.toString());
 			// console.log(' -> ' + decoded.username);
 			if (typeof decoded === 'object' && 'id' in decoded)

@@ -9,11 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
 import { JwtStrategy } from '../auth/jwt.strategy';
-import { roomRepository } from 'src/chat/room.repository';
-import { memoryUsage } from 'process';
-import { membership } from 'src/chat/membership.entity';
-import { room } from 'src/chat/room.entity';
-import { message } from 'src/chat/gateway/message.entity';
+import { RelationRepository } from '../relations/relation.repository';
 
 @Module({
     imports: [
@@ -24,7 +20,8 @@ import { message } from 'src/chat/gateway/message.entity';
 				expiresIn: '1d',
             },
         }),
-        TypeOrmModule.forFeature([PlayerRepository, membership, roomRepository]),
+        TypeOrmModule.forFeature([PlayerRepository]),
+        TypeOrmModule.forFeature([RelationRepository]),
         RelationModule,
     ],
     controllers: [UsersController],

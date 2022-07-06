@@ -25,21 +25,24 @@ let UsersController = class UsersController {
         this.jwtService = jwtService;
     }
     async getProfile(req) {
-        console.log(req.cookies);
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         const playerData = await this.usersService.getUserById(user.id);
+        const friends = await this.relationService.getAllFriends(user);
         const achievements = await this.usersService.getAchievements(user.id);
         const data = {
             "profile": playerData,
+            "friends": friends,
             "achievements": achievements,
         };
         return data;
     }
-    async getFriendProfile(id) {
+    async getFriendProfile(req, id) {
         const playerData = await this.usersService.getUserById(id);
+        const friends = await this.relationService.getAllFriends(playerData);
         const achievements = await this.usersService.getAchievements(id);
         const data = {
             "profile": playerData,
+            "friends": friends,
             "achievements": achievements,
         };
         return data;
@@ -73,15 +76,14 @@ __decorate([
     (0, common_1.Get)('/profile/:id'),
     (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
     (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [Object, Number]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getFriendProfile", null);
 __decorate([
     (0, common_1.Patch)('/settings/username'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)('username')),
     __metadata("design:type", Function),
@@ -90,8 +92,6 @@ __decorate([
 ], UsersController.prototype, "updateUsername", null);
 __decorate([
     (0, common_1.Patch)('/settings/avatar'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)('avatar')),
     __metadata("design:type", Function),
@@ -100,8 +100,6 @@ __decorate([
 ], UsersController.prototype, "updateAvatar", null);
 __decorate([
     (0, common_1.Patch)('/settings/2fa'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

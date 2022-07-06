@@ -11,7 +11,7 @@ import { RelationStatus } from "./relation_status.enum";
 export class RelationRepository extends Repository<Relation> {
 	constructor(
 		// @Inject(forwardRef( () => UsersService))
-		private userService: UsersService
+		// private userService: UsersService,
 	) { super() }
 
 	async getRelations(FilterDto: GetRelationFilterDto): Promise<Relation[]> {
@@ -27,42 +27,44 @@ export class RelationRepository extends Repository<Relation> {
 		return relations;
 	}
 
-	async getRelationByUser(player_id: number, relation_status: RelationStatus): Promise<Relation[]> {
+	async getRelationByUser(user: Player, relation_status: RelationStatus): Promise<Relation[]> {
 		const relations = await this.createQueryBuilder('relation')
-			.leftJoinAndSelect('relation.receiver', 'receivers')
-			.andWhere('receiver.id = :id', { id: player_id })
-			.andWhere('sender.id = :id', { id: player_id }) //? or
+			// .andWhere('sender.id = :id', { id: user.id })
 			.andWhere('status = :relation_status', { relation_status: relation_status})
 			.getMany();
 		return relations;
 	}
 
-	async getOneRelation(player_id: number, relation_status: RelationStatus): Promise<Relation> {
+	async getOneRelation(user_id: number, friend_id: number,relation_status: RelationStatus): Promise<Relation> {
 		const relations = await this.createQueryBuilder('relation')
-			.leftJoinAndSelect('relation.receiver', 'receivers')
-			.andWhere('receiver.id = :id', { id: player_id })
-			.andWhere('sender.id = :id', { id: player_id })
+		// .leftJoinAndSelect('relation.receiver', 'receivers')
+			.andWhere('receiver = :id', { id: friend_id })
+			.andWhere('sender.id = :id', { id: user_id })
 			.andWhere('status = :relation_status', { relation_status: relation_status})
 			.getOne();
 		return relations;
 	}
 
-	async addFriend(recv_id: number, sender: Player): Promise<Relation> {
+	async addFriend(user: Player, friend_id: number): Promise<Relation> {
+
+		//td: check if the user is not blocked -> add friend
 		const relation = new Relation();
-		relation.receiver = await this.userService.getUserById(recv_id);
-		relation.sender = sender;
+		// relation.receiver = await this.userService.getUserById(recv_id);
+		relation.receiver = friend_id;
+		relation.sender = user;
 		relation.status = RelationStatus.FRIEND;
 		await relation.save();
 		return relation;
 	}
 
-	async blockPlayer(recv_id: number, sender: Player): Promise<Relation> {
+	async blockPlayer(user: Player, blocked_id: number): Promise<Relation> {
 		const relation = new Relation();
-		relation.receiver = await this.userService.getUserById(recv_id);
-		relation.sender = sender;
+		// relation.receiver = await this.userService.getUserById(recv_id);
+		//td: check if the user is a friend -> remove from friend list
+		relation.receiver = blocked_id;
+		relation.sender = user;
 		relation.status = RelationStatus.BLOCKED;
 		await relation.save();
 		return relation;
 	}
-
 }
