@@ -44,13 +44,4 @@ export class Player extends BaseEntity {
 		{ eager: true})
 	senders: Relation[];
 
-	// @Exclude()
-	// refreshToken: string;
-
-	// @OneToMany(type => Game, game => game.winner, { eager: true})
-	// wins: Game[];
-
-	// @OneToMany(type => Game, game => game.loser, { eager: true})
-	// losses: Game[];
-
 }

@@ -71,8 +71,8 @@ export class AuthService {
 	async logout(id: number, req, res): Promise<any> {
 		console.log('logout');
 		await this.playerService.updateStatus(id, UserStatus.OFFLINE);
-		// passport.logout(); //! error logout is not a function
-		logout();
+		await logout();
+		await res.clearCookie('connect_sid', {domain: 'localhost', path: '/'});
 		return res.redirect('http://localhost:3000/home');
 	}
 }

@@ -35,6 +35,14 @@ export class RelationRepository extends Repository<Relation> {
 		return relations;
 	}
 
+	// async gettest(user: Player, relation_status: RelationStatus): Promise<[]> {
+		// const relations = await this.createQueryBuilder('relation')
+		// 	// .andWhere('sender.id = :id', { id: user.id })
+		// 	.andWhere('status = :relation_status', { relation_status: relation_status})
+		// 	.getMany();
+		// return relations;
+	// }
+
 	async getOneRelation(user_id: number, friend_id: number,relation_status: RelationStatus): Promise<Relation> {
 		const relations = await this.createQueryBuilder('relation')
 		// .leftJoinAndSelect('relation.receiver', 'receivers')

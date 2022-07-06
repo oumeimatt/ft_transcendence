@@ -29,7 +29,6 @@ export class PlayerRepository extends Repository<Player> {
 		const users = await query.getMany().then((user) => {
 			return (user);
 		});
-
 		return users;
 	}
 

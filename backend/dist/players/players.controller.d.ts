@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { UsersService } from "./players.service";
 import { GetPlayersFilterDto } from "./dto-players/get-player-filter.dto";
 import { RelationsService } from "../relations/relations.service";
@@ -19,7 +20,7 @@ export declare class UsersController {
         achievements: any;
     }>;
     updateUsername(req: Request, username: string): Promise<import("./player.entity").Player>;
-    updateAvatar(req: Request, avatar: string): Promise<import("./player.entity").Player>;
+    updateAvatar(req: Request, avatar: Express.Multer.File): Promise<void>;
     updateTwoFa(req: Request): Promise<import("./player.entity").Player>;
-    getUsers(FilterDto: GetPlayersFilterDto): Promise<import("./player.entity").Player[]>;
+    getUsers(FilterDto: GetPlayersFilterDto, req: Request): Promise<import("./player.entity").Player[]>;
 }

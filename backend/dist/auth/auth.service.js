@@ -65,7 +65,8 @@ let AuthService = class AuthService {
     async logout(id, req, res) {
         console.log('logout');
         await this.playerService.updateStatus(id, player_status_enum_1.UserStatus.OFFLINE);
-        logout();
+        await logout();
+        await res.clearCookie('connect_sid', { domain: 'localhost', path: '/' });
         return res.redirect('http://localhost:3000/home');
     }
 };
