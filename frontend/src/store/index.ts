@@ -1,3 +1,6 @@
+
+
+import { Script } from "vm";
 import { reactive } from "vue";
 
 interface Profile {
@@ -11,16 +14,24 @@ interface Profile {
     senders: Profile[]
 }
 
-const state = reactive<{player: Profile, users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean}> ({
+const state = reactive<{player: Profile, users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean}, {user : Profile, users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean}> ({
     player :{id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
+    user : {id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     users: [],
     rooms: [],
     allRooms: [],
     imageUrl: '',
     owner: false,
     editRoom: false,
-    connection: ''
-
+    connection: '',
+    messageDto:{
+        id:null,
+        content:"",
+    },
+    membershipdtp:{
+        roomid:null,
+        userid:null,
+      }
 })
 
 
@@ -29,6 +40,7 @@ const methods = reactive({
     changeNickname(newnickname: string){
         if (newnickname.length > 0 && newnickname.length <= 10){
             state.player.username = newnickname ;
+            
         }
         // 
     },
@@ -61,7 +73,7 @@ const methods = reactive({
 	// 	}
 	// 	return null
 	// },
-    usersInfo(id: number){
+    usersInfo(username: string){
         for (var user of state.users) {
             if (user.id == id){
                 return user

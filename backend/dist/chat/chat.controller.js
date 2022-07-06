@@ -31,6 +31,8 @@ let ChatController = class ChatController {
 };
 __decorate([
     (0, common_1.Get)('messages'),
+    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
+    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Query)('roomid')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -38,6 +40,8 @@ __decorate([
 ], ChatController.prototype, "getAllMessageByRoomId", null);
 __decorate([
     (0, common_1.Get)('rooms'),
+    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
+    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Query)('playerid')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -45,6 +49,8 @@ __decorate([
 ], ChatController.prototype, "getRoomsByUserId", null);
 __decorate([
     (0, common_1.Get)('members'),
+    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
+    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Query)('roomid')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

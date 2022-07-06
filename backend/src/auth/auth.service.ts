@@ -64,10 +64,10 @@ export class AuthService {
 	}
 
 	async logout(id: number, req, res): Promise<any> {
-		console.log('logout');
 		await this.playerService.updateStatus(id, UserStatus.OFFLINE);
+		console.log('logout');
 		// passport.logout();
 		req.logout();
-		return res.redirect('/auth/login');
+		return res.redirect('http://localhost:3000/home');
 	}
 }

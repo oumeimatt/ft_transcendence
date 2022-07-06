@@ -157,7 +157,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ChatGateway.prototype, "joinChannel", null);
 ChatGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)({ cors: { origin: 'http://localhost:3000' } }),
+    (0, websockets_1.WebSocketGateway)(),
     __metadata("design:paramtypes", [auth_service_1.AuthService, chat_service_1.ChatService,
         players_service_1.UsersService])
 ], ChatGateway);

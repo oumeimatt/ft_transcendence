@@ -7,19 +7,19 @@
         <div id="container2" class="relative mb-11 text-white">
           <div class="flex absolute top-48 left-5 items-center">
 
-            <img v-if="store.methods.usersInfo(username)" class="w-36 md:w-40 lg:w-40 bg-white   rounded-full lg:top-52 left-11" :src="store.methods.usersInfo(username).avatar" alt="">
-            <div v-if="store.methods.usersInfo(username)" class="ml-6 font-semibold text-3xl  text-gray-400 "> {{ store.methods.usersInfo(username).username }} </div>
-            <!-- <div class="h-4 w-4 bg-green-600 mt-2 rounded-full  ml-4">
+            <img class="w-36 md:w-40 lg:w-40 bg-white   rounded-full lg:top-52 left-11" :src="store.state.user.avatar" alt="">
+            <div class="ml-6 font-semibold text-3xl  text-gray-400 "> {{ store.state.user.username }} </div>
+            <div v-if="store.state.user.status == 'online'" class="h-4 w-4 bg-green-600 mt-2 rounded-full  ml-4">
               <p class="opacity-0 text-gray-400 hover:opacity-100 pl-6 -mt-1">
                  Online
               </p>
-            </div> -->
-            <!-- <div class="h-4 w-4 bg-blue-600 mt-2 rounded-full  ml-4"> 
+            </div>
+            <div v-if="store.state.user.status == 'ingame'" class="h-4 w-4 bg-blue-600 mt-2 rounded-full  ml-4"> 
               <p class="opacity-0 w-full text-gray-400 hover:opacity-100 pl-6 -mt-1">
                  Playing 
               </p>
-            </div> -->
-            <div class="h-2 w-2 ring-4 ring-gray-600 mt-2 rounded-full  ml-4"> 
+            </div>
+            <div v-if="store.state.user.status == 'offline'" class="h-2 w-2 ring-4 ring-gray-600 mt-2 rounded-full  ml-4"> 
               <p class="opacity-0 text-gray-400 hover:opacity-100 pl-6 -mt-2">
                  Offline
               </p>
@@ -51,12 +51,12 @@
       <div class="cent pt-8 ">
         <div class="grid md:grid-cols-1 lg:grid-cols-1 gap-1 lg-gap-1  text-center  mt-8" >
           <div class="p-4  bg-slate-500 rounded-md " > 
-            <p class="text-2xl font-semibold pb-4"> Friends </p>
-            <div v-if="store.methods.usersInfo(username)" class="pt-4 border-t border-neutral-800 flex items-scretch space-x-2">
+            <p class="text-2xl font-semibold pb-4  border-b border-neutral-800"> Friends </p>
+            <!-- <div v-if="store.methods.usersInfo(username)" class="pt-4 flex items-scretch space-x-2">
               <div v-for="friend in store.methods.usersInfo(username).recievers" :key="friend">
                 <router-link  :to="{ name:'User', params: {username: friend.username}}"> <img v-if="store.methods.usersInfo(friend.username)" :src="store.methods.usersInfo(friend.username).avatar" class="w-10 h-10 rounded-full"> </router-link>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-2 lg-gap-2 text-center mt-8" >
@@ -130,7 +130,8 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent , ref, inject } from 'vue';
+import axios from 'axios';
+import { defineComponent , ref, inject, onMounted } from 'vue';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue'
 const store = inject('store')
@@ -140,10 +141,24 @@ const removeFriend = () => (
   addFriend.value = false,
   frMenu.value = false)
 const props = defineProps({
-  username: String
+  id: String
 })
 
+onMounted(async  () => {
+      await axios
+          .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
+          .then(data =>{ store.state.user = data.data.profile} ) 
+          .catch(err => console.log(err.message))
 
+      // await fetch('http://localhost:3001/profile') 
+			//     .then(res => res.json())
+			//     .then(data => store.state.player = data)
+			//     .catch(err => console.log(err.message))
+      // await fetch('http://localhost:3001/users') 
+			//     .then(res => res.json())
+			//     .then(data => store.state.users = data)
+			//     .catch(err => console.log(err.message)) 
+    })
 </script>
 
 <style>

@@ -1,8 +1,10 @@
 import { AuthService } from './auth.service';
-import { Player } from '../players/player.entity';
+import { UsersService } from 'src/players/players.service';
+import { Request } from "express";
 export declare class AuthController {
     private readonly authService;
-    constructor(authService: AuthService);
+    private readonly usersService;
+    constructor(authService: AuthService, usersService: UsersService);
     FortyTwoAuth(req: Request, res: Response): Promise<void | "no user from 42">;
-    logout(player: Player, req: Request, res: Response): any;
+    logout(req: Request, res: Response): Promise<any>;
 }
