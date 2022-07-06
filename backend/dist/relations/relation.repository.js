@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RelationRepository = void 0;
+const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const relation_entity_1 = require("./relation.entity");
 const relation_status_enum_1 = require("./relation_status.enum");
@@ -42,6 +43,10 @@ let RelationRepository = class RelationRepository extends typeorm_1.Repository {
         return relations;
     }
     async addFriend(user, friend_id) {
+        const blocked = await this.getOneRelation(user.id, friend_id, relation_status_enum_1.RelationStatus.BLOCKED);
+        if (blocked) {
+            throw new common_1.BadRequestException('You cannot add this user');
+        }
         const relation = new relation_entity_1.Relation();
         relation.receiver = friend_id;
         relation.sender = user;
@@ -50,6 +55,10 @@ let RelationRepository = class RelationRepository extends typeorm_1.Repository {
         return relation;
     }
     async blockPlayer(user, blocked_id) {
+        const friend = await this.getOneRelation(user.id, blocked_id, relation_status_enum_1.RelationStatus.FRIEND);
+        if (friend) {
+            await this.delete(friend.id);
+        }
         const relation = new relation_entity_1.Relation();
         relation.receiver = blocked_id;
         relation.sender = user;
