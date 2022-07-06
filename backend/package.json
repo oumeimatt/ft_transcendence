@@ -34,6 +34,8 @@
     "@types/cookie-parser": "^1.4.3",
     "@types/multer": "^1.4.7",
     "bcrypt": "^5.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.1",
     "express-passport-logout": "^0.1.0",

@@ -90,7 +90,7 @@
             <button v-on:click="showChangeName = !showChangeName" class="pb-4 border-b text-gray-800 font-semibold" >Change Username</button> 
                 <div v-if="showChangeName" class="border-b p-2 pb-4 space-x-4">
                   <span class="text-s "> Username :</span>
-                  <input v-model="name" placeholder="max 10 letters" class=" border border-solid rounded" > 
+                  <input v-model="nickname" placeholder="max 10 letters" class=" border border-solid rounded" > 
                 </div>
             <button v-on:click="showChangeAv = !showChangeAv" class="p-2 pb-4 border-b font-semibold text-gray-800">Change Avatar</button>
               <div v-if="showChangeAv" class="border-b p-2 pb-4 space-x-4 w-full">
@@ -106,7 +106,7 @@
             <button class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
               Close
             </button>
-            <button @click="changename(name)" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
+            <button @click="changeNickname(nickname)" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
               Save Changes
             </button>
           </div>
@@ -123,7 +123,7 @@
     import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
     import Signin from '../views/Signin.vue'
     const store = inject('store')
-    const name = ref('')
+    const nickname = ref('')
     const showMenu = ref(false);
     const show = ref(false);
     const showModal = ref(false)
@@ -162,7 +162,8 @@
         if (newnickname.length > 0 && newnickname.length <= 10){
             store.state.player.username = newnickname ;
             await axios
-            .post('http://localhost.3001/settings/username', newnickname,{ withCredentials: true } )
+            .patch('http://localhost:3001/settings/username', {username: newnickname },{ withCredentials: true } )
+            .then(data =>{ console.log(data.data) })
             .catch(err => console.log(err.message))
         }
     }
