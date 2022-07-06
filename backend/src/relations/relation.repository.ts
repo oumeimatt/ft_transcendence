@@ -1,4 +1,4 @@
-import { forwardRef, Inject } from "@nestjs/common";
+import { BadRequestException, forwardRef, Inject } from "@nestjs/common";
 import { EntityRepository, Repository } from "typeorm";
 import { Player } from "../players/player.entity";
 import { UsersService } from "../players/players.service";
@@ -48,8 +48,11 @@ export class RelationRepository extends Repository<Relation> {
 	async addFriend(user: Player, friend_id: number): Promise<Relation> {
 
 		//td: check if the user is not blocked -> add friend
+		const blocked = await this.getOneRelation(user.id, friend_id, RelationStatus.BLOCKED);
+		if (blocked) {
+			throw new BadRequestException('You cannot add this user');
+		}
 		const relation = new Relation();
-		// relation.receiver = await this.userService.getUserById(recv_id);
 		relation.receiver = friend_id;
 		relation.sender = user;
 		relation.status = RelationStatus.FRIEND;
@@ -58,9 +61,14 @@ export class RelationRepository extends Repository<Relation> {
 	}
 
 	async blockPlayer(user: Player, blocked_id: number): Promise<Relation> {
+
+		//td: check if the user is a friend -> remove from friend list
+		const friend = await this.getOneRelation(user.id, blocked_id, RelationStatus.FRIEND);
+		if (friend) {
+			await this.delete(friend.id);
+		}
 		const relation = new Relation();
 		// relation.receiver = await this.userService.getUserById(recv_id);
-		//td: check if the user is a friend -> remove from friend list
 		relation.receiver = blocked_id;
 		relation.sender = user;
 		relation.status = RelationStatus.BLOCKED;
