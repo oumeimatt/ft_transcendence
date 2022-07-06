@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.typeOrmConfig = void 0;
-const message_entity_1 = require("../chat/gateway/message.entity");
-const membership_entity_1 = require("../chat/membership.entity");
-const room_entity_1 = require("../chat/room.entity");
 const player_entity_1 = require("../players/player.entity");
 const relation_entity_1 = require("../relations/relation.entity");
 exports.typeOrmConfig = {
@@ -15,10 +12,7 @@ exports.typeOrmConfig = {
     database: 'pong_db',
     entities: [
         player_entity_1.Player,
-        relation_entity_1.Relation,
-        room_entity_1.room,
-        membership_entity_1.membership,
-        message_entity_1.message,
+        relation_entity_1.Relation
     ],
     synchronize: true,
     logging: false,

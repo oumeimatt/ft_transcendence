@@ -1,17 +1,21 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Controller, Delete, Get, Param, ParseIntPipe, Post, Req, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { GetPlayer } from "../players/get-player.decorator";
 import { Player } from "../players/player.entity";
-import { CreateRelationDto } from "./dto-relation/create-relation.dto";
-import { GetRelationFilterDto } from "./dto-relation/get-relation-filter.dto";
 import { Relation } from "./relation.entity";
 import { RelationsService } from "./relations.service";
 import { RelationStatus } from "./relation_status.enum";
+import { Request } from "express";
+import { UsersService } from "../players/players.service";
 
-@Controller('link')
-@UseGuards(AuthGuard())
+
+@Controller('/relation')
+// @UseGuards(AuthGuard())
 export class RelationsController {
-	constructor(private readonly relationService: RelationsService) {}
+	constructor(
+		private readonly relationService: RelationsService,
+		private readonly usersService: UsersService,
+	) {}
 
 	// @Get()
 	// getRelations(@Query(ValidationPipe) FilterDto: GetRelationFilterDto): Promise<Relation[]> {
@@ -25,40 +29,42 @@ export class RelationsController {
 
 	// @Get()
 
-
-	@Get('/:user')
-	getRelationByUser(@GetPlayer() player: Player): Promise<Relation[]> {
-		return this.relationService.getRelationByUser(player.id, RelationStatus.FRIEND); //& get all friends
-	}
-
 	@Post('add/:id')
 	@UsePipes(ValidationPipe)
-	addFriend(
-		// @Body() createRelationDto: CreateRelationDto,
-		@Param('id', ParseIntPipe) recv_id: number,
-		@GetPlayer() sender: Player,
+	async addFriend(
+		@Req() req: Request,
+		@Param('id', ParseIntPipe) friend_id: number,
 	): Promise<Relation> {
-		// return this.relationService.addFriend(createRelationDto, sender);
-		return this.relationService.addFriend(recv_id, sender);
+		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
+		return this.relationService.addFriend(user, friend_id);
 	}
 
 	@Post('block/:id')
 	@UsePipes(ValidationPipe)
-	blockPlayer(
-		@Param('id', ParseIntPipe) recv_id: number,
-		@GetPlayer() sender: Player,
+	async blockPlayer(
+		@Req() req: Request,
+		@Param('id', ParseIntPipe) blocked_id: number,
 	): Promise<Relation> {
-		return this.relationService.blockPlayer(recv_id, sender);
+		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
+		return this.relationService.blockPlayer(user, blocked_id);
 	}
 
-	@Delete('unblock')
-	unblock(@GetPlayer() sender: Player): Promise<void> {
-		return this.relationService.unblock(sender.id);
+	@Delete('unblock/:id')
+	async unblock(
+		@Req() req: Request,
+		@Param('id', ParseIntPipe) unblock_id: number,
+	): Promise<void> {
+		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
+		return this.relationService.unblock(user, unblock_id);
 	}
 
-	@Delete('unfollow')
-	removeFriend(@GetPlayer() sender: Player): Promise<void> {
-		return this.relationService.removeFriend(sender.id);
+	@Delete('unfollow/:id')
+	async removeFriend(
+		@Req() req: Request,
+		@Param('id', ParseIntPipe) unfollow_id: number,
+	): Promise<void> {
+		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
+		return this.relationService.removeFriend(user, unfollow_id);
 	}
 
 }

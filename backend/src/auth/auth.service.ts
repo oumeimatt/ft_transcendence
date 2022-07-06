@@ -6,6 +6,8 @@ import { UsersService } from '../players/players.service';
 import { UserStatus } from '../players/player_status.enum';
 import * as dotenv from "dotenv";
 import { JwtPayload } from './jwt-payload.interface';
+const passportHttp = require('passport-http');
+const logout = require('express-passport-logout');
 dotenv.config({ path: `.env` })
 
 const passport = require('passport');
@@ -51,8 +53,12 @@ export class AuthService {
 		return this.cb(req, res, player);
 	}
 
-	async cb(@Request() req, @Response() res, player: Player) {
-		console.log("called");
+	async cb(
+		@Request() req,
+		@Response() res,
+		player: Player
+	) {
+		console.log("callback");
 		passport.authenticate('42', {failureRedirect: `/auth/login`});
 		const id = player.id;
 		const username = player.username;
@@ -60,14 +66,13 @@ export class AuthService {
 		const accessToken = await this.jwtService.sign(payload);
 		res.cookie('connect_sid',[accessToken]);
 		res.redirect('http://localhost:3000/home');
-		// return player;
 	}
 
 	async logout(id: number, req, res): Promise<any> {
-		await this.playerService.updateStatus(id, UserStatus.OFFLINE);
 		console.log('logout');
-		// passport.logout();
-		req.logout();
+		await this.playerService.updateStatus(id, UserStatus.OFFLINE);
+		// passport.logout(); //! error logout is not a function
+		logout();
 		return res.redirect('http://localhost:3000/home');
 	}
 }

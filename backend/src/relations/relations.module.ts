@@ -15,7 +15,7 @@ import { RelationsService } from "./relations.service";
         JwtModule.register({
             secret: 'pingpong',
             signOptions: {
-                expiresIn: 3600,
+                expiresIn: '1d',
             },
         }),
         TypeOrmModule.forFeature([RelationRepository]),

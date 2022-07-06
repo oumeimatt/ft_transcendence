@@ -11,8 +11,10 @@ export class Relation extends BaseEntity {
     @Column()
     status: RelationStatus;
 
-    @ManyToOne(type => Player, player => player.receivers)
-    receiver: Player;
+    // @ManyToOne(type => Player, player => player.receivers)
+    // receiver: Player;
+    @Column()
+    receiver: number;
 
     @ManyToOne(type => Player, player => player.senders)
     sender: Player;

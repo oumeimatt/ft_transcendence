@@ -4,6 +4,6 @@ import { RelationStatus } from "./relation_status.enum";
 export declare class Relation extends BaseEntity {
     id: number;
     status: RelationStatus;
-    receiver: Player;
+    receiver: number;
     sender: Player;
 }

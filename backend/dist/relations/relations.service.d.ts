@@ -1,15 +1,18 @@
 import { Player } from "../players/player.entity";
+import { UsersService } from "../players/players.service";
 import { GetRelationFilterDto } from "./dto-relation/get-relation-filter.dto";
 import { Relation } from "./relation.entity";
 import { RelationRepository } from "./relation.repository";
 import { RelationStatus } from "./relation_status.enum";
 export declare class RelationsService {
     private relationRepository;
-    constructor(relationRepository: RelationRepository);
+    private readonly usersService;
+    constructor(relationRepository: RelationRepository, usersService: UsersService);
     getRelations(FilterDto: GetRelationFilterDto): Promise<Relation[]>;
-    getRelationByUser(player_id: number, relation_status: RelationStatus): Promise<Relation[]>;
-    addFriend(recv_id: number, sender: Player): Promise<Relation>;
-    blockPlayer(recv_id: number, sender: Player): Promise<Relation>;
-    unblock(id: number): Promise<void>;
-    removeFriend(id: number): Promise<void>;
+    getRelationByUser(user: Player, relation_status: RelationStatus): Promise<Relation[]>;
+    getAllFriends(user: Player): Promise<Player[]>;
+    addFriend(user: Player, friend_id: number): Promise<Relation>;
+    blockPlayer(user: Player, blocked_id: number): Promise<Relation>;
+    unblock(user: Player, blocked_id: number): Promise<void>;
+    removeFriend(user: Player, friend_id: number): Promise<void>;
 }
