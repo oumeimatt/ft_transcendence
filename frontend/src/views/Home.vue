@@ -7,8 +7,8 @@
             <h1 class="text-7xl font-bold text-center text-gray-300">ENJOY PONG GAME </h1>
             <!-- <p class="pl-40 pr-40 pt-10 text-1xl font-bold text-center text-gray-300"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua </p> -->
               <div class='flex items-center justify-center h-56 content-center space-x-10'>
-                  <router-link :to="{name:'Game'}" type="button" class="text-sky-900 bg-white hover:bg-sky-900 hover:ring-white hover:text-white ring-2 ring-sky-400	 focus:ring-4 focus:outline-none focus:ring-blue-500 focus:ring-whitefont-medium rounded-lg text-xl px-5 py-2.5 text-center ">Play Online </router-link>
-                <button type="button" class="text-gray-100 bg-sky-900 hover:bg-white hover:ring-sky-400 hover:text-sky-900 ring-2 ring-white	 focus:ring-4 focus:outline-none focus:ring-blue-500 focus:ring-whitefont-medium rounded-lg text-xl px-5 py-2.5 text-center ">Watch Games</button>
+                  <router-link :to="{name:'Game'}"  class="text-sky-900 bg-white hover:bg-sky-900 hover:ring-white hover:text-white ring-2 ring-sky-400	 focus:ring-4 focus:outline-none focus:ring-blue-500 focus:ring-whitefont-medium rounded-lg text-xl px-5 py-2.5 text-center ">Play Online </router-link>
+                  <router-link :to="{name:'WatchGames'}" class="text-gray-100 bg-sky-900 hover:bg-white hover:ring-sky-400 hover:text-sky-900 ring-2 ring-white	 focus:ring-4 focus:outline-none focus:ring-blue-500 focus:ring-whitefont-medium rounded-lg text-xl px-5 py-2.5 text-center ">Watch Games</router-link>
               </div>
           </div>
       </div>
@@ -68,6 +68,7 @@ import { defineComponent ,ref, inject, onMounted } from 'vue';
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 import Game from '../components/Game.vue'
+import WatchGames from './WatchGames.vue'
 const store = inject('store')
 
 

@@ -1,13 +1,12 @@
 <template>
-
-	<Header /> 
+	<Header/>
 	<div v-if="store.state.player.status == 'online'" class="Container">
-        <div class="flex space-between-x-2">
-            <div class="mt-12 bg-white w-5/12 h-5/12" > 
-                <img src="../assets/bg.jpg" alt="">
-            </div>
-            <div class="mt-12  bg-white w-5/12 h-5/12" > 
-                <img src="../assets/bg.jpg" alt="">
+        <div class="flex flex-col text-center items-center">
+            <div class="mt-8 text-xl md:text-2xl font-bold text-gray-400">
+                <span> oel-yous </span>  <span class="ml-4 mr-4 text-gray-100 text-2xl md:text-3xl"> X </span>  <span> mlachheb </span> 
+            </div>  
+            <div class="mt-4 mb-8 w-9/12 h-9/12 md:w-8/12 md:h-6/12" > 
+                <img src="../assets/bg1.jpg" alt="">
             </div>
         </div>
 	</div>
