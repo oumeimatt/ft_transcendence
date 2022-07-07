@@ -7,6 +7,7 @@ import User from '../views/User.vue'
 import ChatRoom from '../views/ChatRoom.vue'
 import Signin from '../views/Signin.vue'
 import EmptyChat from '../views/EmptyChat.vue'
+import Play from '../views/Play.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -31,6 +32,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/game',
     name: 'Game',
     component: Game
+  },
+  {
+    path: '/Play',
+    name: 'Play',
+    component: Play,
+    props: true
   },
   {
     path: '/chat',

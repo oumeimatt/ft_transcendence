@@ -4,7 +4,8 @@ import { Relation } from "../relations/relation.entity";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    host: '127.0.0.1',
+    // host: '127.0.0.1',
+    host: '192.168.99.114',
     port: 5432,
     username: 'ping',
     password: 'pong',
