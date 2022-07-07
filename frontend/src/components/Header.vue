@@ -162,9 +162,9 @@
         if (newnickname.length > 0 && newnickname.length <= 10){
             store.state.player.username = newnickname ;
             await axios
-            .patch('http://localhost:3001/settings/username', {username: newnickname },{ withCredentials: true } )
-            .then(data =>{ console.log(data.data) })
-            .catch(err => console.log(err.message))
+                .patch('http://localhost:3001/settings/username' ,{username: newnickname} ,{ withCredentials: true })
+                .then(data =>{ store.state.users = data.data })
+                .catch(err => console.log(err.message))
         }
     }
 
