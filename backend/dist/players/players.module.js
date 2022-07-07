@@ -17,6 +17,8 @@ const passport_1 = require("@nestjs/passport");
 const jwt_1 = require("@nestjs/jwt");
 const jwt_strategy_1 = require("../auth/jwt.strategy");
 const relation_repository_1 = require("../relations/relation.repository");
+const membership_entity_1 = require("../chat/membership.entity");
+const room_repository_1 = require("../chat/room.repository");
 let PlayerModule = class PlayerModule {
 };
 PlayerModule = __decorate([
@@ -29,7 +31,7 @@ PlayerModule = __decorate([
                     expiresIn: '1d',
                 },
             }),
-            typeorm_1.TypeOrmModule.forFeature([player_repository_1.PlayerRepository]),
+            typeorm_1.TypeOrmModule.forFeature([player_repository_1.PlayerRepository, membership_entity_1.membership, room_repository_1.roomRepository]),
             typeorm_1.TypeOrmModule.forFeature([relation_repository_1.RelationRepository]),
             relations_module_1.RelationModule,
         ],

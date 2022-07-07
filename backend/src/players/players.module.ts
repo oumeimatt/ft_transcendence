@@ -10,6 +10,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
 import { JwtStrategy } from '../auth/jwt.strategy';
 import { RelationRepository } from '../relations/relation.repository';
+import { membership } from 'src/chat/membership.entity';
+import { roomRepository } from 'src/chat/room.repository';
 
 @Module({
     imports: [
@@ -20,7 +22,7 @@ import { RelationRepository } from '../relations/relation.repository';
 				expiresIn: '1d',
             },
         }),
-        TypeOrmModule.forFeature([PlayerRepository]),
+        TypeOrmModule.forFeature([PlayerRepository, membership, roomRepository]),
         TypeOrmModule.forFeature([RelationRepository]),
         RelationModule,
     ],

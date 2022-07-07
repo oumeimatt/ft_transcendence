@@ -13,6 +13,8 @@ exports.Player = void 0;
 const typeorm_1 = require("typeorm");
 const player_status_enum_1 = require("./player_status.enum");
 const relation_entity_1 = require("../relations/relation.entity");
+const membership_entity_1 = require("../chat/membership.entity");
+const message_entity_1 = require("../chat/gateway/message.entity");
 let Player = class Player extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -51,6 +53,14 @@ __decorate([
     (0, typeorm_1.OneToMany)(type => relation_entity_1.Relation, relation => relation.sender, { eager: true }),
     __metadata("design:type", Array)
 ], Player.prototype, "senders", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => membership_entity_1.membership, membership => membership.Player),
+    __metadata("design:type", Array)
+], Player.prototype, "memberships", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => message_entity_1.message, message => message.Player),
+    __metadata("design:type", Array)
+], Player.prototype, "messages", void 0);
 Player = __decorate([
     (0, typeorm_1.Entity)('player'),
     (0, typeorm_1.Unique)(['username'])

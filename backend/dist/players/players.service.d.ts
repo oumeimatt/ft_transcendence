@@ -8,6 +8,7 @@ export declare class UsersService {
     private jwtService;
     constructor(userRepository: PlayerRepository, jwtService: JwtService);
     getUserById(id: number): Promise<Player>;
+    getUserByUsername(username: string): Promise<Player>;
     getUsers(FilterDto: GetPlayersFilterDto): Promise<Player[]>;
     updateUsername(id: number, username: string): Promise<Player>;
     updateAvatar(id: number, avatar: string): Promise<Player>;

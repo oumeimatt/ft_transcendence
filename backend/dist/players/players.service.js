@@ -31,6 +31,13 @@ let UsersService = class UsersService {
         }
         return found;
     }
+    async getUserByUsername(username) {
+        const found = await this.userRepository.findOne(username);
+        if (!found) {
+            throw new common_1.NotFoundException(`User with ID "${username}" not found`);
+        }
+        return found;
+    }
     async getUsers(FilterDto) {
         return this.userRepository.getUsers(FilterDto);
     }

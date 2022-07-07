@@ -38,6 +38,14 @@ export class UsersService {
 		}
 		return found;
 	}
+	
+	async getUserByUsername(username:string): Promise<Player> {
+		const found = await this.userRepository.findOne(username);
+		if (!found){
+			throw new NotFoundException(`User with ID "${username}" not found`);
+		}
+		return found;
+	}
 
 	async getUsers(FilterDto: GetPlayersFilterDto):Promise<Player[]> {
 		return this.userRepository.getUsers(FilterDto);
