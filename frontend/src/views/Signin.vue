@@ -1,6 +1,5 @@
 <template >
   <div v-if="store.state.player.status == 'offline'"> 
-    <!-- <console class="log"> {{ logged }}  </console> -->
     <div id="notlogged" class=" flex justify-center items-center text-center h-screen"> 
       <div class=" container w-3/5 h-44 bg-slate-300 rounded-lg translate-y-1/4">
         <h1 class="text-slate-600 font-bold lg:text-4xl  md:text-3xl text-xl pt-4 pb-4 translate-y-1/4" > Welcome to YDA Pong Game site </h1>
@@ -19,13 +18,6 @@
     import axios from 'axios';
     import { useRoute} from 'vue-router';
     const store = inject('store')
-    async function islogged(){
-      console.log("in")
-      await axios
-          .get('http://10.12.2.2:3001/auth/login' ,{ headers: { 'Access-Control-Allow-Origin': '*'}})
-          .then(response => console.log(response.data))
-          .catch(error => console.log(error));
-    }
 
 </script>
 

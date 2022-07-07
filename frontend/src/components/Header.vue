@@ -106,7 +106,7 @@
             <button class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
               Close
             </button>
-            <button @click="changeNickname(nickname)" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
+            <button @click="saveChanges()" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
               Save Changes
             </button>
           </div>
@@ -123,18 +123,23 @@
     import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
     import Signin from '../views/Signin.vue'
     const store = inject('store')
-    const nickname = ref('')
-    const showMenu = ref(false);
-    const show = ref(false);
-    const showModal = ref(false)
-    const showChangeName= ref(false)
-    const showChangeAv = ref(false)
-    const show2f = ref(false)
-    const showSearch = ref(false)
-    const toggleNav = () => (showMenu.value = !showMenu.value);
-    const toggleModal = () => (showModal.value = !showModal.value)
-    const id = ref(0)
-    const search = ref('search...')
+    const nickname = ref('' as string)
+    const showMenu = ref(false as boolean);
+    const show = ref(false as boolean);
+    const showModal = ref(false as boolean)
+    const showChangeName= ref(false as boolean)
+    const showChangeAv = ref(false as boolean)
+    const show2f = ref(false as boolean)
+    const showSearch = ref(false as boolean)
+    const id = ref(0 as number)
+    const search = ref('search...' as string)
+    const image = ref(null as any)
+
+
+    function toggleNav () {showMenu.value = !showMenu.value}
+
+    function toggleModal() {showModal.value = !showModal.value}
+
     function showSugg(){
       if (this.search == '' || this.search == "search...")
         return false
@@ -145,6 +150,7 @@
       var result = store.state.users.find( x=> x.username === username)
       return result.id
     }
+
     onMounted(async  () => {
       await axios
           .get('http://localhost:3001/profile' ,{ withCredentials: true })
@@ -159,16 +165,30 @@
           .catch(err => console.log(err.message))
 
     })
-    const image = ref(null)
+
+    function saveChanges(){
+      if (nickname.value.length > 0)
+        changeNickname(nickname.value)
+      if (store.state.imageUrl.length > 0)
+        changeAvatar()
+    }
 
     async function changeNickname(newnickname: String){
         if (newnickname.length > 0 && newnickname.length <= 10){
             store.state.player.username = newnickname ;
             await axios
                 .patch('http://localhost:3001/settings/username' ,{username: newnickname} ,{ withCredentials: true })
-                .then(data =>{ store.state.users = data.data })
+                .then(data =>{ console.log(data.data) })
                 .catch(err => console.log(err.message))
         }
+    }
+
+    async function changeAvatar(){
+      store.state.player.avatar = store.state.imageUrl
+      await axios
+          .patch('http://localhost:3001/settings/avatar' ,{avatar: store.state.imageUrl} ,{ withCredentials: true })
+          .then(data =>{ console.log(data.data) })
+          .catch(err => console.log(err.message))
     }
 
     function onChange(e){
