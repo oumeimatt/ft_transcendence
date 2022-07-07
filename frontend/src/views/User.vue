@@ -28,21 +28,24 @@
                 </p>
               </div>
           </div>
-          <button @click="addFriend = true" v-if="!addFriend" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-slate-900 font-medium py-2 px-4 rounded inline-flex items-center'>
+          <button @click="addFriend" v-if="add == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-slate-900 font-medium py-2 px-4 rounded inline-flex items-center'>
               <svg id='icon' class='w-4 h-4 mr-1' fill='#FFF' stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="white"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
              <span id='text' class='text-white text-sm select-none'>Add friend</span>
           </button>
-          <button v-else id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
+          <button v-if="isFriend == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
             <span id='text' class='text-white text-sm select-none ml-2 '>Friends</span>
               <svg @click="frMenu = !frMenu" class="w-5 h-5 ml-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
           </button>
+          <button @click="unblockFriend" v-if="isBlocked" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
+            <span id='text' class='ml-2 mr-2 text-white text-sm select-none ml-2 '>Unblock</span>
+          </button>
             <div v-if="frMenu" class=" divide-y absolute bottom-16 right-3 divide-gray-100 rounded shadow w-36 bg-slate-800">
-              <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
-              <li @click="removeFriend" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove friend </li>
-              <li class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Block </li>
+              <ul class="py-1 text-sm text-gray-700 text-gray-200">
+              <li @click="removeFriend" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Remove friend </li>
+              <li @click="blockFriend" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Block </li>
               </ul>
             </div>
          <!-- {{ props.nickname }} -->
@@ -141,21 +144,31 @@ import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue'
 import Profile from './Profile.vue'
 const store = inject('store')
-const addFriend = ref(false)
+const add = ref(true)
+const isFriend = ref(false)
 const frMenu = ref(false)
-const removeFriend = () => (
-  addFriend.value = false,
-  frMenu.value = false)
+const isBlocked = ref(false)
+
 const props = defineProps({
   id: String
 })
 
+  onMounted ( () => {
+      var user = store.state.users.find( x=> x.id === props.id)
+
+      if (user != null)
+          add.value = false
+      else
+          add.value = true
+
+  })
 onUpdated(async  () => {
+
       await axios
           .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
           .then(data =>{ store.state.user = data.data.profile} ) 
           .catch(err => console.log(err.message))
-
+      
       // await fetch('http://localhost:3001/profile') 
 			//     .then(res => res.json())
 			//     .then(data => store.state.player = data)
@@ -165,6 +178,45 @@ onUpdated(async  () => {
 			//     .then(data => store.state.users = data)
 			//     .catch(err => console.log(err.message)) 
     })
+
+    function removeFriend (){
+        add.value = true,
+        isFriend.value = false
+        isBlocked.value = false
+        frMenu.value = false
+        axios.delete("http://localhost:3001/relation/unfollow/" + props.id ,{ withCredentials: true } )
+            .then(data => console.log(data.data))
+            .catch(error =>  console.error( error));
+    }
+    function addFriend () {
+        isFriend.value = true;
+        isBlocked.value = false
+        add.value = false
+        axios.post("http://localhost:3001/relation/add/" + props.id , {id: props.id} ,{ withCredentials: true } ) // or the line below 
+        // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
+            .then(data => console.log(data.data))
+            .catch(error =>  console.error( error));
+    }
+
+    function blockFriend () {
+        isBlocked.value = true
+        add.value = false
+        isFriend.value = false
+        frMenu.value = false
+        axios.post("http://localhost:3001/relation/block/" + props.id , {id: props.id} ,{ withCredentials: true } ) // or the line below 
+        // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
+            .then(data => console.log(data.data))
+            .catch(error =>  console.error( error));
+    }
+    function unblockFriend (){
+        add.value = true
+        isBlocked.value = false
+        isFriend.value = false
+        frMenu.value = false
+        axios.delete("http://localhost:3001/relation/unblock/" + props.id ,{ withCredentials: true } )
+            .then(data => console.log(data.data))
+            .catch(error =>  console.error( error));
+    }
 </script>
 
 <style>

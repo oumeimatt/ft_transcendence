@@ -17,6 +17,8 @@ interface Profile {
 const state = reactive<{player: Profile, users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean}, {user : Profile, users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean}> ({
     player :{id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     user : {id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
+    friends: [],
+    achievements: [],
     users: [],
     rooms: [],
     allRooms: [],

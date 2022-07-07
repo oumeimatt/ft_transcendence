@@ -48,7 +48,7 @@ export class UsersController {
 		@Req() req: Request,
 		@Param('id', ParseIntPipe) id: number,
 	){
-		console.log('here');
+		// console.log('here');
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 
 		const playerData = await this.usersService.getUserById(id);

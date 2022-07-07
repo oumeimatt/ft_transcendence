@@ -101,11 +101,11 @@
 	import {inject, ref, onMounted} from 'vue';
 	import io from "socket.io-client";
 	const store = inject('store')
-	store.state.connection = io('http://127.0.0.1:9999/chat')
-	store.state.connection.on("connect_error", (res) => {
-            console.log("failed");
-            console.log(res);
-        })
+	// store.state.connection = io('http://127.0.0.1:9999/chat')
+	// store.state.connection.on("connect_error", (res) => {
+    //         console.log("failed");
+    //         console.log(res);
+    //     })
 	//store.state.connection.on(connect_error, ()=>{})
 	const showCreate = ref(false)
 	const showAllRooms = ref(false)

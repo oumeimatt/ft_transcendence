@@ -38,7 +38,6 @@ let UsersController = class UsersController {
         return data;
     }
     async getFriendProfile(req, id) {
-        console.log('here');
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         const playerData = await this.usersService.getUserById(id);
         const friends = await this.relationService.getAllFriends(playerData);

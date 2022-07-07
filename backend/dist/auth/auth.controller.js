@@ -23,7 +23,6 @@ let AuthController = class AuthController {
         this.usersService = usersService;
     }
     async FortyTwoAuth(req, res) {
-        console.log("HERE");
         return this.authService.login(req, res);
     }
     async logout(req, res) {

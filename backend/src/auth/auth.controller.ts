@@ -19,7 +19,7 @@ export class AuthController {
 		@Req() req: Request,
 		@Res() res: Response
 	): Promise<any> {
-		console.log("HERE");
+		// console.log("HERE");
 		return this.authService.login(req, res);
 	}
 
