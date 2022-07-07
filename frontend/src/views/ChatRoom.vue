@@ -1,6 +1,6 @@
 <template>
     <Header /> 
-  <div v-if="store.state.logged" class="Container">
+  <div v-if="store.state.player.status == 'online'" class="Container">
     <div class="grid grid-cols-6 gap-px ">
       <chatnavbar/>
       <conversationRoom :name="name"/>

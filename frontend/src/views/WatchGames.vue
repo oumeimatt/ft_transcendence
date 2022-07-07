@@ -2,10 +2,14 @@
 
 	<Header /> 
 	<div v-if="store.state.player.status == 'online'" class="Container">
-	    <div class="grid grid-cols-6 gap-px  ">
-	    	<chatnavbar />
-	    	<conversation :name="name" />
-	    </div>
+        <div class="flex space-between-x-2">
+            <div class="mt-12 bg-white w-5/12 h-5/12" > 
+                <img src="../assets/bg.jpg" alt="">
+            </div>
+            <div class="mt-12  bg-white w-5/12 h-5/12" > 
+                <img src="../assets/bg.jpg" alt="">
+            </div>
+        </div>
 	</div>
 </template>
 
@@ -15,10 +19,8 @@
     import Footer from '../components/Footer.vue';
     import chatnavbar from '../components/chatnavbar.vue'
     import conversation from '../components/conversation.vue'
-    const props = defineProps({
-            name: String
-    })
     const store = inject('store')
-    const channelName = ref('')
+
+    const n = ref([4])
 
 </script>
