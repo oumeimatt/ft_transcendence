@@ -19,8 +19,8 @@ export class UsersController {
 
 	//- get logged user profile
 	@Get('/profile')
-	@Header('Access-Control-Allow-Origin', 'http://localhost:3000')
-	@Header('Access-Control-Allow-Credentials', 'true')
+	// @Header('Access-Control-Allow-Origin', 'http://localhost:3000')
+	// @Header('Access-Control-Allow-Credentials', 'true')
 	async getProfile(
 		@Req() req: Request,
 	) {

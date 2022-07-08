@@ -1,17 +1,17 @@
 <template>
 		<div class="Container h-screen bg-myblue col-span-2 md:col-span-2 lg:col-span-1  scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-screen  rounded-lg ">
 				<div class="pb-4">
-					<button class="mt-8 flex justify-start items-center space-x-2" >
-						<svg @click="createRoom" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 fill-slate-400" viewBox="0 0 20 20">
+					<button class="mt-8 flex justify-start items-center md:space-x-2" >
+						<svg @click="createRoom" xmlns="http://www.w3.org/2000/svg" class="md:h-8 md:w-8 h-4 w-4 fill-slate-400" viewBox="0 0 20 20">
 							<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
 						</svg> 
-						 <div @click="createRoom" class="text-slate-400 lg:text-xl md:text-base text-sm  font-bold hover:underline "> Create channel </div> 
+						 <div @click="createRoom" class="text-slate-400 lg:text-xl md:text-xl  text-sm  font-bold hover:underline "> Create channel </div> 
 					</button>
-					<button @click="showRooms" class="mt-8 flex justify-start items-center space-x-2" >
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 fill-slate-400" fill="none" viewBox="0 0 24 24"  stroke-width="1">
+					<button @click="showRooms" class="mt-8 flex justify-start items-center md:space-x-2" >
+						<svg xmlns="http://www.w3.org/2000/svg" class="md:h-8 md:w-8 h-4 w-4 fill-slate-400" fill="none" viewBox="0 0 24 24"  stroke-width="1">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
 						</svg>
-						<p class="text-slate-400 lg:text-xl md:text-base text-sm  font-bold hover:underline"> All channels </p>
+						<p class="text-slate-400 lg:text-xl md:text-xl text-sm  font-bold hover:underline"> All channels </p>
 					</button>
 					<div class="h-5/6 scrollbar mt-4 scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/5 ">
 						<!--<div v-if="showAllRooms" >
@@ -50,8 +50,8 @@
 				</div>
 				<div class="  mt-8  pb-8  ">
 					<h1 class="text-slate-300 font-semibold text-xl mb-6">Friends</h1>
-					<div v-if="store.state.player.senders" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
-						<div v-for="friend in store.state.player.senders" :key="friend">
+					<div v-if="store.state.friends" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
+						<div v-for="friend in store.state.friends" :key="friend">
 							<div v-if="store.methods.usersInfo(friend)" class="flex justify-start items-center space-x-2 mt-2"> 
 									<img  :src="store.methods.usersInfo(friend).avatar" class="lg:ml-8 h-8 w-8 rounded-full">  <router-link :to="{name:'Chat', params: {name: store.methods.usersInfo(friend).username}}" class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 "> {{ store.methods.usersInfo(friend).username }} </router-link> 
 							</div>

@@ -68,8 +68,6 @@ let UsersController = class UsersController {
 };
 __decorate([
     (0, common_1.Get)('/profile'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

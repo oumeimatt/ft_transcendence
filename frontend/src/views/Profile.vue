@@ -9,8 +9,8 @@
 			 	</div>
 			</div> 
 			<div class="flex  my-0 mx-auto  md:w-3/5 lg:w-3/5 bg-slate-500 h-6 mb-6 relative">
-				<div class="bg-slate-700 h-6 " style="width: 25%"> </div>
-				<p class="inline-block z-10 absolute left-2/4 -translate-x-2/4 text-slate-400" > level 0 - 25%  </p>
+				<div class="bg-slate-700 h-6 " style="width: 0"> </div>
+				<p class="inline-block z-10 absolute left-2/4 -translate-x-2/4 text-slate-400" > {{ store.state.player.level}} %  </p>
 			</div>
 			<div class="cent pt-8 ">
 				<div class="grid md:grid-cols-1 lg:grid-cols-1 gap-1 lg-gap-1  text-center   mt-8" >
@@ -25,8 +25,8 @@
 					<div class="p-4 bg-slate-500 rounded-md " > 
 						<p class="text-2xl font-semibold pb-4 border-b border-neutral-800"> Achievements </p>
 							<!-- acheivement -->
-						<!-- <div v-if="store.state.profile.achievements"> 
-                            <div v-for="achievement in store.state.profile.achievements" :key="achievement">
+						<div v-if="store.state.achievements"> 
+                            <div v-for="achievement in store.state.achievements" :key="achievement">
 							    <div v-if="achievement=='first'" class="grid grid-cols-8 justify-items-start bg-slate-500 pt-4">
                     				<div class="place-self-start" > <img src="../assets/medal.png" class="w-10 h-10"></div>
                     				<div class="col-span-7 pr-10"> <span class="text-xl  font-semibold text-slate-900"> First game </span>     <span class="text-s font-semibold text-neutral-900" > Congratulations ! You won your first Game! </span> </div>
@@ -44,7 +44,7 @@
 							    	<div class="col-span-7"> <span class="text-xl  font-semibold text-slate-900"> Gold medal </span >  <span class="text-s font-semibold text-neutral-900" > Congratulations ! You won 20 GAMES! </span> </div>
 							    </div>
                             </div>
-						</div> -->
+						</div>
 							<!--  -->
 					</div>
 					<div class="p-4 bg-slate-500 rounded-md " > 
