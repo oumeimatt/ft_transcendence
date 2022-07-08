@@ -15,7 +15,11 @@ async function bootstrap() {
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api', app, document);
     app.use(cookieParser());
-    app.enableCors({ origin: ["http://localhost:3000/", "https://api.intra.42.fr/"], credentials: true });
+    app.enableCors({
+        origin: ["http://localhost:3000/", "https://api.intra.42.fr/"],
+        methods: ['GET', 'POST', 'DELETE', 'OPTIONS', 'HEAD'],
+        credentials: true
+    });
     await app.listen(3001);
 }
 bootstrap();

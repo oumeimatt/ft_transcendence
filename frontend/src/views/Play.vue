@@ -30,10 +30,11 @@ let playground = ref(null as PlaygroundInterface);
 
 onMounted(() => {
     if (props.difficulty) {
-        socket.value = io('http://' + /* window.location.hostname */ 'localhost' + ':5000/' + props.difficulty, {
+       socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
         query: {
-            'role': 'player'
-        },
+                'role': 'player',
+                'username': store.state.player.username,
+            },
         });
 
         context.value = game.value.getContext("2d");
@@ -49,6 +50,9 @@ onMounted(() => {
 
         // Draw playground/ ball/ paddles / score in every update
         DrawGameEachUpdate();
+
+        // User Already in Another Game
+        ConnectedTwice();
 
         // render
         window.addEventListener('resize', () => {
@@ -129,20 +133,25 @@ onMounted(() => {
     }
 });
 
+function ConnectedTwice() {
+    (socket.value as Socket).on('alreadyInGame', (data) => {
+        window.location.href = '/';
+    });
+}
+
 function DrawGameStarted() {
     (socket.value as Socket).on('GameStarted', (data) => {
-    console.log("Game Started");
-    playground.value = data.playground;
-    if (playground.value != null) {
-            game.value.width = game.value.offsetWidth;
-            game.value.height = game.value.width * 0.6;
-            Draw.clearContext(
-            context.value,
-            game.value.width,
-            game.value.height
-        );
-        message.value = 'Room: ' + data.room + ' Players: [' + data.player1 + ', ' + data.player2 + ']';
-    }
+        playground.value = data.playground;
+        if (playground.value != null) {
+                game.value.width = game.value.offsetWidth;
+                game.value.height = game.value.width * 0.6;
+                Draw.clearContext(
+                context.value,
+                game.value.width,
+                game.value.height
+            );
+            message.value = 'Room: ' + data.room + ' Players: [' + data.player1 + ', ' + data.player2 + ']';
+        }
     });
 }
 

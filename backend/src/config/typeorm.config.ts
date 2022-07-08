@@ -1,11 +1,12 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { Room } from "src/pong-game/typeorm/room.entity";
 import { Player } from "../players/player.entity";
 import { Relation } from "../relations/relation.entity";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
     // host: '127.0.0.1',
-    host: '192.168.99.114',
+    host: '192.168.99.115',
     port: 5432,
     username: 'ping',
     password: 'pong',
@@ -13,7 +14,8 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     // entities: [__dirname + '/../**/*.entity.ts'],
     entities: [
         Player,
-        Relation
+        Relation,
+        Room
     ],
     synchronize: true,
     logging: false,

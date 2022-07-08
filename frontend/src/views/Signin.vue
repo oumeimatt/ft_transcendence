@@ -16,16 +16,16 @@
 
 <script lang="ts" setup>
     import { inject } from 'vue';
-    import axios from 'axios';
+    // import axios from 'axios';
     import { useRoute} from 'vue-router';
     const store = inject('store')
-    async function islogged(){
-      console.log("in")
-      await axios
-          .get('http://10.12.2.2:3001/auth/login' ,{ headers: { 'Access-Control-Allow-Origin': '*'}})
-          .then(response => console.log(response.data))
-          .catch(error => console.log(error));
-    }
+    // async function islogged(){
+    //   console.log("in")
+    //   await axios
+    //       .get('http://10.12.2.2:3001/auth/login' ,{ headers: { 'Access-Control-Allow-Origin': '*'}})
+    //       .then(response => console.log(response.data))
+    //       .catch(error => console.log(error));
+    // }
 
 </script>
 
