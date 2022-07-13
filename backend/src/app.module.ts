@@ -5,6 +5,7 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './players/players.module';
 import { RelationModule } from './relations/relations.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RelationModule } from './relations/relations.module';
     AuthModule,
     PlayerModule,
     RelationModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [],

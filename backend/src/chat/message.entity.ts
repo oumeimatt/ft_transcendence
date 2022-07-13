@@ -1,7 +1,7 @@
 
 import { Player } from "src/players/player.entity";
 import { BaseEntity, Column, Entity,OneToMany, PrimaryGeneratedColumn, ManyToOne,JoinColumn, CreateDateColumn, UpdateDateColumn,  JoinTable} from "typeorm";
-import { room } from "../room.entity";
+import { chatroom } from "./room.entity";
 
 @Entity()
 export class message extends BaseEntity{
@@ -20,9 +20,9 @@ export class message extends BaseEntity{
     @Column({ name: 'roomid' })
     roomid: number;
 
-    @ManyToOne(()=> room, room=> room.messages)
+    @ManyToOne(()=> chatroom, room=> room.messages)
     @JoinColumn({name:"roomid"})
-    room:room;
+    room:chatroom;
 
     @ManyToOne(()=> Player, player=>player.messages)
     @JoinColumn({name:"playerid"})

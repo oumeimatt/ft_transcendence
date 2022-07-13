@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.message = void 0;
 const player_entity_1 = require("../../players/player.entity");
@@ -38,7 +39,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.ManyToOne)(() => room_entity_1.room, room => room.messages),
     (0, typeorm_1.JoinColumn)({ name: "roomid" }),
-    __metadata("design:type", room_entity_1.room)
+    __metadata("design:type", typeof (_a = typeof room_entity_1.room !== "undefined" && room_entity_1.room) === "function" ? _a : Object)
 ], message.prototype, "room", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => player_entity_1.Player, player => player.messages),

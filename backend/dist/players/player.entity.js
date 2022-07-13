@@ -14,7 +14,7 @@ const typeorm_1 = require("typeorm");
 const player_status_enum_1 = require("./player_status.enum");
 const relation_entity_1 = require("../relations/relation.entity");
 const membership_entity_1 = require("../chat/membership.entity");
-const message_entity_1 = require("../chat/gateway/message.entity");
+const message_entity_1 = require("../chat/message.entity");
 let Player = class Player extends typeorm_1.BaseEntity {
 };
 __decorate([

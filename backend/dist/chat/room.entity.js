@@ -9,50 +9,50 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.room = void 0;
+exports.chatroom = void 0;
 const typeorm_1 = require("typeorm");
-const message_entity_1 = require("./gateway/message.entity");
+const message_entity_1 = require("./message.entity");
 const membership_entity_1 = require("./membership.entity");
-let room = class room extends typeorm_1.BaseEntity {
+let chatroom = class chatroom extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], room.prototype, "id", void 0);
+], chatroom.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
-], room.prototype, "name", void 0);
+], chatroom.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
-], room.prototype, "ischannel", void 0);
+], chatroom.prototype, "ischannel", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
-], room.prototype, "ispublic", void 0);
+], chatroom.prototype, "ispublic", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], room.prototype, "password", void 0);
+], chatroom.prototype, "password", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => membership_entity_1.membership, membership => membership.room),
     __metadata("design:type", Array)
-], room.prototype, "memberships", void 0);
+], chatroom.prototype, "memberships", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => message_entity_1.message, message => message.room),
     __metadata("design:type", Array)
-], room.prototype, "messages", void 0);
+], chatroom.prototype, "messages", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], room.prototype, "create_at", void 0);
+], chatroom.prototype, "create_at", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], room.prototype, "updated_at", void 0);
-room = __decorate([
+], chatroom.prototype, "updated_at", void 0);
+chatroom = __decorate([
     (0, typeorm_1.Entity)()
-], room);
-exports.room = room;
+], chatroom);
+exports.chatroom = chatroom;
 //# sourceMappingURL=room.entity.js.map

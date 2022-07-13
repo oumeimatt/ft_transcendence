@@ -1,10 +1,10 @@
 
 import { BaseEntity, Column, Entity,OneToMany, PrimaryGeneratedColumn, ManyToMany, CreateDateColumn, UpdateDateColumn,  JoinTable} from "typeorm";
-import { message } from "./gateway/message.entity";
+import { message } from "./message.entity";
 import { membership } from "./membership.entity";
 
 @Entity()
-export class room extends BaseEntity{
+export class chatroom extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id:number;
