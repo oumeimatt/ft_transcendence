@@ -154,9 +154,11 @@
     onMounted(async  () => {
       await axios
           .get('http://localhost:3001/profile' ,{ withCredentials: true })
-          .then(data =>{ store.state.player = data.data.profile;
-          store.state.friends = data.data.friends;
-          store.state.achievements = data.data.achievements
+          .then(data =>{
+            localStorage.setItem('user', data.data.cookie);
+            store.state.player = data.data.profile;
+            store.state.friends = data.data.friends;
+            store.state.achievements = data.data.achievements
           } ) 
           .catch(err => console.log(err.message))
       await axios

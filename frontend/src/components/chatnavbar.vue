@@ -103,7 +103,12 @@
 	const store = inject('store')
 
 	//! called first time the chat is accessed
-	store.state.connection = io('http://127.0.0.1:3001/chat');//, {withCredentials:true});
+	store.state.connection = io('http://127.0.0.1:3001/chat',
+	{
+		query:{
+			'token':localStorage.getItem('user'),
+		}
+	});//, {withCredentials:true});
 
 	const showCreate = ref(false)
 	const showAllRooms = ref(false)

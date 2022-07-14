@@ -36,6 +36,7 @@ export class UsersController {
 			"friends": friends,
 			"achievements": achievements,
 			// "matchHistory": matchHistory,
+			"cookie":req.cookies.connect_sid,
 		};
 		return data;
 	}

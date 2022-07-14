@@ -13,6 +13,7 @@ export declare class UsersController {
         profile: import("./player.entity").Player;
         friends: import("./player.entity").Player[];
         achievements: any;
+        cookie: any;
     }>;
     getFriendProfile(req: Request, id: number): Promise<{
         profile: import("./player.entity").Player;

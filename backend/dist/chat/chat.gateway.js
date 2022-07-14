@@ -32,7 +32,9 @@ let ChatGateway = class ChatGateway {
     }
     async handleConnection(client) {
         console.log('Handle connection is called !');
+        console.log(client.handshake.query.token);
         try {
+            this.decoded = client.handshake.query.token;
             this.decoded = await this.userService.verifyToken(this.decoded);
             this.player = await this.userService.getUserById(this.decoded.id);
             if (!this.player) {
