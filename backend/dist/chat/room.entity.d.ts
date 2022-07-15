@@ -1,7 +1,7 @@
 import { BaseEntity } from "typeorm";
-import { message } from "./gateway/message.entity";
+import { message } from "./message.entity";
 import { membership } from "./membership.entity";
-export declare class room extends BaseEntity {
+export declare class chatroom extends BaseEntity {
     id: number;
     name: string;
     ischannel: boolean;

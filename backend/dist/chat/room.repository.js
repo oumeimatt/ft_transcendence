@@ -14,7 +14,7 @@ const membership_model_1 = require("./dto/membership.model");
 let roomRepository = class roomRepository extends typeorm_1.Repository {
     async createRoom(RoomDto, creators) {
         const { name, password } = RoomDto;
-        const Room = new room_entity_1.room();
+        const Room = new room_entity_1.chatroom();
         Room.name = name;
         Room.ischannel = true;
         if (password)
@@ -48,7 +48,7 @@ let roomRepository = class roomRepository extends typeorm_1.Repository {
     }
 };
 roomRepository = __decorate([
-    (0, typeorm_1.EntityRepository)(room_entity_1.room)
+    (0, typeorm_1.EntityRepository)(room_entity_1.chatroom)
 ], roomRepository);
 exports.roomRepository = roomRepository;
 //# sourceMappingURL=room.repository.js.map

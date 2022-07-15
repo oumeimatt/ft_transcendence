@@ -7,16 +7,16 @@ import { AuthService } from 'src/auth/auth.service';
 import { Player } from 'src/players/player.entity';
 
 import { UsersService } from 'src/players/players.service';
-import { ChatService } from '../chat.service';
-import { membershipDto } from '../dto/membership-dto';
-import { RoleStatus } from '../dto/membership.model';
-import { messageDto } from '../dto/message-dto';
-import { RoomDto } from '../dto/room-dto';
-import { room } from '../room.entity';
+import { ChatService } from './chat.service';
+import { membershipDto } from './dto/membership-dto';
+import { RoleStatus } from './dto/membership.model';
+import { messageDto } from './dto/message-dto';
+import { RoomDto } from './dto/room-dto';
+import { chatroom } from './room.entity';
 
 
 //enable the client to communicate with the server
-@WebSocketGateway(9999, {namespace:'chat', cors: true}) //'https://hoppscotch.io', 
+@WebSocketGateway({namespace:'/chat', cors: true})  //'https://hoppscotch.io', 
 export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
 
   // create a server instance from the WebSocketServer decorators.
@@ -39,9 +39,13 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   //when a client joins the connection
     async handleConnection(client:Socket) {
+      console.log('Handle connection is called !');
+      //for now the client is not reconized (send access token as a query)
+      console.log(client.handshake.query.token);
     try
     {
-    //  this.decoded = client.handshake.headers.authorization.split(" ")[1];
+    // this.decoded = client.handshake.headers.authorization.split(" ")[1];
+    this.decoded = client.handshake.query.token;
       this.decoded = await this.userService.verifyToken(this.decoded);
       this.player = await this.userService.getUserById(this.decoded.id);
  

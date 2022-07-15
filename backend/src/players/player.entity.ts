@@ -4,7 +4,7 @@ import { UserStatus } from "./player_status.enum";
 import { Relation } from "../relations/relation.entity";
 import { Exclude } from "class-transformer";
 import { membership } from "src/chat/membership.entity";
-import { message } from "src/chat/gateway/message.entity";
+import { message } from "src/chat/message.entity";
 
 @Entity('player')
 @Unique(['username'])

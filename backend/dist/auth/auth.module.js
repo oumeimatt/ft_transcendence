@@ -36,6 +36,7 @@ AuthModule = __decorate([
             auth_service_1.AuthService,
             players_service_1.UsersService,
         ],
+        exports: [auth_service_1.AuthService, players_service_1.UsersService]
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

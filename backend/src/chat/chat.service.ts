@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { roomRepository } from './room.repository';
 import { RoomDto } from './dto/room-dto';
-import { room } from './room.entity';
+import { chatroom } from './room.entity';
 import { membership } from './membership.entity';
 import { Repository } from 'typeorm';
 import { RoleStatus } from './dto/membership.model';
-import {  message } from './gateway/message.entity';
+import {  message } from './message.entity';
 import { messageDto } from './dto/message-dto';
 import { AuthService } from 'src/auth/auth.service';
 import { In } from 'typeorm';
@@ -36,11 +36,11 @@ export class ChatService {
     ){
 
     }
-    async createRoom(RoomDto:RoomDto, creators :Player[]):Promise<room>{
+    async createRoom(RoomDto:RoomDto, creators :Player[]):Promise<chatroom>{
         return await this.roomRepo.createRoom(RoomDto, creators);
     }
 
-    async getRoomById(id:number):Promise<room>{
+    async getRoomById(id:number):Promise<chatroom>{
         return await this.roomRepo.getRoomById(id);
     }
    
@@ -58,7 +58,7 @@ export class ChatService {
         return members;
     }
 
-    async getRoomsForUser(Playerid:number):Promise<room[]>{
+    async getRoomsForUser(Playerid:number):Promise<chatroom[]>{
         
        //! select * from room INNER JOIN membership ON (membership.Playerid=36 and room.id=membership.roomid);
         // const rooms = await this.roomRepo.createQueryBuilder('room')
@@ -82,7 +82,7 @@ export class ChatService {
     }
 
     
-    async addMember(room:room, creator:Player, role:RoleStatus):Promise<void>{
+    async addMember(room:chatroom, creator:Player, role:RoleStatus):Promise<void>{
         return await this.roomRepo.addMember(room, creator, role);
     }
 

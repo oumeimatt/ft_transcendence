@@ -6,8 +6,8 @@ import { Player } from 'src/players/player.entity';
 
 import { ChatService } from './chat.service';
 import { RoomDto } from './dto/room-dto';
-import { message } from './gateway/message.entity';
-import { room } from './room.entity';
+import { message } from './message.entity';
+import { chatroom } from './room.entity';
 
 
 @Controller('chat')
@@ -26,7 +26,7 @@ export class ChatController {
     @Get('rooms')
     @Header('Access-Control-Allow-Origin', 'http://localhost:3000')
     @Header('Access-Control-Allow-Credentials', 'true')
-    getRoomsByUserId(@Query('playerid') playerid:number):Promise<room[]>{
+    getRoomsByUserId(@Query('playerid') playerid:number):Promise<chatroom[]>{
         return this.chatService.getRoomsForUser(playerid);
     }
 

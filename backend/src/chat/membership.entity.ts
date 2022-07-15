@@ -2,7 +2,7 @@
 import { Player } from "src/players/player.entity";
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn,ManyToOne, ManyToMany, CreateDateColumn, UpdateDateColumn,  JoinTable, JoinColumn} from "typeorm";
 import { RoleStatus } from "./dto/membership.model";
-import { room } from "./room.entity";
+import { chatroom } from "./room.entity";
 
 @Entity()
 export class membership extends BaseEntity{
@@ -23,7 +23,7 @@ export class membership extends BaseEntity{
     @Column({ name: 'roomid' })
     roomid: number;
     
-    @ManyToOne(()=> room, room=>room.memberships)
+    @ManyToOne(()=> chatroom, room=>room.memberships)
     @JoinColumn({ name:"roomid"})
-    room:room;
+    room:chatroom;
 }

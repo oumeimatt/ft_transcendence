@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { ChatGateway } from './gateway/chat.gateway';
+import { ChatGateway } from './chat.gateway';
 import { roomRepository } from './room.repository';
 import { ChatService } from './chat.service';
 import { AuthModule } from 'src/auth/auth.module';
@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { ChatController } from './chat.controller';
 import { membership } from './membership.entity';
-import { message } from './gateway/message.entity';
+import { message } from './message.entity';
 import { PlayerRepository } from 'src/players/player.repository';
 
 

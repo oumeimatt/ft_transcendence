@@ -1,4 +1,4 @@
-import { room } from "./room.entity";
+import { chatroom } from "./room.entity";
 import { EntityRepository, Repository } from "typeorm";
 import { RoomDto } from "./dto/room-dto";
 
@@ -7,13 +7,13 @@ import { membership } from "./membership.entity";
 import { RoleStatus } from "./dto/membership.model";
 import { Player } from "src/players/player.entity";
 
-@EntityRepository(room)
-export class roomRepository extends Repository<room>{
+@EntityRepository(chatroom)
+export class roomRepository extends Repository<chatroom>{
 
-    async createRoom(RoomDto:RoomDto, creators : Player[]):Promise<room>{
+    async createRoom(RoomDto:RoomDto, creators : Player[]):Promise<chatroom>{
         const {name,password} = RoomDto;
 
-        const Room = new room();
+        const Room = new chatroom();
         Room.name = name;
         Room.ischannel = true;
         if (password)
@@ -35,7 +35,7 @@ export class roomRepository extends Repository<room>{
         return Room;
     }
 
-    async addMember(room:room,creator :Player, role:RoleStatus):Promise<void>{
+    async addMember(room:chatroom,creator :Player, role:RoleStatus):Promise<void>{
         const Membership = new membership();
         Membership.role =role;
         Membership.Player = creator;
@@ -43,7 +43,7 @@ export class roomRepository extends Repository<room>{
         await Membership.save();
     }
  
-    async getRoomById(id:number):Promise<room>{
+    async getRoomById(id:number):Promise<chatroom>{
         const room = await this.findOne({id});
         return room;
     }

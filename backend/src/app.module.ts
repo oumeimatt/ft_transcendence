@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './players/players.module';
 import { RelationModule } from './relations/relations.module';
 import { PongGameModule } from './pong-game/pong-game.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { PongGameModule } from './pong-game/pong-game.module';
     AuthModule,
     PlayerModule,
     RelationModule,
-    PongGameModule
+    PongGameModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [],

@@ -9,41 +9,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.membership = void 0;
+exports.message = void 0;
 const player_entity_1 = require("../players/player.entity");
 const typeorm_1 = require("typeorm");
-const membership_model_1 = require("./dto/membership.model");
 const room_entity_1 = require("./room.entity");
-let membership = class membership extends typeorm_1.BaseEntity {
+let message = class message extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], membership.prototype, "id_membership", void 0);
+], message.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], membership.prototype, "role", void 0);
+], message.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], message.prototype, "created_at", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'playerid' }),
     __metadata("design:type", Number)
-], membership.prototype, "playerid", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => player_entity_1.Player, Player => Player.memberships),
-    (0, typeorm_1.JoinColumn)({ name: "playerid" }),
-    __metadata("design:type", player_entity_1.Player)
-], membership.prototype, "Player", void 0);
+], message.prototype, "playerid", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'roomid' }),
     __metadata("design:type", Number)
-], membership.prototype, "roomid", void 0);
+], message.prototype, "roomid", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => room_entity_1.chatroom, room => room.memberships),
+    (0, typeorm_1.ManyToOne)(() => room_entity_1.chatroom, room => room.messages),
     (0, typeorm_1.JoinColumn)({ name: "roomid" }),
     __metadata("design:type", room_entity_1.chatroom)
-], membership.prototype, "room", void 0);
-membership = __decorate([
+], message.prototype, "room", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => player_entity_1.Player, player => player.messages),
+    (0, typeorm_1.JoinColumn)({ name: "playerid" }),
+    __metadata("design:type", player_entity_1.Player)
+], message.prototype, "Player", void 0);
+message = __decorate([
     (0, typeorm_1.Entity)()
-], membership);
-exports.membership = membership;
-//# sourceMappingURL=membership.entity.js.map
+], message);
+exports.message = message;
+//# sourceMappingURL=message.entity.js.map

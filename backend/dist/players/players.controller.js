@@ -34,6 +34,7 @@ let UsersController = class UsersController {
             "profile": playerData,
             "friends": friends,
             "achievements": achievements,
+            "cookie": req.cookies.connect_sid,
         };
         return data;
     }

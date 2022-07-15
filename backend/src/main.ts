@@ -18,6 +18,11 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.enableCors({origin: "http://localhost:3000", credentials: true}); // edited
+//   app.enableCors({
+//     origin: ["http://localhost:3000/", "https://api.intra.42.fr/"],
+//     methods: ['GET', 'POST', 'DELETE', 'OPTIONS', 'HEAD'],
+//     credentials: true
+//   });
   await app.listen(3001);
 }
 bootstrap();

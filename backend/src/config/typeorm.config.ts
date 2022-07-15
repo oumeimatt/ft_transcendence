@@ -1,7 +1,7 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { message } from "src/chat/gateway/message.entity";
+import { message } from "src/chat/message.entity";
 import { membership } from "src/chat/membership.entity";
-import { room } from "src/chat/room.entity";
+import { chatroom } from "src/chat/room.entity";
 import { Player } from "../players/player.entity";
 import { Relation } from "../relations/relation.entity";
 
@@ -16,7 +16,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     entities: [
         Player,
         Relation,
-        room,
+        chatroom,
         membership,
         message,
     ],
