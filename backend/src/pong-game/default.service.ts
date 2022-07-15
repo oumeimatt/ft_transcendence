@@ -49,9 +49,10 @@ export class DefaultService {
       });
     }
     else {
-      players.push(client);
-      // if no one is waiting, keep him waiting
-      if (players.length === 1) {
+      const first = players.find(player => player.handshake.query.against === client.handshake.query.username);
+      if (!first) {
+        // if he inters first keep him waiting
+        players.push(client);
         client.data.side = 'left';
         client.data.role = 'player';
         client.emit('WaitingForPlayer', {
@@ -59,12 +60,12 @@ export class DefaultService {
           message: 'Waiting For Second Player',
           playground: this.emptyPlayground.getPlayGroundInterface(),
         });
-      } else {
+      }
+      else {
         // if another player is waiting  Start the game
         client.data.side = 'right';
         client.data.role = 'player';
-        const second = players.pop();
-        const first = players.pop();
+        const second = client;
         const roomname = first.id + '+' + second.id;
         // join players to room
         first.join(roomname);
