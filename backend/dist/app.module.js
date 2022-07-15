@@ -14,6 +14,7 @@ const typeorm_config_1 = require("./config/typeorm.config");
 const auth_module_1 = require("./auth/auth.module");
 const players_module_1 = require("./players/players.module");
 const relations_module_1 = require("./relations/relations.module");
+const pong_game_module_1 = require("./pong-game/pong-game.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -24,6 +25,7 @@ AppModule = __decorate([
             auth_module_1.AuthModule,
             players_module_1.PlayerModule,
             relations_module_1.RelationModule,
+            pong_game_module_1.PongGameModule
         ],
         controllers: [],
         providers: [],
