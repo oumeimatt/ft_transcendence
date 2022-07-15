@@ -57,7 +57,7 @@ let DifficultService = class DifficultService {
                 client.data.side = 'left';
                 client.data.role = 'player';
                 client.emit('WaitingForPlayer', {
-                    player: client.id,
+                    player: client.handshake.query.username,
                     message: 'Waiting For Second Player',
                     playground: this.emptyPlayground.getPlayGroundInterface(),
                 });

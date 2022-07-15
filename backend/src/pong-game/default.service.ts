@@ -22,7 +22,7 @@ export class DefaultService {
     }
   }
 
-  // function handles when player is connected to the default gateway
+  // function handles when Spectator is connected to the default gateway
   async handleSpectatorConnected(client: Socket): Promise<void> {
     const { rooms } = await this.pongGameService.getRooms();
     const roomname = client.handshake.query.roomname;

@@ -1,15 +1,15 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { PlayGroundInterface } from './interfaces';
 import { PongGameService } from './pong-game.service';
 import { PlayGround } from './utils';
 
 @Injectable()
-export class DifficultService {
-  readonly logger = new Logger('Difficult PongGame Service: ');
-  readonly emptyPlayground = new PlayGround(0, 0, 800, 600, 'green', 9, true);
+export class OneVOneService {
+    readonly logger = new Logger('OneVOne PongGame Service: ');
+  readonly emptyPlayground = new PlayGround(0, 0, 800, 600, 'black', 9, false);
   constructor(private pongGameService: PongGameService) {}
-
+  
   handleGetBackGround(playground: PlayGround): PlayGroundInterface {
     return playground.getPlayGroundInterface();
   }
@@ -23,7 +23,7 @@ export class DifficultService {
     }
   }
 
-  // function handles when Spectator is connected to the difficult gateway
+  // function handles when Spectator is connected to the default gateway
   async handleSpectatorConnected(client: Socket): Promise<void> {
     const { rooms } = await this.pongGameService.getRooms();
     const roomname = client.handshake.query.roomname;
@@ -40,12 +40,8 @@ export class DifficultService {
     }
   }
 
-  // function handles when player is connected to the difficult gateway
-  async handlePlayerConnected(
-    client: Socket,
-    players: Socket[],
-    wss: Server,
-  ): Promise<void> {
+  // function handles when player is connected to the default gateway
+  async handlePlayerConnected(client: Socket, players: Socket[], wss: Server) {
     const found = players.find(player => player.handshake.query.username === client.handshake.query.username);
     if (found) {
       client.emit('alreadyInGame', {
@@ -77,9 +73,9 @@ export class DifficultService {
         first.data.roomname = roomname;
         second.data.roomname = roomname;
         // push room to database
-        await this.pongGameService.addRoom({ roomname, difficulty: 'difficult' });
+        this.pongGameService.addRoom({ roomname, difficulty: 'default' });
         // create a playground for players
-        const playground = new PlayGround(0, 0, 800, 600, 'green', 9, true);
+        const playground = new PlayGround(0, 0, 800, 600, 'black', 9, false);
         first.data.playground = playground;
         second.data.playground = playground;
         const timer = setInterval(() => {
@@ -118,9 +114,10 @@ export class DifficultService {
       });
       // client left room
       client.leave(client.data.roomname);
+      // delete room from database
       this.pongGameService.deleteRoom(client.data.roomname);
-      this.logger.log('Game Interval Cleared');
       clearInterval(client.data.gameInterval);
+      this.logger.log('Game Interval Cleared');
     } else if (client.handshake.query.role === 'spectator') {
       client.leave(client.handshake.query.room as string);
     }

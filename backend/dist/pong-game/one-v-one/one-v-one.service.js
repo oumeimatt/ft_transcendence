@@ -6,12 +6,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OneVOneGateway = void 0;
-const websockets_1 = require("@nestjs/websockets");
-let OneVOneGateway = class OneVOneGateway {
+exports.OneVOneService = void 0;
+const common_1 = require("@nestjs/common");
+let OneVOneService = class OneVOneService {
 };
-OneVOneGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)()
-], OneVOneGateway);
-exports.OneVOneGateway = OneVOneGateway;
-//# sourceMappingURL=one-v-one.gateway.js.map
+OneVOneService = __decorate([
+    (0, common_1.Injectable)()
+], OneVOneService);
+exports.OneVOneService = OneVOneService;
+//# sourceMappingURL=one-v-one.service.js.map

@@ -1,4 +1,4 @@
-import { Logger, Req } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,

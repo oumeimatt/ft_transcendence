@@ -16,6 +16,7 @@ const difficult_service_1 = require("./difficult.service");
 const pong_game_controller_1 = require("./pong-game.controller");
 const pong_game_service_1 = require("./pong-game.service");
 const room_entity_1 = require("./typeorm/room.entity");
+const one_v_one_service_1 = require("./one-v-one.service");
 let PongGameModule = class PongGameModule {
 };
 PongGameModule = __decorate([
@@ -28,6 +29,7 @@ PongGameModule = __decorate([
             difficult_gateway_1.DifficultGateway,
             default_service_1.DefaultService,
             difficult_service_1.DifficultService,
+            one_v_one_service_1.OneVOneService,
         ],
     })
 ], PongGameModule);

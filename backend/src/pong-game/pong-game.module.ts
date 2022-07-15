@@ -7,6 +7,7 @@ import { DifficultService } from './difficult.service';
 import { PongGameController } from './pong-game.controller';
 import { PongGameService } from './pong-game.service';
 import { Room } from './typeorm/room.entity';
+import { OneVOneService } from './one-v-one.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Room])],
@@ -17,6 +18,7 @@ import { Room } from './typeorm/room.entity';
     DifficultGateway,
     DefaultService,
     DifficultService,
+    OneVOneService,
   ],
 })
 export class PongGameModule {}
