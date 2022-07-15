@@ -7,7 +7,8 @@ import User from '../views/User.vue'
 import ChatRoom from '../views/ChatRoom.vue'
 import Signin from '../views/Signin.vue'
 import EmptyChat from '../views/EmptyChat.vue'
-import Play from '../views/Play.vue';
+import Play from '../views/Play.vue'
+import WatchGames from '../views/WatchGames.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,7 +22,6 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
     alias: '/home'
   },
-
   {
     path: '/chat/:name',
     name: 'Chat',
@@ -38,6 +38,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Play',
     component: Play,
     props: true
+  },
+  {
+    path: '/watchgames',
+    name: 'WatchGames',
+    component: WatchGames
   },
   {
     path: '/chat',
