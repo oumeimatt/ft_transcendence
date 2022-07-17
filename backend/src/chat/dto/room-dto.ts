@@ -9,6 +9,7 @@ export class RoomDto{
     
     // isChannel:boolean;
     // isPublic:boolean;
+    privacy:string;
     password:string;
 
     players:any[];

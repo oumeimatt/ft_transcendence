@@ -13,7 +13,7 @@ import { In } from 'typeorm';
 import { PlayerRepository } from 'src/players/player.repository';
 import { UsersService } from 'src/players/players.service';
 import { Player } from 'src/players/player.entity';
-import { Room } from 'src/pong-game/typeorm/room.entity';
+
 @Injectable()
 export class ChatService {
     constructor(
@@ -146,6 +146,12 @@ export class ChatService {
         return role;
     }
 
-    //joinChannel
+    async createMembership(playerid:number, roomid:number){
+        const Membership = new membership();
+        Membership.playerid = playerid;
+        Membership.roomid = roomid;
+        Membership.role =   RoleStatus.USER;
+        await Membership.save();
+    }
 
 }

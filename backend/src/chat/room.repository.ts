@@ -11,12 +11,12 @@ import { Player } from "src/players/player.entity";
 export class roomRepository extends Repository<chatroom>{
 
     async createRoom(RoomDto:RoomDto, creators : Player[]):Promise<chatroom>{
-        const {name,password} = RoomDto;
+        const {name,privacy,password} = RoomDto;
 
         const Room = new chatroom();
         Room.name = name;
         Room.ischannel = true;
-        if (password)
+        if (privacy === 'private')
             Room.ispublic = false;
         Room.password = password;
         await Room.save();
