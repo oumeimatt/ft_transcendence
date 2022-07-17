@@ -52,8 +52,9 @@ let DefaultService = class DefaultService {
             });
         }
         else {
-            players.push(client);
-            if (players.length === 1) {
+            const first = players.find(player => player.handshake.query.against === client.handshake.query.username);
+            if (!first) {
+                players.push(client);
                 client.data.side = 'left';
                 client.data.role = 'player';
                 client.emit('WaitingForPlayer', {
@@ -65,8 +66,7 @@ let DefaultService = class DefaultService {
             else {
                 client.data.side = 'right';
                 client.data.role = 'player';
-                const second = players.pop();
-                const first = players.pop();
+                const second = client;
                 const roomname = first.id + '+' + second.id;
                 first.join(roomname);
                 second.join(roomname);

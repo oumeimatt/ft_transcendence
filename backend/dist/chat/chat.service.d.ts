@@ -21,10 +21,12 @@ export declare class ChatService {
     createRoom(RoomDto: RoomDto, creators: Player[]): Promise<chatroom>;
     getRoomById(id: number): Promise<chatroom>;
     getMembersByRoomId(roomid: number): Promise<Player[]>;
-    getRoomsForUser(Playerid: number): Promise<chatroom[]>;
+    getRoomsForUser(playerid: number): Promise<chatroom[]>;
     addMember(room: chatroom, creator: Player, role: RoleStatus): Promise<void>;
     createMessage(messageDto: messageDto, sender: Player): Promise<message>;
     getMessagesByroomId(roomid: number): Promise<message[]>;
     deleteMmebership(roomid: number, playrid: number): Promise<void>;
     isMember(roomid: number, playerid: number): Promise<membership>;
+    getAllRooms(playerid: number): Promise<chatroom[]>;
+    getRole(roomid: number, playerid: number): Promise<membership>;
 }

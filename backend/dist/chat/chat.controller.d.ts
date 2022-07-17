@@ -6,6 +6,8 @@ export declare class ChatController {
     private chatService;
     constructor(chatService: ChatService);
     getAllMessageByRoomId(roomid: number): Promise<message[]>;
-    getRoomsByUserId(playerid: number): Promise<chatroom[]>;
     getMembersByRoomId(roomid: number): Promise<Player[]>;
+    getRole(roomid: number, playerid: number): Promise<import("./membership.entity").membership>;
+    getRoomsByUserId(playerid: number): Promise<chatroom[]>;
+    getAllRooms(playerid: number): Promise<chatroom[]>;
 }

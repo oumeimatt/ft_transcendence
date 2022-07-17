@@ -31,8 +31,6 @@ let ChatGateway = class ChatGateway {
     afterInit(server) {
     }
     async handleConnection(client) {
-        console.log('Handle connection is called !');
-        console.log(client.handshake.query.token);
         try {
             this.decoded = client.handshake.query.token;
             this.decoded = await this.userService.verifyToken(this.decoded);

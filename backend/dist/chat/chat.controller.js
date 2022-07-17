@@ -22,40 +22,54 @@ let ChatController = class ChatController {
     getAllMessageByRoomId(roomid) {
         return this.chatService.getMessagesByroomId(roomid);
     }
+    getMembersByRoomId(roomid) {
+        return this.chatService.getMembersByRoomId(roomid);
+    }
+    getRole(roomid, playerid) {
+        return this.chatService.getRole(roomid, playerid);
+    }
     getRoomsByUserId(playerid) {
         return this.chatService.getRoomsForUser(playerid);
     }
-    getMembersByRoomId(roomid) {
-        return this.chatService.getMembersByRoomId(roomid);
+    getAllRooms(playerid) {
+        return this.chatService.getAllRooms(playerid);
     }
 };
 __decorate([
     (0, common_1.Get)('messages'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Query)('roomid')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ChatController.prototype, "getAllMessageByRoomId", null);
 __decorate([
-    (0, common_1.Get)('rooms'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
+    (0, common_1.Get)('members'),
+    __param(0, (0, common_1.Query)('roomid')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "getMembersByRoomId", null);
+__decorate([
+    (0, common_1.Get)('role'),
+    __param(0, (0, common_1.Query)('roomid', 'playerid')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", void 0)
+], ChatController.prototype, "getRole", null);
+__decorate([
+    (0, common_1.Get)('mychannels'),
     __param(0, (0, common_1.Query)('playerid')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ChatController.prototype, "getRoomsByUserId", null);
 __decorate([
-    (0, common_1.Get)('members'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
-    __param(0, (0, common_1.Query)('roomid')),
+    (0, common_1.Get)('allchannels'),
+    __param(0, (0, common_1.Query)('playerid')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
-], ChatController.prototype, "getMembersByRoomId", null);
+], ChatController.prototype, "getAllRooms", null);
 ChatController = __decorate([
     (0, common_1.Controller)('chat'),
     __metadata("design:paramtypes", [chat_service_1.ChatService])

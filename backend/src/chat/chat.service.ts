@@ -13,6 +13,7 @@ import { In } from 'typeorm';
 import { PlayerRepository } from 'src/players/player.repository';
 import { UsersService } from 'src/players/players.service';
 import { Player } from 'src/players/player.entity';
+import { Room } from 'src/pong-game/typeorm/room.entity';
 @Injectable()
 export class ChatService {
     constructor(
@@ -49,7 +50,7 @@ export class ChatService {
         const usersid = await this.membershipRepo
         .createQueryBuilder('m')
         .where('m.roomid = :roomid', { roomid })
-        .select(['m.Playerid'])
+        .select(['m.playerid'])
         .getMany();
 
         const members:Player[] = [];
@@ -58,7 +59,7 @@ export class ChatService {
         return members;
     }
 
-    async getRoomsForUser(Playerid:number):Promise<chatroom[]>{
+    async getRoomsForUser(playerid:number):Promise<chatroom[]>{
         
        //! select * from room INNER JOIN membership ON (membership.Playerid=36 and room.id=membership.roomid);
         // const rooms = await this.roomRepo.createQueryBuilder('room')
@@ -67,7 +68,7 @@ export class ChatService {
 
          const roomsid = await this.membershipRepo
         .createQueryBuilder('p')
-        .where('p.Playerid = :Playerid', { Playerid })
+        .where('p.playerid = :playerid', { playerid })
         .select(['p.roomid'])
         .getMany();
         //console.log('faiiiled !');
@@ -78,7 +79,6 @@ export class ChatService {
         for (var id of roomsid)
             rooms.push(await this.getRoomById(id.roomid));
         return rooms;
-        //
     }
 
     
@@ -99,7 +99,7 @@ export class ChatService {
 
     async getMessagesByroomId(roomid:number):Promise<message[]>{
        const query = await this.messageRepo.createQueryBuilder('message')
-        .select(['message.content','message.Playerid'])
+        .select(['message.content','message.playerid'])
         .where("message.roomid = :roomid", {roomid})
         .orderBy("message.created_at");
 
@@ -118,10 +118,34 @@ export class ChatService {
         const membership = await this.membershipRepo.findOne({playerid, roomid});
         if (membership)
             return membership
-        
-            return null;
-
+        return null;
     }
+
+    async getAllRooms(playerid:number):Promise<chatroom[]>{
+        
+        //The public && private ones
+        const rooms = await this.roomRepo.createQueryBuilder('chatroom')
+        .getMany();
+        
+        //if the channel os private=>check if the user is a member
+        for (let i = 0; i < rooms.length; i++)
+        {
+            if (rooms[i].ispublic === false && await this.isMember(rooms[i].id, playerid) === null)
+                rooms.splice(i , 1);
+        }
+        console.log(rooms);
+        return rooms;
+    }
+
+    async getRole(roomid:number, playerid:number) :Promise<membership>{
+        const role = await this.membershipRepo.createQueryBuilder('m')
+        .where('m.playerid = :playerid', { playerid })
+        .andWhere('m.roomid = :roomid', {roomid})
+        .select('m.role')
+        .getOne();
+        return role;
+    }
+
     //joinChannel
 
 }

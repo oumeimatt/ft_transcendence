@@ -100,6 +100,7 @@
 <script lang="ts" setup>
 	import {inject, ref, onMounted} from 'vue';
 	import io from "socket.io-client";
+	import axios from 'axios';
 	const store = inject('store')
 
 	//! called first time the chat is accessed
@@ -115,11 +116,17 @@
 	const showRooms = () => (showAllRooms.value = !showAllRooms.value)
 	const createRoom = () => (showCreate.value = true)
 
-	 onMounted(() => {
-	// 	store.state.connection.on("message", (data) => {store.state.rooms = data;
-    //   if (store.state.rooms.length !== 0){
-    //   store.state.messageDto.id = store.state.rooms[0].id;
-    //   store.state.roomName = store.state.rooms[0].name;}});
-    })
+	//  onMounted(async () => {
+	// 	  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid:58486}, withCredentials: true}).then(data=>
+	// 	 {store.state.rooms = data.data;
+	// 	 console.log(data.data);}
+	// 	 );
+
+
+	// // 	store.state.connection.on("message", (data) => {store.state.rooms = data;
+    // //   if (store.state.rooms.length !== 0){
+    // //   store.state.messageDto.id = store.state.rooms[0].id;
+    // //   store.state.roomName = store.state.rooms[0].name;}});
+    // })
 
 </script>

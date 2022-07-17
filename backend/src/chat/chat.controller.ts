@@ -14,30 +14,31 @@ import { chatroom } from './room.entity';
 export class ChatController {
     constructor( private chatService:ChatService){}
 
-    @Get('messages')
-    @Header('Access-Control-Allow-Origin', 'http://localhost:3000')
-    @Header('Access-Control-Allow-Credentials', 'true')
+    // value returned content && playerid
+    @Get('messages') 
     getAllMessageByRoomId(@Query('roomid') roomid:number):Promise<message[]>{
         return this.chatService.getMessagesByroomId(roomid);   
     }
 
-    
+    //display usernnames => return playerid to the server-side
+    @Get('members')
+    getMembersByRoomId(@Query('roomid') roomid:number):Promise<Player[]>{
+        return this.chatService.getMembersByRoomId(roomid);
+    }
 
-    @Get('rooms')
-    @Header('Access-Control-Allow-Origin', 'http://localhost:3000')
-    @Header('Access-Control-Allow-Credentials', 'true')
+    //Get role
+    @Get('role')
+    getRole(@Query('roomid', 'playerid') roomid:number, playerid:number){
+        return this.chatService.getRole(roomid, playerid);
+    }
+    
+    @Get('mychannels')
     getRoomsByUserId(@Query('playerid') playerid:number):Promise<chatroom[]>{
         return this.chatService.getRoomsForUser(playerid);
     }
 
-    @Get('members')
-    @Header('Access-Control-Allow-Origin', 'http://localhost:3000')
-    @Header('Access-Control-Allow-Credentials', 'true')
-    getMembersByRoomId(@Query('roomid') roomid:number):Promise<Player[]>{
-        return this.chatService.getMembersByRoomId(roomid);
+    @Get('allchannels')
+    getAllRooms(@Query('playerid') playerid:number) :Promise<chatroom[]>{
+        return this.chatService.getAllRooms(playerid);
     }
-    
-
-    
-
 }

@@ -39,13 +39,13 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   //when a client joins the connection
     async handleConnection(client:Socket) {
-      console.log('Handle connection is called !');
-      //for now the client is not reconized (send access token as a query)
-      console.log(client.handshake.query.token);
+      // console.log('Handle connection is called !');
+      // //for now the client is not reconized (send access token as a query)
+      // console.log(client.handshake.query.token);
     try
     {
     // this.decoded = client.handshake.headers.authorization.split(" ")[1];
-    this.decoded = client.handshake.query.token;
+      this.decoded = client.handshake.query.token;
       this.decoded = await this.userService.verifyToken(this.decoded);
       this.player = await this.userService.getUserById(this.decoded.id);
  

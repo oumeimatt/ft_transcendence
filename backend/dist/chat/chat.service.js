@@ -41,17 +41,17 @@ let ChatService = class ChatService {
         const usersid = await this.membershipRepo
             .createQueryBuilder('m')
             .where('m.roomid = :roomid', { roomid })
-            .select(['m.Playerid'])
+            .select(['m.playerid'])
             .getMany();
         const members = [];
         for (var id of usersid)
             members.push(await this.userService.getUserById(id.playerid));
         return members;
     }
-    async getRoomsForUser(Playerid) {
+    async getRoomsForUser(playerid) {
         const roomsid = await this.membershipRepo
             .createQueryBuilder('p')
-            .where('p.Playerid = :Playerid', { Playerid })
+            .where('p.playerid = :playerid', { playerid })
             .select(['p.roomid'])
             .getMany();
         let rooms = [];
@@ -73,7 +73,7 @@ let ChatService = class ChatService {
     }
     async getMessagesByroomId(roomid) {
         const query = await this.messageRepo.createQueryBuilder('message')
-            .select(['message.content', 'message.Playerid'])
+            .select(['message.content', 'message.playerid'])
             .where("message.roomid = :roomid", { roomid })
             .orderBy("message.created_at");
         const messages = await query.getMany();
@@ -87,6 +87,24 @@ let ChatService = class ChatService {
         if (membership)
             return membership;
         return null;
+    }
+    async getAllRooms(playerid) {
+        const rooms = await this.roomRepo.createQueryBuilder('chatroom')
+            .getMany();
+        for (let i = 0; i < rooms.length; i++) {
+            if (rooms[i].ispublic === false && await this.isMember(rooms[i].id, playerid) === null)
+                rooms.splice(i, 1);
+        }
+        console.log(rooms);
+        return rooms;
+    }
+    async getRole(roomid, playerid) {
+        const role = await this.membershipRepo.createQueryBuilder('m')
+            .where('m.playerid = :playerid', { playerid })
+            .andWhere('m.roomid = :roomid', { roomid })
+            .select('m.role')
+            .getOne();
+        return role;
     }
 };
 ChatService = __decorate([

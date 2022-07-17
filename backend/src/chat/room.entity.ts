@@ -36,6 +36,4 @@ export class chatroom extends BaseEntity{
     @UpdateDateColumn()
     updated_at:Date;
 
-    
-
 }
