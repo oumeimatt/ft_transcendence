@@ -32,12 +32,12 @@ export class ChatController {
         return this.chatService.getRole(roomid, playerid);
     }
     
-    @Get('mychannels')
+    @Get('mychannels') //make sure that are channels && not DM
     getRoomsByUserId(@Query('playerid') playerid:number):Promise<chatroom[]>{
         return this.chatService.getRoomsForUser(playerid);
     }
 
-    @Get('allchannels')
+    @Get('allchannels')//make sure that are channels && not DM
     getAllRooms(@Query('playerid') playerid:number) :Promise<chatroom[]>{
         return this.chatService.getAllRooms(playerid);
     }

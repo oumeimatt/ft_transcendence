@@ -55,15 +55,15 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       async handleConnection(client:Socket)
       {
         await this.definePlayer(client);
-      //  console.log(this.player);
+        //  console.log(this.player);
         client.data.player = this.player;
         const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
         this.user.push(client);
         this.title.push(`${client.id}`);
         console.log(`On Connnect ... !${client.id} ${this.player.username}`)
-      //console.log(this.player.username);
-      // this.server.emit('message', this.title)
-      // this.user.map( x=> x.emit("message" ,`hey ${client.id}`));
+        //console.log(this.player.username);
+        // this.server.emit('message', this.title)
+        // this.user.map( x=> x.emit("message" ,`hey ${client.id}`));
   
       //only emit value to the concerned client => for now there is no room
       // console.log(rooms);
@@ -88,7 +88,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
   
       handleDisconnect(client: any)
       {
-      //remove this client form the connected users
+        //remove this client form the connected users
         this.user.splice(this.user.indexOf(`${client}`),1);
         console.log(`On Disconnet ... ! ${client.id}`)
       }
@@ -96,7 +96,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       @SubscribeMessage('createRoom')
       async onCreateRoom(socket: Socket, roomdto: RoomDto)
       {
-      //find all members by username
+        //find all members by username
         const usernames = roomdto.players;
         for (var username of usernames)
         {
@@ -105,7 +105,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
             this.players.push(user);
           //throw exception if user not found
         }
-  // this.players.push(socket.data.player);
+        // this.players.push(socket.data.player);
 
         const room =  await this.chatService.createRoom(roomdto,this.players);
         await this.chatService.addMember(room, socket.data.player, RoleStatus.OWNER);
@@ -134,7 +134,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         // this.decoded = socket.handshake.headers.authorization.split(" ")[1];
         // this.decoded = await this.userService.verifyToken(this.decoded);
         // this.player = await this.userService.getUserById(this.decoded.id);
-        this.definePlayer(socket);
+        await this.definePlayer(socket);
         await this.chatService.createMessage(messageDto,this.player);
  
         //I should send the messages only to the members
@@ -159,7 +159,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     {
       // this.decoded = socket.handshake.headers.authorization.split(" ")[1];
       // this.decoded = await this.userService.verifyToken(this.decoded);
-      this.definePlayer(socket);
+      await this.definePlayer(socket);
       await this.chatService.deleteMmebership(roomid, this.decoded.id);
       const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
       this.server.to(socket.id).emit('message', rooms);//rooms
@@ -185,12 +185,22 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
     @SubscribeMessage('join-channel')
     async joinChannel(socket:Socket, roomid:number){
-      this.definePlayer(socket);
+      await this.definePlayer(socket);
       await this.chatService.createMembership(this.player.id, roomid);
       //Send new members to the members=> and connected  => don't send messages
 
-    //get the membership of roomid, playerid => 
-    //call add member to roomid =>c onnected user id=> role=> normal member
+      //get the membership of roomid, playerid => 
+      //call add member to roomid =>c onnected user id=> role=> normal member
+    }
+
+    //
+    @SubscribeMessage('direct-message')
+    async sendDirectMessage(sender:Socket, receiverid:number ){
+      //create a room of type !isChannel => if not exist
+      
+      //with two membership => users =>sender && receiver
+      //create message
+      //
     }
 
     //Direct-message

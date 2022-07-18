@@ -89,7 +89,7 @@ let ChatGateway = class ChatGateway {
         this.players.splice(0);
     }
     async onCreateMessage(socket, messageDto) {
-        this.definePlayer(socket);
+        await this.definePlayer(socket);
         await this.chatService.createMessage(messageDto, this.player);
         let userid;
         let messages;
@@ -102,7 +102,7 @@ let ChatGateway = class ChatGateway {
         }
     }
     async leaveChannel(socket, roomid) {
-        this.definePlayer(socket);
+        await this.definePlayer(socket);
         await this.chatService.deleteMmebership(roomid, this.decoded.id);
         const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
         this.server.to(socket.id).emit('message', rooms);
@@ -121,8 +121,10 @@ let ChatGateway = class ChatGateway {
         }
     }
     async joinChannel(socket, roomid) {
-        this.definePlayer(socket);
+        await this.definePlayer(socket);
         await this.chatService.createMembership(this.player.id, roomid);
+    }
+    async sendDirectMessage(sender, receiverid) {
     }
 };
 __decorate([
@@ -153,6 +155,12 @@ __decorate([
     __metadata("design:paramtypes", [socket_io_1.Socket, Number]),
     __metadata("design:returntype", Promise)
 ], ChatGateway.prototype, "joinChannel", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('direct-message'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Number]),
+    __metadata("design:returntype", Promise)
+], ChatGateway.prototype, "sendDirectMessage", null);
 ChatGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({ namespace: '/chat', cors: true }),
     __metadata("design:paramtypes", [auth_service_1.AuthService,

@@ -5,7 +5,7 @@
 						<svg @click="createRoom" xmlns="http://www.w3.org/2000/svg" class="md:h-8 md:w-8 h-4 w-4 fill-slate-400" viewBox="0 0 20 20">
 							<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
 						</svg> 
-						 <div @click="createRoom" class="text-slate-400 lg:text-xl md:text-xl  text-sm  font-bold hover:underline "> Create channel </div> 
+						 <div @click="sendRoom" class="text-slate-400 lg:text-xl md:text-xl  text-sm  font-bold hover:underline "> Create channel </div> 
 					</button>
 					<button @click="showRooms" class="mt-8 flex justify-start items-center md:space-x-2" >
 						<svg xmlns="http://www.w3.org/2000/svg" class="md:h-8 md:w-8 h-4 w-4 fill-slate-400" fill="none" viewBox="0 0 24 24"  stroke-width="1">
@@ -114,13 +114,32 @@
 	const showCreate = ref(false)
 	const showAllRooms = ref(false)
 	const showRooms = () => (showAllRooms.value = !showAllRooms.value)
-	const createRoom = () => (showCreate.value = true)
+	function  createRoom () {
+		showCreate.value = true
+		}
+	function  sendRoom() {
+        // console.log('Message sent !')
+		showCreate.value = false
+        let roomdata={
+          name:this.room.name,
+		  privacy:this.room.privacy,
+          password:this.room.password,
+          players:this.room.players,
+        }
+        this.connection.emit("createRoom", roomdata);
+       // console.log(roomdata);
+        // this.room.players.splice(0);
+        //I should sent a room
+    }
 
-	//  onMounted(async () => {
-	// 	  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid:58486}, withCredentials: true}).then(data=>
-	// 	 {store.state.rooms = data.data;
-	// 	 console.log(data.data);}
-	// 	 );
+	 onMounted(async () => {
+		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid:58486}, withCredentials: true})
+		  .then(data=> store.state.rooms = data.data )
+		//  console.log(data.data);}
+		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid:58486}, withCredentials: true})
+		.then(data=> store.state.allrooms = data.data)
+
+	 })
 
 
 	// // 	store.state.connection.on("message", (data) => {store.state.rooms = data;
