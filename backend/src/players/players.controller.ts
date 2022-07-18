@@ -83,8 +83,8 @@ export class UsersController {
     ){
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         fs.writeFileSync(process.cwd().substring(0,process.cwd().length - 7) + "frontend/src/assets/"+imageName, avatar.buffer);
-		imageName = "src/assets/"+imageName
-        return this.usersService.updateAvatar(user.id, imageName);
+        console.log("imagename === ", imageName)
+		return this.usersService.updateAvatar(user.id, imageName);
     }
 
 	//- enable two factor authentication
