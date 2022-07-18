@@ -155,6 +155,7 @@
       await axios
           .get('http://localhost:3001/profile' ,{ withCredentials: true })
           .then(data =>{
+            localStorage.clear();
             localStorage.setItem('user', data.data.cookie);
             store.state.player = data.data.profile;
             store.state.friends = data.data.friends;

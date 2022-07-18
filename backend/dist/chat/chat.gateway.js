@@ -28,9 +28,7 @@ let ChatGateway = class ChatGateway {
         this.title = [];
         this.players = [];
     }
-    afterInit(server) {
-    }
-    async handleConnection(client) {
+    async definePlayer(client) {
         try {
             this.decoded = client.handshake.query.token;
             this.decoded = await this.userService.verifyToken(this.decoded);
@@ -38,25 +36,28 @@ let ChatGateway = class ChatGateway {
             if (!this.player) {
                 return this.disconnect(client);
             }
-            client.data.player = this.player;
-            const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
-            this.user.push(client);
-            this.title.push(`${client.id}`);
-            console.log(`On Connnect ... !${client.id} ${this.player.username}`);
-            this.server.to(client.id).emit('message', rooms);
-            let messages = [];
-            let members = [];
-            if (rooms.length != 0) {
-                messages = await this.chatService.getMessagesByroomId(rooms[0].id);
-                members = await this.chatService.getMembersByRoomId(rooms[0].id);
-            }
-            this.server.to(client.id).emit('sendMessage', messages);
-            this.server.to(client.id).emit('members', members);
+            ;
         }
         catch (_a) {
-            console.log('last catch');
             return this.disconnect(client);
         }
+    }
+    async handleConnection(client) {
+        await this.definePlayer(client);
+        client.data.player = this.player;
+        const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
+        this.user.push(client);
+        this.title.push(`${client.id}`);
+        console.log(`On Connnect ... !${client.id} ${this.player.username}`);
+        this.server.to(client.id).emit('message', rooms);
+        let messages = [];
+        let members = [];
+        if (rooms.length != 0) {
+            messages = await this.chatService.getMessagesByroomId(rooms[0].id);
+            members = await this.chatService.getMembersByRoomId(rooms[0].id);
+        }
+        this.server.to(client.id).emit('sendMessage', messages);
+        this.server.to(client.id).emit('members', members);
     }
     disconnect(socket) {
         socket.emit('Error', new common_1.UnauthorizedException());
@@ -69,7 +70,6 @@ let ChatGateway = class ChatGateway {
     async onCreateRoom(socket, roomdto) {
         const usernames = roomdto.players;
         for (var username of usernames) {
-            console.log(username);
             const user = await this.userService.getUserByUsername(username);
             if (user)
                 this.players.push(user);
@@ -80,8 +80,7 @@ let ChatGateway = class ChatGateway {
         let rooms;
         let members = await this.chatService.getMembersByRoomId(room.id);
         for (var x of this.user) {
-            console.log(`the connected users  ${x.id}`);
-            userid = await x.handshake.headers.authorization.split(" ")[1];
+            userid = await x.handshake.query.token;
             userid = await this.userService.verifyToken(userid);
             rooms = await this.chatService.getRoomsForUser(userid.id);
             this.server.to(x.id).emit('message', rooms);
@@ -90,25 +89,20 @@ let ChatGateway = class ChatGateway {
         this.players.splice(0);
     }
     async onCreateMessage(socket, messageDto) {
-        this.decoded = socket.handshake.headers.authorization.split(" ")[1];
-        this.decoded = await this.userService.verifyToken(this.decoded);
-        this.player = await this.userService.getUserById(this.decoded.id);
+        this.definePlayer(socket);
         await this.chatService.createMessage(messageDto, this.player);
         let userid;
         let messages;
         for (var x of this.user) {
-            console.log(`the connected users  ${x.id}`);
-            userid = await x.handshake.headers.authorization.split(" ")[1];
+            userid = await x.handshake.query.token;
             userid = await this.userService.verifyToken(userid);
             messages = await this.chatService.getMessagesByroomId(messageDto.id);
-            console.log(messages);
             if (await this.chatService.isMember(messageDto.id, userid))
                 this.server.to(x.id).emit('sendMessage', messages);
         }
     }
     async leaveChannel(socket, roomid) {
-        this.decoded = socket.handshake.headers.authorization.split(" ")[1];
-        this.decoded = await this.userService.verifyToken(this.decoded);
+        this.definePlayer(socket);
         await this.chatService.deleteMmebership(roomid, this.decoded.id);
         const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
         this.server.to(socket.id).emit('message', rooms);
@@ -120,13 +114,15 @@ let ChatGateway = class ChatGateway {
         members = await this.chatService.getMembersByRoomId(roomid);
         let userid;
         for (var x of this.user) {
-            userid = await x.handshake.headers.authorization.split(" ")[1];
+            userid = await x.handshake.headers.query.token;
             userid = await this.userService.verifyToken(userid);
             if (await this.chatService.isMember(roomid, userid))
                 this.server.to(x.id).emit('members', members);
         }
     }
     async joinChannel(socket, roomid) {
+        this.definePlayer(socket);
+        await this.chatService.createMembership(this.player.id, roomid);
     }
 };
 __decorate([
@@ -159,7 +155,8 @@ __decorate([
 ], ChatGateway.prototype, "joinChannel", null);
 ChatGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({ namespace: '/chat', cors: true }),
-    __metadata("design:paramtypes", [auth_service_1.AuthService, chat_service_1.ChatService,
+    __metadata("design:paramtypes", [auth_service_1.AuthService,
+        chat_service_1.ChatService,
         players_service_1.UsersService])
 ], ChatGateway);
 exports.ChatGateway = ChatGateway;

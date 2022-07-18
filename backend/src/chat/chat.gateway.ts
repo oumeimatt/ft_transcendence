@@ -54,7 +54,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     //when a client joins the connection
       async handleConnection(client:Socket)
       {
-        this.definePlayer(client);
+        await this.definePlayer(client);
+      //  console.log(this.player);
         client.data.player = this.player;
         const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
         this.user.push(client);

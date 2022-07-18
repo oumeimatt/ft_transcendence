@@ -13,11 +13,11 @@ const membership_entity_1 = require("./membership.entity");
 const membership_model_1 = require("./dto/membership.model");
 let roomRepository = class roomRepository extends typeorm_1.Repository {
     async createRoom(RoomDto, creators) {
-        const { name, password } = RoomDto;
+        const { name, privacy, password } = RoomDto;
         const Room = new room_entity_1.chatroom();
         Room.name = name;
         Room.ischannel = true;
-        if (password)
+        if (privacy === 'private')
             Room.ispublic = false;
         Room.password = password;
         await Room.save();

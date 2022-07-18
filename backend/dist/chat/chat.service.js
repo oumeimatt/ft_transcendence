@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const room_repository_1 = require("./room.repository");
 const membership_entity_1 = require("./membership.entity");
 const typeorm_2 = require("typeorm");
+const membership_model_1 = require("./dto/membership.model");
 const message_entity_1 = require("./message.entity");
 const auth_service_1 = require("../auth/auth.service");
 const player_repository_1 = require("../players/player.repository");
@@ -105,6 +106,13 @@ let ChatService = class ChatService {
             .select('m.role')
             .getOne();
         return role;
+    }
+    async createMembership(playerid, roomid) {
+        const Membership = new membership_entity_1.membership();
+        Membership.playerid = playerid;
+        Membership.roomid = roomid;
+        Membership.role = membership_model_1.RoleStatus.USER;
+        await Membership.save();
     }
 };
 ChatService = __decorate([
