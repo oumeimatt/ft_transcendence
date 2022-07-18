@@ -133,7 +133,7 @@ export class ChatService {
             if (rooms[i].ispublic === false && await this.isMember(rooms[i].id, playerid) === null)
                 rooms.splice(i , 1);
         }
-        console.log(rooms);
+       // console.log(rooms);
         return rooms;
     }
 

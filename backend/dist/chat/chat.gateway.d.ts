@@ -25,4 +25,5 @@ export declare class ChatGateway implements OnGatewayConnection, OnGatewayDiscon
     onCreateMessage(socket: Socket, messageDto: messageDto): Promise<void>;
     leaveChannel(socket: Socket, roomid: number): Promise<void>;
     joinChannel(socket: Socket, roomid: number): Promise<void>;
+    sendDirectMessage(sender: Socket, receiverid: number): Promise<void>;
 }
