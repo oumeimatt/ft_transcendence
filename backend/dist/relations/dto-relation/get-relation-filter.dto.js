@@ -29,7 +29,8 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", player_entity_1.Player)
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
 ], GetRelationFilterDto.prototype, "receiver", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),

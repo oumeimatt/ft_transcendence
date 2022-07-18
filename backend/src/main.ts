@@ -34,7 +34,4 @@ bootstrap();
 
 
 //td list:
-	//* duplicate username
-	//- fix relations
-	//& get all friends
 	//= enable two factor authentication

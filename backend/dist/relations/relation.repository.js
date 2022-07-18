@@ -43,19 +43,12 @@ let RelationRepository = class RelationRepository extends typeorm_1.Repository {
         return relation;
     }
     async blockPlayer(user, blocked_id) {
-        const blocked = await this.findOne({ where: { sender: user, receiver: blocked_id, status: relation_status_enum_1.RelationStatus.FRIEND } });
-        if (blocked) {
-            blocked.status = relation_status_enum_1.RelationStatus.BLOCKED;
-            await blocked.save();
-            return blocked;
+        const friend = await this.findOne({ where: { sender: user, receiver: blocked_id, status: relation_status_enum_1.RelationStatus.FRIEND } });
+        if (friend) {
+            friend.status = relation_status_enum_1.RelationStatus.BLOCKED;
+            await friend.save();
+            return friend;
         }
-        const relation = new relation_entity_1.Relation();
-        relation.receiver = blocked_id;
-        relation.sender = user;
-        relation.status = relation_status_enum_1.RelationStatus.BLOCKED;
-        await relation.save();
-        console.log('friend blocked suuccessfully');
-        return relation;
     }
 };
 RelationRepository = __decorate([

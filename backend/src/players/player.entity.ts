@@ -42,7 +42,9 @@ export class Player extends BaseEntity {
 
 	@OneToMany(
 		type => Relation,
-		relation => relation.sender,{eager: true})
+		relation => relation.sender,
+		{eager: true}
+	)
 	senders: Relation[];
 
 	@OneToMany(()=> membership, membership=>membership.Player)

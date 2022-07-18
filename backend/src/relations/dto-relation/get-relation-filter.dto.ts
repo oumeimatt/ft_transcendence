@@ -16,7 +16,8 @@ export class GetRelationFilterDto {
 
 	@IsOptional()
 	@IsNotEmpty()
-	receiver: Player;
+	@IsNumber()
+	receiver: number;
 
 	@IsOptional()
 	@IsNotEmpty()

@@ -28,9 +28,6 @@ let RelationsService = class RelationsService {
     async getRelations(FilterDto) {
         return this.relationRepository.getRelations(FilterDto);
     }
-    async getRelationByUser(user, relation_status) {
-        return await (0, typeorm_2.getRepository)(relation_entity_1.Relation).find({ where: { sender: user, status: relation_status } });
-    }
     async getUsersByStatus(user, status) {
         const friend_relations = await (0, typeorm_2.getRepository)(relation_entity_1.Relation).find({ where: { sender: user, status: status } });
         var friends = new Array();
@@ -47,7 +44,7 @@ let RelationsService = class RelationsService {
         return this.relationRepository.blockPlayer(user, blocked_id);
     }
     async unblock(user, blocked_id) {
-        const friend = await this.relationRepository.delete({ sender: user, receiver: blocked_id, status: relation_status_enum_1.RelationStatus.BLOCKED });
+        const block = await this.relationRepository.delete({ sender: user, receiver: blocked_id, status: relation_status_enum_1.RelationStatus.BLOCKED });
         console.log('friend unblocked');
     }
     async removeFriend(user, friend_id) {

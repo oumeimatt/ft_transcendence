@@ -18,10 +18,10 @@ const jwt_1 = require("@nestjs/jwt");
 const player_entity_1 = require("../players/player.entity");
 const players_service_1 = require("../players/players.service");
 const player_status_enum_1 = require("../players/player_status.enum");
-const dotenv = require("dotenv");
-const passportHttp = require('passport-http');
 const logout = require('express-passport-logout');
+const dotenv = require("dotenv");
 dotenv.config({ path: `.env` });
+const passportHttp = require('passport-http');
 const passport = require('passport');
 const FortyTwoStrategy = require('passport-42').Strategy;
 passport.use(new FortyTwoStrategy({

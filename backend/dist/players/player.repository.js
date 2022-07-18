@@ -7,12 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayerRepository = void 0;
-const avatars_1 = require("@dicebear/avatars");
-const style = require("@dicebear/croodles");
 const player_entity_1 = require("./player.entity");
-const player_status_enum_1 = require("./player_status.enum");
 const typeorm_1 = require("typeorm");
-const common_1 = require("@nestjs/common");
 let PlayerRepository = class PlayerRepository extends typeorm_1.Repository {
     async getUsers(FilterDto) {
         const { id, username, level, status } = FilterDto;
@@ -33,35 +29,6 @@ let PlayerRepository = class PlayerRepository extends typeorm_1.Repository {
             return (user);
         });
         return users;
-    }
-    async signUp(createUserDto) {
-        const { username, avatar } = createUserDto;
-        const user = new player_entity_1.Player();
-        user.username = username;
-        if (avatar) {
-            user.avatar = avatar;
-        }
-        else {
-            console.log('generate random avatar ^^');
-            user.avatar = (0, avatars_1.createAvatar)(style, { seed: username + '.svg' });
-        }
-        user.wins = 0;
-        user.losses = 0;
-        user.level = 0;
-        user.status = player_status_enum_1.UserStatus.ONLINE;
-        user.two_fa = false;
-        try {
-            await user.save();
-        }
-        catch (error) {
-            console.log(error.code);
-            if (error.code === '23505') {
-                throw new common_1.ConflictException('Username already exists');
-            }
-            else {
-                throw new common_1.InternalServerErrorException();
-            }
-        }
     }
 };
 PlayerRepository = __decorate([

@@ -21,13 +21,6 @@ export class RelationsController {
 	// 	return this.relationService.getRelations(FilterDto);
 	// }
 
-	// @Get('/:id')
-	// getRelationById(@Param('id', ParseIntPipe) id: number): Promise<Relation> {
-	// 	return this.relationService.getRelationById(id);
-	// }
-
-	// @Get()
-
 	@Post('add/:id')
 	@UsePipes(ValidationPipe)
 	async addFriend(

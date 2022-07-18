@@ -20,7 +20,6 @@ import { RelationsService } from "./relations.service";
         }),
         TypeOrmModule.forFeature([RelationRepository]),
         TypeOrmModule.forFeature([PlayerRepository]),
-        // PlayerModule,
     ],
     controllers: [RelationsController],
     providers: [

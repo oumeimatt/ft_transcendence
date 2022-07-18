@@ -1,14 +1,13 @@
 import { Injectable, Request, Response } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-// import { JwtPayload } from "./jwt-payload.interface";
 import { Player } from '../players/player.entity';
 import { UsersService } from '../players/players.service';
 import { UserStatus } from '../players/player_status.enum';
-import * as dotenv from "dotenv";
 import { JwtPayload } from './jwt-payload.interface';
-const passportHttp = require('passport-http');
 const logout = require('express-passport-logout');
+import * as dotenv from "dotenv";
 dotenv.config({ path: `.env` })
+const passportHttp = require('passport-http');
 
 const passport = require('passport');
 const FortyTwoStrategy = require('passport-42').Strategy;
