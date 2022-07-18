@@ -1,10 +1,11 @@
+import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { PlayGroundInterface } from './interfaces';
 import { PongGameService } from './pong-game.service';
 import { PlayGround } from './utils';
 export declare class DefaultService {
     private pongGameService;
-    readonly logger: any;
+    readonly logger: Logger;
     readonly emptyPlayground: PlayGround;
     constructor(pongGameService: PongGameService);
     handleGetBackGround(playground: PlayGround): PlayGroundInterface;

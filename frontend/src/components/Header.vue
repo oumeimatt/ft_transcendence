@@ -159,6 +159,7 @@
             localStorage.setItem('user', data.data.cookie);
             store.state.player = data.data.profile;
             store.state.friends = data.data.friends;
+            console.log(data.data.friends)
             store.state.achievements = data.data.achievements
           } ) 
           .catch(err => console.log(err.message))

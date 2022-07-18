@@ -1,1 +1,1 @@
-export declare const GetPlayer: any;
+export declare const GetPlayer: (...dataOrPipes: any[]) => ParameterDecorator;

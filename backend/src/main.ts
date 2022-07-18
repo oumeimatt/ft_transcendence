@@ -34,8 +34,7 @@ bootstrap();
 
 
 //td list:
-	//- upload avatar
+	//* duplicate username
 	//- fix relations
 	//& get all friends
 	//= enable two factor authentication
-	

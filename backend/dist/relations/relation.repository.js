@@ -28,23 +28,10 @@ let RelationRepository = class RelationRepository extends typeorm_1.Repository {
         const relations = await query.getMany();
         return relations;
     }
-    async getRelationByUser(user, relation_status) {
-        const relations = await this.createQueryBuilder('relation')
-            .andWhere('status = :relation_status', { relation_status: relation_status })
-            .getMany();
-        return relations;
-    }
-    async getOneRelation(user_id, friend_id, relation_status) {
-        const relations = await this.createQueryBuilder('relation')
-            .andWhere('receiver = :id', { id: friend_id })
-            .andWhere('sender.id = :id', { id: user_id })
-            .andWhere('status = :relation_status', { relation_status: relation_status })
-            .getOne();
-        return relations;
-    }
     async addFriend(user, friend_id) {
-        const blocked = await this.getOneRelation(user.id, friend_id, relation_status_enum_1.RelationStatus.BLOCKED);
+        const blocked = await this.findOne({ where: { sender: user, receiver: friend_id, status: relation_status_enum_1.RelationStatus.BLOCKED } });
         if (blocked) {
+            console.log('user is blocked !!!!!!!!!!!!');
             throw new common_1.BadRequestException('You cannot add this user');
         }
         const relation = new relation_entity_1.Relation();
@@ -52,18 +39,22 @@ let RelationRepository = class RelationRepository extends typeorm_1.Repository {
         relation.sender = user;
         relation.status = relation_status_enum_1.RelationStatus.FRIEND;
         await relation.save();
+        console.log('friend added suuccessfully');
         return relation;
     }
     async blockPlayer(user, blocked_id) {
-        const friend = await this.getOneRelation(user.id, blocked_id, relation_status_enum_1.RelationStatus.FRIEND);
-        if (friend) {
-            await this.delete(friend.id);
+        const blocked = await this.findOne({ where: { sender: user, receiver: blocked_id, status: relation_status_enum_1.RelationStatus.FRIEND } });
+        if (blocked) {
+            blocked.status = relation_status_enum_1.RelationStatus.BLOCKED;
+            await blocked.save();
+            return blocked;
         }
         const relation = new relation_entity_1.Relation();
         relation.receiver = blocked_id;
         relation.sender = user;
         relation.status = relation_status_enum_1.RelationStatus.BLOCKED;
         await relation.save();
+        console.log('friend blocked suuccessfully');
         return relation;
     }
 };

@@ -25,9 +25,6 @@ let ChatController = class ChatController {
     getMembersByRoomId(roomid) {
         return this.chatService.getMembersByRoomId(roomid);
     }
-    getRole(roomid, playerid) {
-        return this.chatService.getRole(roomid, playerid);
-    }
     getRoomsByUserId(playerid) {
         return this.chatService.getRoomsForUser(playerid);
     }
@@ -49,13 +46,6 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ChatController.prototype, "getMembersByRoomId", null);
-__decorate([
-    (0, common_1.Get)('role'),
-    __param(0, (0, common_1.Query)('roomid', 'playerid')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
-    __metadata("design:returntype", void 0)
-], ChatController.prototype, "getRole", null);
 __decorate([
     (0, common_1.Get)('mychannels'),
     __param(0, (0, common_1.Query)('playerid')),

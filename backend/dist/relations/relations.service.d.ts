@@ -10,7 +10,7 @@ export declare class RelationsService {
     constructor(relationRepository: RelationRepository, usersService: UsersService);
     getRelations(FilterDto: GetRelationFilterDto): Promise<Relation[]>;
     getRelationByUser(user: Player, relation_status: RelationStatus): Promise<Relation[]>;
-    getAllFriends(user: Player): Promise<Player[]>;
+    getUsersByStatus(user: Player, status: RelationStatus): Promise<Player[]>;
     addFriend(user: Player, friend_id: number): Promise<Relation>;
     blockPlayer(user: Player, blocked_id: number): Promise<Relation>;
     unblock(user: Player, blocked_id: number): Promise<void>;

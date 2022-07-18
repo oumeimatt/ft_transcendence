@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { getRepository } from "typeorm";
 import { Player } from "../players/player.entity";
 import { UsersService } from "../players/players.service";
 import { UserStatus } from "../players/player_status.enum";
@@ -30,12 +31,14 @@ export class RelationsService {
 	// }
 
 	async getRelationByUser(user:Player, relation_status: RelationStatus): Promise<Relation[]> {
-		return this.relationRepository.getRelationByUser(user, relation_status);
+		return await getRepository(Relation).find({ where: { sender: user, status: relation_status } });
+		// return this.relationRepository.getRelationByUser(user, relation_status);
 	}
 
-	async getAllFriends(user: Player) : Promise<Player[]> {
+	async getUsersByStatus(user: Player, status: RelationStatus) : Promise<Player[]> {
 
-		const friend_relations = await this.relationRepository.getRelationByUser(user, RelationStatus.FRIEND);
+		// const friend_relations = await this.relationRepository.getRelationByUser(user, RelationStatus.FRIEND);
+		const friend_relations = await getRepository(Relation).find({ where: { sender: user, status: status } });
 		var friends = new Array();
 		for (var relation of friend_relations) {
 			const player = await this.usersService.getUserById(relation.receiver);
@@ -53,18 +56,23 @@ export class RelationsService {
 	}
 
 	async unblock(user: Player, blocked_id: number): Promise<void> {
-		const rel = await this.relationRepository.getOneRelation(user.id, blocked_id, RelationStatus.BLOCKED);
-		const block = await this.relationRepository.delete(rel.id);
-		if (!block.affected){
-			throw new NotFoundException(`User with ID "${blocked_id}" not found`)
-		}
+		// const rel = await getRepository(Relation).find({ where: { sender: user, receiver: blocked_id ,status: RelationStatus.BLOCKED } });
+		// const block = await this.relationRepository.remove(rel);
+		const friend = await this.relationRepository.delete({ sender: user, receiver: blocked_id, status: RelationStatus.BLOCKED });
+		// const block = await this.relationRepository.delete(rel[0].id);
+		// if (!block.affected){
+		// 	throw new NotFoundException(`User with ID "${blocked_id}" not found`)
+		// }
+		console.log('friend unblocked');
 	}
 
 	async removeFriend(user: Player, friend_id: number): Promise<void> {
-		const rel = await this.relationRepository.getOneRelation(user.id, friend_id, RelationStatus.FRIEND);
-		const friend = await this.relationRepository.delete(rel.id);
-		if (!friend.affected){
-			throw new NotFoundException(`Friend with ID "${friend_id}" not found`)
-		}
+		// const rel = await getRepository(Relation).find({ where: { sender: user, receiver: friend_id ,status: RelationStatus.FRIEND } });
+		// const friend = await this.relationRepository.remove(rel);
+		const friend = await this.relationRepository.delete({ sender: user, receiver: friend_id, status: RelationStatus.FRIEND });
+		// if (!friend.affected){
+		// 	throw new NotFoundException(`Friend with ID "${friend_id}" not found`)
+		// }
+		console.log('friend removed');
 	}
 }

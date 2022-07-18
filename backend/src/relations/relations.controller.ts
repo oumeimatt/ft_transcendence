@@ -1,16 +1,15 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Post, Req, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Controller, Delete, Param, ParseIntPipe, Post, Req, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { GetPlayer } from "../players/get-player.decorator";
 import { Player } from "../players/player.entity";
 import { Relation } from "./relation.entity";
 import { RelationsService } from "./relations.service";
 import { RelationStatus } from "./relation_status.enum";
-import { Request } from "express";
+import { Request, Express } from "express";
 import { UsersService } from "../players/players.service";
 
 
 @Controller('/relation')
-// @UseGuards(AuthGuard())
 export class RelationsController {
 	constructor(
 		private readonly relationService: RelationsService,
@@ -33,6 +32,7 @@ export class RelationsController {
 	@UsePipes(ValidationPipe)
 	async addFriend(
 		@Req() req: Request,
+		// @Request() request: Express.Request,
 		@Param('id', ParseIntPipe) friend_id: number,
 	): Promise<Relation> {
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
@@ -63,6 +63,7 @@ export class RelationsController {
 		@Req() req: Request,
 		@Param('id', ParseIntPipe) unfollow_id: number,
 	): Promise<void> {
+		console.log('remove friend -');
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		return this.relationService.removeFriend(user, unfollow_id);
 	}

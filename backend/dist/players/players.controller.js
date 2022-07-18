@@ -18,7 +18,9 @@ const players_service_1 = require("./players.service");
 const get_player_filter_dto_1 = require("./dto-players/get-player-filter.dto");
 const relations_service_1 = require("../relations/relations.service");
 const jwt_1 = require("@nestjs/jwt");
+const fs = require("fs");
 const platform_express_1 = require("@nestjs/platform-express");
+const relation_status_enum_1 = require("../relations/relation_status.enum");
 let UsersController = class UsersController {
     constructor(usersService, relationService, jwtService) {
         this.usersService = usersService;
@@ -28,11 +30,13 @@ let UsersController = class UsersController {
     async getProfile(req) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         const playerData = await this.usersService.getUserById(user.id);
-        const friends = await this.relationService.getAllFriends(user);
+        const friends = await this.relationService.getUsersByStatus(user, relation_status_enum_1.RelationStatus.FRIEND);
+        const blockedUsers = await this.relationService.getUsersByStatus(user, relation_status_enum_1.RelationStatus.BLOCKED);
         const achievements = await this.usersService.getAchievements(user.id);
         const data = {
             "profile": playerData,
             "friends": friends,
+            "blockedUsers": blockedUsers,
             "achievements": achievements,
             "cookie": req.cookies.connect_sid,
         };
@@ -41,11 +45,13 @@ let UsersController = class UsersController {
     async getFriendProfile(req, id) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         const playerData = await this.usersService.getUserById(id);
-        const friends = await this.relationService.getAllFriends(playerData);
+        const friends = await this.relationService.getUsersByStatus(playerData, relation_status_enum_1.RelationStatus.FRIEND);
+        const blockedUsers = await this.relationService.getUsersByStatus(user, relation_status_enum_1.RelationStatus.BLOCKED);
         const achievements = await this.usersService.getAchievements(id);
         const data = {
             "profile": playerData,
             "friends": friends,
+            "blockedUsers": blockedUsers,
             "achievements": achievements,
         };
         return data;
@@ -54,9 +60,11 @@ let UsersController = class UsersController {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         return this.usersService.updateUsername(user.id, username);
     }
-    async updateAvatar(req, avatar) {
+    async updateAvatar(req, imageName, avatar) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
-        console.log(avatar);
+        fs.writeFileSync("/Users/oumeimatt/Desktop/ok/frontend/src/assets/" + imageName, avatar.buffer);
+        console.log(imageName);
+        return this.usersService.updateAvatar(user.id, imageName);
     }
     async updateTwoFa(req) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
@@ -76,8 +84,6 @@ __decorate([
 ], UsersController.prototype, "getProfile", null);
 __decorate([
     (0, common_1.Get)('/profile/:id'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -86,8 +92,6 @@ __decorate([
 ], UsersController.prototype, "getFriendProfile", null);
 __decorate([
     (0, common_1.Patch)('/settings/username'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)('username')),
     __metadata("design:type", Function),
@@ -95,20 +99,17 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateUsername", null);
 __decorate([
-    (0, common_1.Patch)('/settings/avatar'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
+    (0, common_1.Post)('/settings/avatar/:imageName'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('avatar')),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Param)('imageName')),
+    __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateAvatar", null);
 __decorate([
     (0, common_1.Patch)('/settings/2fa'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -116,8 +117,6 @@ __decorate([
 ], UsersController.prototype, "updateTwoFa", null);
 __decorate([
     (0, common_1.Get)('/users'),
-    (0, common_1.Header)('Access-Control-Allow-Origin', 'http://localhost:3000'),
-    (0, common_1.Header)('Access-Control-Allow-Credentials', 'true'),
     __param(0, (0, common_1.Query)(common_1.ValidationPipe)),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),

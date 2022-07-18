@@ -34,6 +34,7 @@ let RelationsController = class RelationsController {
         return this.relationService.unblock(user, unblock_id);
     }
     async removeFriend(req, unfollow_id) {
+        console.log('remove friend -');
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         return this.relationService.removeFriend(user, unfollow_id);
     }

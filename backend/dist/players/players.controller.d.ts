@@ -12,16 +12,18 @@ export declare class UsersController {
     getProfile(req: Request): Promise<{
         profile: import("./player.entity").Player;
         friends: import("./player.entity").Player[];
+        blockedUsers: import("./player.entity").Player[];
         achievements: any;
         cookie: any;
     }>;
     getFriendProfile(req: Request, id: number): Promise<{
         profile: import("./player.entity").Player;
         friends: import("./player.entity").Player[];
+        blockedUsers: import("./player.entity").Player[];
         achievements: any;
     }>;
     updateUsername(req: Request, username: string): Promise<import("./player.entity").Player>;
-    updateAvatar(req: Request, avatar: Express.Multer.File): Promise<void>;
+    updateAvatar(req: Request, imageName: string, avatar: Express.Multer.File): Promise<import("./player.entity").Player>;
     updateTwoFa(req: Request): Promise<import("./player.entity").Player>;
     getUsers(FilterDto: GetPlayersFilterDto, req: Request): Promise<import("./player.entity").Player[]>;
 }

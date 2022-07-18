@@ -115,17 +115,6 @@ export class UsersService {
 		return achievements.slice(s);
 	}
 
-	// async getAllFriends(user: Player) : Promise<Player[]> {
-
-	// 	const friend_relations = await this.relationRepository.getRelationByUser(user, RelationStatus.FRIEND);
-	// 	var friends = new Array();
-	// 	for (var relation of friend_relations) {
-	// 		const player = await this.getUserById(relation.receiver);
-	// 		friends.push(player);
-	// 	}
-	// 	return friends;
-	// }
-
 	async findOrCreate(id: number, login: string): Promise<Player> {
 		console.log("find or create > number of arguments passed: ", arguments.length);
 		console.log(id, login);

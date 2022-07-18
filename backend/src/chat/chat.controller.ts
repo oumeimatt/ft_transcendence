@@ -27,10 +27,10 @@ export class ChatController {
     }
 
     //Get role
-    @Get('role')
-    getRole(@Query('roomid', 'playerid') roomid:number, playerid:number){
-        return this.chatService.getRole(roomid, playerid);
-    }
+    // @Get('role') //!!!! No overload matches this call
+    // getRole(@Query('roomid', 'playerid') roomid:number, playerid:number){
+    //     return this.chatService.getRole(roomid, playerid);
+    // }
     
     @Get('mychannels')
     getRoomsByUserId(@Query('playerid') playerid:number):Promise<chatroom[]>{

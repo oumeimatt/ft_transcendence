@@ -188,7 +188,7 @@ onUpdated(async  () => {
         isFriend.value = false
         isBlocked.value = false
         frMenu.value = false
-        axios.delete("http://localhost:3001/relation/unfollow/" + props.id ,{ withCredentials: true } )
+        axios.delete("http://localhost:3001/relation/unfollow/" + props.id , { withCredentials: true } )
             .then(data => console.log(data.data))
             .catch(error =>  console.error( error));
     }
@@ -196,7 +196,7 @@ onUpdated(async  () => {
         isFriend.value = true;
         isBlocked.value = false
         add.value = false
-        axios.post("http://localhost:3001/relation/add/" + props.id  ,{ withCredentials: true } ) // or the line below 
+        axios.post("http://localhost:3001/relation/add/" + props.id , {} , { withCredentials: true } ) // or the line below 
         // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
             .then(data => console.log(data.data))
             .catch(error =>  console.error( error));
@@ -207,7 +207,7 @@ onUpdated(async  () => {
         add.value = false
         isFriend.value = false
         frMenu.value = false
-        axios.post("http://localhost:3001/relation/block/" + props.id  ,{ withCredentials: true } ) // or the line below 
+        axios.post("http://localhost:3001/relation/block/" + props.id, {}, { withCredentials: true } ) // or the line below 
         // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
             .then(data => console.log(data.data))
             .catch(error =>  console.error( error));
