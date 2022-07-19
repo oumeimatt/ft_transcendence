@@ -1,21 +1,21 @@
 <template>
 		<div id="folio" class="col-span-4 md:col-span-4 lg:col-span-5 h-screen rounded border-r border-myblue border-r ">
 				<div v-if="store.methods.usersInfo(name)" class="relative h-small bg-myblue rounded space-x-12">
-					<img :src="store.methods.usersInfo(name).pdp" class=" absolute rounded-full left-4 h-12 w-12 bottom-2/4 translate-y-2/4 " alt="">
-					<h1  class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> {{ store.methods.usersInfo(name).name }} </h1>
+					<img :src="store.methods.playerAvatar(store.methods.usersInfo(name))" class=" absolute bg-white rounded-full left-4 h-12 w-12 bottom-2/4 translate-y-2/4 " alt="">
+					<h1  class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> {{ store.methods.usersInfo(name).username}} </h1>
 					<svg @click="showMenu = !showMenu" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer absolute right-2 top-1/4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
   						<path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
 					</svg>
 					<div v-if="showMenu" id="dropdownLeft" class="z-10 absolute right-8 top-2 divide-y divide-gray-100 rounded shadow w-44 bg-slate-800">
-						<ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownLeftButton">
+						<ul class="py-1 text-sm text-gray-700 text-gray-200" aria-labelledby="dropdownLeftButton">
 						<li>
-							<router-link :to="{ name:'User', params: {username: name}}" class="block px-4 py-2 hover:bg-gray-100 cursor-pointer dark:hover:bg-gray-600 dark:hover:text-white">Profile </router-link>
+							<router-link :to="{ name:'User', params: {id: store.methods.usersInfo(name).id}}" class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Profile </router-link>
 						</li>
 						<li>
-							<a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Invite to play game</a>
+							<a href="#" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Invite to play game</a>
 						</li>
 						<li>
-							<a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Block</a>
+							<a href="#" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Block</a>
 						</li>
 						</ul>
 					</div>
@@ -26,7 +26,7 @@
 							<div class="relative w-full p-6 overflow-y-auto">
 								<ul class="space-y-2">
 									<li class="flex justify-start items-center space-x-4">
-											<img v-if="store.methods.usersInfo(name)" :src="store.methods.usersInfo(name).pdp" class="h-10 w-10 rounded-full  " alt="">
+											<img v-if="store.methods.usersInfo(name)" :src="store.methods.playerAvatar(store.methods.usersInfo(name))" class="h-10 w-10 rounded-full bg-white " alt="">
 											<div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
 												<span class="block">Hidsdsdsdksmdksmkdlmsdkls</span>
 											</div>
