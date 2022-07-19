@@ -11,6 +11,8 @@ export declare class UsersController {
     constructor(usersService: UsersService, relationService: RelationsService, jwtService: JwtService);
     getProfile(req: Request): Promise<{
         profile: import("./player.entity").Player;
+        wins: number;
+        losses: number;
         friends: import("./player.entity").Player[];
         blockedUsers: import("./player.entity").Player[];
         achievements: any;
@@ -19,7 +21,6 @@ export declare class UsersController {
     getFriendProfile(req: Request, id: number): Promise<{
         profile: import("./player.entity").Player;
         friends: import("./player.entity").Player[];
-        blockedUsers: import("./player.entity").Player[];
         achievements: any;
     }>;
     updateUsername(req: Request, username: string): Promise<import("./player.entity").Player>;

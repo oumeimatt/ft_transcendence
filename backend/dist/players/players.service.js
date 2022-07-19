@@ -76,6 +76,18 @@ let UsersService = class UsersService {
         await updated.save();
         return updated;
     }
+    async winsGame(id) {
+        const updated = await this.getUserById(id);
+        updated.wins++;
+        await updated.save();
+        return updated;
+    }
+    async LostGame(id) {
+        const updated = await this.getUserById(id);
+        updated.losses++;
+        await updated.save();
+        return updated;
+    }
     async updateStatus(id, status) {
         const updated = await this.getUserById(id);
         updated.status = status;
@@ -92,7 +104,7 @@ let UsersService = class UsersService {
             s = -3;
         else if (user.wins >= 5)
             s = -2;
-        else if (user.wins == 1 || user.losses == 1)
+        else if (user.wins == 1)
             s = -1;
         else
             s = 4;

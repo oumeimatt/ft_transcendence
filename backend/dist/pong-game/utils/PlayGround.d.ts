@@ -3,6 +3,7 @@ import { Ball } from './Ball';
 import { Bounds } from './Bounds';
 import { Paddle } from './Paddle';
 import { PaddleController } from './PaddleController';
+import { ScoreBoard } from './ScoreBoard';
 export declare class PlayGround {
     private _x;
     private _y;
@@ -33,5 +34,6 @@ export declare class PlayGround {
     private getPaddleHeight;
     getPlayGroundInterface(): PlayGroundInterface;
     get bounds(): Bounds;
+    get scoreBoard(): ScoreBoard;
     update(): boolean;
 }

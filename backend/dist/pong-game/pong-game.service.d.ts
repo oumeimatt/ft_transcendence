@@ -1,12 +1,12 @@
-import { Room } from './typeorm/room.entity';
+import { GameRoom } from './typeorm/game-room.entity';
 import { Repository } from 'typeorm';
-import { CreateRoomDto } from './dto/createRoom.dt';
+import { CreateGameRoomDto } from './dto/createGameRoom.dto';
 export declare class PongGameService {
     private roomRepository;
-    constructor(roomRepository: Repository<Room>);
+    constructor(roomRepository: Repository<GameRoom>);
     getRooms(): Promise<{
-        rooms: Room[];
+        rooms: GameRoom[];
     }>;
-    addRoom(Createroom: CreateRoomDto): Promise<Room>;
+    addRoom(Createroom: CreateGameRoomDto): Promise<GameRoom>;
     deleteRoom(roomname: string): Promise<void>;
 }

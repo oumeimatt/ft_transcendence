@@ -89,6 +89,9 @@ class PlayGround {
             lower: this._y + this.height,
         };
     }
+    get scoreBoard() {
+        return this._scoreBoard;
+    }
     update() {
         if (this._scoreBoard.playerOneScore !== this._win_score &&
             this._scoreBoard.playerTwoScore !== this._win_score) {

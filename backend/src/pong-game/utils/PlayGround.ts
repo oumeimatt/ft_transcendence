@@ -139,6 +139,10 @@ export class PlayGround {
     };
   }
 
+  public get scoreBoard(): ScoreBoard {
+    return this._scoreBoard;
+  }
+
   public update(/* roomname: string, wss: Server */): boolean {
     if (
       this._scoreBoard.playerOneScore !== this._win_score &&

@@ -3,4 +3,4 @@ export * from "./Ball";
 export * from "./Playground";
 export * from "./ScoreBoard";
 export * from "./Player";
-export * from "./Room";
+export * from "./GameRoom";

@@ -11,21 +11,27 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const default_gateway_1 = require("./default.gateway");
 const default_service_1 = require("./default.service");
+const one_v_one_gateway_1 = require("./one-v-one.gateway");
 const difficult_gateway_1 = require("./difficult.gateway");
 const difficult_service_1 = require("./difficult.service");
 const pong_game_controller_1 = require("./pong-game.controller");
 const pong_game_service_1 = require("./pong-game.service");
-const room_entity_1 = require("./typeorm/room.entity");
+const game_room_entity_1 = require("./typeorm/game-room.entity");
+const auth_module_1 = require("../auth/auth.module");
 const one_v_one_service_1 = require("./one-v-one.service");
 let PongGameModule = class PongGameModule {
 };
 PongGameModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([room_entity_1.Room])],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([game_room_entity_1.GameRoom]),
+            auth_module_1.AuthModule,
+        ],
         controllers: [pong_game_controller_1.PongGameController],
         providers: [
             pong_game_service_1.PongGameService,
             default_gateway_1.DefaultGateway,
+            one_v_one_gateway_1.OneVOneGateway,
             difficult_gateway_1.DifficultGateway,
             default_service_1.DefaultService,
             difficult_service_1.DifficultService,
