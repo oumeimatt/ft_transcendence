@@ -1,26 +1,28 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Room } from './typeorm/room.entity';
+import { GameRoom } from './typeorm/game-room.entity';
 import { Repository } from 'typeorm';
-import { CreateRoomDto } from './dto/createRoom.dt';
+import { CreateGameRoomDto } from './dto/createGameRoom.dto';
 
 @Injectable()
 export class PongGameService {
   constructor(
-    @InjectRepository(Room) private roomRepository: Repository<Room>,
+    @InjectRepository(GameRoom) private roomRepository: Repository<GameRoom>,
   ) {}
 
-  async getRooms(): Promise<{ rooms: Room[] }> {
+  async getRooms(): Promise<{ rooms: GameRoom[] }> {
     const rooms = await this.roomRepository.find();
     return { rooms: rooms };
   }
 
-  async addRoom(Createroom: CreateRoomDto): Promise<Room> {
-    const { roomname, difficulty } = Createroom;
-    const room = new Room();
+  async addRoom(Createroom: CreateGameRoomDto): Promise<GameRoom> {
+    const { roomname, difficulty, player1, player2 } = Createroom;
+    const room = new GameRoom();
 
     room.roomname = roomname;
     room.difficulty = difficulty;
+    room.player1 = player1;
+    room.player2 = player2;
 
     try {
       await this.roomRepository.save(room);

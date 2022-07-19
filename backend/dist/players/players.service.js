@@ -76,6 +76,18 @@ let UsersService = class UsersService {
         await updated.save();
         return updated;
     }
+    async winsGame(id) {
+        const updated = await this.getUserById(id);
+        updated.wins++;
+        await updated.save();
+        return updated;
+    }
+    async LostGame(id) {
+        const updated = await this.getUserById(id);
+        updated.losses++;
+        await updated.save();
+        return updated;
+    }
     async updateStatus(id, status) {
         const updated = await this.getUserById(id);
         updated.status = status;

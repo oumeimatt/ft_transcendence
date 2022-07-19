@@ -33,7 +33,7 @@ onMounted(() => {
        socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
         query: {
                 'role': 'player',
-                'username': store.state.player.username,
+                'accessToken': localStorage.getItem('user'),
             },
         });
 
@@ -157,7 +157,6 @@ function DrawGameStarted() {
 
 function DrawPlayerWaiting() {
     (socket.value as Socket).on('WaitingForPlayer', (data) => {
-    console.log("Game On Wait");
     playground.value = data.playground;
     if (playground.value != null) {
                 game.value.width = game.value.offsetWidth;
@@ -175,7 +174,6 @@ function DrawPlayerWaiting() {
 
 function DrawGameInterrupted() {
     (socket.value as Socket).on("gameInterrupted", (data) => {
-    console.log("Game Interrupted");
     playground.value = data.playground;
     if (playground.value != null) {
             game.value.width = game.value.offsetWidth;
@@ -193,7 +191,6 @@ function DrawGameInterrupted() {
 
 function DrawGameEachUpdate() {
     (socket.value as Socket).on("updatePlayground", (data) => {
-    console.log("update Playground");
     playground.value = data.playground;
     if (playground.value != null) {
             game.value.width = game.value.offsetWidth;

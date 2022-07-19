@@ -91,6 +91,20 @@ export class UsersService {
 		return updated;
 	}
 
+	async winsGame(id: number): Promise<Player> {
+		const updated = await this.getUserById(id);
+		updated.wins++;
+		await updated.save();
+		return updated;
+	}
+
+	async LostGame(id: number): Promise<Player> {
+		const updated = await this.getUserById(id);
+		updated.losses++;
+		await updated.save();
+		return updated;
+	}
+
 	async updateStatus(id: number, status: UserStatus): Promise<Player> {
 		const updated = await this.getUserById(id);
 		updated.status = status;

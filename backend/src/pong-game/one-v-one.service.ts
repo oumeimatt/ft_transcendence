@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { PlayGroundInterface } from './interfaces';
 import { PongGameService } from './pong-game.service';
@@ -6,10 +6,9 @@ import { PlayGround } from './utils';
 
 @Injectable()
 export class OneVOneService {
-    readonly logger = new Logger('OneVOne PongGame Service: ');
+  readonly logger = new Logger('OneVOne PongGame Service: ');
   readonly emptyPlayground = new PlayGround(0, 0, 800, 600, 'black', 9, false);
   constructor(private pongGameService: PongGameService) {}
-  
   handleGetBackGround(playground: PlayGround): PlayGroundInterface {
     return playground.getPlayGroundInterface();
   }
@@ -23,7 +22,7 @@ export class OneVOneService {
     }
   }
 
-  // function handles when Spectator is connected to the default gateway
+  // function handles when Spectator is connected to the oneVone gateway
   async handleSpectatorConnected(client: Socket): Promise<void> {
     const { rooms } = await this.pongGameService.getRooms();
     const roomname = client.handshake.query.roomname;
@@ -40,7 +39,7 @@ export class OneVOneService {
     }
   }
 
-  // function handles when player is connected to the default gateway
+  // function handles when player is connected to the oneVone gateway
   async handlePlayerConnected(client: Socket, players: Socket[], wss: Server) {
     const found = players.find(player => player.handshake.query.username === client.handshake.query.username);
     if (found) {
@@ -50,9 +49,10 @@ export class OneVOneService {
       });
     }
     else {
-      players.push(client);
-      // if no one is waiting, keep him waiting
-      if (players.length === 1) {
+      const first = players.find(player => player.handshake.query.against === client.handshake.query.username);
+      if (!first) {
+        // if he inters first keep him waiting
+        players.push(client);
         client.data.side = 'left';
         client.data.role = 'player';
         client.emit('WaitingForPlayer', {
@@ -60,12 +60,12 @@ export class OneVOneService {
           message: 'Waiting For Second Player',
           playground: this.emptyPlayground.getPlayGroundInterface(),
         });
-      } else {
+      }
+      else {
         // if another player is waiting  Start the game
         client.data.side = 'right';
         client.data.role = 'player';
-        const second = players.pop();
-        const first = players.pop();
+        const second = client;
         const roomname = first.id + '+' + second.id;
         // join players to room
         first.join(roomname);
@@ -73,7 +73,7 @@ export class OneVOneService {
         first.data.roomname = roomname;
         second.data.roomname = roomname;
         // push room to database
-        this.pongGameService.addRoom({ roomname, difficulty: 'default' });
+        // this.pongGameService.addRoom({ roomname, difficulty: 'oneVone' });
         // create a playground for players
         const playground = new PlayGround(0, 0, 800, 600, 'black', 9, false);
         first.data.playground = playground;

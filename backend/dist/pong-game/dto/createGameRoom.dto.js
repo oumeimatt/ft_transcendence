@@ -9,18 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateRoomDto = void 0;
+exports.CreateGameRoomDto = void 0;
 const class_validator_1 = require("class-validator");
-class CreateRoomDto {
+class CreateGameRoomDto {
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], CreateRoomDto.prototype, "roomname", void 0);
+], CreateGameRoomDto.prototype, "roomname", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsIn)(['difficult', 'default']),
     __metadata("design:type", String)
-], CreateRoomDto.prototype, "difficulty", void 0);
-exports.CreateRoomDto = CreateRoomDto;
-//# sourceMappingURL=createRoom.dt.js.map
+], CreateGameRoomDto.prototype, "difficulty", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateGameRoomDto.prototype, "player1", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateGameRoomDto.prototype, "player2", void 0);
+exports.CreateGameRoomDto = CreateGameRoomDto;
+//# sourceMappingURL=createGameRoom.dto.js.map
