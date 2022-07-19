@@ -6,11 +6,11 @@ import { DifficultGateway } from './difficult.gateway';
 import { DifficultService } from './difficult.service';
 import { PongGameController } from './pong-game.controller';
 import { PongGameService } from './pong-game.service';
-import { Room } from './typeorm/room.entity';
+import { GameRoom } from './typeorm/game-room.entity';
 import { OneVOneService } from './one-v-one.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Room])],
+  imports: [TypeOrmModule.forFeature([GameRoom])],
   controllers: [PongGameController],
   providers: [
     PongGameService,

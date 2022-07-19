@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { PlayGroundInterface } from './interfaces';
 import { PongGameService } from './pong-game.service';
@@ -6,9 +6,10 @@ import { PlayGround } from './utils';
 
 @Injectable()
 export class DefaultService {
-  readonly logger = new Logger('Default PongGame Service: ');
+    readonly logger = new Logger('Default PongGame Service: ');
   readonly emptyPlayground = new PlayGround(0, 0, 800, 600, 'black', 9, false);
   constructor(private pongGameService: PongGameService) {}
+  
   handleGetBackGround(playground: PlayGround): PlayGroundInterface {
     return playground.getPlayGroundInterface();
   }
@@ -49,10 +50,9 @@ export class DefaultService {
       });
     }
     else {
-      const first = players.find(player => player.handshake.query.against === client.handshake.query.username);
-      if (!first) {
-        // if he inters first keep him waiting
-        players.push(client);
+      players.push(client);
+      // if no one is waiting, keep him waiting
+      if (players.length === 1) {
         client.data.side = 'left';
         client.data.role = 'player';
         client.emit('WaitingForPlayer', {
@@ -60,12 +60,12 @@ export class DefaultService {
           message: 'Waiting For Second Player',
           playground: this.emptyPlayground.getPlayGroundInterface(),
         });
-      }
-      else {
+      } else {
         // if another player is waiting  Start the game
         client.data.side = 'right';
         client.data.role = 'player';
-        const second = client;
+        const second = players.pop();
+        const first = players.pop();
         const roomname = first.id + '+' + second.id;
         // join players to room
         first.join(roomname);
@@ -73,7 +73,10 @@ export class DefaultService {
         first.data.roomname = roomname;
         second.data.roomname = roomname;
         // push room to database
-        this.pongGameService.addRoom({ roomname, difficulty: 'default' });
+        this.pongGameService.addRoom({
+          roomname, difficulty: 'default', player1: first.handshake.query.username as string,
+          player2: second.handshake.query.username as string
+        });
         // create a playground for players
         const playground = new PlayGround(0, 0, 800, 600, 'black', 9, false);
         first.data.playground = playground;

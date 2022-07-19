@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PongGameService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const room_entity_1 = require("./typeorm/room.entity");
+const game_room_entity_1 = require("./typeorm/game-room.entity");
 const typeorm_2 = require("typeorm");
 let PongGameService = class PongGameService {
     constructor(roomRepository) {
@@ -27,7 +27,7 @@ let PongGameService = class PongGameService {
     }
     async addRoom(Createroom) {
         const { roomname, difficulty } = Createroom;
-        const room = new room_entity_1.Room();
+        const room = new game_room_entity_1.GameRoom();
         room.roomname = roomname;
         room.difficulty = difficulty;
         try {
@@ -44,7 +44,7 @@ let PongGameService = class PongGameService {
 };
 PongGameService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(room_entity_1.Room)),
+    __param(0, (0, typeorm_1.InjectRepository)(game_room_entity_1.GameRoom)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
 ], PongGameService);
 exports.PongGameService = PongGameService;

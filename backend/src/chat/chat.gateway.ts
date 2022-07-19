@@ -2,7 +2,7 @@ import { Header, UnauthorizedException } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Console } from 'console';
-import { NotFoundError } from 'rxjs';
+// import { NotFoundError } from 'rxjs';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { Player } from 'src/players/player.entity';

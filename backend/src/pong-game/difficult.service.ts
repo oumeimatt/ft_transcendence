@@ -77,7 +77,10 @@ export class DifficultService {
         first.data.roomname = roomname;
         second.data.roomname = roomname;
         // push room to database
-        await this.pongGameService.addRoom({ roomname, difficulty: 'difficult' });
+        this.pongGameService.addRoom({
+          roomname, difficulty: 'difficult', player1: first.handshake.query.username as string,
+          player2: second.handshake.query.username as string
+        });
         // create a playground for players
         const playground = new PlayGround(0, 0, 800, 600, 'green', 9, true);
         first.data.playground = playground;

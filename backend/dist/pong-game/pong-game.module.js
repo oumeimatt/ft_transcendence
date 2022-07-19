@@ -15,13 +15,13 @@ const difficult_gateway_1 = require("./difficult.gateway");
 const difficult_service_1 = require("./difficult.service");
 const pong_game_controller_1 = require("./pong-game.controller");
 const pong_game_service_1 = require("./pong-game.service");
-const room_entity_1 = require("./typeorm/room.entity");
+const game_room_entity_1 = require("./typeorm/game-room.entity");
 const one_v_one_service_1 = require("./one-v-one.service");
 let PongGameModule = class PongGameModule {
 };
 PongGameModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([room_entity_1.Room])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([game_room_entity_1.GameRoom])],
         controllers: [pong_game_controller_1.PongGameController],
         providers: [
             pong_game_service_1.PongGameService,

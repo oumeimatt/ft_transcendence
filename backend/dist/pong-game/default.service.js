@@ -52,9 +52,8 @@ let DefaultService = class DefaultService {
             });
         }
         else {
-            const first = players.find(player => player.handshake.query.against === client.handshake.query.username);
-            if (!first) {
-                players.push(client);
+            players.push(client);
+            if (players.length === 1) {
                 client.data.side = 'left';
                 client.data.role = 'player';
                 client.emit('WaitingForPlayer', {
@@ -66,13 +65,17 @@ let DefaultService = class DefaultService {
             else {
                 client.data.side = 'right';
                 client.data.role = 'player';
-                const second = client;
+                const second = players.pop();
+                const first = players.pop();
                 const roomname = first.id + '+' + second.id;
                 first.join(roomname);
                 second.join(roomname);
                 first.data.roomname = roomname;
                 second.data.roomname = roomname;
-                this.pongGameService.addRoom({ roomname, difficulty: 'default' });
+                this.pongGameService.addRoom({
+                    roomname, difficulty: 'default', player1: first.handshake.query.username,
+                    player2: second.handshake.query.username
+                });
                 const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
                 first.data.playground = playground;
                 second.data.playground = playground;

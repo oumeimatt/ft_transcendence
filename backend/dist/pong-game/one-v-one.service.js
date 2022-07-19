@@ -52,8 +52,9 @@ let OneVOneService = class OneVOneService {
             });
         }
         else {
-            players.push(client);
-            if (players.length === 1) {
+            const first = players.find(player => player.handshake.query.against === client.handshake.query.username);
+            if (!first) {
+                players.push(client);
                 client.data.side = 'left';
                 client.data.role = 'player';
                 client.emit('WaitingForPlayer', {
@@ -65,14 +66,12 @@ let OneVOneService = class OneVOneService {
             else {
                 client.data.side = 'right';
                 client.data.role = 'player';
-                const second = players.pop();
-                const first = players.pop();
+                const second = client;
                 const roomname = first.id + '+' + second.id;
                 first.join(roomname);
                 second.join(roomname);
                 first.data.roomname = roomname;
                 second.data.roomname = roomname;
-                this.pongGameService.addRoom({ roomname, difficulty: 'default' });
                 const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
                 first.data.playground = playground;
                 second.data.playground = playground;

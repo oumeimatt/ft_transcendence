@@ -72,7 +72,10 @@ let DifficultService = class DifficultService {
                 second.join(roomname);
                 first.data.roomname = roomname;
                 second.data.roomname = roomname;
-                await this.pongGameService.addRoom({ roomname, difficulty: 'difficult' });
+                this.pongGameService.addRoom({
+                    roomname, difficulty: 'difficult', player1: first.handshake.query.username,
+                    player2: second.handshake.query.username
+                });
                 const playground = new utils_1.PlayGround(0, 0, 800, 600, 'green', 9, true);
                 first.data.playground = playground;
                 second.data.playground = playground;
