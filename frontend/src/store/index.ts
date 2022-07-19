@@ -14,7 +14,7 @@ interface Profile {
     senders: Profile[]
 }
 
-const state = reactive<{player: Profile, friends: Profile[], users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean}, {user : Profile, users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean}> ({
+const state = reactive<{player: Profile, user: Profile, friends: Profile[], achievements: string[], users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean, connection: string}> ({
     player :{id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     user : {id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     friends: [],
@@ -26,14 +26,14 @@ const state = reactive<{player: Profile, friends: Profile[], users: Profile[], r
     owner: false,
     editRoom: false,
     connection: '',
-    messageDto:{
-        id:null,
-        content:"",
-    },
-    membershipdtp:{
-        roomid:null,
-        userid:null,
-      }
+    // messageDto:{
+    //     id:null,
+    //     content:"",
+    // },
+    // membershipdtp:{
+    //     roomid:null,
+    //     userid:null,
+    //   }
 })
 
 
