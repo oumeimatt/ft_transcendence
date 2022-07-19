@@ -57,7 +57,7 @@ let ChatService = class ChatService {
             .getMany();
         let rooms = [];
         for (var id of roomsid)
-            rooms.push(await this.getRoomById(id.roomid));
+            rooms.push(await this.roomRepo.getChatroomById(id.roomid));
         return rooms;
     }
     async addMember(room, creator, role) {
@@ -91,6 +91,7 @@ let ChatService = class ChatService {
     }
     async getAllRooms(playerid) {
         const rooms = await this.roomRepo.createQueryBuilder('chatroom')
+            .select(['chatroom.id', 'chatroom.name', 'chatroom.ispublic'])
             .getMany();
         for (let i = 0; i < rooms.length; i++) {
             if (rooms[i].ispublic === false && await this.isMember(rooms[i].id, playerid) === null)
