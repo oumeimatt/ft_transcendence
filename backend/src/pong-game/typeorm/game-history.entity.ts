@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Player } from '../../players/player.entity';
 
 @Entity()
 export class GameHistory {
@@ -6,13 +7,13 @@ export class GameHistory {
   id: number;
 
   @Column()
-  difficulty: string;
+  mode: string;
 
-  @Column()
-  winner: string;
+  @ManyToOne(() => Player)
+  winner: Player;
 
-  @Column()
-  loser: string;
+  @ManyToOne(() => Player)
+  loser: Player;
 
   @Column()
   winnerScore: number;

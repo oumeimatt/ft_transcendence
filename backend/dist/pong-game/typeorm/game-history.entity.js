@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameHistory = void 0;
 const typeorm_1 = require("typeorm");
+const player_entity_1 = require("../../players/player.entity");
 let GameHistory = class GameHistory {
 };
 __decorate([
@@ -20,14 +21,14 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], GameHistory.prototype, "difficulty", void 0);
+], GameHistory.prototype, "mode", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.ManyToOne)(() => player_entity_1.Player),
+    __metadata("design:type", player_entity_1.Player)
 ], GameHistory.prototype, "winner", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.ManyToOne)(() => player_entity_1.Player),
+    __metadata("design:type", player_entity_1.Player)
 ], GameHistory.prototype, "loser", void 0);
 __decorate([
     (0, typeorm_1.Column)(),

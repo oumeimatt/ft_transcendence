@@ -5,6 +5,7 @@ import { chatroom } from "src/chat/room.entity";
 import { Player } from "../players/player.entity";
 import { Relation } from "../relations/relation.entity";
 import { GameRoom } from "src/pong-game/typeorm/game-room.entity";
+import { GameHistory } from "src/pong-game/typeorm/game-history.entity";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
@@ -22,6 +23,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
         membership,
         message,
         GameRoom,
+        GameHistory
     ],
     synchronize: true,
     logging: false,

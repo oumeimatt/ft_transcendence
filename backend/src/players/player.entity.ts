@@ -5,6 +5,7 @@ import { Relation } from "../relations/relation.entity";
 import { Exclude } from "class-transformer";
 import { membership } from "src/chat/membership.entity";
 import { message } from "src/chat/message.entity";
+import { GameHistory } from "src/pong-game/typeorm/game-history.entity";
 
 @Entity('player')
 @Unique(['username'])
@@ -20,7 +21,7 @@ export class Player extends BaseEntity {
 	@Column()
 	avatar: string;
 
-	@Column()
+	@Column({type: 'real'})
 	level: number;
 
 	@Column()
@@ -53,4 +54,7 @@ export class Player extends BaseEntity {
 
     @OneToMany(()=>message, message=> message.Player)
     messages:message[];
+
+	@OneToMany(() => GameHistory, gameHistory => gameHistory.winner || gameHistory.winner)
+	gameHistory: GameHistory;
 }

@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, onUnmounted, ref } from 'vue';
 const store = inject('store')
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
@@ -131,6 +131,12 @@ onMounted(() => {
     } else {
        window.location.href = '/game';
     }
+});
+
+onUnmounted(() => {
+   if (socket != null) {
+    (socket.value as Socket).disconnect();
+   }
 });
 
 function ConnectedTwice() {
