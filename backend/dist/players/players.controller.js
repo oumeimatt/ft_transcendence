@@ -35,6 +35,8 @@ let UsersController = class UsersController {
         const achievements = await this.usersService.getAchievements(user.id);
         const data = {
             "profile": playerData,
+            "wins": playerData.wins,
+            "losses": playerData.losses,
             "friends": friends,
             "blockedUsers": blockedUsers,
             "achievements": achievements,
@@ -46,12 +48,10 @@ let UsersController = class UsersController {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         const playerData = await this.usersService.getUserById(id);
         const friends = await this.relationService.getUsersByStatus(playerData, relation_status_enum_1.RelationStatus.FRIEND);
-        const blockedUsers = await this.relationService.getUsersByStatus(user, relation_status_enum_1.RelationStatus.BLOCKED);
         const achievements = await this.usersService.getAchievements(id);
         const data = {
             "profile": playerData,
             "friends": friends,
-            "blockedUsers": blockedUsers,
             "achievements": achievements,
         };
         return data;

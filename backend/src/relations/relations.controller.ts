@@ -56,7 +56,6 @@ export class RelationsController {
 		@Req() req: Request,
 		@Param('id', ParseIntPipe) unfollow_id: number,
 	): Promise<void> {
-		console.log('remove friend -');
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		return this.relationService.removeFriend(user, unfollow_id);
 	}

@@ -29,6 +29,10 @@ let RelationRepository = class RelationRepository extends typeorm_1.Repository {
         return relations;
     }
     async addFriend(user, friend_id) {
+        const exist = await this.findOne({ where: { sender: user, receiver: friend_id, status: relation_status_enum_1.RelationStatus.FRIEND } });
+        if (exist) {
+            return exist;
+        }
         const blocked = await this.findOne({ where: { sender: user, receiver: friend_id, status: relation_status_enum_1.RelationStatus.BLOCKED } });
         if (blocked) {
             console.log('user is blocked !!!!!!!!!!!!');
