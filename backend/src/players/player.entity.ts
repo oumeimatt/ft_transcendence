@@ -13,6 +13,7 @@ export class Player extends BaseEntity {
 	@PrimaryColumn()
 	id: number;
 
+	// @Column({unique: true})
 	@Column()
 	username: string;
 

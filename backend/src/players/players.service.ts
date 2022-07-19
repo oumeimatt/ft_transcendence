@@ -108,7 +108,7 @@ export class UsersService {
 			s = -3;
 		else if (user.wins >= 5)
 			s = -2;
-		else if (user.wins == 1 || user.losses == 1)
+		else if (user.wins == 1)
 			s = -1;
 		else
 			s = 4;
@@ -147,7 +147,6 @@ export class UsersService {
 
 		try {
 			const decoded = await this.jwtService.verify(token.toString());
-			// console.log(' -> ' + decoded.username);
 			if (typeof decoded === 'object' && 'id' in decoded)
 				return decoded;
 			throw new BadRequestException();
