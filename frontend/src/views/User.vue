@@ -58,10 +58,10 @@
           <div class="grid md:grid-cols-1 lg:grid-cols-1 gap-1 lg-gap-1  text-center  mt-8" >
             <div class="p-4  bg-slate-500 rounded-md " > 
               <p class="text-2xl font-semibold pb-4  border-b border-neutral-800"> Friends </p>
-              <div v-for="friend in store.state.userFriends" :key="friend">
-							    <div class=" w-10 h-10 pt-4"> 
-                    <router-link  :to="{ name:'User', params: {id: friend.id}}"> <img :src="store.methods.playerAvatar(friend)" class="w-10 h-10 rounded-full bg-white"> </router-link>
-                  </div>  
+               <div  class="pt-4 flex items-scretch space-x-2">
+                <div v-for="friend in store.state.userFriends" :key="friend" class="flex ">
+                    <router-link  :to="{ name:'User', params: {id: friend.id}}"> <img :src="store.methods.playerAvatar(friend)" class="rounded-full bg-white w-10 h-10 "> </router-link>
+                </div>
               </div>
             </div>
           </div>
@@ -165,14 +165,14 @@ const props = defineProps({
 
   // })
 onUpdated(async  () => {
-
-      await axios
+  
+  await axios
           .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
           .then(data =>{ store.state.user = data.data.profile;
             store.state.userFriends = data.data.friends;
             store.state.userAchievements = data.data.achievements})
           .catch(err => console.log(err.message))
-      var user = store.state.friends.find( x => x.id.toString() === props.id )
+    var user = store.state.friends.find( x => x.id.toString() === props.id )
       console.log("userrr", user)
       if (user != null){
           isFriend.value = true
@@ -182,6 +182,7 @@ onUpdated(async  () => {
           isFriend.value = false
           add.value = true
       }
+
       // await fetch('http://localhost:3001/profile') 
 			//     .then(res => res.json())
 			//     .then(data => store.state.player = data)

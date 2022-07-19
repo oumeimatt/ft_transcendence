@@ -8,8 +8,8 @@ import { GameRoom } from "src/pong-game/typeorm/game-room.entity";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    // host: '127.0.0.1',
-    host: '192.168.99.117',
+    host: '127.0.0.1',
+    // host: '192.168.99.117',
     port: 5432,
     username: 'ping',
     password: 'pong',
