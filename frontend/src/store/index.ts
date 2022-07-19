@@ -75,6 +75,14 @@ const methods = reactive({
 	// 	}
 	// 	return null
 	// },
+    playerAvatar(player:Profile ){
+        if (player.avatar.startsWith("https://avatars.dicebear.com") || player.avatar.startsWith("src/assets")){
+            console.log("random    ",player.avatar)
+            return player.avatar
+        }
+        console.log("changed    ","src/assets/" + player.avatar)
+        return ("src/assets/" + player.avatar )
+    },
     usersInfo(username: string){
         for (var user of state.users) {
             if (user.id == id){

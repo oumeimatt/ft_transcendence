@@ -66,7 +66,7 @@
           </li>
           <li>
               <button @click="show = !show" type="button" class="translate-y-1/4 bottom-2/4  flex mr-3 text-sm rounded-full md:mr-0 focus:ring-2 focus:ring-gray-300 focus:ring-gray-600"   data-dropdown-toggle="dropdown">
-              <img class="w-8 h-8 rounded-full bg-white " :src="store.state.player.avatar" alt="">
+              <img class="w-8 h-8 rounded-full bg-white " :src="store.methods.playerAvatar(store.state.player)" alt="">
               <div v-if="show" class=" z-10 bg-slate-700 rounded-md shadow-xl lg:absolute top-11 right-0 w-44 absolute">
                 <router-link  to="/Profile" class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-slate-800">
                   Profile </router-link> 
@@ -134,6 +134,7 @@
     const id = ref(0 as number)
     const search = ref('search...' as string)
     const image = ref(null as any)
+    const ext = ref(''as string)
 
 
     function toggleNav () {showMenu.value = !showMenu.value}
@@ -173,7 +174,7 @@
     function saveChanges(){
       if (nickname.value.length > 0)
         changeNickname(nickname.value)
-      if (store.state.imageUrl.length > 0)
+      if (ext.value.length > 0)
         changeAvatar()
     }
 
@@ -188,18 +189,24 @@
     }
 
     async function changeAvatar(){
-      store.state.player.avatar = store.state.imageUrl
+      const formData = new FormData()
+      const imageName = store.state.player.username+'.' + ext.value
+      formData.append('avatar', image.value)
+      console.log(formData)
+      const headers = { 'Content-Type': 'multipart/form-data'};
       await axios
-          .patch('http://localhost:3001/settings/avatar' ,{avatar: store.state.imageUrl} ,{ withCredentials: true })
-          .then(data =>{ console.log(data.data) })
-          .catch(err => console.log(err.message))
+          .post(`http://localhost:3001/settings/avatar/${imageName}`, formData, {withCredentials: true , headers })
+          .then(() => {
+
+              })
+          .catch((error) => console.log(error.response));
+          console.log("imageName == ",imageName)
+      store.state.player.avatar = imageName
     }
 
     function onChange(e){
-      const file = e.target.files[0]
-      image.value = file
-      store.state.imageUrl = URL.createObjectURL(file)
-      console.log(store.state.imageUrl)
+      image.value = e.target.files[0]
+      ext.value = image.value.name.split('.')[image.value.name.split.length - 1]
     }
 
 
@@ -212,6 +219,6 @@
     })
 
 
-
+    // var avatar = "src/assets/"+ store.state.player.avatar
 
 </script>
