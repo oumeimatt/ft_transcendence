@@ -16,9 +16,11 @@
 				<div class="grid md:grid-cols-1 lg:grid-cols-1 gap-1 lg-gap-1  text-center   mt-8" >
 					<div class="p-4 bg-slate-500 rounded-md " > 
 						<p class="text-2xl font-semibold pb-4 border-b border-neutral-800 "> Friends </p>
+						<div  class="pt-4 flex items-scretch space-x-2">
                             <div v-for="friend in store.state.friends" :key="friend">
 							    <router-link  :to="{ name:'User', params: {id: friend.id}}"> <img :src="getUserAvatar(friend.id)" class="w-10 h-10 rounded-full bg-white"> </router-link>
                             </div>
+						</div>
 					</div>
 				</div>
 				<div class="grid md:grid-cols-2 lg:grid-cols-2 gap-2 lg-gap-2 text-center  mt-8" >

@@ -6,13 +6,13 @@
         <h1> Select difficulty</h1>
       </div>
       <div class="grid grid-rows-3 gap-y-2 text-center ">
-        <div class="mt-4"> 
-          <router-link :to="{name: 'Play', params: { difficulty: 'default' } }" class="bg-slate-300 w-4/12 h-small rounded text-xl font-bold hover:bg-slate-700 hover:ring-white ring-2  hover:text-gray-100">
+        <div class="mt-4 cursor-pointer  mx-auto pt-6 bg-slate-300 w-4/12 h-small rounded text-xl font-bold hover:bg-slate-700 hover:ring-white ring-2  hover:text-gray-100"> 
+          <router-link :to="{name: 'Play', params: { difficulty: 'default' } }">
             Default
           </router-link>
         </div>
-        <div class="mt-4"> 
-          <router-link :to="{name: 'Play', params: { difficulty: 'difficult' } }" class="bg-slate-400 w-4/12 h-small rounded text-xl font-bold hover:bg-slate-700 hover:ring-white ring-2  hover:text-gray-100">
+        <div class="mt-4 cursor-pointer mx-auto pt-6 bg-slate-400 w-4/12 h-small rounded text-xl font-bold hover:bg-slate-700 hover:ring-white ring-2  hover:text-gray-100"> 
+          <router-link :to="{name: 'Play', params: { difficulty: 'difficult' } }">
             Difficult
           </router-link>
         </div>
