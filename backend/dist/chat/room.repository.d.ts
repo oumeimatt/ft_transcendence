@@ -7,5 +7,6 @@ export declare class roomRepository extends Repository<chatroom> {
     createRoom(RoomDto: RoomDto, creators: Player[]): Promise<chatroom>;
     addMember(room: chatroom, creator: Player, role: RoleStatus): Promise<void>;
     getRoomById(id: number): Promise<chatroom>;
+    getChatroomById(id: number): Promise<chatroom>;
     getRoomsForUser(Playerid: number): Promise<void>;
 }

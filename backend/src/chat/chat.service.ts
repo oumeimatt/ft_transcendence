@@ -77,7 +77,7 @@ export class ChatService {
     
         
         for (var id of roomsid)
-            rooms.push(await this.getRoomById(id.roomid));
+            rooms.push(await this.roomRepo.getChatroomById(id.roomid));
         return rooms;
     }
 
@@ -125,6 +125,7 @@ export class ChatService {
         
         //The public && private ones
         const rooms = await this.roomRepo.createQueryBuilder('chatroom')
+        .select(['chatroom.id', 'chatroom.name', 'chatroom.ispublic'])
         .getMany();
         
         //if the channel os private=>check if the user is a member

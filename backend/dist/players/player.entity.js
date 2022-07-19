@@ -15,6 +15,7 @@ const player_status_enum_1 = require("./player_status.enum");
 const relation_entity_1 = require("../relations/relation.entity");
 const membership_entity_1 = require("../chat/membership.entity");
 const message_entity_1 = require("../chat/message.entity");
+const game_history_entity_1 = require("../pong-game/typeorm/game-history.entity");
 let Player = class Player extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -30,7 +31,7 @@ __decorate([
     __metadata("design:type", String)
 ], Player.prototype, "avatar", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'real' }),
     __metadata("design:type", Number)
 ], Player.prototype, "level", void 0);
 __decorate([
@@ -61,6 +62,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => message_entity_1.message, message => message.Player),
     __metadata("design:type", Array)
 ], Player.prototype, "messages", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => game_history_entity_1.GameHistory, gameHistory => gameHistory.winner || gameHistory.winner),
+    __metadata("design:type", game_history_entity_1.GameHistory)
+], Player.prototype, "gameHistory", void 0);
 Player = __decorate([
     (0, typeorm_1.Entity)('player'),
     (0, typeorm_1.Unique)(['username'])

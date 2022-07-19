@@ -11,20 +11,20 @@
 						<svg xmlns="http://www.w3.org/2000/svg" class="md:h-8 md:w-8 h-4 w-4 fill-slate-400" fill="none" viewBox="0 0 24 24"  stroke-width="1">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
 						</svg>
-						<p class="text-slate-400 lg:text-xl md:text-xl text-sm  font-bold hover:underline"> All channels </p>
+						<p  class="text-slate-400 lg:text-xl md:text-xl text-sm  font-bold hover:underline"> All channels </p>
 					</button>
 					<div class="h-5/6 scrollbar mt-4 scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/5 ">
 						<div v-if="showAllRooms" >
-							<div v-for="room in store.state.allRooms" :key="room" >
-								<div   v-if="room.privacy == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
+							<div v-for="ChatRoom in store.state.allRooms" :key="ChatRoom" >
+								<div   v-if="ChatRoom.ispublic == false" class="flex justify-start items-center space-x-2 mt-4"> 
 									<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 										<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 									</svg>
-									<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ room.name }} </router-link> 
+									<router-link :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ ChatRoom.name }} </router-link> 
 								</div>
-								<div v-if="room.privacy == 'public'" class="flex justify-start items-center space-x-2 mt-4"> 
+								<div v-if="ChatRoom.ispublic == true" class="flex justify-start items-center space-x-2 mt-4"> 
 									<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-									<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ room.name }} </router-link>
+									<router-link :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
 								</div>
 							</div>
 						</div>
@@ -32,18 +32,18 @@
 					</div>
 				</div>
 				<div class=" mt-8  pb-8  ">
-					<h1 class="text-slate-300 font-semibold text-xl  ">My channels</h1>/
+					<h1 class="text-slate-300 font-semibold text-xl  ">My channels</h1>
 					<div class="h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3 ">
-						<div v-for="room in store.state.rooms" :key="room" >
-							<div @click="store.methods.roomOwner(store.methods.RoomInfo(room.name).owner)" v-if="room.type == 'private'" class="flex justify-start items-center space-x-2 mt-4"> 
+						<div v-for="Room in store.state.rooms" :key="Room" >
+							<div  v-if="Room.ispublic == false" class="flex justify-start items-center space-x-2 mt-4"> 
 								<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 								</svg>
-								<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ room.name }} </router-link> 
+								<router-link :to="{name:'ChatRoom', params: {name: Room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ Room.name }} </router-link> 
 							</div>
-							<div @click="store.methods.roomOwner(store.methods.RoomInfo(room.name).owner)"  v-if="room.type == 'public'" class="flex justify-start items-center space-x-2 mt-4"> 
+							<div   v-if="Room.ispublic == true" class="flex justify-start items-center space-x-2 mt-4"> 
 								<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-								<router-link :to="{name:'ChatRoom', params: {name: room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ room.name }} </router-link>
+								<router-link :to="{name:'ChatRoom', params: {name: Room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ Room.name }} </router-link>
 							</div>
 						</div>
 					</div>
@@ -100,6 +100,7 @@
 	import io from "socket.io-client";
 	import axios from 'axios';
 	import { chatRoom } from '../interfaces';
+import { anyTypeAnnotation } from '@babel/types';
 	const store = inject('store')
 
 	//! called first time the chat is accessed
@@ -114,12 +115,12 @@
   			name: "",
   			privacy: "",
 			password: "",
-			players: []
+			players:[],
 	};
 
 	const showCreate = ref(false)
 	const showAllRooms = ref(false)
-	const showRooms = () => (showAllRooms.value = !showAllRooms.value)
+	function showRooms () { showAllRooms.value = !showAllRooms.value}
 	function  createRoom () {
 		showCreate.value = true
 	}
@@ -140,10 +141,16 @@
 
 	 onMounted(async () => {
 		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		  .then(data=> { store.state.rooms = data.data ; console.log(data.data)})
+		  .then(data=> { store.state.rooms = data.data})
 		//  console.log(data.data);}
 		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		.then(data=> {store.state.allrooms = data.data })
+		.then(data=> {store.state.allRooms = data.data ; console.log(store.state.allRooms);})
+
+		store.state.connection.on("message", (data) => {store.state.allRooms = data.data;
+		//console.log(data.data);
+		// console.log('listen to event message');
+		});
+
 	 })
 	function getUserName(player: any){
       var result = store.state.users.find( x=> x.id.toString() === player.id)

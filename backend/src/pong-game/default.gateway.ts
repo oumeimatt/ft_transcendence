@@ -14,7 +14,6 @@ export class DefaultGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer() wss: Server;
-  readonly logger = new Logger('Default PongGame Server: ');
   private players: Socket[];
 
   constructor(private defaultService: DefaultService) {
@@ -22,13 +21,10 @@ export class DefaultGateway
   }
 
   handleConnection(client: Socket) {
-    this.logger.log(client.id + ' Connected!');
-    // console.log(client.handshake.query);
     this.defaultService.handleUserConnected(client, this.players, this.wss);
   }
 
   handleDisconnect(client: Socket) {
-    this.logger.log(client.id + ' Disconnected!');
     this.players = this.players.filter((clt) => {
       return clt.id !== client.id;
     });

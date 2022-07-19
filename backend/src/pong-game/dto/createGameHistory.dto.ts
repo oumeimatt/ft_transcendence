@@ -1,17 +1,16 @@
 import { IsIn, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Player } from '../utils';
 
 export class CreateGameHistoryDto {
   @IsNotEmpty()
   @IsString()
-  difficulty: string;
+  mode: string;
 
   @IsNotEmpty()
-  @IsString()
-  winner: string;
+  winner: Player;
 
   @IsNotEmpty()
-  @IsString()
-  loser: string;
+  loser: Player;
 
   @IsNotEmpty()
   @IsNumber()

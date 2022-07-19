@@ -92,6 +92,7 @@ let DefaultService = class DefaultService {
         const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
         first.data.playground = playground;
         second.data.playground = playground;
+        this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & ' + second.data.user.username);
         const timer = setInterval(() => {
             if (playground.update() == false) {
                 const pgi = this.handleGetBackGround(playground);
@@ -102,7 +103,7 @@ let DefaultService = class DefaultService {
             else {
                 clearInterval(timer);
                 clearInterval(first.data.gameInterval);
-                this.logger.log('Game in room ' + roomname + ' Finished');
+                this.logger.log('Game in Room: ' + roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
                 if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
                     this.usersService.updateLevel(first.data.user.id);
                     this.usersService.winsGame(first.data.user.id);
@@ -121,20 +122,24 @@ let DefaultService = class DefaultService {
     }
     async handleUserDisconnected(wss, client) {
         if (client.handshake.query.role === 'player' && client.data.gameInterval) {
-            client.data.playground.ball.reset(client.data.playground.width / 2, client.data.playground.height / 2);
-            client.data.playground.leftPaddle.reset();
-            client.data.playground.rightPaddle.reset();
-            wss.to(client.data.roomname).emit('gameInterrupted', {
-                playground: this.handleGetBackGround(client.data.playground),
-            });
+            if (client.data.gameInterval._destroyed === false) {
+                client.data.playground.ball.reset(client.data.playground.width / 2, client.data.playground.height / 2);
+                client.data.playground.leftPaddle.reset();
+                client.data.playground.rightPaddle.reset();
+                wss.to(client.data.roomname).emit('gameInterrupted', {
+                    playground: this.handleGetBackGround(client.data.playground),
+                });
+                clearInterval(client.data.gameInterval);
+                this.logger.log('Game Interval Cleared');
+                console.log(client.data.opponentId);
+                await this.usersService.updateLevel(client.data.opponentId);
+                await this.usersService.winsGame(client.data.opponentId);
+                await this.usersService.LostGame(client.data.user.id);
+                await this.pongGameService.deleteRoom(client.data.roomname);
+                this.logger.log('Game in Room: ' + client.data.roomname + ' Finished');
+            }
             client.leave(client.data.roomname);
-            clearInterval(client.data.gameInterval);
             await this.usersService.updateStatus(client.data.user.id, player_status_enum_1.UserStatus.ONLINE);
-            this.usersService.updateLevel(client.data.opponentId);
-            this.usersService.winsGame(client.data.opponentId);
-            this.usersService.LostGame(client.data.user.id);
-            await this.pongGameService.deleteRoom(client.data.roomname);
-            this.logger.log('Game Interval Cleared');
         }
         else if (client.handshake.query.role === 'player') {
             await this.usersService.updateStatus(client.data.user.id, player_status_enum_1.UserStatus.ONLINE);

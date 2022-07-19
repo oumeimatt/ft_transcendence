@@ -72,26 +72,35 @@ let UsersService = class UsersService {
     }
     async updateLevel(id) {
         const updated = await this.getUserById(id);
-        updated.level += 0.125;
-        await updated.save();
+        if (updated) {
+            console.log(updated.level);
+            updated.level = updated.level + 0.10;
+            await updated.save();
+        }
         return updated;
     }
     async winsGame(id) {
         const updated = await this.getUserById(id);
-        updated.wins++;
-        await updated.save();
+        if (updated) {
+            updated.wins++;
+            await updated.save();
+        }
         return updated;
     }
     async LostGame(id) {
         const updated = await this.getUserById(id);
-        updated.losses++;
-        await updated.save();
+        if (updated) {
+            updated.losses++;
+            await updated.save();
+        }
         return updated;
     }
     async updateStatus(id, status) {
         const updated = await this.getUserById(id);
-        updated.status = status;
-        await updated.save();
+        if (updated) {
+            updated.status = status;
+            await updated.save();
+        }
         return updated;
     }
     async getAchievements(id) {

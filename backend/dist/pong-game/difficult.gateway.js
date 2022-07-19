@@ -10,22 +10,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DifficultGateway = void 0;
-const common_1 = require("@nestjs/common");
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 const difficult_service_1 = require("./difficult.service");
 let DifficultGateway = class DifficultGateway {
     constructor(difficultService) {
         this.difficultService = difficultService;
-        this.logger = new common_1.Logger('Difficult PongGame Server: ');
         this.players = [];
     }
     handleConnection(client) {
-        this.logger.log(client.id + ' Connected!');
         this.difficultService.handleUserConnected(client, this.players, this.wss);
     }
     handleDisconnect(client) {
-        this.logger.log(client.id + ' Disconnected!');
         this.players = this.players.filter((clt) => {
             return clt.id !== client.id;
         });

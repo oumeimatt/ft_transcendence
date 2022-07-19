@@ -159,6 +159,7 @@
             localStorage.clear();
             localStorage.setItem('user', data.data.cookie);
             store.state.player = data.data.profile;
+
             store.state.friends = data.data.friends;
             console.log(data.data.friends)
             store.state.achievements = data.data.achievements
@@ -166,7 +167,7 @@
           .catch(err => console.log(err.message))
       await axios
           .get('http://localhost:3001/users' ,{ withCredentials: true })
-          .then(data =>{ store.state.users = data.data })
+          .then(data =>{ store.state.users = data.data ; console.log(store.state.users)})
           .catch(err => console.log(err.message))
 
     })

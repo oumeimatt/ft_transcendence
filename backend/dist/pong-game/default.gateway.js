@@ -10,22 +10,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DefaultGateway = void 0;
-const common_1 = require("@nestjs/common");
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 const default_service_1 = require("./default.service");
 let DefaultGateway = class DefaultGateway {
     constructor(defaultService) {
         this.defaultService = defaultService;
-        this.logger = new common_1.Logger('Default PongGame Server: ');
         this.players = [];
     }
     handleConnection(client) {
-        this.logger.log(client.id + ' Connected!');
         this.defaultService.handleUserConnected(client, this.players, this.wss);
     }
     handleDisconnect(client) {
-        this.logger.log(client.id + ' Disconnected!');
         this.players = this.players.filter((clt) => {
             return clt.id !== client.id;
         });

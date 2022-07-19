@@ -41,6 +41,14 @@ let roomRepository = class roomRepository extends typeorm_1.Repository {
         const room = await this.findOne({ id });
         return room;
     }
+    async getChatroomById(id) {
+        const room = await this.createQueryBuilder('room')
+            .where('room.id = :id', { id })
+            .select(['room.id', 'room.name', 'room.ispublic'])
+            .getOne();
+        console.log(room);
+        return room;
+    }
     async getRoomsForUser(Playerid) {
         const query = await this.createQueryBuilder('membership')
             .where('name = :Playerid', { Playerid });

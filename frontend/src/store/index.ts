@@ -14,7 +14,13 @@ interface Profile {
     senders: Profile[]
 }
 
-const state = reactive<{player: Profile, user: Profile, friends: Profile[], achievements: string[],userFriends: Profile[], userAchievements:string[], users: Profile[], rooms:string[], allRooms:string[], imageUrl: string, owner:boolean, editRoom: boolean, connection: string}> ({
+interface chatRoom {
+    id: number,
+    name: string,
+    isPublic: boolean,
+}
+
+const state = reactive<{player: Profile, user: Profile, friends: Profile[], achievements: string[],userFriends: Profile[], userAchievements:string[], users: Profile[], rooms:chatRoom[], allRooms:chatRoom[], imageUrl: string, owner:boolean, editRoom: boolean, connection: string}> ({
     player :{id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     user : {id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     friends: [],

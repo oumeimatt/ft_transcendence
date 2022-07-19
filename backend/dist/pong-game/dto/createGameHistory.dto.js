@@ -11,22 +11,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateGameHistoryDto = void 0;
 const class_validator_1 = require("class-validator");
+const utils_1 = require("../utils");
 class CreateGameHistoryDto {
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateGameHistoryDto.prototype, "difficulty", void 0);
+], CreateGameHistoryDto.prototype, "mode", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
+    __metadata("design:type", utils_1.Player)
 ], CreateGameHistoryDto.prototype, "winner", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
+    __metadata("design:type", utils_1.Player)
 ], CreateGameHistoryDto.prototype, "loser", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),

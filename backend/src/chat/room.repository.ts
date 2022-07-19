@@ -48,6 +48,17 @@ export class roomRepository extends Repository<chatroom>{
         return room;
     }
 
+    async getChatroomById(id:number):Promise<chatroom>{
+        const room = await this.createQueryBuilder('room')
+        .where('room.id = :id', {id})
+        .select(['room.id', 'room.name', 'room.ispublic'])
+        .getOne();
+
+        console.log(room);
+        return room;
+
+    }
+
     async getRoomsForUser(Playerid:number):Promise<void>{
         //! The new query
         
