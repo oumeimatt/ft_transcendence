@@ -134,22 +134,31 @@ import { anyTypeAnnotation } from '@babel/types';
           players:room.players,
         }
         store.state.connection.emit("createRoom", roomdata);
-       console.log(roomdata);
+       	console.log(roomdata);
         // this.room.players.splice(0);
         //I should sent a room
     }
+
+	function CreateDM(){
+		let DM={
+			//name of 
+			//privacy:private
+			//isChannel:false
+			//id of receiver
+		}
+	}
 
 	 onMounted(async () => {
 		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 		  .then(data=> { store.state.rooms = data.data})
 		//  console.log(data.data);}
 		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		.then(data=> {store.state.allRooms = data.data ; console.log(store.state.allRooms);})
+		.then(data=> {store.state.allRooms = data.data;})
 
-		store.state.connection.on("message", (data) => {store.state.allRooms = data.data;
-		//console.log(data.data);
-		// console.log('listen to event message');
-		});
+		store.state.connection.on("message", (data) => {store.state.rooms = data;});
+
+		store.state.connection.on("allrooms", (data) => {store.state.allRooms = data;});
+
 
 	 })
 	function getUserName(player: any){

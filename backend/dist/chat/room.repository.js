@@ -17,7 +17,7 @@ let roomRepository = class roomRepository extends typeorm_1.Repository {
         const Room = new room_entity_1.chatroom();
         Room.name = name;
         Room.ischannel = true;
-        if (privacy === 'private')
+        if (privacy === 'Private')
             Room.ispublic = false;
         Room.password = password;
         await Room.save();

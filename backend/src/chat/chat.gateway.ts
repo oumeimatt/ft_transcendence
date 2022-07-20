@@ -105,22 +105,26 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
             this.players.push(user);
           //throw exception if user not found
         }
-        // this.players.push(socket.data.player);
+        // this.players.push(socket.data.player); 
 
-        const room =  await this.chatService.createRoom(roomdto,this.players);
-        await this.chatService.addMember(room, socket.data.player, RoleStatus.OWNER);
+        const room =  await this.chatService.createRoom(roomdto,this.players); //! users
+        await this.chatService.addMember(room, socket.data.player, RoleStatus.OWNER); //! Owner
 
         let userid:any;
         let rooms:any;
+        let allrooms:any;
         let members=await this.chatService.getMembersByRoomId(room.id);
         for (var x of this.user)
         {
-        //  console.log(`the connected users  ${x.id}`);
+          console.log(`the connected users  ${x.id}`);
           userid = await x.handshake.query.token;
           userid =  await this.userService.verifyToken(userid);//await this.authService.verifyJwt(userid);
           rooms = await this.chatService.getRoomsForUser(userid.id);
+          allrooms = await this.chatService.getAllRooms(userid.id);
           this.server.to(x.id).emit('message', rooms);
           this.server.to(x.id).emit('members', members);
+          console.log(' all rooms '+allrooms);
+          this.server.to(x.id).emit('allrooms', allrooms);
           //No need the send the messages => there is none
         }
         this.players.splice(0);
@@ -196,11 +200,11 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     //
     @SubscribeMessage('direct-message')
     async sendDirectMessage(sender:Socket, receiverid:number ){
-      //create a room of type !isChannel => if not exist
+      //create a private room of type !isChannel => if not exist
       
       //with two membership => users =>sender && receiver
+
       //create message
-      //
     }
 
     //Direct-message

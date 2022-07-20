@@ -16,7 +16,7 @@ export class roomRepository extends Repository<chatroom>{
         const Room = new chatroom();
         Room.name = name;
         Room.ischannel = true;
-        if (privacy === 'private')
+        if (privacy === 'Private')
             Room.ispublic = false;
         Room.password = password;
         await Room.save();

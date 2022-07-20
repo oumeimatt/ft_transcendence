@@ -78,13 +78,18 @@ let ChatGateway = class ChatGateway {
         await this.chatService.addMember(room, socket.data.player, membership_model_1.RoleStatus.OWNER);
         let userid;
         let rooms;
+        let allrooms;
         let members = await this.chatService.getMembersByRoomId(room.id);
         for (var x of this.user) {
+            console.log(`the connected users  ${x.id}`);
             userid = await x.handshake.query.token;
             userid = await this.userService.verifyToken(userid);
             rooms = await this.chatService.getRoomsForUser(userid.id);
+            allrooms = await this.chatService.getAllRooms(userid.id);
             this.server.to(x.id).emit('message', rooms);
             this.server.to(x.id).emit('members', members);
+            console.log(' all rooms ' + allrooms);
+            this.server.to(x.id).emit('allrooms', allrooms);
         }
         this.players.splice(0);
     }
