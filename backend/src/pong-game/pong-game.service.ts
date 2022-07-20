@@ -42,6 +42,7 @@ export class PongGameService {
 
   async getGamesHistory(id: number): Promise<{ gamesHistory: GameHistory[] }> {
     const games = await this.gameRepository.find({
+      relations: ['winner', 'loser'],
       where: [
         {
           winner: {
@@ -54,6 +55,27 @@ export class PongGameService {
           },
         }
       ],
+      select: ['winner', 'loser', 'winnerScore', 'loserScore', 'mode']
+    });
+    games.map((game) => {
+      // delete unused data from winner
+      delete game.winner.id;
+      delete game.winner.avatar;
+      delete game.winner.level;
+      delete game.winner.losses;
+      delete game.winner.wins;
+      delete game.winner.status;
+      delete game.winner.senders;
+      delete game.winner.two_fa;
+      // delete unused data from loser
+      delete game.loser.id;
+      delete game.loser.avatar;
+      delete game.loser.level;
+      delete game.loser.losses;
+      delete game.loser.wins;
+      delete game.loser.status;
+      delete game.loser.senders;
+      delete game.loser.two_fa;
     });
     return { gamesHistory: games };
   }

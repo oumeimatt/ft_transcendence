@@ -102,7 +102,8 @@ import { defineComponent , ref, inject, onMounted, onUpdated } from 'vue';
 	let errors = ref('' as string)
 
     onMounted(() => {
-        getGamesHistory(store.state.player.id);
+        // getGamesHistory(store.state.player.id);
+		getGamesHistory(62530);
     })
 
 	function getUserAvatar(id: number){
