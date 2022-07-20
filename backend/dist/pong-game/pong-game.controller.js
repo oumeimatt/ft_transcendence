@@ -21,7 +21,7 @@ let PongGameController = class PongGameController {
     }
 };
 __decorate([
-    (0, common_1.Get)('/rooms'),
+    (0, common_1.Get)('/games-rooms'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

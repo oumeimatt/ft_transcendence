@@ -23,7 +23,7 @@ let PongGameService = class PongGameService {
     }
     async getRooms() {
         const rooms = await this.roomRepository.find();
-        return { rooms: rooms };
+        return { gamesRooms: rooms };
     }
     async addRoom(Createroom) {
         const { roomname, difficulty, player1, player2 } = Createroom;

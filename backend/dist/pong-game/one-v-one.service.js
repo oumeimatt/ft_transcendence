@@ -31,9 +31,9 @@ let OneVOneService = class OneVOneService {
         }
     }
     async handleSpectatorConnected(client) {
-        const { rooms } = await this.pongGameService.getRooms();
+        const { gamesRooms } = await this.pongGameService.getRooms();
         const roomname = client.handshake.query.roomname;
-        const found = rooms.find(room => room.roomname == roomname);
+        const found = gamesRooms.find(room => room.roomname == roomname);
         if (found) {
             client.join(roomname);
         }

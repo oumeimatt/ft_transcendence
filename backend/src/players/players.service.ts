@@ -138,6 +138,11 @@ export class UsersService {
 		return achievements.slice(s);
 	}
 
+	async findPlayer(id: number): Promise<Player> {
+		const found = await this.userRepository.findOne({ where: { id } });
+		return found;
+	}
+
 	async findOrCreate(id: number, login: string): Promise<Player> {
 		console.log("find or create > number of arguments passed: ", arguments.length);
 		console.log(id, login);

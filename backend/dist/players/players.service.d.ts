@@ -18,6 +18,7 @@ export declare class UsersService {
     LostGame(id: number): Promise<Player>;
     updateStatus(id: number, status: UserStatus): Promise<Player>;
     getAchievements(id: number): Promise<any>;
+    findPlayer(id: number): Promise<Player>;
     findOrCreate(id: number, login: string): Promise<Player>;
     verifyToken(token: string): Promise<Player>;
 }

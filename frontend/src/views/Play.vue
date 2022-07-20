@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted, onUnmounted, ref } from 'vue';
+import { inject, onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 const store = inject('store')
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
@@ -29,7 +29,10 @@ let game = ref({} as HTMLCanvasElement);
 let playground = ref(null as PlaygroundInterface);
 
 onMounted(() => {
-    if (props.difficulty) {
+    if (store.state.player.status === 'playing' || !props.difficulty) {
+        window.location.href = '/game';
+    }
+    else {
        socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
         query: {
                 'role': 'player',
@@ -128,8 +131,6 @@ onMounted(() => {
             });
             }
         });
-    } else {
-       window.location.href = '/game';
     }
 });
 

@@ -4,6 +4,6 @@ export declare class PongGameController {
     private pongGameService;
     constructor(pongGameService: PongGameService);
     getRooms(): Promise<{
-        rooms: GameRoom[];
+        gamesRooms: GameRoom[];
     }>;
 }

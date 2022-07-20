@@ -1,25 +1,55 @@
 <template>
 	<Header/>
-	<div v-if="store.state.player.status == 'online'" class="Container">
-        <div class="flex flex-col text-center items-center">
-            <div class="mt-8 text-xl md:text-2xl font-bold text-gray-400">
-                <span> oel-yous </span>  <span class="ml-4 mr-4 text-gray-100 text-2xl md:text-3xl"> X </span>  <span> mlachheb </span> 
-            </div>  
-            <div class="mt-4 mb-8 w-9/12 h-9/12 md:w-8/12 md:h-6/12" > 
-                <img src="../assets/bg1.jpg" alt="">
-            </div>
-        </div>
+	<div class="Container">
+		<div v-for="gameroom in gameRooms" :key="gameroom.roomname" class="flex flex-col text-center items-center">
+				<div class="mt-8 text-xl md:text-2xl font-bold text-gray-400">
+						<span> {{ gameroom.player1 }} </span>  <span class="ml-4 mr-4 text-gray-100 text-2xl md:text-3xl"> X </span>  <span> {{ gameroom.player2 }} </span>
+				</div>
+				<div class="mt-8 text-xl md:text-2xl font-bold text-gray-400">
+						<span> Mode: {{ gameroom.difficulty }} </span>
+				</div>
+				<div class="mt-4 mb-8 w-9/12 h-9/12 md:w-8/12 md:h-6/12" > 
+						<img src="../assets/bg1.jpg" alt="">
+				</div>
+		</div>
+		<div v-if="errors !== ''">{{ errors }}</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-    import { inject, provide, ref} from 'vue';
-    import Header from '../components/Header.vue';
-    import Footer from '../components/Footer.vue';
-    import chatnavbar from '../components/chatnavbar.vue'
-    import conversation from '../components/conversation.vue'
-    const store = inject('store')
+import { inject, onMounted, onUnmounted, provide, ref} from 'vue';
+import Header from '../components/Header.vue';
+import Footer from '../components/Footer.vue';
+import chatnavbar from '../components/chatnavbar.vue'
+import conversation from '../components/conversation.vue'
+import { GameRoom } from '../interfaces';
+import axios from 'axios';
+	const store = inject('store')
 
-    const n = ref([4])
+	const n = ref([4])
+
+	let gameRooms = ref([] as GameRoom[]);
+	let errors = ref('' as string)
+	let timer = ref(null as unknown);
+
+onMounted(async ()=> {
+	fetchGamesRooms();
+	timer.value = setInterval(fetchGamesRooms, 3000);
+});
+
+onUnmounted(() => {
+	clearInterval(timer.value as number);
+});
+
+async function fetchGamesRooms() {
+	axios
+	.get('http://localhost:3001/pong-game/games-rooms/')
+	.then((data) => { 
+			gameRooms.value = data.data.gamesRooms;
+	})
+	.catch(err => {
+		errors.value = err.message ?? 'unknown';
+	});
+}
 
 </script>

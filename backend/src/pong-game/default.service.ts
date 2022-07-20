@@ -27,9 +27,9 @@ export class DefaultService {
 
   // function handles when Spectator is connected to the default gateway
   async handleSpectatorConnected(client: Socket): Promise<void> {
-    const { rooms } = await this.pongGameService.getRooms();
+    const { gamesRooms } = await this.pongGameService.getRooms();
     const roomname = client.handshake.query.roomname;
-    const found = rooms.find(room => room.roomname == roomname);
+    const found = gamesRooms.find(room => room.roomname == roomname);
     if (found) {
       client.join(roomname);
     } else {
@@ -43,8 +43,8 @@ export class DefaultService {
   async handlePlayerConnected(client: Socket, players: Socket[], wss: Server): Promise<void> {
     const user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
     client.data.user = user;
-    const found = await this.usersService.findOrCreate(user.id, user.username);
-    if (found.status === UserStatus.PLAYING) {
+    const found = await this.usersService.findPlayer(user.id);
+    if (found && found.status === UserStatus.PLAYING) {
       client.emit('alreadyInGame', {
         player: user.username,
         message: 'You Are Already in a Game',

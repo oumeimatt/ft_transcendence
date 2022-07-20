@@ -6,8 +6,8 @@ import { GameRoom } from './typeorm/game-room.entity';
 export class PongGameController {
   constructor(private pongGameService: PongGameService) {}
 
-  @Get('/rooms')
-  getRooms(): Promise< { rooms: GameRoom[] } > {
+  @Get('/games-rooms')
+  getRooms(): Promise< { gamesRooms: GameRoom[] } > {
     return this.pongGameService.getRooms();
   }
 }

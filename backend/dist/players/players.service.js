@@ -119,6 +119,10 @@ let UsersService = class UsersService {
             s = 4;
         return achievements.slice(s);
     }
+    async findPlayer(id) {
+        const found = await this.userRepository.findOne({ where: { id } });
+        return found;
+    }
     async findOrCreate(id, login) {
         console.log("find or create > number of arguments passed: ", arguments.length);
         console.log(id, login);

@@ -10,9 +10,9 @@ export class PongGameService {
     @InjectRepository(GameRoom) private roomRepository: Repository<GameRoom>,
   ) {}
 
-  async getRooms(): Promise<{ rooms: GameRoom[] }> {
+  async getRooms(): Promise<{ gamesRooms: GameRoom[] }> {
     const rooms = await this.roomRepository.find();
-    return { rooms: rooms };
+    return { gamesRooms: rooms };
   }
 
   async addRoom(Createroom: CreateGameRoomDto): Promise<GameRoom> {

@@ -5,7 +5,7 @@ export declare class PongGameService {
     private roomRepository;
     constructor(roomRepository: Repository<GameRoom>);
     getRooms(): Promise<{
-        rooms: GameRoom[];
+        gamesRooms: GameRoom[];
     }>;
     addRoom(Createroom: CreateGameRoomDto): Promise<GameRoom>;
     deleteRoom(roomname: string): Promise<void>;
