@@ -30,6 +30,15 @@ let roomRepository = class roomRepository extends typeorm_1.Repository {
         }
         return Room;
     }
+    async createDM(sender, receiver) {
+        const DM = new room_entity_1.chatroom();
+        DM.name = sender + ":" + receiver;
+        DM.ischannel = false;
+        DM.password = '';
+        DM.ispublic = false;
+        await DM.save();
+        return DM;
+    }
     async addMember(room, creator, role) {
         const Membership = new membership_entity_1.membership();
         Membership.role = role;

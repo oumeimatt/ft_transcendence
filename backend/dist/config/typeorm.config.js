@@ -10,7 +10,7 @@ const game_room_entity_1 = require("../pong-game/typeorm/game-room.entity");
 const game_history_entity_1 = require("../pong-game/typeorm/game-history.entity");
 exports.typeOrmConfig = {
     type: 'postgres',
-    host: '192.168.99.117',
+    host: '127.0.0.1',
     port: 5432,
     username: 'ping',
     password: 'pong',

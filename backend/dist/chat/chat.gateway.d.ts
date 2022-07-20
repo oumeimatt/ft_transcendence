@@ -18,6 +18,7 @@ export declare class ChatGateway implements OnGatewayConnection, OnGatewayDiscon
     players: Player[];
     constructor(authService: AuthService, chatService: ChatService, userService: UsersService);
     private definePlayer;
+    private getSocketid;
     handleConnection(client: Socket): Promise<void>;
     private disconnect;
     handleDisconnect(client: any): void;
@@ -25,5 +26,6 @@ export declare class ChatGateway implements OnGatewayConnection, OnGatewayDiscon
     onCreateMessage(socket: Socket, messageDto: messageDto): Promise<void>;
     leaveChannel(socket: Socket, roomid: number): Promise<void>;
     joinChannel(socket: Socket, roomid: number): Promise<void>;
-    sendDirectMessage(sender: Socket, receiverid: number): Promise<void>;
+    createDM(sender: Socket, receiverid: number): Promise<void>;
+    sendDM(): Promise<void>;
 }

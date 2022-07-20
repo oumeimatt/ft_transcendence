@@ -140,12 +140,7 @@ import { anyTypeAnnotation } from '@babel/types';
     }
 
 	function CreateDM(){
-		let DM={
-			//name of 
-			//privacy:private
-			//isChannel:false
-			//id of receiver
-		}
+		//store.state.connection.emit("create-DM", 53959); //friend id
 	}
 
 	 onMounted(async () => {

@@ -35,6 +35,19 @@ export class roomRepository extends Repository<chatroom>{
         return Room;
     }
 
+    async createDM(sender:number , receiver:number):Promise<chatroom>{
+        const DM = new chatroom();
+
+        DM.name = sender+":"+receiver;
+        DM.ischannel = false;
+        DM.password='';
+        DM.ispublic = false;
+        
+        await DM.save();
+
+        return DM;
+    }
+
     async addMember(room:chatroom,creator :Player, role:RoleStatus):Promise<void>{
         const Membership = new membership();
         Membership.role =role;

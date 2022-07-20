@@ -19,6 +19,7 @@ export declare class ChatService {
     protected userService: UsersService;
     constructor(roomRepo: roomRepository, membershipRepo: Repository<membership>, messageRepo: Repository<message>, authService: AuthService, PlayerRepository: PlayerRepository, userService: UsersService);
     createRoom(RoomDto: RoomDto, creators: Player[]): Promise<chatroom>;
+    createDM(sender: number, receiver: number): Promise<chatroom>;
     getRoomById(id: number): Promise<chatroom>;
     getMembersByRoomId(roomid: number): Promise<Player[]>;
     getRoomsForUser(playerid: number): Promise<chatroom[]>;

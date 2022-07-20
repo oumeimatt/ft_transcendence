@@ -41,6 +41,16 @@ export class ChatService {
         return await this.roomRepo.createRoom(RoomDto, creators);
     }
 
+    async createDM(sender:number, receiver:number):Promise<chatroom>{
+        const chatroom = await this.roomRepo.createDM(sender, receiver);
+        let User = await this.userService.getUserById(sender);
+        await this.addMember(chatroom, User, RoleStatus.USER);
+
+        User = await this.userService.getUserById(receiver);
+        await this.addMember(chatroom, User, RoleStatus.USER);
+        return chatroom;
+    }
+
     async getRoomById(id:number):Promise<chatroom>{
         return await this.roomRepo.getRoomById(id);
     }

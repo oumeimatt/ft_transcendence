@@ -35,6 +35,14 @@ let ChatService = class ChatService {
     async createRoom(RoomDto, creators) {
         return await this.roomRepo.createRoom(RoomDto, creators);
     }
+    async createDM(sender, receiver) {
+        const chatroom = await this.roomRepo.createDM(sender, receiver);
+        let User = await this.userService.getUserById(sender);
+        await this.addMember(chatroom, User, membership_model_1.RoleStatus.USER);
+        User = await this.userService.getUserById(receiver);
+        await this.addMember(chatroom, User, membership_model_1.RoleStatus.USER);
+        return chatroom;
+    }
     async getRoomById(id) {
         return await this.roomRepo.getRoomById(id);
     }
