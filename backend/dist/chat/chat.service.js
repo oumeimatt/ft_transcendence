@@ -101,9 +101,13 @@ let ChatService = class ChatService {
         const rooms = await this.roomRepo.createQueryBuilder('chatroom')
             .select(['chatroom.id', 'chatroom.name', 'chatroom.ispublic'])
             .getMany();
-        for (let i = 0; i < rooms.length; i++) {
-            if (rooms[i].ispublic === false && await this.isMember(rooms[i].id, playerid) === null)
+        let i = 0;
+        while (i < rooms.length) {
+            if (await rooms[i].ispublic == false && await this.isMember(rooms[i].id, playerid) === null) {
                 rooms.splice(i, 1);
+            }
+            else
+                i++;
         }
         return rooms;
     }

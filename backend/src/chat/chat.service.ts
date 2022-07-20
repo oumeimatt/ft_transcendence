@@ -139,10 +139,17 @@ export class ChatService {
         .getMany();
         
         //if the channel os private=>check if the user is a member
-        for (let i = 0; i < rooms.length; i++)
+        let i = 0;
+        while (i < rooms.length)
         {
-            if (rooms[i].ispublic === false && await this.isMember(rooms[i].id, playerid) === null)
+            // console.log(rooms[1].name+" => "+rooms[1].ispublic)
+            if (await rooms[i].ispublic == false && await this.isMember(rooms[i].id, playerid) === null)
+            {
+               // console.log(rooms[i].name +' is removed bcz private ');
                 rooms.splice(i , 1);
+            }
+            else
+                i++;
         }
        // console.log(rooms);
         return rooms;

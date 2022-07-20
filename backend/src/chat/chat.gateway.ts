@@ -71,9 +71,9 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         client.data.player = this.player;
         // const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
         // const allrooms = await this.chatService.getAllRooms(this.decoded.id);
-        // this.user.push(client);
+         this.user.push(client);
         // this.title.push(`${client.id}`);
-        // console.log(`On Connnect ... !${client.id} ${this.player.username}`)
+          console.log(`On Connnect ... !${client.id} ${this.player.username}`)
      
         // this.server.to(client.id).emit('message', rooms);//rooms
         // let messages = [];
@@ -105,7 +105,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       @SubscribeMessage('createRoom')
       async onCreateRoom(socket: Socket, roomdto: RoomDto)
       {
-        //find all members by username
+        
         const usernames = roomdto.players;
         for (var username of usernames)
         {
@@ -114,6 +114,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
             this.players.push(user);
           //throw exception if user not found
         }
+      //  console.log('players => '+this.players);
         // this.players.push(socket.data.player); 
 
         const room =  await this.chatService.createRoom(roomdto,this.players); //! users
@@ -125,14 +126,15 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         let members=await this.chatService.getMembersByRoomId(room.id);
         for (var x of this.user)
         {
-          console.log(`the connected users  ${x.id}`);
           userid = await x.handshake.query.token;
           userid =  await this.userService.verifyToken(userid);//await this.authService.verifyJwt(userid);
           rooms = await this.chatService.getRoomsForUser(userid.id);
           allrooms = await this.chatService.getAllRooms(userid.id);
+      //    console.log('userid => '+userid.username);
           this.server.to(x.id).emit('message', rooms);
+
           this.server.to(x.id).emit('members', members);
-          console.log(' all rooms '+allrooms);
+
           this.server.to(x.id).emit('allrooms', allrooms);
           //No need the send the messages => there is none
         }

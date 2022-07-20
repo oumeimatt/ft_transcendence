@@ -67,7 +67,7 @@ export class roomRepository extends Repository<chatroom>{
         .select(['room.id', 'room.name', 'room.ispublic'])
         .getOne();
 
-        console.log(room);
+       // console.log(room);
         return room;
 
     }
@@ -80,7 +80,7 @@ export class roomRepository extends Repository<chatroom>{
 
        const query = await this.createQueryBuilder('membership')
        .where('name = :Playerid', {Playerid})
-       console.log(await query.getMany());
+     //  console.log(await query.getMany());
       // const rooms = await query.getMany();
 
       // return rooms;

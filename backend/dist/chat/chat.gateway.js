@@ -53,6 +53,8 @@ let ChatGateway = class ChatGateway {
     async handleConnection(client) {
         await this.definePlayer(client);
         client.data.player = this.player;
+        this.user.push(client);
+        console.log(`On Connnect ... !${client.id} ${this.player.username}`);
     }
     disconnect(socket) {
         socket.emit('Error', new common_1.UnauthorizedException());
@@ -76,14 +78,12 @@ let ChatGateway = class ChatGateway {
         let allrooms;
         let members = await this.chatService.getMembersByRoomId(room.id);
         for (var x of this.user) {
-            console.log(`the connected users  ${x.id}`);
             userid = await x.handshake.query.token;
             userid = await this.userService.verifyToken(userid);
             rooms = await this.chatService.getRoomsForUser(userid.id);
             allrooms = await this.chatService.getAllRooms(userid.id);
             this.server.to(x.id).emit('message', rooms);
             this.server.to(x.id).emit('members', members);
-            console.log(' all rooms ' + allrooms);
             this.server.to(x.id).emit('allrooms', allrooms);
         }
         this.players.splice(0);

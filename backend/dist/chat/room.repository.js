@@ -55,13 +55,11 @@ let roomRepository = class roomRepository extends typeorm_1.Repository {
             .where('room.id = :id', { id })
             .select(['room.id', 'room.name', 'room.ispublic'])
             .getOne();
-        console.log(room);
         return room;
     }
     async getRoomsForUser(Playerid) {
         const query = await this.createQueryBuilder('membership')
             .where('name = :Playerid', { Playerid });
-        console.log(await query.getMany());
     }
 };
 roomRepository = __decorate([
