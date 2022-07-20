@@ -175,7 +175,7 @@ onUpdated(async  () => {
             store.state.userAchievements = data.data.achievements})
           .catch(err => console.log(err.message))
     var user = store.state.friends.find( x => x.id.toString() === props.id )
-      console.log("userrr", user)
+      // console.log("use")
       if (user != null){
           isFriend.value = true
           add.value = false
