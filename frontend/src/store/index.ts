@@ -84,12 +84,10 @@ const methods = reactive({
 	// 	return null
 	// },
     playerAvatar(player:Profile ){
-        if (player.avatar.startsWith("https://avatars.dicebear.com") || player.avatar.startsWith("src/assets")){
-            // console.log("random    ",player.avatar)
+        if (player.avatar.startsWith("https://avatars.dicebear.com") || player.avatar.startsWith("public/assets")){
             return player.avatar
         }
-        console.log("changed    ","src/assets/" + player.avatar)
-        return ("src/assets/" + player.avatar )
+        return ("../public/assets/" + player.avatar )
     },
     usersInfo(name: string){
         for (var user of state.users) {
