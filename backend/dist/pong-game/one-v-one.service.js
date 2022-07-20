@@ -11,11 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OneVOneService = void 0;
 const common_1 = require("@nestjs/common");
+const players_service_1 = require("../players/players.service");
+const player_status_enum_1 = require("../players/player_status.enum");
 const pong_game_service_1 = require("./pong-game.service");
 const utils_1 = require("./utils");
 let OneVOneService = class OneVOneService {
-    constructor(pongGameService) {
+    constructor(pongGameService, usersService) {
         this.pongGameService = pongGameService;
+        this.usersService = usersService;
         this.logger = new common_1.Logger('OneVOne PongGame Service: ');
         this.emptyPlayground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
     }
@@ -44,10 +47,12 @@ let OneVOneService = class OneVOneService {
         }
     }
     async handlePlayerConnected(client, players, wss) {
-        const found = players.find(player => player.handshake.query.username === client.handshake.query.username);
-        if (found) {
+        const user = await this.usersService.verifyToken(client.handshake.query.accessToken);
+        client.data.user = user;
+        const found = await this.usersService.findPlayer(user.id);
+        if (found && found.status === player_status_enum_1.UserStatus.PLAYING) {
             client.emit('alreadyInGame', {
-                player: client.handshake.query.username,
+                player: user.username,
                 message: 'You Are Already in a Game',
             });
         }
@@ -55,10 +60,11 @@ let OneVOneService = class OneVOneService {
             const first = players.find(player => player.handshake.query.against === client.handshake.query.username);
             if (!first) {
                 players.push(client);
+                await this.usersService.updateStatus(user.id, player_status_enum_1.UserStatus.PLAYING);
                 client.data.side = 'left';
                 client.data.role = 'player';
                 client.emit('WaitingForPlayer', {
-                    player: client.handshake.query.username,
+                    player: user.username,
                     message: 'Waiting For Second Player',
                     playground: this.emptyPlayground.getPlayGroundInterface(),
                 });
@@ -67,48 +73,94 @@ let OneVOneService = class OneVOneService {
                 client.data.side = 'right';
                 client.data.role = 'player';
                 const second = client;
-                const roomname = first.id + '+' + second.id;
-                first.join(roomname);
-                second.join(roomname);
-                first.data.roomname = roomname;
-                second.data.roomname = roomname;
-                const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
-                first.data.playground = playground;
-                second.data.playground = playground;
-                const timer = setInterval(() => {
-                    if (playground.update() == false) {
-                        const pgi = this.handleGetBackGround(playground);
-                        wss
-                            .to(roomname)
-                            .emit('updatePlayground', { name: roomname, playground: pgi });
-                    }
-                    else {
-                        clearInterval(timer);
-                        clearInterval(first.data.gameInterval);
-                        this.logger.log('Game in room ' + roomname + ' Finished');
-                        this.pongGameService.deleteRoom(client.data.roomname);
-                    }
-                }, (1.0 / 60) * 1000);
-                first.data.gameInterval = timer;
-                second.data.gameInterval = timer;
+                this.joinPlayersToGame(first, second, wss);
             }
         }
     }
-    handleUserDisconnected(wss, client) {
+    joinPlayersToGame(first, second, wss) {
+        const roomname = first.id + '+' + second.id;
+        first.join(roomname);
+        second.join(roomname);
+        first.data.roomname = roomname;
+        second.data.roomname = roomname;
+        first.data.opponentId = second.data.user.id;
+        second.data.opponentId = first.data.user.id;
+        const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
+        first.data.playground = playground;
+        second.data.playground = playground;
+        this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & ' + second.data.user.username);
+        const timer = setInterval(() => {
+            if (playground.update() == false) {
+                const pgi = this.handleGetBackGround(playground);
+                wss
+                    .to(roomname)
+                    .emit('updatePlayground', { name: roomname, playground: pgi });
+            }
+            else {
+                clearInterval(timer);
+                clearInterval(first.data.gameInterval);
+                this.logger.log('Game in Room: ' + roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
+                if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
+                    this.usersService.updateLevel(first.data.user.id);
+                    this.usersService.winsGame(first.data.user.id);
+                    this.usersService.LostGame(second.data.user.id);
+                    this.pongGameService.addGameHistory({
+                        mode: 'default',
+                        winner: first.data.user,
+                        loser: second.data.user,
+                        winnerScore: playground.scoreBoard.playerOneScore,
+                        loserScore: playground.scoreBoard.playerTwoScore
+                    });
+                }
+                else {
+                    this.usersService.updateLevel(second.data.user.id);
+                    this.usersService.winsGame(second.data.user.id);
+                    this.usersService.LostGame(first.data.user.id);
+                    this.pongGameService.addGameHistory({
+                        mode: 'default',
+                        winner: second.data.user,
+                        loser: first.data.user,
+                        winnerScore: playground.scoreBoard.playerTwoScore,
+                        loserScore: playground.scoreBoard.playerOneScore
+                    });
+                }
+            }
+        }, (1.0 / 60) * 1000);
+        first.data.gameInterval = timer;
+        second.data.gameInterval = timer;
+    }
+    async handleUserDisconnected(wss, client) {
         if (client.handshake.query.role === 'player' && client.data.gameInterval) {
-            client.data.playground.ball.reset(client.data.playground.width / 2, client.data.playground.height / 2);
-            client.data.playground.leftPaddle.reset();
-            client.data.playground.rightPaddle.reset();
-            wss.to(client.data.roomname).emit('gameInterrupted', {
-                playground: this.handleGetBackGround(client.data.playground),
-            });
+            if (client.data.gameInterval._destroyed === false) {
+                client.data.playground.ball.reset(client.data.playground.width / 2, client.data.playground.height / 2);
+                client.data.playground.leftPaddle.reset();
+                client.data.playground.rightPaddle.reset();
+                wss.to(client.data.roomname).emit('gameInterrupted', {
+                    playground: this.handleGetBackGround(client.data.playground),
+                });
+                clearInterval(client.data.gameInterval);
+                this.logger.log('Game Interval Cleared');
+                console.log(client.data.opponentId);
+                await this.usersService.updateLevel(client.data.opponentId);
+                await this.usersService.winsGame(client.data.opponentId);
+                await this.usersService.LostGame(client.data.user.id);
+                const second = await this.usersService.findPlayer(client.data.opponentId);
+                if (second) {
+                    this.pongGameService.addGameHistory({
+                        mode: 'default',
+                        winner: await second,
+                        loser: client.data.user,
+                        winnerScore: client.data.playground.win_score,
+                        loserScore: client.handshake.query.side === 'left' && client.data.playground.scoreBoard.playerTwoScore || client.data.playground.scoreBoard.playerOneScore
+                    });
+                }
+                this.logger.log('Game in Room: ' + client.data.roomname + ' Finished');
+            }
             client.leave(client.data.roomname);
-            this.pongGameService.deleteRoom(client.data.roomname);
-            clearInterval(client.data.gameInterval);
-            this.logger.log('Game Interval Cleared');
+            await this.usersService.updateStatus(client.data.user.id, player_status_enum_1.UserStatus.ONLINE);
         }
-        else if (client.handshake.query.role === 'spectator') {
-            client.leave(client.handshake.query.room);
+        else if (client.handshake.query.role === 'player') {
+            await this.usersService.updateStatus(client.data.user.id, player_status_enum_1.UserStatus.ONLINE);
         }
     }
     handleKeyUpPressed(client) {
@@ -154,7 +206,7 @@ let OneVOneService = class OneVOneService {
 };
 OneVOneService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [pong_game_service_1.PongGameService])
+    __metadata("design:paramtypes", [pong_game_service_1.PongGameService, players_service_1.UsersService])
 ], OneVOneService);
 exports.OneVOneService = OneVOneService;
 //# sourceMappingURL=one-v-one.service.js.map

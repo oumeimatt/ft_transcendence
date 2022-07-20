@@ -92,17 +92,35 @@
 </template>
 
 <script lang="ts" setup>
-
-    import { defineComponent , ref, inject, onMounted, onUpdated } from 'vue';
+    import axios from 'axios';
+	import { defineComponent , ref, inject, onMounted, onUpdated } from 'vue';
     import Footer from '../components/Footer.vue';
     import Header from '../components/Header.vue'
     const store = inject('store')
 	const addFriend = ref(false)
-	const test = ref('src/assets/cover.png')
+	let gamesHistory = ref([] as unknown);
+	let errors = ref('' as string)
+
+    onMounted(() => {
+        getGamesHistory(store.state.player.id);
+    })
+
 	function getUserAvatar(id: number){
       var result = store.state.users.find( x=> x.id === id)
       return store.methods.playerAvatar(result)
     }
+
+	// function to get history of a player
+	async function getGamesHistory(id: number) {
+		axios
+		.get('http://localhost:3001/pong-game/games-history/' + id)
+		.then((data) => {
+			gamesHistory.value = data.data.gamesHistory;
+		})
+		.catch(err => {
+			errors.value = err.message ?? 'unknown';
+		});
+	}
 
 </script>
 

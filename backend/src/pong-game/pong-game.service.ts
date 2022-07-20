@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { CreateGameRoomDto } from './dto/createGameRoom.dto';
 import { GameHistory } from './typeorm/game-history.entity';
 import { CreateGameHistoryDto } from './dto/createGameHistory.dto';
-import { UsersService } from 'src/players/players.service';
 
 @Injectable()
 export class PongGameService {
@@ -42,16 +41,20 @@ export class PongGameService {
   }
 
   async getGamesHistory(id: number): Promise<{ gamesHistory: GameHistory[] }> {
-    const games = await this.gameRepository.find({ 
-      where: {
-        winner: {
-          id: id
+    const games = await this.gameRepository.find({
+      where: [
+        {
+          winner: {
+            id: id
+          },
         },
-        loser: {
-          id: id
+        {
+          loser: {
+            id: id
+          },
         }
-      },
-     });
+      ],
+    });
     return { gamesHistory: games };
   }
 

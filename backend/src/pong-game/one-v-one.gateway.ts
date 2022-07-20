@@ -1,12 +1,19 @@
 import { Logger } from '@nestjs/common';
-import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import {
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { OneVOneService } from './one-v-one.service';
 
 @WebSocketGateway({ namespace: '/oneVone', cors: true })
-export class OneVOneGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class OneVOneGateway
+  implements OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer() wss: Server;
-  readonly logger = new Logger('OneVOne PongGame Server: ');
   private players: Socket[];
 
   constructor(private onevoneService: OneVOneService) {
@@ -14,13 +21,10 @@ export class OneVOneGateway implements OnGatewayConnection, OnGatewayDisconnect 
   }
   
   handleConnection(client: Socket) {
-    this.logger.log(client.id + ' Connected!');
-    // console.log(client.handshake.query);
     this.onevoneService.handleUserConnected(client, this.players, this.wss);
   }
 
   handleDisconnect(client: Socket) {
-    this.logger.log(client.id + ' Disconnected!');
     this.players = this.players.filter((clt) => {
       return clt.id !== client.id;
     });

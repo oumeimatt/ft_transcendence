@@ -10,22 +10,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OneVOneGateway = void 0;
-const common_1 = require("@nestjs/common");
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 const one_v_one_service_1 = require("./one-v-one.service");
 let OneVOneGateway = class OneVOneGateway {
     constructor(onevoneService) {
         this.onevoneService = onevoneService;
-        this.logger = new common_1.Logger('OneVOne PongGame Server: ');
         this.players = [];
     }
     handleConnection(client) {
-        this.logger.log(client.id + ' Connected!');
         this.onevoneService.handleUserConnected(client, this.players, this.wss);
     }
     handleDisconnect(client) {
-        this.logger.log(client.id + ' Disconnected!');
         this.players = this.players.filter((clt) => {
             return clt.id !== client.id;
         });

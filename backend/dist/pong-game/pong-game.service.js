@@ -47,14 +47,18 @@ let PongGameService = class PongGameService {
     }
     async getGamesHistory(id) {
         const games = await this.gameRepository.find({
-            where: {
-                winner: {
-                    id: id
+            where: [
+                {
+                    winner: {
+                        id: id
+                    },
                 },
-                loser: {
-                    id: id
+                {
+                    loser: {
+                        id: id
+                    },
                 }
-            },
+            ],
         });
         return { gamesHistory: games };
     }
