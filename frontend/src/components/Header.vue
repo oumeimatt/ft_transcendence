@@ -86,7 +86,7 @@
           <div class=" p-5 border-b border-solid border-slate-200 rounded-t">
             <h3 class=" m-auto font-semibold text-xl">Settings </h3>
           </div>
-          <div class=" grid gap-3 grid-cols-1  p-6 border-t border-solid border-slate-200 rounded-b">
+          <div class=" grid gap-3 grid-cols-1  p-6  border-t border-solid border-slate-200 rounded-b">
             <button v-on:click="showChangeName = !showChangeName" class="pb-4 border-b text-gray-800 font-semibold" >Change Username</button> 
                 <div v-if="showChangeName" class="border-b p-2 pb-4 space-x-4">
                   <span class="text-s "> Username :</span>
@@ -99,8 +99,13 @@
               <button v-on:click="show2f = !show2f" class="pt-2 font-semibold text-gray-800">2FA Authentication</button>
                 <div v-if="show2f" class="border-t p-2 space-x-4">
                   You have not activated 2FA. <a  class="text-xs text-teal-700" href="https://authy.com/what-is-2fa/" target="_blank"> What is 2FA Authentication ? </a>
-                  <button class="bg-neutral-300 rounded p-2 hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
+                  <button @click="generateFA" class="bg-neutral-300 rounded p-4 font-semibold  hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
                 </div>
+              <div v-if="showScan" class=" bg-gray-200 rounded">
+                <img src="src/assets/qr.png" class="p-8 h-30 w-30 rounded" alt="">
+                <label class="text-gray-600"> Type authentication code here </label>
+                <input v-model="Password2fa" type="text" maxlength="6" placeholder="123456" class=" mt-2 mb-4 pl-4 h-12 rounded ">
+              </div>
           </div>
           <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
             <button class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
@@ -135,8 +140,9 @@
     const search = ref('search...' as string)
     const image = ref(null as any)
     const ext = ref(''as string)
-
-
+    const qr = ref('' as string)
+    const showScan = ref(false)
+    const Password2fa = ref('') 
     function toggleNav () {showMenu.value = !showMenu.value}
 
     function toggleModal() {showModal.value = !showModal.value}
@@ -172,11 +178,30 @@
 
     })
 
+    async function  generateFA(){
+      await axios
+          .get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
+          .then(data =>{qr.value = data.data;} ) 
+          .catch(err => console.log(err.message))
+      showScan.value = true
+    }
+
+    async function enable2fa(){
+          await axios
+          .post('http://localhost:3001/settings/2fa/enable', {Password2fa}, {withCredentials: true })
+          .then(() => {
+            
+          })
+          .catch((error) => console.log(error.response));
+    }
+
     function saveChanges(){
       if (nickname.value.length > 0)
         changeNickname(nickname.value)
       if (ext.value.length > 0)
         changeAvatar()
+      if (Password2fa.value.length > 0)
+        enable2fa()
     }
 
     async function changeNickname(newnickname: String){

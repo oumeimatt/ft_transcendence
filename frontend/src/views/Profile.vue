@@ -103,7 +103,7 @@
 
     onMounted(() => {
         // getGamesHistory(store.state.player.id);
-		getGamesHistory(62530);
+		getGamesHistory(62734);
     })
 
 	function getUserAvatar(id: number){
