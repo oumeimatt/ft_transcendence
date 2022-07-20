@@ -10,10 +10,11 @@ import { PongGameService } from './pong-game.service';
 import { GameRoom } from './typeorm/game-room.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { OneVOneService } from './one-v-one.service';
+import { GameHistory } from './typeorm/game-history.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([GameRoom]),
+    TypeOrmModule.forFeature([GameRoom, GameHistory]),
     AuthModule,
   ],
   controllers: [PongGameController],

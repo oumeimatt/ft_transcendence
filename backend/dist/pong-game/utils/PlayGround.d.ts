@@ -29,6 +29,7 @@ export declare class PlayGround {
     get rightPaddle(): Paddle;
     get leftPaddleController(): PaddleController;
     get rightPaddleController(): PaddleController;
+    get win_score(): number;
     private getRadius;
     private getPaddleWidth;
     private getPaddleHeight;

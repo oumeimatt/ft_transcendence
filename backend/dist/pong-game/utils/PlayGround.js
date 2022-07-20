@@ -51,6 +51,9 @@ class PlayGround {
     get rightPaddleController() {
         return this._rightPaddleController;
     }
+    get win_score() {
+        return this._win_score;
+    }
     getRadius() {
         let rad = (this._width + this._height) / 25 < 20
             ? (this._width + this._height) / 25

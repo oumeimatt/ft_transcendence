@@ -5,14 +5,6 @@ class ScoreBoard {
     constructor() {
         this.reset();
     }
-    get winner() {
-        if (this._playerOneScore >= 7) {
-            return 1;
-        }
-        else if (this._playerTwoScore >= 7) {
-            return 1;
-        }
-    }
     get playerOneScore() {
         return this._playerOneScore;
     }

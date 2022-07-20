@@ -19,12 +19,13 @@ const pong_game_service_1 = require("./pong-game.service");
 const game_room_entity_1 = require("./typeorm/game-room.entity");
 const auth_module_1 = require("../auth/auth.module");
 const one_v_one_service_1 = require("./one-v-one.service");
+const game_history_entity_1 = require("./typeorm/game-history.entity");
 let PongGameModule = class PongGameModule {
 };
 PongGameModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([game_room_entity_1.GameRoom]),
+            typeorm_1.TypeOrmModule.forFeature([game_room_entity_1.GameRoom, game_history_entity_1.GameHistory]),
             auth_module_1.AuthModule,
         ],
         controllers: [pong_game_controller_1.PongGameController],

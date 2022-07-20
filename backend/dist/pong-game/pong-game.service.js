@@ -17,9 +17,11 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const game_room_entity_1 = require("./typeorm/game-room.entity");
 const typeorm_2 = require("typeorm");
+const game_history_entity_1 = require("./typeorm/game-history.entity");
 let PongGameService = class PongGameService {
-    constructor(roomRepository) {
+    constructor(roomRepository, gameRepository) {
         this.roomRepository = roomRepository;
+        this.gameRepository = gameRepository;
     }
     async getRooms() {
         const rooms = await this.roomRepository.find();
@@ -43,11 +45,42 @@ let PongGameService = class PongGameService {
     async deleteRoom(roomname) {
         await this.roomRepository.delete({ roomname: roomname });
     }
+    async getGamesHistory(id) {
+        const games = await this.gameRepository.find({
+            where: {
+                winner: {
+                    id: id
+                },
+                loser: {
+                    id: id
+                }
+            },
+        });
+        return { gamesHistory: games };
+    }
+    async addGameHistory(createGameHistoryDto) {
+        const { mode, winner, loser, winnerScore, loserScore } = createGameHistoryDto;
+        const gamesHistory = new game_history_entity_1.GameHistory();
+        gamesHistory.mode = mode;
+        gamesHistory.winner = winner;
+        gamesHistory.loser = loser;
+        gamesHistory.winnerScore = winnerScore;
+        gamesHistory.loserScore = loserScore;
+        try {
+            await this.gameRepository.save(gamesHistory);
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException();
+        }
+        return gamesHistory;
+    }
 };
 PongGameService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(game_room_entity_1.GameRoom)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(game_history_entity_1.GameHistory)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], PongGameService);
 exports.PongGameService = PongGameService;
 //# sourceMappingURL=pong-game.service.js.map

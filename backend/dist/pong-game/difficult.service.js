@@ -49,8 +49,8 @@ let DifficultService = class DifficultService {
     async handlePlayerConnected(client, players, wss) {
         const user = await this.usersService.verifyToken(client.handshake.query.accessToken);
         client.data.user = user;
-        const found = await this.usersService.findOrCreate(user.id, user.username);
-        if (found.status === player_status_enum_1.UserStatus.PLAYING) {
+        const found = await this.usersService.findPlayer(user.id);
+        if (found && found.status === player_status_enum_1.UserStatus.PLAYING) {
             client.emit('alreadyInGame', {
                 player: user.username,
                 message: 'You Are Already in a Game',

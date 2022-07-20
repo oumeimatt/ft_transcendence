@@ -94,6 +94,9 @@ export class PlayGround {
   public get rightPaddleController(): PaddleController {
     return this._rightPaddleController;
   }
+  public get win_score(): number {
+    return this._win_score;
+  }
 
   private getRadius(): number {
     let rad =
@@ -129,6 +132,7 @@ export class PlayGround {
       score: this._scoreBoard.getScoreBoardInterface(),
     };
   }
+
 
   public get bounds(): Bounds {
     return {

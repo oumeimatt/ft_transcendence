@@ -4,7 +4,6 @@ export declare class ScoreBoard {
     private _playerTwoScore;
     private _round;
     constructor();
-    get winner(): number;
     get playerOneScore(): number;
     get playerTwoScore(): number;
     get round(): number;

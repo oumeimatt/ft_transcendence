@@ -53,7 +53,7 @@
 						<div > 
 							<p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
 							<!-- games  -->
-							<!-- <div class="grid grid-cols-3 justify-itmes-center pt-4">
+							<div class="grid grid-cols-3 justify-itmes-center pt-4">
 								<div class="text-neutral-900 font-semibold "> oel-yous</div>
 								<div class="text-gray-900 font-black "> 5 - 2  </div>
 								<div class="text-neutral-900 font-semibold "> soepkdsds  </div>
@@ -77,7 +77,7 @@
 								<div class="text-neutral-900 font-semibold "> oel-yous</div>
 								<div class="text-gray-900 font-black "> 5 - 2  </div>
 								<div class="text-neutral-900 font-semibold "> ndjbjdjds  </div>
-							</div> -->
+							</div>
 							<!--  -->
 						</div>
 					</div>
@@ -95,7 +95,6 @@
     import { defineComponent , ref, inject, onMounted, onUpdated } from 'vue';
     import Footer from '../components/Footer.vue';
     import Header from '../components/Header.vue'
-	import axios from 'axios';
     const store = inject('store')
 	const addFriend = ref(false)
 

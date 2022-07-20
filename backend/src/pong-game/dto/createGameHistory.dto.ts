@@ -1,5 +1,5 @@
 import { IsIn, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Player } from '../utils';
+import { Player } from '../../players/player.entity';
 
 export class CreateGameHistoryDto {
   @IsNotEmpty()

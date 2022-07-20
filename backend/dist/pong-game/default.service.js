@@ -108,11 +108,25 @@ let DefaultService = class DefaultService {
                     this.usersService.updateLevel(first.data.user.id);
                     this.usersService.winsGame(first.data.user.id);
                     this.usersService.LostGame(second.data.user.id);
+                    this.pongGameService.addGameHistory({
+                        mode: 'default',
+                        winner: first.data.user,
+                        loser: second.data.user,
+                        winnerScore: playground.scoreBoard.playerOneScore,
+                        loserScore: playground.scoreBoard.playerTwoScore
+                    });
                 }
                 else {
                     this.usersService.updateLevel(second.data.user.id);
                     this.usersService.winsGame(second.data.user.id);
                     this.usersService.LostGame(first.data.user.id);
+                    this.pongGameService.addGameHistory({
+                        mode: 'default',
+                        winner: second.data.user,
+                        loser: first.data.user,
+                        winnerScore: playground.scoreBoard.playerTwoScore,
+                        loserScore: playground.scoreBoard.playerOneScore
+                    });
                 }
                 this.pongGameService.deleteRoom(first.data.roomname);
             }
@@ -135,6 +149,16 @@ let DefaultService = class DefaultService {
                 await this.usersService.updateLevel(client.data.opponentId);
                 await this.usersService.winsGame(client.data.opponentId);
                 await this.usersService.LostGame(client.data.user.id);
+                const second = await this.usersService.findPlayer(client.data.opponentId);
+                if (second) {
+                    this.pongGameService.addGameHistory({
+                        mode: 'default',
+                        winner: await second,
+                        loser: client.data.user,
+                        winnerScore: client.data.playground.win_score,
+                        loserScore: client.handshake.query.side === 'left' && client.data.playground.scoreBoard.playerTwoScore || client.data.playground.scoreBoard.playerOneScore
+                    });
+                }
                 await this.pongGameService.deleteRoom(client.data.roomname);
                 this.logger.log('Game in Room: ' + client.data.roomname + ' Finished');
             }
