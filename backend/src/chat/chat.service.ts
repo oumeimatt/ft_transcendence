@@ -66,7 +66,7 @@ export class ChatService {
         const members:Player[] = [];
         for (var id of usersid)
             members.push(await this.userService.getUserById(id.playerid));
-        return members;
+        return members; //maybe I should select only [id && username]
     }
 
     async getRoomsForUser(playerid:number):Promise<chatroom[]>{
@@ -171,5 +171,9 @@ export class ChatService {
         Membership.role =   RoleStatus.USER;
         await Membership.save();
     }
+
+    // async updateRole(role: RoleStatus):Promise<membership>{
+
+    // }
 
 }

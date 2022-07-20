@@ -140,19 +140,40 @@ import { anyTypeAnnotation } from '@babel/types';
     }
 
 	function CreateDM(){
-		//store.state.connection.emit("create-DM", 53959); //friend id
+		//store.state.connection.emit("create-DM", friendid); //
+
 	}
+	//function sendMessage(){
+		//let messageDto={ id : , content : };
+		//store.state.connection.emit("createMessage", messageDto);
+	//}
+
+	// function getMessage(id){
+	// 	await axios.get('http://localhost:3001/chat/messages', {params:{roomid:id}, withCredentials:true})
+	// 	.then(data=>{})
+	// }
+
+	// function getMembers(id){
+	// 	await axios.get('http://localhost:3001/chat/members', {params:{roomid:id}, withCredentials:true})
+	// 	.then(data=>{})
+	// }
+
 
 	 onMounted(async () => {
 		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		  .then(data=> { console.log('axios mychannels ');store.state.rooms = data.data; console.log(data.data);})
+		  .then(data=> { console.log('axios mychannels ');store.state.rooms = data.data; })
 		//  console.log(data.data);}
 		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		.then(data=> {console.log('axios all channels ');store.state.allRooms = data.data; console.log(data.data);})
+		.then(data=> {console.log('axios all channels ');store.state.allRooms = data.data; })
+		
 
-		store.state.connection.on("message", (data) => {store.state.rooms = data; console.log(data);});
+		store.state.connection.on("message", (data) => {store.state.rooms = data;});
 
-		store.state.connection.on("allrooms", (data) => {store.state.allRooms = data;console.log(data);});
+		store.state.connection.on("allrooms", (data) => {store.state.allRooms = data;});
+
+		//store.state.connection.on("sendMessage", (data) => {messages = data;});
+
+		//store.state.connection.on("members", (data) => {members = data;});
 
 
 	 })

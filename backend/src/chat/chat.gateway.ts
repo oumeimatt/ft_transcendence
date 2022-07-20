@@ -243,7 +243,12 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
     }
 
-    //Direct-message
+    // @SubscribeMessage('set-admin')
+    // async setAdmin(socket:Socket, userid:number){
+          //update role
+          //
+    // }
+
     //ban-User
     //Mute-User
     //set-admin => change role
