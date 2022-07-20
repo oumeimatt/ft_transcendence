@@ -146,6 +146,8 @@ const add = ref(true)
 const isFriend = ref(false)
 const frMenu = ref(false)
 const isBlocked = ref(false)
+let gamesHistory = ref([] as unknown);
+let errors = ref('' as string)
 
 const props = defineProps({
   id: String
@@ -235,6 +237,18 @@ onUpdated(async  () => {
       var result = store.state.users.find( x=> x.id === id)
       return result.avatar
     }
+
+    // function to get history of a player
+    async function getGamesHistory(id: number) {
+		  axios
+		  .get('http://localhost:3001/pong-game/games-history/' + id)
+		  .then((data) => {
+		  	gamesHistory.value = data.data.gamesHistory;
+		  })
+		  .catch(err => {
+		  	errors.value = err.message ?? 'unknown';
+		  });
+	  }
 </script>
 
 <style>
