@@ -201,44 +201,44 @@ import { PlayGround } from './utils';
   }
 
   handleKeyUpPressed(client: Socket): void {
-    if (client.data.side === 'left') {
+    if (client.data.role === 'player' && client.data.side === 'left') {
       client.data.playground.leftPaddleController.keyUpPressed();
-    } else if (client.data.side === 'right') {
+    } else if (client.data.role === 'player' && client.data.side === 'right') {
       client.data.playground.rightPaddleController.keyUpPressed();
     }
   }
 
   handleKeyDownPressed(client: Socket): void {
-    if (client.data.side === 'left') {
+    if (client.data.role === 'player' && client.data.side === 'left') {
       client.data.playground.leftPaddleController.keyDownPressed();
-    } else if (client.data.side === 'right') {
+    } else if (client.data.role === 'player' && client.data.side === 'right') {
       client.data.playground.rightPaddleController.keyDownPressed();
     }
   }
 
   handleKeyUpUnpressed(client: Socket): void {
-    if (client.data.side === 'left') {
+    if (client.data.role === 'player' && client.data.side === 'left') {
       client.data.playground.leftPaddleController.keyUpUnpressed();
-    } else if (client.data.side === 'right') {
+    } else if (client.data.role === 'player' && client.data.side === 'right') {
       client.data.playground.rightPaddleController.keyUpUnpressed();
     }
   }
 
   handleKeyDownUnpressed(client: Socket): void {
-    if (client.data.side === 'left') {
+    if (client.data.role === 'player' && client.data.side === 'left') {
       client.data.playground.leftPaddleController.keyDownUnpressed();
-    } else if (client.data.side === 'right') {
+    } else if (client.data.role === 'player' && client.data.side === 'right') {
       client.data.playground.rightPaddleController.keyDownUnpressed();
     }
   }
 
   handleTouchMove(client: Socket, data: { y: number }) {
-    if (client.data.side === 'left') {
+    if (client.data.role === 'player' && client.data.side === 'left') {
       client.data.playground.leftPaddle.touchMove(
         data.y,
         client.data.playground.bounds,
       );
-    } else if (client.data.side === 'right') {
+    } else if (client.data.role === 'player' && client.data.side === 'right') {
       client.data.playground.rightPaddle.touchMove(
         data.y,
         client.data.playground.bounds,

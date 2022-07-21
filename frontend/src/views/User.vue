@@ -50,7 +50,7 @@
             </div>
          <!-- {{ props.nickname }} -->
         </div>
-        <div class="flex  my-0 mx-auto w-3/5 bg-slate-500 h-6 mb-6 relative">
+        <div class="flex my-0 mx-auto w-3/5 bg-slate-500 h-6 mb-6 relative">
           <div class="bg-slate-700 h-6 " style="width: 0%"> </div>
           <p class="inline-block z-10 absolute left-2/4 -translate-x-2/4 text-slate-400" > level  {{ store.state.user.level }}%  </p>
         </div>

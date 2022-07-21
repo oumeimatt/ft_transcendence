@@ -9,6 +9,7 @@ import Signin from '../views/Signin.vue'
 import EmptyChat from '../views/EmptyChat.vue'
 import Play from '../views/Play.vue'
 import WatchGames from '../views/WatchGames.vue'
+import Stream from '../views/Stream.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -64,6 +65,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/chatRoom/:name',
     name: 'ChatRoom',
     component: ChatRoom,
+    props: true
+  },
+  {
+    path: '/stream',
+    name: 'Stream',
+    component: Stream,
     props: true
   },
   // {

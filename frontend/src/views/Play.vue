@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
+import { inject, onMounted, onUnmounted, ref } from 'vue';
 const store = inject('store')
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
@@ -39,7 +39,6 @@ onMounted(() => {
                 'accessToken': localStorage.getItem('user'),
             },
         });
-
         context.value = game.value.getContext("2d");
 
         // drawing game for player whos waiting

@@ -142,16 +142,16 @@ export class UsersService {
 		const achievements = ['gold', 'silver', 'bronze', 'first'];
 		const user = await this.userRepository.findOne(id);
 		let s: number = 0;
+		if (user.wins == 0)
+			s = 4;
+		if (user.wins == 1)
+			s = -1;
+		if (user.wins >= 5)
+			s = -2;
+		if (user.wins >= 10)
+			s = -3;
 		if (user.wins >= 20)
 			s = -4;
-		else if (user.wins >= 10)
-			s = -3;
-		else if (user.wins >= 5)
-			s = -2;
-		else if (user.wins == 1)
-			s = -1;
-		else
-			s = 4;
 		return achievements.slice(s);
 	}
 

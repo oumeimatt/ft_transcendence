@@ -8,12 +8,12 @@
 			<div class="mt-8 text-xl md:text-2xl font-bold text-gray-400">
 					<span> Mode: {{ gameroom.difficulty }} </span>
 			</div>
-			<div class="mt-4 mb-8 w-9/12 h-9/12 md:w-8/12 md:h-6/12" > 
-					<img src="../assets/bg1.jpg" alt="">
-			</div>
+			<router-link class="mt-4 mb-8 w-9/12 h-9/12 md:w-8/12 md:h-6/12" :to="{name: 'Stream', params: { difficulty: gameroom.difficulty, roomname: gameroom.roomname }}">
+				<img src="../assets/bg1.jpg" alt="">
+			</router-link>
 		</div>
 		<div v-if="gameRooms.length === 0">
-      <div class="mt-24 text-center text-gray-200 text-2xl font-bold mb-2">
+        <div class="mt-24 text-center text-gray-200 text-2xl font-bold mb-2">
 				<h1>No Games In Play Now</h1>
 			</div>
 			<div class="grid grid-rows-2 content-center gap-y-2 text-center "> 
