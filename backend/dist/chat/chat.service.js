@@ -46,6 +46,9 @@ let ChatService = class ChatService {
     async getRoomById(id) {
         return await this.roomRepo.getRoomById(id);
     }
+    async getRoomByName(name) {
+        return await this.roomRepo.findOne({ name: name });
+    }
     async getMembersByRoomId(roomid) {
         const usersid = await this.membershipRepo
             .createQueryBuilder('m')

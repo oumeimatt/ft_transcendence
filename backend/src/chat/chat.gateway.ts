@@ -245,8 +245,31 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
      }
 
     @SubscribeMessage('send-DM')
-    async sendDM(){
+    async sendDM(sender:Socket, messagedto : messageDto){
+      console.log(messagedto);
+      await this.definePlayer(sender);
+      let receiverid = messagedto.id;
+      let roomName = receiverid+":"+this.player.id;
+      let room = await this.chatService.getRoomByName(roomName);
+      if (!room)
+        room = await this.chatService.getRoomByName(this.player.id+":"+receiverid);
+      messagedto.id =  room.id;
+      console.log("===="+room.id);
+      await this.chatService.createMessage(messagedto, this.player);
+      for (var x of this.user)
+      {
+        let  userid = await x.handshake.query.token;
+        userid = await this.userService.verifyToken(userid);
+        let  messages = await this.chatService.getMessagesByroomId(messagedto.id);
+       // console.log(messages);
+      //check if it's a member before sending the messages
+        if (await this.chatService.isMember(messagedto.id, userid))
+          this.server.to(x.id).emit('sendMessage', messages);
+      }
 
+      //check the valid name of the channel => get the right id and add it to the message dto
+      //create message
+      //send to the members
     }
 
     // @SubscribeMessage('set-admin')

@@ -54,6 +54,10 @@ export class ChatService {
     async getRoomById(id:number):Promise<chatroom>{
         return await this.roomRepo.getRoomById(id);
     }
+
+    async getRoomByName(name:string):Promise<chatroom>{
+        return await this.roomRepo.findOne({name:name});
+    }
    
 
     async getMembersByRoomId(roomid:number):Promise<Player[]>{

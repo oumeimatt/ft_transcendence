@@ -4,7 +4,9 @@
 	<div v-if="store.state.player.status != 'offline'" class="Container">
 	    <div class="grid grid-cols-6 gap-px  ">
 	    	<chatnavbar />
-	    	<conversation :name="name" />
+            <!-- <div class="bg-white text-black font-bold"> {{name }} {{ id }}</div> -->
+
+	    	<conversation :name="name" :id="id" />
 	    </div>
 	</div>
 </template>
@@ -15,9 +17,10 @@
     import Footer from '../components/Footer.vue';
     import chatnavbar from '../components/chatnavbar.vue'
     import conversation from '../components/conversation.vue'
-    const props = defineProps({
-            name: String
-    })
+    const props = defineProps <{
+            name: string,
+			id: string
+	}>()
     const store = inject('store')
     const channelName = ref('')
 

@@ -21,6 +21,7 @@ export declare class ChatService {
     createRoom(RoomDto: RoomDto, creators: Player[]): Promise<chatroom>;
     createDM(sender: number, receiver: number): Promise<chatroom>;
     getRoomById(id: number): Promise<chatroom>;
+    getRoomByName(name: string): Promise<chatroom>;
     getMembersByRoomId(roomid: number): Promise<Player[]>;
     getRoomsForUser(playerid: number): Promise<chatroom[]>;
     addMember(room: chatroom, creator: Player, role: RoleStatus): Promise<void>;

@@ -146,7 +146,24 @@ let ChatGateway = class ChatGateway {
             this.server.to(this.decoded.id).emit("sendMessage", messages);
         }
     }
-    async sendDM() {
+    async sendDM(sender, messagedto) {
+        console.log(messagedto);
+        await this.definePlayer(sender);
+        let receiverid = messagedto.id;
+        let roomName = receiverid + ":" + this.player.id;
+        let room = await this.chatService.getRoomByName(roomName);
+        if (!room)
+            room = await this.chatService.getRoomByName(this.player.id + ":" + receiverid);
+        messagedto.id = room.id;
+        console.log("====" + room.id);
+        await this.chatService.createMessage(messagedto, this.player);
+        for (var x of this.user) {
+            let userid = await x.handshake.query.token;
+            userid = await this.userService.verifyToken(userid);
+            let messages = await this.chatService.getMessagesByroomId(messagedto.id);
+            if (await this.chatService.isMember(messagedto.id, userid))
+                this.server.to(x.id).emit('sendMessage', messages);
+        }
     }
 };
 __decorate([
@@ -186,7 +203,7 @@ __decorate([
 __decorate([
     (0, websockets_1.SubscribeMessage)('send-DM'),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [socket_io_1.Socket, message_dto_1.messageDto]),
     __metadata("design:returntype", Promise)
 ], ChatGateway.prototype, "sendDM", null);
 ChatGateway = __decorate([

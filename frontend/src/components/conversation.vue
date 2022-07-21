@@ -24,29 +24,29 @@
 					<div>
 						<div class="w-full">
 							<div class="relative w-full p-6 overflow-y-auto">
-								<ul class="space-y-2">
-									<li class="flex justify-start items-center space-x-4">
-											<img v-if="store.methods.usersInfo(name)" :src="store.methods.playerAvatar(store.methods.usersInfo(name))" class="h-10 w-10 rounded-full bg-white " alt="">
-											<div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-												<span class="block">Hidsdsdsdksmdksmkdlmsdkls</span>
-											</div>
-									</li>
-									<li class="flex justify-end">
-										<div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-											<span class="block">allalalaljsjjsjd</span>
-										</div>
-									</li>
-								</ul>
+								<ul v-for="message in store.state.messages" :key="message" class="space-y-2">
+                                    <li v-if="message.id != store.state.player.id" class="flex justify-start items-center space-x-4">
+                                            <img :src="store.methods.playerAvatar(store.methods.usersInfo(name))" class="h-10 w-10 rounded-full bg-white " alt="">
+                                            <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
+                                                <span class="block"> {{ message.content }} </span>
+                                            </div>
+                                    </li>
+                                    <li v-else class="flex justify-end">
+                                        <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
+                                            <span class="block"> {{ message.content }}</span>
+                                        </div>
+                                    </li>
+                                </ul>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class=" h-small rounded relative mt-12">
 					<div class="flex items-center justify-between  w-full p-3 border-t border-gray-800 ">
-						<input type="text" placeholder="Message"
+						<input v-model="store.state.message" type="text" placeholder="Message"
 							class="block h-3/6 w-full bottom-2/4 translate-y-2/4 py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
 							name="message" required />
-							<button type="submit">
+							<button @click="sendMessage(id)" type="submit">
 								<svg class="w-6 h-6 text-gray-500 bottom-2/4 translate-y-3/4 origin-center transform rotate-90" xmlns="http://www.w3.org/2000/svg"
 									viewBox="0 0 20 20" fill="currentColor">
 									<path
@@ -62,16 +62,23 @@
 	import {inject, onMounted, ref} from 'vue';
 	const store = inject('store')
 	import axios from 'axios';
-    const props = defineProps({
-            name: String
-    })
-	const id = ref(0 )
+    const props = defineProps <{
+            name: string,
+			id: string
+	}>()
 
-
+	function sendMessage(id: any){
+		let messageDto={ id : parseInt(id, 10) , content : store.state.message};
+		console.log("id == ",id)
+		store.state.connection.emit("send-DM", messageDto);
+	}
 	const showMenu = ref(false)
 	const rightClick = () => (
 		showMenu.value = true
 	);
+
+	
+	// store.state.connection.on("sendMessage", (data) => {messages = data;});
 	//  onMounted(async () => {
 	// 	await axios
     //       .get('http://localhost:3001/users' ,{ withCredentials: true })

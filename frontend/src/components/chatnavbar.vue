@@ -53,7 +53,7 @@
 					<div v-if="store.state.friends" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
 						<div v-for="friend in store.state.friends" :key="friend">
 							<div @click="CreateDM(friend.id)" class="flex justify-start items-center space-x-2 mt-2"> 
-									<img  :src="store.methods.playerAvatar(friend)" class=" lg:ml-8 h-8 w-8 rounded-full bg-white">  <span class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 pb-4 "> <router-link :to="{name:'Chat', params: {name: friend.username}}" > {{ friend.username }} </router-link>   </span> 
+									<img  :src="store.methods.playerAvatar(friend)" class=" lg:ml-8 h-8 w-8 rounded-full bg-white">  <span class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 pb-4 "> <router-link :to="{name:'Chat', params: {name: friend.username, id: friend.id}}" > {{ friend.username }} </router-link>   </span> 
 							</div>
 						</div>
 					</div>
@@ -140,10 +140,6 @@ import { anyTypeAnnotation } from '@babel/types';
     }
 
 
-	//function sendMessage(){
-		//let messageDto={ id : , content : };
-		//store.state.connection.emit("createMessage", messageDto);
-	//}
 
 	// function getMessage(id){
 	// 	await axios.get('http://localhost:3001/chat/messages', {params:{roomid:id}, withCredentials:true})
@@ -159,6 +155,8 @@ import { anyTypeAnnotation } from '@babel/types';
 		store.state.connection.emit("create-DM", id); //
 
 	}
+
+
 
 	function usersInfo(id: string){
         for (var user of store.state.friends) {
@@ -211,7 +209,7 @@ import { anyTypeAnnotation } from '@babel/types';
 		// 	}
 		// }
 
-		//store.state.connection.on("sendMessage", (data) => {messages = data;});
+		store.state.connection.on("sendMessage", (data) => {store.state.messages = data;});
 
 		//store.state.connection.on("members", (data) => {members = data;});
 
