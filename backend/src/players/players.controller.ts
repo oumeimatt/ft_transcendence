@@ -119,7 +119,8 @@ export class UsersController {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
 		console.log('valid');
-		fs.unlinkSync(process.cwd() + "/public/qr_" + user.username + ".png");
+		console.log(process.cwd() + "/public/qr_" + user.username + ".png");
+		// fs.unlinkSync(process.cwd() + "/public/qr_" + user.username + ".png");
 		await this.usersService.turnOnTwoFactorAuthentication(user.id);
 	}
 

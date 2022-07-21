@@ -22,21 +22,6 @@ export class UsersService {
 		private jwtService: JwtService,
 	) {}
 
-	// async signUp(createUserDto: CreateUserDto): Promise<void> {
-	// 	return this.userRepository.signUp(createUserDto);
-	// }
-
-	// async signIn(createUserDto: CreateUserDto): Promise<{ accessToken: string }> {
-	// 	const username = await this.userRepository.validateUserPassword(createUserDto);
-	// 	if (!username) {
-	// 		throw new UnauthorizedException('Invalid credentials')
-	// 	}
-	
-	// 	const payload: JwtPayload = { username };
-	// 	const accessToken = await this.jwtService.sign(payload);
-	// 	return { accessToken };
-	// }
-
 	async getUserById(id: number): Promise<Player> {
 		const found = await this.userRepository.findOne(id);
 		if (!found){
@@ -88,9 +73,7 @@ export class UsersService {
 
 	async generateSecretQr(user: Player): Promise<string> {
 		const { otpauth_url } = await this.generateTwoFactorAuthenticationSecret(user);
-		// return await this.pipeQrCodePath(res, otpauth_url);
 		const qr = await QRCode.toString(otpauth_url);
-		// console.log(qr);
 		return qr;
 	}
 
@@ -157,7 +140,6 @@ export class UsersService {
 		console.log(id, login);
 		const found = await this.userRepository.findOne({ where: { id } });
 		if (found) {
-			console.log('found !!');
 			found.status = UserStatus.ONLINE;
 			await found.save();
 			return found;
@@ -172,7 +154,6 @@ export class UsersService {
 		newUser.losses = 0;
 		newUser.status = UserStatus.ONLINE;
 		newUser.two_fa = false;
-		newUser.email = email;
 		await newUser.save();
 		console.log('new User saved successfully ' + newUser);
 		if (typeof(newUser) == 'undefined') {
@@ -208,30 +189,14 @@ export class UsersService {
         const secret = authenticator.generateSecret();
 		const token = authenticator.generate(secret);
         const otpauth_url = authenticator.keyuri(token, process.env.APP_NAME, secret);
-		// console.log(otpauth_url);
         // await this.setTwoFactorAuthenticationSecret(user.id, secret);
 		await this.userRepository.update(user.id, { secret: secret });
         return { secret, otpauth_url };
     }
 
-    // async pipeQrCodePath(stream: Response, otpauth_url: string): Promise<string> {
-	// 	//& use toFile and return the file path
-	// 	// const qr = await create(otpauth_url);
-	// 	// const num = Math.floor(Math.random() * 1000000);
-	// 	// const fileName = '/backend/public/qrcode' + num.toString() + '.png';
-	// 	// console.log('HERE ' + fileName)
-	// 	// const file = await QRCode.toFile(fileName, otpauth_url);
-	// 	const qr = await QRCode.toString(otpauth_url);
-	// 	console.log(qr);
-	// 	return qr;
-    // }
-
 	async verifyTwoFactorAuthenticationCodeValid(user: Player, code: string) {
-		console.log('verifyTwoFactorAuthenticationCodeValid > ');
 		const secret = user.secret;
-		console.log(code);
 		const verif = authenticator.verify({token: code, secret: secret});
-		// const verif = authenticator.verify({token: token, secret: secret});
 		console.log('verrified = ' + verif);
 		return verif;
 	}

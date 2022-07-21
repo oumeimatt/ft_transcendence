@@ -32,17 +32,12 @@ export class Player extends BaseEntity {
 	@Column({ default: UserStatus.ONLINE})
 	status: UserStatus;
 
-	@Column({ nullable: true}) //= drop DB - column: nullable-> false -
-	email: string;
+	// @Column({ nullable: true}) //= drop DB - column: nullable-> false -
+	// email: string;
 
 	@Column({ default: false })
 	two_fa: boolean;
 
-	// @OneToMany(
-	// 	type => Relation,
-	// 	relation => relation.receiver,
-	// 	{ eager: true })
-	// receivers: Relation[];
 	@Column({ nullable: true })
 	secret: string;
 

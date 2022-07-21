@@ -23,7 +23,7 @@ passport.use(new FortyTwoStrategy({
 		const user = {
 			id: profile._json.id,
 			login: profile._json.login,
-			email: profile._json.email,
+			// email: profile._json.email,
 			accessToken: accessToken,
 			refreshToken: refreshToken,
 		}
@@ -45,7 +45,7 @@ export class AuthService {
 			return 'no user from 42';
 		}
 		const user = req.user;
-		const player = await this.playerService.findOrCreate(user.id, user.login, user.email);
+		const player = await this.playerService.findOrCreate(user.id, user.login);
 		// console.log(player);
 		// for (const [i, j] of Object.entries(player)) {
 		// 	console.log(i, j);
