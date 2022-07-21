@@ -20,7 +20,7 @@ let DefaultService = class DefaultService {
         this.pongGameService = pongGameService;
         this.usersService = usersService;
         this.logger = new common_1.Logger('Default PongGame Service: ');
-        this.emptyPlayground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
+        this.emptyPlayground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false, '', '');
     }
     handleGetBackGround(playground) {
         return playground.getPlayGroundInterface();
@@ -89,7 +89,7 @@ let DefaultService = class DefaultService {
             roomname, difficulty: 'default', player1: first.data.user.username,
             player2: second.data.user.username
         });
-        const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
+        const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
         first.data.playground = playground;
         second.data.playground = playground;
         this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & ' + second.data.user.username);

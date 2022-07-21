@@ -20,7 +20,7 @@ let OneVOneService = class OneVOneService {
         this.pongGameService = pongGameService;
         this.usersService = usersService;
         this.logger = new common_1.Logger('OneVOne PongGame Service: ');
-        this.emptyPlayground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
+        this.emptyPlayground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false, '', '');
     }
     handleGetBackGround(playground) {
         return playground.getPlayGroundInterface();
@@ -85,7 +85,7 @@ let OneVOneService = class OneVOneService {
         second.data.roomname = roomname;
         first.data.opponentId = second.data.user.id;
         second.data.opponentId = first.data.user.id;
-        const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false);
+        const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
         first.data.playground = playground;
         second.data.playground = playground;
         this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & ' + second.data.user.username);

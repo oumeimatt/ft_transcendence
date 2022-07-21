@@ -6,7 +6,7 @@ const Paddle_1 = require("./Paddle");
 const PaddleController_1 = require("./PaddleController");
 const ScoreBoard_1 = require("./ScoreBoard");
 class PlayGround {
-    constructor(x, y, width, height, color, win_score, difficult) {
+    constructor(x, y, width, height, color, win_score, difficult, player1, player2) {
         this._x = x;
         this._y = y;
         this._width = width;
@@ -20,6 +20,8 @@ class PlayGround {
         this._rightPaddleController = new PaddleController_1.PaddleController(this._rightPaddle);
         this._scoreBoard = new ScoreBoard_1.ScoreBoard();
         this._win_score = win_score;
+        this._player1 = player1;
+        this._player2 = player2;
     }
     get x() {
         return this._x;
@@ -54,6 +56,12 @@ class PlayGround {
     get win_score() {
         return this._win_score;
     }
+    get player1() {
+        return this._player1;
+    }
+    get player2() {
+        return this._player1;
+    }
     getRadius() {
         let rad = (this._width + this._height) / 25 < 20
             ? (this._width + this._height) / 25
@@ -82,6 +90,8 @@ class PlayGround {
             rightPaddle: this._rightPaddle.getPaddleInterface(),
             ball: this._ball.getBallInterface(),
             score: this._scoreBoard.getScoreBoardInterface(),
+            player1: this._player1,
+            player2: this._player2,
         };
     }
     get bounds() {

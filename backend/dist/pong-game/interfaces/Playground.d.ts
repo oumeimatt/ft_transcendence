@@ -11,4 +11,6 @@ export interface PlayGroundInterface {
     rightPaddle: PaddleInterface;
     ball: BallInterface;
     score: ScoreBoardInterface;
+    player1: string;
+    player2: string;
 }

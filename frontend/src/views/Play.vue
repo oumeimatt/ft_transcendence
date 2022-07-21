@@ -42,9 +42,6 @@ onMounted(() => {
 
         context.value = game.value.getContext("2d");
 
-        // drawing game on gameStarted event
-        DrawGameStarted();
-
         // drawing game for player whos waiting
         DrawPlayerWaiting();
 
@@ -65,7 +62,9 @@ onMounted(() => {
             playground.value,
             context.value,
             game.value.width,
-            game.value.height
+            game.value.height,
+            playground.value.player1,
+            playground.value.player2,
         );
         });
         // if Key is pressed start moving the paddle
@@ -146,22 +145,6 @@ function ConnectedTwice() {
     });
 }
 
-function DrawGameStarted() {
-    (socket.value as Socket).on('GameStarted', (data) => {
-        playground.value = data.playground;
-        if (playground.value != null) {
-                game.value.width = game.value.offsetWidth;
-                game.value.height = game.value.width * 0.6;
-                Draw.clearContext(
-                context.value,
-                game.value.width,
-                game.value.height
-            );
-            message.value = 'Room: ' + data.room + ' Players: [' + data.player1 + ', ' + data.player2 + ']';
-        }
-    });
-}
-
 function DrawPlayerWaiting() {
     (socket.value as Socket).on('WaitingForPlayer', (data) => {
     playground.value = data.playground;
@@ -173,7 +156,9 @@ function DrawPlayerWaiting() {
                 playground.value,
                 context.value,
                 game.value.width,
-                game.value.height
+                game.value.height,
+                playground.value.player1,
+                playground.value.player2,
             );
         }
     });
@@ -190,7 +175,9 @@ function DrawGameInterrupted() {
             playground.value,
             context.value,
             game.value.width,
-            game.value.height
+            game.value.height,
+            playground.value.player1,
+            playground.value.player2,
         );
     }
     });
@@ -203,12 +190,14 @@ function DrawGameEachUpdate() {
             game.value.width = game.value.offsetWidth;
             game.value.height = game.value.width * 0.6;
             Draw.updatePlayground(
-            playground.value,
-            context.value,
-            game.value.width,
-            game.value.height
-        );
-    }
+                playground.value,
+                context.value,
+                game.value.width,
+                game.value.height,
+                playground.value.player1,
+                playground.value.player2,
+            );
+        }
     });
 }
 

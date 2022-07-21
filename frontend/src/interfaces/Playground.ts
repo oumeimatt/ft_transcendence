@@ -12,4 +12,6 @@ export interface PlaygroundInterface {
     leftPaddle: PaddleInterface;
     rightPaddle: PaddleInterface;
     score: ScoreBoardInterface;
+    player1: string;
+    player2: string;
 }
