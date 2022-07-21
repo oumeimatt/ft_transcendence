@@ -31,4 +31,5 @@ export declare class ChatService {
     getAllRooms(playerid: number): Promise<chatroom[]>;
     getRole(roomid: number, playerid: number): Promise<membership>;
     createMembership(playerid: number, roomid: number): Promise<void>;
+    DMexist(senderid: number, receiverid: number): Promise<chatroom>;
 }

@@ -126,6 +126,17 @@ let ChatService = class ChatService {
         Membership.role = membership_model_1.RoleStatus.USER;
         await Membership.save();
     }
+    async DMexist(senderid, receiverid) {
+        let chatroomName = senderid + ":" + receiverid;
+        let room = await this.roomRepo.findOne({ name: chatroomName, ischannel: false });
+        if (room)
+            return room;
+        chatroomName = receiverid + ":" + receiverid;
+        room = await this.roomRepo.findOne({ name: chatroomName, ischannel: false });
+        if (room)
+            return room;
+        return null;
+    }
 };
 ChatService = __decorate([
     (0, common_1.Injectable)(),

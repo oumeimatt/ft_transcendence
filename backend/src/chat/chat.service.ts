@@ -114,7 +114,6 @@ export class ChatService {
         .orderBy("message.created_at");
 
        const messages = await query.getMany();
-   //    console.log(messages);
        return messages;
     }
 
@@ -170,6 +169,18 @@ export class ChatService {
         Membership.roomid = roomid;
         Membership.role =   RoleStatus.USER;
         await Membership.save();
+    }
+
+    async DMexist(senderid:number, receiverid:number):Promise<chatroom>{
+        let chatroomName = senderid+":"+receiverid;
+        let room = await this.roomRepo.findOne({name:chatroomName, ischannel:false});
+        if (room)
+            return room;
+        chatroomName = receiverid+":"+receiverid;
+        room = await this.roomRepo.findOne({name:chatroomName, ischannel:false});
+        if (room)
+            return room;
+        return null;
     }
 
     // async updateRole(role: RoleStatus):Promise<membership>{

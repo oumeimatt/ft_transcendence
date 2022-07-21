@@ -160,7 +160,23 @@ import { anyTypeAnnotation } from '@babel/types';
 
 	}
 
+	function usersInfo(id: string){
+        for (var user of store.state.friends) {
+            if (user.id.toString() == id){
+                return user.username
+            }
+        }
+    }
 	 onMounted(async () => {
+
+		await axios
+          .get('http://localhost:3001/profile' ,{ withCredentials: true })
+          .then(data =>{
+            store.state.player = data.data.profile;
+            store.state.friends = data.data.friends;
+            store.state.achievements = data.data.achievements
+          } ) 
+          .catch(err => console.log(err.message))
 		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 		  .then(data=> { console.log('axios mychannels ');store.state.rooms = data.data; })
 		//  console.log(data.data);}
@@ -171,6 +187,29 @@ import { anyTypeAnnotation } from '@babel/types';
 		store.state.connection.on("message", (data) => {store.state.rooms = data;});
 
 		store.state.connection.on("allrooms", (data) => {store.state.allRooms = data;});
+
+		//update room names && allrooms
+		for (let i = 0; i < store.state.rooms.length; i++){
+			let splits = store.state.rooms[i].name.split(":");
+			if (splits.length === 2)
+			{
+				if (store.state.player.id == splits[0])
+					store.state.rooms[i].name = usersInfo(splits[1]);
+				else
+					store.state.rooms[i].name = usersInfo(splits[0]);
+			}
+		}
+
+		for (let i = 0; i < store.state.allRooms.length; i++){
+			let splits = store.state.allRooms[i].name.split(":");
+			if (splits.length === 2)
+			{
+				if (store.state.player.id == splits[0])
+					store.state.allRooms[i].name = usersInfo(splits[1]);
+				else
+					store.state.allRooms[i].name = usersInfo(splits[0]);
+			}
+		}
 
 		//store.state.connection.on("sendMessage", (data) => {messages = data;});
 

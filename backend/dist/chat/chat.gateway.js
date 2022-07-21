@@ -125,19 +125,25 @@ let ChatGateway = class ChatGateway {
         await this.chatService.createMembership(this.player.id, roomid);
     }
     async createDM(sender, receiverid) {
-        console.log('dm called !');
         await this.definePlayer(sender);
-        const DM = await this.chatService.createDM(this.player.id, receiverid);
-        let allrooms = await this.chatService.getAllRooms(this.player.id);
-        let rooms = await this.chatService.getRoomsForUser(this.player.id);
-        this.server.to(sender.id).emit('allrooms', allrooms);
-        this.server.to(sender.id).emit('message', rooms);
-        let decoded = await this.getSocketid(receiverid);
-        if (decoded != null) {
-            allrooms = await this.chatService.getAllRooms(receiverid);
-            rooms = await this.chatService.getRoomsForUser(receiverid);
-            this.server.to(decoded.id).emit('allrooms', allrooms);
-            this.server.to(decoded.id).emit('message', rooms);
+        const room = await this.chatService.DMexist(this.player.id, receiverid);
+        if (!room) {
+            const DM = await this.chatService.createDM(this.player.id, receiverid);
+            let allrooms = await this.chatService.getAllRooms(this.player.id);
+            let rooms = await this.chatService.getRoomsForUser(this.player.id);
+            this.server.to(sender.id).emit('allrooms', allrooms);
+            this.server.to(sender.id).emit('message', rooms);
+            let decoded = await this.getSocketid(receiverid);
+            if (decoded != null) {
+                allrooms = await this.chatService.getAllRooms(receiverid);
+                rooms = await this.chatService.getRoomsForUser(receiverid);
+                this.server.to(decoded.id).emit('allrooms', allrooms);
+                this.server.to(decoded.id).emit('message', rooms);
+            }
+        }
+        else {
+            let messages = await this.chatService.getMessagesByroomId(room.id);
+            this.server.to(this.decoded.id).emit("sendMessage", messages);
         }
     }
     async sendDM() {

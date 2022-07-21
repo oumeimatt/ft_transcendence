@@ -211,33 +211,38 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     //
     @SubscribeMessage('create-DM')
     async createDM(sender:Socket, receiverid:number ){
-
-      console.log('dm called !')
       await this.definePlayer(sender);
       //before create
       //check if this channel exist
       //by name sender:receiverid || receiverid:sender
-      const DM = await this.chatService.createDM(this.player.id, receiverid);
-
-      let allrooms = await this.chatService.getAllRooms(this.player.id);
-      let rooms = await this.chatService.getRoomsForUser(this.player.id);
-
-      this.server.to(sender.id).emit('allrooms', allrooms);
-      this.server.to(sender.id).emit('message', rooms);
-
-      let decoded = await this.getSocketid(receiverid);
-      if (decoded != null)
+      const room = await this.chatService.DMexist(this.player.id, receiverid);
+      if (!room)
       {
-        allrooms = await this.chatService.getAllRooms(receiverid);
-        rooms = await this.chatService.getRoomsForUser(receiverid);
+        const DM = await this.chatService.createDM(this.player.id, receiverid);
 
-        this.server.to(decoded.id).emit('allrooms', allrooms);
-        this.server.to(decoded.id).emit('message', rooms);
+        let allrooms = await this.chatService.getAllRooms(this.player.id);
+        let rooms = await this.chatService.getRoomsForUser(this.player.id);
+
+        this.server.to(sender.id).emit('allrooms', allrooms);
+        this.server.to(sender.id).emit('message', rooms);
+
+        let decoded = await this.getSocketid(receiverid);
+        if (decoded != null)
+        {
+          allrooms = await this.chatService.getAllRooms(receiverid);
+          rooms = await this.chatService.getRoomsForUser(receiverid);
+
+          this.server.to(decoded.id).emit('allrooms', allrooms);
+          this.server.to(decoded.id).emit('message', rooms);
+        }
+      }
+      else
+      {
+        let messages = await this.chatService.getMessagesByroomId(room.id);
+        this.server.to(this.decoded.id).emit("sendMessage", messages);
       }
 
-      
-
-    }
+     }
 
     @SubscribeMessage('send-DM')
     async sendDM(){
