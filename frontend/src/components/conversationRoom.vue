@@ -2,8 +2,8 @@
     <div id="folio" class="invisible md:visible lg:visible col-span-1 lg:col-span-4 md:col-span-4 h-screen ">
         <div class="relative h-small bg-myblue rounded-lg">
             <h1 class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> {{ name }} </h1>
-            <button v-if="store.methods.RoomInfo(name)" class="bg-slate-900 rounded h-10 w-36 font-bold absolute text-red-700 right-6 bottom-2/4 translate-y-2/4 hover:bg-red-800 hover:text-slate-900" > Leave room </button>
-            <button @click="joinRoom = !joinRoom" v-else class="bg-slate-300 rounded h-10 w-36 font-bold absolute text-gray-800 right-6 bottom-2/4 translate-y-2/4 hover:bg-slate-400" > Join Room </button>
+            <button  class="bg-slate-900 rounded h-10 w-36 font-bold absolute text-red-700 right-6 bottom-2/4 translate-y-2/4 hover:bg-red-800 hover:text-slate-900" > Leave room </button>
+            <!-- <button @click="joinRoom = !joinRoom" class="bg-slate-300 rounded h-10 w-36 font-bold absolute text-gray-800 right-6 bottom-2/4 translate-y-2/4 hover:bg-slate-400" > Join Room </button> -->
         </div>
         <div v-if="joinRoom" class="fixed inset-60 z-50 ">
           <div class=" my-6 mx-auto max-w-sm text-center ">
