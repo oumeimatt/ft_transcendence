@@ -6,11 +6,11 @@
       </div>
       <div v-else>
         <Header /> 
-        <div v-if="store.state.player.status" class="Container">
+        <div v-if="store.state.player.status != 'offline'" class="Container">
           <div id="container2" class="relative mb-11 text-white">
             <div class="flex absolute top-48 left-5 items-center">
   
-              <img class="w-36 md:w-40 lg:w-40 bg-white   rounded-full lg:top-52 left-11" :src="store.state.user.avatar" alt="">
+              <img class="w-36 md:w-40 lg:w-40 bg-white   rounded-full lg:top-52 left-11" :src="store.methods.playerAvatar(store.state.user)" alt="">
               <div class="ml-6 font-semibold text-3xl  text-gray-400 "> {{ store.state.user.username }} </div>
               <div v-if="store.state.user.status == 'online'" class="h-4 w-4 bg-green-600 mt-2 rounded-full  ml-4">
                 <p class="opacity-0 text-gray-400 hover:opacity-100 pl-6 -mt-1">
@@ -51,24 +51,25 @@
          <!-- {{ props.nickname }} -->
         </div>
         <div class="flex  my-0 mx-auto w-3/5 bg-slate-500 h-6 mb-6 relative">
-          <div class="bg-slate-700 h-6 " style="width: 25%"> </div>
-          <p class="inline-block z-10 absolute left-2/4 -translate-x-2/4 text-slate-400" > level 0 - 25%  </p>
+          <div class="bg-slate-700 h-6 " style="width: 0%"> </div>
+          <p class="inline-block z-10 absolute left-2/4 -translate-x-2/4 text-slate-400" > level  {{ store.state.user.level }}%  </p>
         </div>
         <div class="cent pt-8 ">
           <div class="grid md:grid-cols-1 lg:grid-cols-1 gap-1 lg-gap-1  text-center  mt-8" >
             <div class="p-4  bg-slate-500 rounded-md " > 
               <p class="text-2xl font-semibold pb-4  border-b border-neutral-800"> Friends </p>
-              <div v-for="friend in store.state.user.friends" :key="friend">
-							    <router-link  :to="{ name:'User', params: {id: friend.id}}"> <img :src="getUserAvatar(friend.id)" class="w-10 h-10 rounded-full bg-white"> </router-link>
+               <div  class="pt-4 flex items-scretch space-x-2">
+                <div v-for="friend in store.state.userFriends" :key="friend" class="flex ">
+                    <router-link  :to="{ name:'User', params: {id: friend.id}}"> <img :src="store.methods.playerAvatar(friend)" class="rounded-full bg-white w-10 h-10 "> </router-link>
+                </div>
               </div>
             </div>
           </div>
           <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-2 lg-gap-2 text-center mt-8" >
             <div class="p-4  bg-slate-500 rounded-md " > 
               <p  class="text-2xl font-semibold pb-4 border-b border-neutral-800"> Achievements </p>
-              <!-- <div v-if="store.methods.usersInfo(username)"> 
   
-                <div v-for="achievement in store.methods.usersInfo(username).achievements" :key="achievement">
+                <div v-for="achievement in store.state.userAchievements" :key="achievement">
                   <div v-if="achievement == 'first'" class="grid grid-cols-8 justify-items-start  bg-slate-500 pt-4">
                       <div class="place-self-start" > <img src="../assets/medal.png" class="w-10 h-10"></div>
                       <div class="col-span-7 pr-10"> <span class="text-xl  font-semibold text-slate-900">First game </span>     <span class="text-s font-semibold text-neutral-900" > Congratulations ! You won your first Game! </span> </div>
@@ -89,37 +90,16 @@
                 
                 
                 </div>
-              </div> -->
-            </div>
+              </div>
             <div class="p-4  bg-slate-500 rounded-md " > 
               <div > 
                 <p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
                 <!-- games  -->
-                <!-- <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> soepkdsds  </div>
+                <div  v-for="game in gamesHistory" :key="game" class="grid grid-cols-3 justify-itmes-center pt-4">
+                  <div class="text-neutral-900 font-semibold "> {{ game.winner.username }} </div>
+                  <div class="text-gray-900 font-black "> <span> {{ game.winnerScore }} </span> - <span>  {{ game.loserScore }}</span>  </div>
+                  <div class="text-neutral-900 font-semibold "> {{ game.loser.username }}  </div>
                 </div>
-                <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> iidzim  </div>
-                </div>
-                <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> framdani  </div>
-                </div>
-                <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> dkkdkksm  </div>
-                </div>
-                <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> ndjbjdjds  </div>
-                </div> -->
                 <!--  -->
               </div>
             </div>
@@ -137,7 +117,7 @@
 
 <script lang="ts" setup>
 import axios from 'axios';
-import { defineComponent , ref, inject, onMounted, onUpdated } from 'vue';
+import { defineComponent , ref, inject, onMounted,nextTick,  computed, onUpdated } from 'vue';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue'
 import Profile from './Profile.vue'
@@ -146,10 +126,26 @@ const add = ref(true)
 const isFriend = ref(false)
 const frMenu = ref(false)
 const isBlocked = ref(false)
+let gamesHistory = ref([] as unknown);
+let errors = ref('' as string)
 
-const props = defineProps({
-  id: String
-})
+const props = defineProps<{
+  id: string
+}>()
+
+
+  onMounted( async () => {
+        // await axios
+        //   .get('http://localhost:3001/profile' ,{ withCredentials: true })
+        //   .then(data =>{
+        //     store.state.player = data.data.profile;
+        //     store.state.friends = data.data.friends;
+        //     console.log(data.data.friends)
+        //     store.state.achievements = data.data.achievements
+        //   } ) 
+      getGamesHistory(parseInt(props.id, 10));
+
+    })
 
   // onMounted ( () => {
   //     var user = store.state.users.find( x=> x.id === props.id)
@@ -165,13 +161,17 @@ const props = defineProps({
 
   // })
 onUpdated(async  () => {
+  
 
       await axios
           .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
-          .then(data =>{ store.state.user = data.data.profile} ) 
+          .then(data =>{ store.state.user = data.data.profile;
+            store.state.userFriends = data.data.friends;
+            store.state.userAchievements = data.data.achievements})
           .catch(err => console.log(err.message))
-      var user = store.state.friends.find( x=> x.id === props.id)
-      // console.log(user)
+      // getGamesHistory(parseInt(props.id, 10));
+      var user = store.state.friends.find( x => x.id.toString() === props.id )
+        //  console.log("use")
       if (user != null){
           isFriend.value = true
           add.value = false
@@ -190,7 +190,7 @@ onUpdated(async  () => {
 			//     .catch(err => console.log(err.message)) 
     })
 
-    function removeFriend (){
+    async function removeFriend(){
         add.value = true,
         isFriend.value = false
         isBlocked.value = false
@@ -198,11 +198,13 @@ onUpdated(async  () => {
         axios.delete("http://localhost:3001/relation/unfollow/" + props.id , { withCredentials: true } )
             .then(data => console.log(data.data))
             .catch(error =>  console.error( error));
+        await nextTick()
     }
-    function addFriend () {
+    async function addFriend (){
         isFriend.value = true;
         isBlocked.value = false
         add.value = false
+        await nextTick()
         axios.post("http://localhost:3001/relation/add/" + props.id , {} , { withCredentials: true } ) // or the line below 
         // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
             .then(data => console.log(data.data))
@@ -232,6 +234,18 @@ onUpdated(async  () => {
       var result = store.state.users.find( x=> x.id === id)
       return result.avatar
     }
+
+    // function to get history of a player
+    async function getGamesHistory(id: number) {
+		  axios
+		  .get('http://localhost:3001/pong-game/games-history/' + props.id)
+		  .then((data) => {
+		  	gamesHistory.value = data.data.gamesHistory;
+		  })
+		  .catch(err => {
+		  	errors.value = err.message ?? 'unknown';
+		  });
+	  }
 </script>
 
 <style>

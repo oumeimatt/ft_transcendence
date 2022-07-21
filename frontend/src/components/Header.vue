@@ -161,6 +161,7 @@
             localStorage.clear();
             localStorage.setItem('user', data.data.cookie);
             store.state.player = data.data.profile;
+
             store.state.friends = data.data.friends;
             console.log(data.data.friends)
             store.state.achievements = data.data.achievements
@@ -171,14 +172,15 @@
           .then(data =>{ store.state.users = data.data ; console.log(store.state.users)})
           .catch(err => console.log(err.message))
     })
+
     async function  generateFA(){
       await axios
           .get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
-          .then(data =>{qr.value = data.data; console.log("data ",qr.value)}  ) 
-          .catch(err => console.log("here",err.message))
+          .then(data =>{qr.value = data.data;} ) 
+          .catch(err => console.log(err.message))
       showScan.value = true
-      console.log(qr.value)
     }
+
     async function enable2fa(){
             console.log('H22ERE');
   

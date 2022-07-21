@@ -1,7 +1,7 @@
 <template>
 
 	<Header /> 
-	<div v-if="store.state.player.status == 'online'" class="Container">
+	<div v-if="store.state.player.status != 'offline'" class="Container">
 	    <div class="grid grid-cols-6 gap-px  ">
 	    	<chatnavbar />
 	    	<conversation :name="name" />

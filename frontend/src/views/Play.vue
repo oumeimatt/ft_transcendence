@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted, ref } from 'vue';
+import { inject, onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 const store = inject('store')
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
@@ -29,11 +29,14 @@ let game = ref({} as HTMLCanvasElement);
 let playground = ref(null as PlaygroundInterface);
 
 onMounted(() => {
-    if (props.difficulty) {
+    if (store.state.player.status === 'playing' || !props.difficulty) {
+        window.location.href = '/game';
+    }
+    else {
        socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
         query: {
                 'role': 'player',
-                'username': store.state.player.username,
+                'accessToken': localStorage.getItem('user'),
             },
         });
 
@@ -128,9 +131,13 @@ onMounted(() => {
             });
             }
         });
-    } else {
-       window.location.href = '/game';
     }
+});
+
+onUnmounted(() => {
+   if (socket != null) {
+    (socket.value as Socket).disconnect();
+   }
 });
 
 function ConnectedTwice() {
@@ -157,7 +164,6 @@ function DrawGameStarted() {
 
 function DrawPlayerWaiting() {
     (socket.value as Socket).on('WaitingForPlayer', (data) => {
-    console.log("Game On Wait");
     playground.value = data.playground;
     if (playground.value != null) {
                 game.value.width = game.value.offsetWidth;
@@ -175,7 +181,6 @@ function DrawPlayerWaiting() {
 
 function DrawGameInterrupted() {
     (socket.value as Socket).on("gameInterrupted", (data) => {
-    console.log("Game Interrupted");
     playground.value = data.playground;
     if (playground.value != null) {
             game.value.width = game.value.offsetWidth;
@@ -193,7 +198,6 @@ function DrawGameInterrupted() {
 
 function DrawGameEachUpdate() {
     (socket.value as Socket).on("updatePlayground", (data) => {
-    console.log("update Playground");
     playground.value = data.playground;
     if (playground.value != null) {
             game.value.width = game.value.offsetWidth;

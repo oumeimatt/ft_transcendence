@@ -85,8 +85,8 @@ export class UsersController {
 		@UploadedFile() avatar: Express.Multer.File,
     ){
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
-        fs.writeFileSync(process.cwd().substring(0,process.cwd().length - 7) + "frontend/src/assets/"+imageName, avatar.buffer);
-		console.log("imagename === ", imageName)
+        fs.writeFileSync(process.cwd().substring(0,process.cwd().length - 7) + "frontend/public/assets/"+imageName, avatar.buffer);
+        console.log("imagename === ", imageName)
 		return this.usersService.updateAvatar(user.id, imageName);
     }
 

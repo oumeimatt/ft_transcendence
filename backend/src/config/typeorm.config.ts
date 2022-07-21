@@ -4,10 +4,13 @@ import { membership } from "src/chat/membership.entity";
 import { chatroom } from "src/chat/room.entity";
 import { Player } from "../players/player.entity";
 import { Relation } from "../relations/relation.entity";
+import { GameRoom } from "src/pong-game/typeorm/game-room.entity";
+import { GameHistory } from "src/pong-game/typeorm/game-history.entity";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
     host: '127.0.0.1',
+    //host: '192.168.99.117',
     port: 5432,
     username: 'ping',
     password: 'pong',
@@ -19,6 +22,8 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
         chatroom,
         membership,
         message,
+        GameRoom,
+        GameHistory
     ],
     synchronize: true,
     logging: false,

@@ -14,7 +14,6 @@ export class DifficultGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer() wss: Server;
-  readonly logger = new Logger('Difficult PongGame Server: ');
   private players: Socket[];
 
   constructor(private difficultService: DifficultService) {
@@ -22,14 +21,10 @@ export class DifficultGateway
   }
 
   handleConnection(client: Socket) {
-    this.logger.log(client.id + ' Connected!');
-    // console.log(client.handshake.auth);
-    // console.log(client.handshake.query);
     this.difficultService.handleUserConnected(client, this.players, this.wss);
   }
 
   handleDisconnect(client: Socket) {
-    this.logger.log(client.id + ' Disconnected!');
     this.players = this.players.filter((clt) => {
       return clt.id !== client.id;
     });

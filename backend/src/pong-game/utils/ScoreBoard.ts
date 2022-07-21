@@ -9,14 +9,6 @@ export class ScoreBoard {
     this.reset();
   }
 
-  public get winner() {
-    if (this._playerOneScore >= 7) {
-      return 1;
-    } else if (this._playerTwoScore >= 7) {
-      return 1;
-    }
-  }
-
   public get playerOneScore(): number {
     return this._playerOneScore;
   }

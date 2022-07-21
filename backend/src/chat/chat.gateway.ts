@@ -2,7 +2,7 @@ import { Header, UnauthorizedException } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Console } from 'console';
-import { NotFoundError } from 'rxjs';
+// import { NotFoundError } from 'rxjs';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { Player } from 'src/players/player.entity';
@@ -48,6 +48,18 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       catch{return this.disconnect(client);}
     }
 
+    private async getSocketid(id:number):Promise<Socket>{
+
+      for (var user of this.user){
+        let decoded = user.handshake.query.token;
+        decoded = await this.userService.verifyToken(decoded);
+        if (decoded.id === id)
+            return user;
+      }
+     // return null;
+
+    }
+
     //after a client has connected 
     //  afterInit(server: any) {    }
 
@@ -57,26 +69,23 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         await this.definePlayer(client);
         //  console.log(this.player);
         client.data.player = this.player;
-        const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
-        this.user.push(client);
-        this.title.push(`${client.id}`);
-        console.log(`On Connnect ... !${client.id} ${this.player.username}`)
-        //console.log(this.player.username);
-        // this.server.emit('message', this.title)
-        // this.user.map( x=> x.emit("message" ,`hey ${client.id}`));
-  
-      //only emit value to the concerned client => for now there is no room
-      // console.log(rooms);
-        this.server.to(client.id).emit('message', rooms);//rooms
-        let messages = [];
-        let members = [];
-        if (rooms.length != 0)
-        {
-          messages = await this.chatService.getMessagesByroomId(rooms[0].id);
-          members = await this.chatService.getMembersByRoomId(rooms[0].id);
-        }
-        this.server.to(client.id).emit('sendMessage', messages);
-        this.server.to(client.id).emit('members', members);
+        // const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
+        // const allrooms = await this.chatService.getAllRooms(this.decoded.id);
+         this.user.push(client);
+        // this.title.push(`${client.id}`);
+          console.log(`On Connnect ... !${client.id} ${this.player.username}`)
+     
+        // this.server.to(client.id).emit('message', rooms);//rooms
+        // let messages = [];
+        // let members = [];
+        // if (rooms.length != 0)
+        // {
+        //   messages = await this.chatService.getMessagesByroomId(rooms[0].id);
+        //   members = await this.chatService.getMembersByRoomId(rooms[0].id);
+        // }
+        // this.server.to(client.id).emit('sendMessage', messages);
+        // this.server.to(client.id).emit('members', members);
+        // this.server.to(client.id).emit('allrooms', allrooms);
       }
 
   
@@ -96,7 +105,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       @SubscribeMessage('createRoom')
       async onCreateRoom(socket: Socket, roomdto: RoomDto)
       {
-        //find all members by username
+        
         const usernames = roomdto.players;
         for (var username of usernames)
         {
@@ -105,22 +114,28 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
             this.players.push(user);
           //throw exception if user not found
         }
-        // this.players.push(socket.data.player);
+      //  console.log('players => '+this.players);
+        // this.players.push(socket.data.player); 
 
-        const room =  await this.chatService.createRoom(roomdto,this.players);
-        await this.chatService.addMember(room, socket.data.player, RoleStatus.OWNER);
+        const room =  await this.chatService.createRoom(roomdto,this.players); //! users
+        await this.chatService.addMember(room, socket.data.player, RoleStatus.OWNER); //! Owner
 
         let userid:any;
         let rooms:any;
+        let allrooms:any;
         let members=await this.chatService.getMembersByRoomId(room.id);
         for (var x of this.user)
         {
-        //  console.log(`the connected users  ${x.id}`);
           userid = await x.handshake.query.token;
           userid =  await this.userService.verifyToken(userid);//await this.authService.verifyJwt(userid);
           rooms = await this.chatService.getRoomsForUser(userid.id);
+          allrooms = await this.chatService.getAllRooms(userid.id);
+      //    console.log('userid => '+userid.username);
           this.server.to(x.id).emit('message', rooms);
+
           this.server.to(x.id).emit('members', members);
+
+          this.server.to(x.id).emit('allrooms', allrooms);
           //No need the send the messages => there is none
         }
         this.players.splice(0);
@@ -194,16 +209,52 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     }
 
     //
-    @SubscribeMessage('direct-message')
-    async sendDirectMessage(sender:Socket, receiverid:number ){
-      //create a room of type !isChannel => if not exist
-      
-      //with two membership => users =>sender && receiver
-      //create message
-      //
+    @SubscribeMessage('create-DM')
+    async createDM(sender:Socket, receiverid:number ){
+      await this.definePlayer(sender);
+      //before create
+      //check if this channel exist
+      //by name sender:receiverid || receiverid:sender
+      const room = await this.chatService.DMexist(this.player.id, receiverid);
+      if (!room)
+      {
+        const DM = await this.chatService.createDM(this.player.id, receiverid);
+
+        let allrooms = await this.chatService.getAllRooms(this.player.id);
+        let rooms = await this.chatService.getRoomsForUser(this.player.id);
+
+        this.server.to(sender.id).emit('allrooms', allrooms);
+        this.server.to(sender.id).emit('message', rooms);
+
+        let decoded = await this.getSocketid(receiverid);
+        if (decoded != null)
+        {
+          allrooms = await this.chatService.getAllRooms(receiverid);
+          rooms = await this.chatService.getRoomsForUser(receiverid);
+
+          this.server.to(decoded.id).emit('allrooms', allrooms);
+          this.server.to(decoded.id).emit('message', rooms);
+        }
+      }
+      else
+      {
+        let messages = await this.chatService.getMessagesByroomId(room.id);
+        this.server.to(this.decoded.id).emit("sendMessage", messages);
+      }
+
+     }
+
+    @SubscribeMessage('send-DM')
+    async sendDM(){
+
     }
 
-    //Direct-message
+    // @SubscribeMessage('set-admin')
+    // async setAdmin(socket:Socket, userid:number){
+          //update role
+          //
+    // }
+
     //ban-User
     //Mute-User
     //set-admin => change role

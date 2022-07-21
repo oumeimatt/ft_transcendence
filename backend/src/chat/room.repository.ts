@@ -16,7 +16,7 @@ export class roomRepository extends Repository<chatroom>{
         const Room = new chatroom();
         Room.name = name;
         Room.ischannel = true;
-        if (privacy === 'private')
+        if (privacy === 'Private')
             Room.ispublic = false;
         Room.password = password;
         await Room.save();
@@ -35,6 +35,19 @@ export class roomRepository extends Repository<chatroom>{
         return Room;
     }
 
+    async createDM(sender:number , receiver:number):Promise<chatroom>{
+        const DM = new chatroom();
+
+        DM.name = sender+":"+receiver;
+        DM.ischannel = false;
+        DM.password='';
+        DM.ispublic = false;
+        
+        await DM.save();
+
+        return DM;
+    }
+
     async addMember(room:chatroom,creator :Player, role:RoleStatus):Promise<void>{
         const Membership = new membership();
         Membership.role =role;
@@ -48,6 +61,17 @@ export class roomRepository extends Repository<chatroom>{
         return room;
     }
 
+    async getChatroomById(id:number):Promise<chatroom>{
+        const room = await this.createQueryBuilder('room')
+        .where('room.id = :id', {id})
+        .select(['room.id', 'room.name', 'room.ispublic', 'room.ischannel'])
+        .getOne();
+
+       // console.log(room);
+        return room;
+
+    }
+
     async getRoomsForUser(Playerid:number):Promise<void>{
         //! The new query
         
@@ -56,7 +80,7 @@ export class roomRepository extends Repository<chatroom>{
 
        const query = await this.createQueryBuilder('membership')
        .where('name = :Playerid', {Playerid})
-       console.log(await query.getMany());
+     //  console.log(await query.getMany());
       // const rooms = await query.getMany();
 
       // return rooms;

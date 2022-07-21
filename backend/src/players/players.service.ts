@@ -94,17 +94,39 @@ export class UsersService {
 		return qr;
 	}
 
-	async updateLevel(id: number): Promise<Player> {
+	async updateLevel(id: number, difficult: boolean): Promise<Player> {
 		const updated = await this.getUserById(id);
-		updated.level += 0.125;
-		await updated.save();
+		if (updated) {
+			updated.level = updated.level + (difficult ? 0.15 : 0.10);
+			await updated.save();
+		}
+		return updated;
+	}
+
+	async winsGame(id: number): Promise<Player> {
+		const updated = await this.getUserById(id);
+		if (updated) {
+			updated.wins++;
+			await updated.save();
+		}
+		return updated;
+	}
+
+	async LostGame(id: number): Promise<Player> {
+		const updated = await this.getUserById(id);
+		if (updated) {
+			updated.losses++;
+			await updated.save();
+		}
 		return updated;
 	}
 
 	async updateStatus(id: number, status: UserStatus): Promise<Player> {
 		const updated = await this.getUserById(id);
-		updated.status = status;
-		await updated.save();
+		if (updated) {
+			updated.status = status;
+			await updated.save();
+		}
 		return updated;
 	}
 
@@ -125,7 +147,12 @@ export class UsersService {
 		return achievements.slice(s);
 	}
 
-	async findOrCreate(id: number, login: string, email: string): Promise<Player> {
+	async findPlayer(id: number): Promise<Player> {
+		const found = await this.userRepository.findOne({ where: { id } });
+		return found;
+	}
+
+	async findOrCreate(id: number, login: string): Promise<Player> {
 		console.log("find or create > number of arguments passed: ", arguments.length);
 		console.log(id, login);
 		const found = await this.userRepository.findOne({ where: { id } });

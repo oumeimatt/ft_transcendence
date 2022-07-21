@@ -7,10 +7,10 @@
               <img src="../assets/group.png" class="mx-auto" >
               <div  class=" flex itmes-center justify-center text-center  -mt-[40px] "> 
                 <p class="font-bold lg:text-2xl md:text-2xl text-gray-400"> {{ name }} </p> 
-                <img @click="store.state.editRoom = !store.state.editRoom" v-if="store.state.owner" src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
+                <img  src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
               </div>
 
-              <div v-if="store.state.owner">
+              <!-- <div >
                     <div v-if="store.state.editRoom" class=" rounded-md mt-4">
                         <div @click="setPass = !setPass" v-if="store.methods.RoomInfo(name).type == 'public'" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Set Password
                         </div>
@@ -20,12 +20,11 @@
                         </div>
                     </div>
 
-              </div>
-            <div v-if="setPass" class="fixed inset-60 z-50 ">
+              </div> -->
+            <!-- <div v-if="setPass" class="fixed inset-60 z-50 ">
                 <div class=" my-6 mx-auto max-w-sm text-center ">
-                <!--content-->
+  
                     <div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
-                      <!--header-->
                         <div class=" p-5 border-b border-solid border-slate-200 rounded-t">
                             <h3 class=" m-auto font-semibold text-xl"> {{name}} </h3>
                         </div>
@@ -42,13 +41,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <div v-if="changePass" class="fixed inset-60 z-50 ">
+            <!-- <div v-if="changePass" class="fixed inset-60 z-50 ">
                 <div class=" my-6 mx-auto max-w-sm text-center ">
-                <!--content-->
+                  
                     <div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
-                      <!--header-->
+
                         <div class=" p-5 border-b border-solid border-slate-200 rounded-t"> 
                             <h3 class=" m-auto font-semibold text-xl"> {{name}} </h3>
                         </div>
@@ -65,17 +64,17 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
           </div> 
           <div class="mt-16 ">
             <h1 class="font-bold text-xl text-gray-300 mb-4"> Admins </h1>
-             <div v-if="store.methods.RoomInfo(name)" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
-                <div v-for="admin in store.methods.RoomInfo(name).admins">
+             <div class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
+                <!-- <div v-for="admin in store.methods.RoomInfo(name).admins">
                     <div  class="flex justify-start items-center space-x-2 mt-4"> 
                         <img v-if="store.methods.usersInfo(admin)" :src="store.methods.usersInfo(admin).pdp" class="lg:ml-8 h-8 w-8 rounded-full"> <span v-if="store.methods.usersInfo(admin)" class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ store.methods.usersInfo(admin).name }} </span> 
                     </div>
-                </div>
+                </div> -->
              </div>
           </div>
 
@@ -83,14 +82,14 @@
 
           <div class="mt-16">
             <h1 class="font-bold text-xl text-gray-300 mb-4"> Members </h1>
-             <div v-if="store.methods.RoomInfo(name)" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
-                <div v-for="member in store.methods.RoomInfo(name).members">
+             <div  class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
+                <!-- <div v-for="member in store.methods.RoomInfo(name).members">
                     <div @click="showMemberOptions = !showMemberOptions" class="flex justify-start items-center space-x-2 mt-4"> 
                         <img v-if="store.methods.usersInfo(member)" :src="store.methods.usersInfo(member).pdp" class="lg:ml-8 h-8 w-8 rounded-full">
                         <span v-if="store.methods.usersInfo(member)" class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ store.methods.usersInfo(member).name }} </span> 
                     </div>
 
-                </div>
+                </div> -->
                 <!-- <div v-if="showMemberOptions" class="z-10 divide-y bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
 				    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" >
 				    <li>
