@@ -64,7 +64,7 @@ export class roomRepository extends Repository<chatroom>{
     async getChatroomById(id:number):Promise<chatroom>{
         const room = await this.createQueryBuilder('room')
         .where('room.id = :id', {id})
-        .select(['room.id', 'room.name', 'room.ispublic'])
+        .select(['room.id', 'room.name', 'room.ispublic', 'room.ischannel'])
         .getOne();
 
        // console.log(room);

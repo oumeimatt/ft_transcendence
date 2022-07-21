@@ -99,7 +99,7 @@ let ChatService = class ChatService {
     }
     async getAllRooms(playerid) {
         const rooms = await this.roomRepo.createQueryBuilder('chatroom')
-            .select(['chatroom.id', 'chatroom.name', 'chatroom.ispublic'])
+            .select(['chatroom.id', 'chatroom.name', 'chatroom.ispublic', 'chatroom.ischannel'])
             .getMany();
         let i = 0;
         while (i < rooms.length) {

@@ -18,6 +18,7 @@ interface chatRoom {
     id: number,
     name: string,
     isPublic: boolean,
+    ischannel: boolean
 }
 
 const state = reactive<{player: Profile, user: Profile, friends: Profile[], achievements: string[],userFriends: Profile[], userAchievements:string[], users: Profile[], rooms:chatRoom[], allRooms:chatRoom[], imageUrl: string, owner:boolean, editRoom: boolean, connection: string}> ({

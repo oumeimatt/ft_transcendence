@@ -134,7 +134,7 @@ export class ChatService {
         
         //The public && private ones
         const rooms = await this.roomRepo.createQueryBuilder('chatroom')
-        .select(['chatroom.id', 'chatroom.name', 'chatroom.ispublic'])
+        .select(['chatroom.id', 'chatroom.name', 'chatroom.ispublic', 'chatroom.ischannel'])
         .getMany();
         
         //if the channel os private=>check if the user is a member

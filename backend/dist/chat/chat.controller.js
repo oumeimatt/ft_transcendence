@@ -31,6 +31,9 @@ let ChatController = class ChatController {
     getAllRooms(playerid) {
         return this.chatService.getAllRooms(playerid);
     }
+    isMember(roomid, playerid) {
+        return this.chatService.isMember(roomid, playerid);
+    }
 };
 __decorate([
     (0, common_1.Get)('messages'),
@@ -60,6 +63,14 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ChatController.prototype, "getAllRooms", null);
+__decorate([
+    (0, common_1.Get)('isMember'),
+    __param(0, (0, common_1.Query)('roomid')),
+    __param(1, (0, common_1.Query)('playerid')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "isMember", null);
 ChatController = __decorate([
     (0, common_1.Controller)('chat'),
     __metadata("design:paramtypes", [chat_service_1.ChatService])

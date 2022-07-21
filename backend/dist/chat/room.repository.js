@@ -53,7 +53,7 @@ let roomRepository = class roomRepository extends typeorm_1.Repository {
     async getChatroomById(id) {
         const room = await this.createQueryBuilder('room')
             .where('room.id = :id', { id })
-            .select(['room.id', 'room.name', 'room.ispublic'])
+            .select(['room.id', 'room.name', 'room.ispublic', 'room.ischannel'])
             .getOne();
         return room;
     }
