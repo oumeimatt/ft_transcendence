@@ -125,6 +125,7 @@ let ChatGateway = class ChatGateway {
         await this.chatService.createMembership(this.player.id, roomid);
     }
     async createDM(sender, receiverid) {
+        console.log('dm called !');
         await this.definePlayer(sender);
         const DM = await this.chatService.createDM(this.player.id, receiverid);
         let allrooms = await this.chatService.getAllRooms(this.player.id);

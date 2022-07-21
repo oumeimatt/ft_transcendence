@@ -95,10 +95,10 @@
               <div > 
                 <p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
                 <!-- games  -->
-                <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> soepkdsds  </div>
+                <div  v-for="game in gamesHistory" :key="game" class="grid grid-cols-3 justify-itmes-center pt-4">
+                  <div class="text-neutral-900 font-semibold "> {{ game.winner.username }} </div>
+                  <div class="text-gray-900 font-black "> <span> {{ game.winnerScore }} </span> - <span>  {{ game.loserScore }}</span>  </div>
+                  <div class="text-neutral-900 font-semibold "> {{ game.loser.username }}  </div>
                 </div>
                 <!--  -->
               </div>
@@ -117,7 +117,7 @@
 
 <script lang="ts" setup>
 import axios from 'axios';
-import { defineComponent , ref, inject, onMounted, onUpdated } from 'vue';
+import { defineComponent , ref, inject, onMounted,nextTick,  computed, onUpdated } from 'vue';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue'
 import Profile from './Profile.vue'
@@ -129,9 +129,23 @@ const isBlocked = ref(false)
 let gamesHistory = ref([] as unknown);
 let errors = ref('' as string)
 
-const props = defineProps({
-  id: String
-})
+const props = defineProps<{
+  id: string
+}>()
+
+
+  onMounted( async () => {
+        // await axios
+        //   .get('http://localhost:3001/profile' ,{ withCredentials: true })
+        //   .then(data =>{
+        //     store.state.player = data.data.profile;
+        //     store.state.friends = data.data.friends;
+        //     console.log(data.data.friends)
+        //     store.state.achievements = data.data.achievements
+        //   } ) 
+      getGamesHistory(parseInt(props.id, 10));
+
+    })
 
   // onMounted ( () => {
   //     var user = store.state.users.find( x=> x.id === props.id)
@@ -148,14 +162,16 @@ const props = defineProps({
   // })
 onUpdated(async  () => {
   
-  await axios
+
+      await axios
           .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
           .then(data =>{ store.state.user = data.data.profile;
             store.state.userFriends = data.data.friends;
             store.state.userAchievements = data.data.achievements})
           .catch(err => console.log(err.message))
-    var user = store.state.friends.find( x => x.id.toString() === props.id )
-      // console.log("use")
+      // getGamesHistory(parseInt(props.id, 10));
+      var user = store.state.friends.find( x => x.id.toString() === props.id )
+        //  console.log("use")
       if (user != null){
           isFriend.value = true
           add.value = false
@@ -164,7 +180,6 @@ onUpdated(async  () => {
           isFriend.value = false
           add.value = true
       }
-
       // await fetch('http://localhost:3001/profile') 
 			//     .then(res => res.json())
 			//     .then(data => store.state.player = data)
@@ -175,7 +190,7 @@ onUpdated(async  () => {
 			//     .catch(err => console.log(err.message)) 
     })
 
-    function removeFriend (){
+    async function removeFriend(){
         add.value = true,
         isFriend.value = false
         isBlocked.value = false
@@ -183,11 +198,13 @@ onUpdated(async  () => {
         axios.delete("http://localhost:3001/relation/unfollow/" + props.id , { withCredentials: true } )
             .then(data => console.log(data.data))
             .catch(error =>  console.error( error));
+        await nextTick()
     }
-    function addFriend () {
+    async function addFriend (){
         isFriend.value = true;
         isBlocked.value = false
         add.value = false
+        await nextTick()
         axios.post("http://localhost:3001/relation/add/" + props.id , {} , { withCredentials: true } ) // or the line below 
         // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
             .then(data => console.log(data.data))
@@ -221,7 +238,7 @@ onUpdated(async  () => {
     // function to get history of a player
     async function getGamesHistory(id: number) {
 		  axios
-		  .get('http://localhost:3001/pong-game/games-history/' + id)
+		  .get('http://localhost:3001/pong-game/games-history/' + props.id)
 		  .then((data) => {
 		  	gamesHistory.value = data.data.gamesHistory;
 		  })

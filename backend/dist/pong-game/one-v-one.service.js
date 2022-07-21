@@ -101,7 +101,7 @@ let OneVOneService = class OneVOneService {
                 clearInterval(first.data.gameInterval);
                 this.logger.log('Game in Room: ' + roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
                 if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
-                    this.usersService.updateLevel(first.data.user.id);
+                    this.usersService.updateLevel(first.data.user.id, false);
                     this.usersService.winsGame(first.data.user.id);
                     this.usersService.LostGame(second.data.user.id);
                     this.pongGameService.addGameHistory({
@@ -113,7 +113,7 @@ let OneVOneService = class OneVOneService {
                     });
                 }
                 else {
-                    this.usersService.updateLevel(second.data.user.id);
+                    this.usersService.updateLevel(second.data.user.id, false);
                     this.usersService.winsGame(second.data.user.id);
                     this.usersService.LostGame(first.data.user.id);
                     this.pongGameService.addGameHistory({
@@ -140,8 +140,7 @@ let OneVOneService = class OneVOneService {
                 });
                 clearInterval(client.data.gameInterval);
                 this.logger.log('Game Interval Cleared');
-                console.log(client.data.opponentId);
-                await this.usersService.updateLevel(client.data.opponentId);
+                await this.usersService.updateLevel(client.data.opponentId, false);
                 await this.usersService.winsGame(client.data.opponentId);
                 await this.usersService.LostGame(client.data.user.id);
                 const second = await this.usersService.findPlayer(client.data.opponentId);

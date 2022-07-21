@@ -13,7 +13,7 @@ export declare class UsersService {
     updateUsername(id: number, username: string): Promise<Player>;
     updateAvatar(id: number, avatar: string): Promise<Player>;
     updateTwoFa(id: number): Promise<Player>;
-    updateLevel(id: number): Promise<Player>;
+    updateLevel(id: number, difficult: boolean): Promise<Player>;
     winsGame(id: number): Promise<Player>;
     LostGame(id: number): Promise<Player>;
     updateStatus(id: number, status: UserStatus): Promise<Player>;

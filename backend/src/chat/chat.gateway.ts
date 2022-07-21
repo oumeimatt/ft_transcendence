@@ -212,6 +212,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     @SubscribeMessage('create-DM')
     async createDM(sender:Socket, receiverid:number ){
 
+      console.log('dm called !')
       await this.definePlayer(sender);
       //before create
       //check if this channel exist

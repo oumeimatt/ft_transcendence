@@ -59,15 +59,31 @@
 </template>
 
 <script lang="ts" setup>
-	import {inject, ref} from 'vue';
+	import {inject, onMounted, ref} from 'vue';
 	const store = inject('store')
+	import axios from 'axios';
     const props = defineProps({
             name: String
     })
+	const id = ref(0 )
+
+
 	const showMenu = ref(false)
 	const rightClick = () => (
 		showMenu.value = true
 	);
+	//  onMounted(async () => {
+	// 	await axios
+    //       .get('http://localhost:3001/users' ,{ withCredentials: true })
+    //       .then(data =>{ store.state.users = data.data ; console.log(store.state.users)})
+    //       .catch(err => console.log(err.message))
+	// 	id.value = store.methods.usersInfo(props.name).id
+	// 	console.log(" [ value] "+id.value)
+	// // 	function CreateDM(){
+	// // 	store.state.connection.emit("create-DM", id.value); //
+
+	// // }
+	// })
 
 </script>
 

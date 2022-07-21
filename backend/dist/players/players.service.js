@@ -70,11 +70,10 @@ let UsersService = class UsersService {
         await updated.save();
         return updated;
     }
-    async updateLevel(id) {
+    async updateLevel(id, difficult) {
         const updated = await this.getUserById(id);
         if (updated) {
-            console.log(updated.level);
-            updated.level = updated.level + 0.10;
+            updated.level = updated.level + (difficult ? 0.15 : 0.10);
             await updated.save();
         }
         return updated;

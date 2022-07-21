@@ -52,7 +52,7 @@
 					<h1 class="text-slate-300 font-semibold text-xl mb-6">Friends</h1>
 					<div v-if="store.state.friends" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
 						<div v-for="friend in store.state.friends" :key="friend">
-							<div class="flex justify-start items-center space-x-2 mt-2"> 
+							<div @click="CreateDM(friend.id)" class="flex justify-start items-center space-x-2 mt-2"> 
 									<img  :src="store.methods.playerAvatar(friend)" class=" lg:ml-8 h-8 w-8 rounded-full bg-white">  <span class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 pb-4 "> <router-link :to="{name:'Chat', params: {name: friend.username}}" > {{ friend.username }} </router-link>   </span> 
 							</div>
 						</div>
@@ -139,10 +139,7 @@ import { anyTypeAnnotation } from '@babel/types';
         //I should sent a room
     }
 
-	function CreateDM(){
-		//store.state.connection.emit("create-DM", friendid); //
 
-	}
 	//function sendMessage(){
 		//let messageDto={ id : , content : };
 		//store.state.connection.emit("createMessage", messageDto);
@@ -157,7 +154,11 @@ import { anyTypeAnnotation } from '@babel/types';
 	// 	await axios.get('http://localhost:3001/chat/members', {params:{roomid:id}, withCredentials:true})
 	// 	.then(data=>{})
 	// }
+	function CreateDM(id: number){
+		console.log("id: ", id)
+		store.state.connection.emit("create-DM", id); //
 
+	}
 
 	 onMounted(async () => {
 		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
