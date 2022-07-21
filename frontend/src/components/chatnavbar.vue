@@ -16,15 +16,16 @@
 					<div class="h-5/6 scrollbar mt-4 scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/5 ">
 						<div v-if="showAllRooms" >
 							<div v-for="ChatRoom in store.state.allRooms" :key="ChatRoom" >
-								<div   v-if="ChatRoom.ispublic == false" class="flex justify-start items-center space-x-2 mt-4"> 
-									<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+								<div v-if="ChatRoom.ischannel == true"   class="flex justify-start items-center space-x-2 mt-4"> 
+									<svg v-if="ChatRoom.ispublic == false" xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 										<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 									</svg>
-									<router-link :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ ChatRoom.name }} </router-link> 
-								</div>
-								<div v-if="ChatRoom.ispublic == true" class="flex justify-start items-center space-x-2 mt-4"> 
-									<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-									<router-link :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
+									<img   v-if="ChatRoom.ispublic == true" src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
+									<router-link  :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
+
+									<!-- <router-link  :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ ChatRoom.name }} </router-link>  -->
+								<!-- </div> -->
+								<!-- <div v-if="ChatRoom.ischannel == true" class="flex justify-start items-center space-x-2 mt-4">  -->
 								</div>
 							</div>
 						</div>
@@ -35,15 +36,15 @@
 					<h1 class="text-slate-300 font-semibold text-xl  ">My channels</h1>
 					<div class="h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3 ">
 						<div v-for="Room in store.state.rooms" :key="Room" >
-							<div  v-if="Room.ispublic == false" class="flex justify-start items-center space-x-2 mt-4"> 
-								<svg xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+							<div v-if="Room.ischannel == true"  class="flex justify-start items-center space-x-2 mt-4"> 
+								<svg  v-if="Room.ispublic == false" xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 								</svg>
-								<router-link :to="{name:'ChatRoom', params: {name: Room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ Room.name }} </router-link> 
-							</div>
-							<div   v-if="Room.ispublic == true" class="flex justify-start items-center space-x-2 mt-4"> 
-								<img src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
+								<img  v-if="Room.ispublic == true" src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
 								<router-link :to="{name:'ChatRoom', params: {name: Room.name}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ Room.name }} </router-link>
+								<!-- <router-link :to="{name:'ChatRoom', params: {name: Room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ Room.name }} </router-link>  -->
+							<!-- </div> -->
+							<!-- <div  v-if="Room.ischannel == true" class="flex justify-start items-center space-x-2 mt-4">  -->
 							</div>
 						</div>
 					</div>
@@ -178,7 +179,7 @@ import { anyTypeAnnotation } from '@babel/types';
           } ) 
           .catch(err => console.log(err.message))
 		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		  .then(data=> { console.log('axios mychannels ');store.state.rooms = data.data; })
+		  .then(data=> { console.log('axios mychannels ');store.state.rooms = data.data; console.log(data.data) })
 		//  console.log(data.data);}
 		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 		.then(data=> {console.log('axios all channels ');store.state.allRooms = data.data; })
@@ -189,27 +190,27 @@ import { anyTypeAnnotation } from '@babel/types';
 		store.state.connection.on("allrooms", (data) => {store.state.allRooms = data;});
 
 		//update room names && allrooms
-		for (let i = 0; i < store.state.rooms.length; i++){
-			let splits = store.state.rooms[i].name.split(":");
-			if (splits.length === 2)
-			{
-				if (store.state.player.id == splits[0])
-					store.state.rooms[i].name = usersInfo(splits[1]);
-				else
-					store.state.rooms[i].name = usersInfo(splits[0]);
-			}
-		}
+		// for (let i = 0; i < store.state.rooms.length; i++){
+		// 	let splits = store.state.rooms[i].name.split(":");
+		// 	if (splits.length === 2)
+		// 	{
+		// 		if (store.state.player.id == splits[0])
+		// 			store.state.rooms[i].name = usersInfo(splits[1]);
+		// 		else
+		// 			store.state.rooms[i].name = usersInfo(splits[0]);
+		// 	}
+		// }
 
-		for (let i = 0; i < store.state.allRooms.length; i++){
-			let splits = store.state.allRooms[i].name.split(":");
-			if (splits.length === 2)
-			{
-				if (store.state.player.id == splits[0])
-					store.state.allRooms[i].name = usersInfo(splits[1]);
-				else
-					store.state.allRooms[i].name = usersInfo(splits[0]);
-			}
-		}
+		// for (let i = 0; i < store.state.allRooms.length; i++){
+		// 	let splits = store.state.allRooms[i].name.split(":");
+		// 	if (splits.length === 2)
+		// 	{
+		// 		if (store.state.player.id == splits[0])
+		// 			store.state.allRooms[i].name = usersInfo(splits[1]);
+		// 		else
+		// 			store.state.allRooms[i].name = usersInfo(splits[0]);
+		// 	}
+		// }
 
 		//store.state.connection.on("sendMessage", (data) => {messages = data;});
 

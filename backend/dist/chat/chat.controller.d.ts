@@ -10,5 +10,5 @@ export declare class ChatController {
     getMembersByRoomId(roomid: number): Promise<Player[]>;
     getRoomsByUserId(playerid: number): Promise<chatroom[]>;
     getAllRooms(playerid: number): Promise<chatroom[]>;
-    isMember(roomid: number, playerid: number): Promise<membership>;
+    getMembership(roomid: number, playerid: number): Promise<membership>;
 }

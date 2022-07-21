@@ -45,7 +45,7 @@ export class ChatController {
     }
 
     @Get('isMember')
-    isMember(@Query('roomid') roomid:number, @Query('playerid') playerid:number):Promise<membership>{
+    getMembership(@Query('roomid') roomid:number, @Query('playerid') playerid:number):Promise<membership>{
         return this.chatService.isMember(roomid, playerid);
     }
 }

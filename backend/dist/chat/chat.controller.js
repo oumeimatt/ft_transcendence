@@ -31,7 +31,7 @@ let ChatController = class ChatController {
     getAllRooms(playerid) {
         return this.chatService.getAllRooms(playerid);
     }
-    isMember(roomid, playerid) {
+    getMembership(roomid, playerid) {
         return this.chatService.isMember(roomid, playerid);
     }
 };
@@ -70,7 +70,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
-], ChatController.prototype, "isMember", null);
+], ChatController.prototype, "getMembership", null);
 ChatController = __decorate([
     (0, common_1.Controller)('chat'),
     __metadata("design:paramtypes", [chat_service_1.ChatService])
