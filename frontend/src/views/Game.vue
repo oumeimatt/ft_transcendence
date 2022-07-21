@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header /> 
-    <div v-if="store.state.player.status == 'online'">
+    <div v-if="store.state.player.status != 'offline'">
       <div class="mt-24 text-center text-gray-200 text-2xl font-bold mb-2">
         <h1> Select difficulty</h1>
       </div>

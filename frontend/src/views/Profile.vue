@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Header /> 
-		<div  v-if="store.state.player.status == 'online'" class="Container"> 
+		<div  v-if="store.state.player.status != 'offline'" class="Container"> 
 			<div id="bg" class=" relative mb-11 text-white">
 			 	<div class="flex absolute top-48 left-5 items-center">
 					<img class="w-36 h-36 md:w-40 md:h-40 bg-white  lg:h-40 lg:w-40 mr-7 rounded-full lg:top-52 left-11" :src="store.methods.playerAvatar(store.state.player)" alt="">

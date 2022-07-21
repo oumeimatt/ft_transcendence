@@ -1,7 +1,7 @@
 <template >
   <div class="bg-black ">
     <Header />
-    <div v-if="store.state.player.status == 'online'">
+    <div v-if="store.state.player.status != 'offline'">
       <div id="bg" class="flex flex-col space-y-96" >
           <div id="opacity" class="h-screen w-screen pt-40">
             <h1 class="text-7xl font-bold text-center text-gray-300">ENJOY PONG GAME </h1>

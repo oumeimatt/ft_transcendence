@@ -6,7 +6,7 @@
       </div>
       <div v-else>
         <Header /> 
-        <div v-if="store.state.player.status" class="Container">
+        <div v-if="store.state.player.status != 'offline'" class="Container">
           <div id="container2" class="relative mb-11 text-white">
             <div class="flex absolute top-48 left-5 items-center">
   
@@ -95,31 +95,11 @@
               <div > 
                 <p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
                 <!-- games  -->
-                <!-- <div class="grid grid-cols-3 justify-itmes-center pt-4">
+                <div class="grid grid-cols-3 justify-itmes-center pt-4">
                   <div class="text-neutral-900 font-semibold "> {{ username }} </div>
                   <div class="text-gray-900 font-black "> 5 - 2  </div>
                   <div class="text-neutral-900 font-semibold "> soepkdsds  </div>
                 </div>
-                <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> iidzim  </div>
-                </div>
-                <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> framdani  </div>
-                </div>
-                <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> dkkdkksm  </div>
-                </div>
-                <div class="grid grid-cols-3 justify-itmes-center pt-4">
-                  <div class="text-neutral-900 font-semibold "> {{ username }} </div>
-                  <div class="text-gray-900 font-black "> 5 - 2  </div>
-                  <div class="text-neutral-900 font-semibold "> ndjbjdjds  </div>
-                </div> -->
                 <!--  -->
               </div>
             </div>
