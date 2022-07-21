@@ -142,7 +142,7 @@
     const ext = ref(''as string)
     const qr = ref('' as string)
     const showScan = ref(false)
-    const Password2fa = ref('') 
+    const Password2fa = ref('' as string) 
     function toggleNav () {showMenu.value = !showMenu.value}
 
     function toggleModal() {showModal.value = !showModal.value}
@@ -187,10 +187,12 @@
     }
 
     async function enable2fa(){
+            console.log('H22ERE');
+  
           await axios
-          .post('http://localhost:3001/settings/2fa/enable', {Password2fa}, {withCredentials: true })
+          .post('http://localhost:3001/settings/2fa/enable', {Password2fa: Password2fa.value } , {withCredentials: true })
           .then(() => {
-            
+            console.log('HERE');
           })
           .catch((error) => console.log(error.response));
     }
