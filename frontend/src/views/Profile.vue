@@ -88,7 +88,6 @@
           	.then(data =>{store.state.player = data.data.profile;})
 			.catch(err => console.log(err))
         getGamesHistory(store.state.player.id);
-		// getGamesHistory(62734);
     })
 
 	function getUserAvatar(id: number){

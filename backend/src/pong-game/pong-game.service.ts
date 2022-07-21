@@ -77,7 +77,6 @@ export class PongGameService {
       delete game.loser.senders;
       delete game.loser.two_fa;
 	  });
-	  console.log(games);
     return { gamesHistory: games };
   }
 
