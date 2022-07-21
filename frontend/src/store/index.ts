@@ -21,7 +21,16 @@ interface chatRoom {
     ischannel: boolean
 }
 
-const state = reactive<{player: Profile, user: Profile, friends: Profile[], achievements: string[],userFriends: Profile[], userAchievements:string[], users: Profile[], rooms:chatRoom[], allRooms:chatRoom[], imageUrl: string, owner:boolean, editRoom: boolean, connection: string}> ({
+interface roomRole {
+    id_membership:number,
+    role:string,
+    playerid:number,
+    roomid:number
+
+}
+
+
+const state = reactive<{player: Profile, user: Profile, friends: Profile[], achievements: string[],userFriends: Profile[], userAchievements:string[], users: Profile[], rooms:chatRoom[], allRooms:chatRoom[], imageUrl: string, owner:boolean, editRoom: boolean, connection: string, roominfo: roomRole}> ({
     player :{id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     user : {id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     friends: [],
@@ -35,6 +44,8 @@ const state = reactive<{player: Profile, user: Profile, friends: Profile[], achi
     owner: false,
     editRoom: false,
     connection: '',
+    roominfo:{id_membership:-1, role:'', playerid:-1, roomid:-1}
+
     // messageDto:{
     //     id:null,
     //     content:"",
