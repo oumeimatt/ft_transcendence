@@ -74,8 +74,18 @@ let UsersService = class UsersService {
     }
     async generateSecretQr(user) {
         const { otpauth_url } = await this.generateTwoFactorAuthenticationSecret(user);
-        const qr = await QRCode.toString(otpauth_url);
-        return qr;
+        const imageUrl = process.cwd() + "/public/qr_" + user.username + ".png";
+        const pathToServe = "qr_" + user.username + ".png";
+        QRCode.toFile(imageUrl, otpauth_url.toString(), [], (err, img) => {
+            if (err) {
+                console.log('Error with QR');
+                return;
+            }
+        });
+        console.log("===========================================================");
+        console.log(otpauth_url);
+        console.log("===========================================================");
+        return pathToServe;
     }
     async updateLevel(id, difficult) {
         const updated = await this.getUserById(id);
