@@ -7,9 +7,14 @@ import { PlayerModule } from './players/players.module';
 import { RelationModule } from './relations/relations.module';
 import { PongGameModule } from './pong-game/pong-game.module';
 import { ChatModule } from './chat/chat.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
     ConfigModule.forRoot({ envFilePath: '.env' }),
     TypeOrmModule.forRoot(typeOrmConfig),
     AuthModule,

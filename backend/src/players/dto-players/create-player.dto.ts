@@ -1,10 +1,11 @@
-import { IsNotEmpty, IsOptional, IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { IsAlphanumeric, IsNotEmpty, IsOptional, IsString, Matches, MaxLength, MinLength } from "class-validator";
 
 export class CreateUserDto {
 
 	@IsNotEmpty()
 	@IsString()
 	@MaxLength(50)
+	@IsAlphanumeric()
     username: string;
 
 	@IsOptional()

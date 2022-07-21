@@ -28,9 +28,9 @@ export class RelationRepository extends Repository<Relation> {
 
 		const exist = await this.findOne({ where: { sender: user, receiver: friend_id, status: RelationStatus.FRIEND } });
 		if (exist) {
+			console.log('already friend');
 			return exist;
 		}
-
 		//td: check if the user is not blocked -> add friend
 		const blocked = await this.findOne({ where: { sender: user, receiver: friend_id, status: RelationStatus.BLOCKED } });
 		if (blocked) {

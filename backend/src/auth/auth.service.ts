@@ -7,7 +7,7 @@ import { JwtPayload } from './jwt-payload.interface';
 const logout = require('express-passport-logout');
 import * as dotenv from "dotenv";
 dotenv.config({ path: `.env` })
-const passportHttp = require('passport-http');
+// const passportHttp = require('passport-http');
 
 const passport = require('passport');
 const FortyTwoStrategy = require('passport-42').Strategy;
@@ -23,6 +23,7 @@ passport.use(new FortyTwoStrategy({
 		const user = {
 			id: profile._json.id,
 			login: profile._json.login,
+			email: profile._json.email,
 			accessToken: accessToken,
 			refreshToken: refreshToken,
 		}
@@ -44,7 +45,7 @@ export class AuthService {
 			return 'no user from 42';
 		}
 		const user = req.user;
-		const player = await this.playerService.findOrCreate(user.id, user.login);
+		const player = await this.playerService.findOrCreate(user.id, user.login, user.email);
 		// console.log(player);
 		// for (const [i, j] of Object.entries(player)) {
 		// 	console.log(i, j);
@@ -57,14 +58,19 @@ export class AuthService {
 		@Response() res,
 		player: Player
 	) {
-		console.log("callback");
 		passport.authenticate('42', {failureRedirect: `/auth/login`});
 		const id = player.id;
 		const username = player.username;
-		const payload: JwtPayload = { username, id };
+		const two_fa = player.two_fa;
+		const payload: JwtPayload = { username, id, two_fa };
 		const accessToken = await this.jwtService.sign(payload);
 		res.cookie('connect_sid',[accessToken]);
-		res.redirect('http://localhost:3000/home');
+		// if (player.two_fa == false) {
+			res.redirect('http://localhost:3000/home');
+		// }
+		// else {
+		// 	res.redirect('http://localhost:3001/2fa/authenticate');
+		// }
 	}
 
 	async logout(id: number, req, res): Promise<any> {

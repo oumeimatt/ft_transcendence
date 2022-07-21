@@ -7,6 +7,8 @@ import { PlayerModule } from '../players/players.module';
 import { UsersService } from '../players/players.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+// import { TwoFactorAuthenticationService } from './two-factor-authentication.service';
+// import { TwoFactorAuthenticationService } from './two-factor-authentication.service';
 
 @Module({
 	imports: [
@@ -24,8 +26,8 @@ import { AuthService } from './auth.service';
 	providers: [
 		AuthService,
 		UsersService,
+		// TwoFactorAuthenticationService,
 	],
-	// exports: [AuthService]
-	exports: [AuthService, UsersService]
+	exports: [AuthService, UsersService]//, TwoFactorAuthenticationService]
 })
 export class AuthModule {}
