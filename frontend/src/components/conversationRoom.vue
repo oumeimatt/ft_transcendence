@@ -202,13 +202,20 @@
 </template>
 
 <script lang="ts" setup>
-    import {inject, ref} from 'vue';
+    import {inject, onMounted, ref} from 'vue';
     const joinRoom = ref(false)
-    
+    // import axios from axios
+
+    // onMounted(async () => {
+    //   await axios 
+    //   .get
+    // })
+
     // const enterPassowrd = () => (joinRoom.value = !joinRoom.value)
     const store = inject('store')
     const props = defineProps({
-        name: String
+        name: String,
+        id: String
     })
 
 </script>

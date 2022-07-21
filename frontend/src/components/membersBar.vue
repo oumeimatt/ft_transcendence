@@ -121,7 +121,7 @@
     const store = inject('store')
     const props = defineProps({
         name: String,
-        editRoom: Boolean
+        id: String
     })
     const owner = ref(false)
     const setPass = ref(false)

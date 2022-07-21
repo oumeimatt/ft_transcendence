@@ -3,8 +3,8 @@
   <div v-if="store.state.player.status != 'offline'" class="Container">
     <div class="grid grid-cols-6 gap-px ">
       <chatnavbar/>
-      <conversationRoom :name="name"/>
-      <membersBar :name="name" :editRoom="false"/>
+      <conversationRoom :name="name" :id="id"/>
+      <membersBar :name="name" :id="id"/>
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@ import conversationRoom from '../components/conversationRoom.vue'
 
 const props = defineProps({
     name: String,
-    editRoom: Boolean
+    id: String
 })
 const store = inject('store')
 const channelName = ref('')
