@@ -21,7 +21,7 @@ export class DefaultService {
     if (client.handshake.query.role === 'player') {
       this.handlePlayerConnected(client, players, wss);
     } else if (client.handshake.query.role === 'spectator') {
-      this.logger.log('spectator Connected' + client.id + ' , roomname: ', + client.handshake.query.roomname);
+      this.logger.log('spectator Connected: ' + client.id + ', roomname: ' + client.handshake.query.roomname);
       this.handleSpectatorConnected(client);
     }
   }
@@ -193,6 +193,7 @@ export class DefaultService {
       // Update Status to ONLINE again
       await this.usersService.updateStatus(client.data.user.id, UserStatus.ONLINE);
     } else if (client.handshake.query.role === 'spectator') {
+      this.logger.log('spectator Disconnected: ' + client.id);
       client.leave(client.handshake.query.room as string);
     }
   }

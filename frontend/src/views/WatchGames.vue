@@ -44,7 +44,7 @@ import axios from 'axios';
 
 onMounted(async ()=> {
 	fetchGamesRooms();
-	timer.value = setInterval(fetchGamesRooms, 3000);
+	timer.value = setInterval(fetchGamesRooms, 5000);
 });
 
 onUnmounted(() => {

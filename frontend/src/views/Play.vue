@@ -148,10 +148,10 @@ function DrawPlayerWaiting() {
     (socket.value as Socket).on('WaitingForPlayer', (data) => {
     playground.value = data.playground;
     if (playground.value != null) {
-                game.value.width = game.value.offsetWidth;
-                game.value.height = game.value.width * 0.6;
-                message.value = 'Player: ' + data.player + ' is ' + data.message;
-                Draw.updatePlayground(
+            game.value.width = game.value.offsetWidth;
+            game.value.height = game.value.width * 0.6;
+            message.value = 'Player: ' + data.player + ' is ' + data.message;
+            Draw.updatePlayground(
                 playground.value,
                 context.value,
                 game.value.width,
@@ -171,14 +171,14 @@ function DrawGameInterrupted() {
             game.value.height = game.value.width * 0.6;
             message.value = 'Second Player Left';
             Draw.updatePlayground(
-            playground.value,
-            context.value,
-            game.value.width,
-            game.value.height,
-            playground.value.player1,
-            playground.value.player2,
-        );
-    }
+                playground.value,
+                context.value,
+                game.value.width,
+                game.value.height,
+                playground.value.player1,
+                playground.value.player2,
+            );
+        }
     });
 }
 
@@ -197,6 +197,7 @@ function DrawGameEachUpdate() {
                 playground.value.player2,
             );
         }
+        message.value = '';
     });
 }
 
