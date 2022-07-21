@@ -19,6 +19,8 @@ export class PlayGround {
   private _scoreBoard: ScoreBoard;
   private _win_score: number;
   private _difficult: boolean;
+  private _player1: string;
+  private _player2: string;
 
   constructor(
     x: number,
@@ -28,6 +30,8 @@ export class PlayGround {
     color: string,
     win_score: number,
     difficult: boolean,
+    player1: string,
+    player2: string,
   ) {
     this._x = x;
     this._y = y;
@@ -62,6 +66,8 @@ export class PlayGround {
     this._rightPaddleController = new PaddleController(this._rightPaddle);
     this._scoreBoard = new ScoreBoard();
     this._win_score = win_score;
+    this._player1 = player1;
+    this._player2 = player2;
   }
 
   public get x(): number {
@@ -98,6 +104,14 @@ export class PlayGround {
     return this._win_score;
   }
 
+  public get player1(): string {
+    return this._player1;
+  }
+
+  public get player2(): string {
+    return this._player1;
+  }
+
   private getRadius(): number {
     let rad =
       (this._width + this._height) / 25 < 20
@@ -130,6 +144,8 @@ export class PlayGround {
       rightPaddle: this._rightPaddle.getPaddleInterface(),
       ball: this._ball.getBallInterface(),
       score: this._scoreBoard.getScoreBoardInterface(),
+      player1: this._player1,
+      player2: this._player2,
     };
   }
 

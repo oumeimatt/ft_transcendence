@@ -38,6 +38,11 @@ export class Player extends BaseEntity {
 	@Column({ default: false })
 	two_fa: boolean;
 
+	// @OneToMany(
+	// 	type => Relation,
+	// 	relation => relation.receiver,
+	// 	{ eager: true })
+	// receivers: Relation[];
 	@Column({ nullable: true })
 	secret: string;
 

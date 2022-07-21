@@ -8,7 +8,7 @@ import { PlayerRepository } from "./player.repository";
 import { UserStatus } from "./player_status.enum";
 
 import { authenticator } from 'otplib';
-import { toFile, qrcode, create } from 'qrcode';
+import QRCode from 'qrcode';
 const QRCode = require('qrcode');
 import * as dotenv from "dotenv";
 dotenv.config({ path: `.env` })
@@ -73,8 +73,33 @@ export class UsersService {
 
 	async generateSecretQr(user: Player): Promise<string> {
 		const { otpauth_url } = await this.generateTwoFactorAuthenticationSecret(user);
-		const qr = await QRCode.toString(otpauth_url);
-		return qr;
+		// toDataURL(otpauth_url, (err, imageUrl) => {
+		// 	if (err) {
+		// 	  console.log('Error with QR');
+		// 	  return;
+		// 	}
+		// 	console.log(imageUrl);
+		//   });
+		const imageUrl = process.cwd() + "/public/qr_" + user.username + ".png";
+		const pathToServe = "qr_" + user.username + ".png";
+		QRCode.toFile(
+			imageUrl,
+			otpauth_url.toString(),
+			[],
+			(err, img) => {
+					if (err) {
+					  console.log('Error with QR');
+					  return;
+					}
+				}
+		  )
+
+		  console.log("===========================================================");
+		  console.log(otpauth_url);
+		  console.log("===========================================================");
+
+		// const qr = await QRCode.toString(otpauth_url);
+		return pathToServe;
 	}
 
 	async updateLevel(id: number, difficult: boolean): Promise<Player> {

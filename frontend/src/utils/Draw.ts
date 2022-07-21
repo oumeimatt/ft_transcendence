@@ -39,7 +39,7 @@ export default {
   },
   drawText: function( context: CanvasRenderingContext2D, text: string, x: number, y: number, width: number, color: string) {
     context.fillStyle = color;
-    context.font =  (width / 15) + 'px Arial';
+    context.font =  (width / 20) + 'px Arial';
     context.textAlign = 'center';
     context.fillText(text, x, y);
   },
@@ -48,7 +48,12 @@ export default {
     context.clearRect(0, 0, pgWidth, pgHeight);
   },
 
-  updatePlayground: function (playground: PlaygroundInterface,context: CanvasRenderingContext2D, pgWidth: number, pgHeight: number) {
+  updatePlayground: function (
+    playground: PlaygroundInterface,
+    context: CanvasRenderingContext2D,
+    pgWidth: number, pgHeight: number,
+    player1: string, player2: string
+  ) {
     this.clearContext(context, pgWidth, pgHeight);
     this.drawPlayground(context, pgWidth, pgHeight, playground.color);
     this.drawText(
@@ -67,5 +72,7 @@ export default {
     this.drawBall(context, playground.ball as BallInterface, playground, pgWidth, pgHeight)
     this.drawPaddle(context, playground.leftPaddle as PaddleInterface, playground, pgWidth, pgHeight);
     this.drawPaddle(context, playground.rightPaddle as PaddleInterface, playground, pgWidth, pgHeight);
+    this.drawText(context, player1, pgWidth / 4, pgHeight / 9, pgWidth, (playground.ball as BallInterface).color);
+    this.drawText(context, player2, (pgWidth * 3) / 4, pgHeight / 9, pgWidth, (playground.ball as BallInterface).color);
   }
 };

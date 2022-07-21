@@ -86,7 +86,7 @@ export class UsersController {
     ){
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         fs.writeFileSync(process.cwd().substring(0,process.cwd().length - 7) + "frontend/public/assets/"+imageName, avatar.buffer);
-        console.log("imagename === ", imageName)
+        // console.log("imagename === ", imageName)
 		return this.usersService.updateAvatar(user.id, imageName);
     }
 
@@ -96,14 +96,9 @@ export class UsersController {
 		@Req() req: Request,
 	): Promise<string>{
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
-		const qr = await this.usersService.generateSecretQr(user);
-		try {
-			fs.writeFileSync(process.cwd() + "/public/qr_" + user.username + ".png", qr);
-		} catch (error) {
-			console.log(error);
-		}
-		const path =  "../../../backend/public/qr_" + user.username + ".png";
-		return path;
+		const imageUrl = await this.usersService.generateSecretQr(user);
+		// console.log("imageUrl === ", imageUrl);
+		return imageUrl;
 	}
 
 	@Post('/settings/2fa/enable')
@@ -119,8 +114,7 @@ export class UsersController {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
 		console.log('valid');
-		console.log(process.cwd() + "/public/qr_" + user.username + ".png");
-		// fs.unlinkSync(process.cwd() + "/public/qr_" + user.username + ".png");
+		fs.unlinkSync(process.cwd() + "/public/qr_" + user.username + ".png");
 		await this.usersService.turnOnTwoFactorAuthentication(user.id);
 	}
 
