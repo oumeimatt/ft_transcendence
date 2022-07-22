@@ -56,7 +56,9 @@ export class OneVOneService {
       });
     }
     else {
-      const first = players.find(player => player.handshake.query.against === client.handshake.query.username);
+      const first = players.find(
+        player => player.handshake.query.opponent === client.data.user.username
+        && player.data.user.username === client.handshake.query.opponent);
       if (!first) {
         // if he inters first keep him waiting
         players.push(client);

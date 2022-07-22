@@ -1,5 +1,5 @@
 export enum GameMood {
     DEFAULT = 'default',
     DIFFICULT = 'difficult',
-    ONEVONE = 'one-v-one',
+    ONEVONE = 'oneVone',
 };

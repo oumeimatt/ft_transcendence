@@ -70,7 +70,7 @@ let UsersController = class UsersController {
         const imageUrl = await this.usersService.generateSecretQr(user);
         return imageUrl;
     }
-    async TwoFactorEnable(req, Password2fa) {
+    async twoFactorEnable(req, Password2fa) {
         const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
         const user = await this.usersService.getUserById(user_token.id);
         const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, Password2fa);
@@ -82,7 +82,7 @@ let UsersController = class UsersController {
         fs.unlinkSync(process.cwd() + "/public/qr_" + user.username + ".png");
         await this.usersService.turnOnTwoFactorAuthentication(user.id);
     }
-    async TwoFactorAuthenticate(req, res, code) {
+    async twoFactorAuthenticate(req, res, code) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, code);
         if (!isValid) {
@@ -96,6 +96,10 @@ let UsersController = class UsersController {
         const accessToken = await this.jwtService.sign(payload);
         res.cookie('connect_sid', [accessToken]);
         res.redirect('http://localhost:3000/home');
+    }
+    async updateUsersStatus() {
+        console.log("updateUsersStatus ----------");
+        return await this.usersService.updateUsersStatus();
     }
     async getUsers(FilterDto, req) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
@@ -149,7 +153,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "TwoFactorEnable", null);
+], UsersController.prototype, "twoFactorEnable", null);
 __decorate([
     (0, common_1.Post)('/twofactorauthentication'),
     __param(0, (0, common_1.Req)()),
@@ -158,7 +162,13 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object, String]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "TwoFactorAuthenticate", null);
+], UsersController.prototype, "twoFactorAuthenticate", null);
+__decorate([
+    (0, common_1.Get)('/updateUsersStatus'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updateUsersStatus", null);
 __decorate([
     (0, common_1.Get)('/users'),
     __param(0, (0, common_1.Query)(common_1.ValidationPipe)),

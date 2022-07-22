@@ -113,7 +113,7 @@ export class ChatService {
 
     async getMessagesByroomId(roomid:number):Promise<message[]>{ 
        const query = await this.messageRepo.createQueryBuilder('message')
-        .select(['message.content','message.playerid'])
+        .select(['message.content','message.playerid', 'message.roomid'])
         .where("message.roomid = :roomid", {roomid})
         .orderBy("message.created_at");
 

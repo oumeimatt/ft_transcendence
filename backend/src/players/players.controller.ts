@@ -99,7 +99,7 @@ export class UsersController {
 	}
 
 	@Post('/settings/2fa/enable')
-	async TwoFactorEnable(
+	async twoFactorEnable(
 		@Req() req: Request,
 		@Body('Password2fa') Password2fa: string,
 	): Promise<void> {
@@ -116,7 +116,7 @@ export class UsersController {
 	}
 
 	@Post('/twofactorauthentication')
-	async TwoFactorAuthenticate(
+	async twoFactorAuthenticate(
 		@Req() req: Request,
 		@Response() res,
 		@Body('twaFactorCode') code: string,
@@ -134,6 +134,13 @@ export class UsersController {
 		const accessToken = await this.jwtService.sign(payload);
 		res.cookie('connect_sid',[accessToken]);
 		res.redirect('http://localhost:3000/home');
+	}
+
+	//+ upadte user status online/offline
+	@Get('/updateUsersStatus')
+	async updateUsersStatus(): Promise<any> {
+		console.log("updateUsersStatus ----------");
+		return await this.usersService.updateUsersStatus();
 	}
 
 	//- get all users

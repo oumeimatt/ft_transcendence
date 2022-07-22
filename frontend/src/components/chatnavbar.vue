@@ -28,7 +28,6 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 				<div class=" mt-8  pb-8  ">
@@ -151,16 +150,25 @@ import { anyTypeAnnotation } from '@babel/types';
 	// 	.then(data=>{})
 	// }
 	function CreateDM(id: number){
-		console.log("id: ", id)
 		store.state.connection.emit("create-DM", id); //id of friend
-
 	}
 
+	async function getRoomId(friendid:number){
+		let RoomName = friendid+":"+store.state.player.id;
+		let reverse = store.state.player.id+":"+friendid;
+		for (var room of store.state.rooms)
+		{
+			if (room.name == RoomName || room.name == reverse)
+				return room.id;
+		}
+	}
 	async function createAndGetDm(friendid: number ){
 		CreateDM(friendid);
-		//getMessage(friendid)
+		store.state.roomSelected = await getRoomId(friendid);
+		console.log("Room selected  " + store.state.roomSelected);
 		await axios.get('http://localhost:3001/chat/DM', {params:{userid:store.state.player.id, receiverid:friendid}, withCredentials:true})
-		.then(data=>{store.state.messages = data.data;console.log(data.data);})
+		.then(data=>{store.state.messages = data.data;})
+		//store.state.roomSelected = getRoomId(friendid);
 	}
 
 
@@ -181,7 +189,7 @@ import { anyTypeAnnotation } from '@babel/types';
             store.state.achievements = data.data.achievements
           } ) 
           .catch(err => console.log(err.message))
-		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{friendid: store.state.player.id}, withCredentials: true})
+		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 		  .then(data=> { store.state.rooms = data.data;  })
 		//  console.log(data.data);}
 		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
@@ -192,31 +200,17 @@ import { anyTypeAnnotation } from '@babel/types';
 
 		store.state.connection.on("allrooms", (data) => {store.state.allRooms = data;});
 
-		//update room names && allrooms
-		// for (let i = 0; i < store.state.rooms.length; i++){
-		// 	let splits = store.state.rooms[i].name.split(":");
-		// 	if (splits.length === 2)
-		// 	{
-		// 		if (store.state.player.id == splits[0])
-		// 			store.state.rooms[i].name = usersInfo(splits[1]);
-		// 		else
-		// 			store.state.rooms[i].name = usersInfo(splits[0]);
-		// 	}
-		// }
 
-		// for (let i = 0; i < store.state.allRooms.length; i++){
-		// 	let splits = store.state.allRooms[i].name.split(":");
-		// 	if (splits.length === 2)
-		// 	{
-		// 		if (store.state.player.id == splits[0])
-		// 			store.state.allRooms[i].name = usersInfo(splits[1]);
-		// 		else
-		// 			store.state.allRooms[i].name = usersInfo(splits[0]);
-		// 	}
-		// }
-
-		
-		store.state.connection.on("sendMessage", (data) => {store.state.messages = data; console.log("messages" ,data)});
+		store.state.connection.on("sendMessage", (data) => {
+			console.log(data);
+			
+			if (data && data[0].roomid == store.state.roomSelected)
+				{
+					console.log(data[0].roomid);
+					console.log(store.state.roomSelected);
+					store.state.messages = data;
+				}// console.log("messages" ,data)}
+	 });
 		//listen to this event if and only if the roomid selected is the one we get messages from
 
 		

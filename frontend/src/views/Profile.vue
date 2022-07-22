@@ -28,7 +28,7 @@
 						<p class="text-2xl font-semibold pb-4 border-b border-neutral-800"> Achievements </p>
 							<!-- acheivement -->
 						<div v-if="store.state.achievements"> 
-                            <div v-for="achievement in store.state.achievements" :key="achievement">
+                            <div v-for="achievement in store.state.achievements" :key="achievement" class="scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
 							    <div v-if="achievement=='first'" class="grid grid-cols-8 justify-items-start bg-slate-500 pt-4">
                     				<div class="place-self-start" > <img src="../assets/medal.png" class="w-10 h-10"></div>
                     				<div class="col-span-7 pr-10"> <span class="text-xl  font-semibold text-slate-900"> First game </span>     <span class="text-s font-semibold text-neutral-900" > Congratulations ! You won your first Game! </span> </div>
@@ -50,13 +50,16 @@
 							<!--  -->
 					</div>
 					<div class="p-4 bg-slate-500 rounded-md " > 
-						<div > 
+						<div class=""> 
 							<p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
 							<!-- games  -->
-							<div v-for="game in gamesHistory" :key="game" class="grid grid-cols-3 justify-itmes-center pt-4">
-								<div class="text-neutral-900 font-semibold ">  {{ game.winner.username }}</div>
-								<div class="text-gray-900 font-black "> <span> {{ game.winnerScore }} </span> - <span>  {{ game.loserScore }}</span>  </div>
-								<div class="text-neutral-900 font-semibold ">  {{ game.loser.username }}  </div>
+							<div class="scrollbar scrollbar-track-slate-900 scrollbar-thumb-slate-600 max-h-2/5">
+
+								<div v-for="game in gamesHistory" :key="game" class="grid grid-cols-3 justify-itmes-center mt-4 h-4 ">
+									<div class="text-neutral-900 font-semibold ">  {{ game.winner.username }}</div>
+									<div class="text-gray-900 font-black  "> <span> {{ game.winnerScore }} </span> - <span>  {{ game.loserScore }}</span>  </div>
+									<div class="text-neutral-900 font-semibold ">  {{ game.loser.username }}  </div>
+								</div>
 							</div>
  
 							<!--  -->

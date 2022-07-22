@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, Unique,  } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, Unique, UpdateDateColumn,  } from "typeorm";
 import { UserStatus } from "./player_status.enum";
 // import { Game } from "../games/game.entity";
 import { Relation } from "../relations/relation.entity";
@@ -32,8 +32,9 @@ export class Player extends BaseEntity {
 	@Column({ default: UserStatus.ONLINE})
 	status: UserStatus;
 
-	// @Column({ nullable: true}) //= drop DB - column: nullable-> false -
-	// email: string;
+	// @Column({ type: 'date', nullable: true})
+	@UpdateDateColumn()
+	last_activity: Date;
 
 	@Column({ default: false })
 	two_fa: boolean;

@@ -26,7 +26,8 @@ export declare class UsersController {
     updateUsername(req: Request, username: string): Promise<import("./player.entity").Player>;
     updateAvatar(req: Request, imageName: string, avatar: Express.Multer.File): Promise<import("./player.entity").Player>;
     updateTwoFa(req: Request): Promise<string>;
-    TwoFactorEnable(req: Request, Password2fa: string): Promise<void>;
-    TwoFactorAuthenticate(req: Request, res: any, code: string): Promise<any>;
+    twoFactorEnable(req: Request, Password2fa: string): Promise<void>;
+    twoFactorAuthenticate(req: Request, res: any, code: string): Promise<any>;
+    updateUsersStatus(): Promise<any>;
     getUsers(FilterDto: GetPlayersFilterDto, req: Request): Promise<import("./player.entity").Player[]>;
 }
