@@ -33,7 +33,6 @@ export class UsersController {
 		const friends = await this.relationService.getUsersByStatus(user, RelationStatus.FRIEND);
 		const blockedUsers = await this.relationService.getUsersByStatus(user, RelationStatus.BLOCKED);
 		const achievements = await this.usersService.getAchievements(user.id);
-		// const matchHistory = await this.gameService.getMatchByUser(id);
 		const data = {
 			"profile": playerData,
 			"wins": playerData.wins,
@@ -41,7 +40,6 @@ export class UsersController {
 			"friends": friends,
 			"blockedUsers": blockedUsers,
 			"achievements": achievements,
-			// "matchHistory": matchHistory,
 			"cookie":req.cookies.connect_sid,
 		};
 		return data;
@@ -57,12 +55,10 @@ export class UsersController {
 		const playerData = await this.usersService.getUserById(id);
 		const friends = await this.relationService.getUsersByStatus(playerData, RelationStatus.FRIEND);
 		const achievements = await this.usersService.getAchievements(id);
-		// const matchHistory = await this.gameService.getMatchByUser(id);
 		const data = {
 			"profile": playerData,
 			"friends": friends,
 			"achievements": achievements,
-			// "matchHistory": matchHistory,
 		};
 		return data;
 	}
@@ -130,13 +126,13 @@ export class UsersController {
 		if (!isValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
+		await res.clearCookie('twofa', {domain: 'localhost', path: '/'});
 		const id = user.id;
 		const username = user.username;
 		const two_fa = user.two_fa;
 		const payload: JwtPayload = { username, id, two_fa };
 		const accessToken = await this.jwtService.sign(payload);
 		res.cookie('connect_sid',[accessToken]);
-		await res.clearCookie('twofa', {domain: 'localhost', path: '/'});
 		res.redirect('http://localhost:3000/home');
 	}
 

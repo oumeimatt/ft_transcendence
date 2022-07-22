@@ -88,13 +88,13 @@ let UsersController = class UsersController {
         if (!isValid) {
             throw new common_1.UnauthorizedException('Wrong authentication code');
         }
+        await res.clearCookie('twofa', { domain: 'localhost', path: '/' });
         const id = user.id;
         const username = user.username;
         const two_fa = user.two_fa;
         const payload = { username, id, two_fa };
         const accessToken = await this.jwtService.sign(payload);
         res.cookie('connect_sid', [accessToken]);
-        await res.clearCookie('twofa', { domain: 'localhost', path: '/' });
         res.redirect('http://localhost:3000/home');
     }
     async getUsers(FilterDto, req) {
