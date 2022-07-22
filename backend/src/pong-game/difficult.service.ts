@@ -2,14 +2,14 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { UsersService } from 'src/players/players.service';
 import { UserStatus } from 'src/players/player_status.enum';
-import { PlayGroundInterface } from './interfaces';
+import { GameMood, PlayGroundInterface } from './interfaces';
 import { PongGameService } from './pong-game.service';
 import { PlayGround } from './utils';
 
 @Injectable()
   export class DifficultService {
   readonly logger = new Logger('Difficult PongGame Service: ');
-  readonly emptyPlayground = new PlayGround(0, 0, 800, 600, 'green', 9, true, '', '');
+  readonly emptyPlayground = new PlayGround(0, 0, 1000, 600, 'green', 9, true, '', '');
   constructor(private pongGameService: PongGameService, private usersService: UsersService) {}
 
   handleGetBackGround(playground: PlayGround): PlayGroundInterface {
@@ -95,12 +95,12 @@ import { PlayGround } from './utils';
 
         // push room to database
         this.pongGameService.addRoom({
-          roomname, difficulty: 'difficult', player1: first.data.user.username as string,
+          roomname, difficulty: GameMood.DIFFICULT, player1: first.data.user.username as string,
           player2: second.data.user.username as string
         });
 
         // create a playground for players
-        const playground = new PlayGround(0, 0, 800, 600, 'green', 9, true, first.data.user.username, second.data.user.username);
+        const playground = new PlayGround(0, 0, 1000, 600, 'green', 9, true, first.data.user.username, second.data.user.username);
         first.data.playground = playground;
         second.data.playground = playground;
         this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & '+ second.data.user.username);
@@ -125,7 +125,7 @@ import { PlayGround } from './utils';
               this.usersService.winsGame(first.data.user.id);
               this.usersService.LostGame(second.data.user.id);
               this.pongGameService.addGameHistory({
-                mode: 'difficult',
+                mode: GameMood.DIFFICULT,
                 winner: first.data.user,
                 loser: second.data.user,
                 winnerScore: playground.scoreBoard.playerOneScore,
@@ -136,7 +136,7 @@ import { PlayGround } from './utils';
               this.usersService.winsGame(second.data.user.id);
               this.usersService.LostGame(first.data.user.id);
               this.pongGameService.addGameHistory({
-                mode: 'difficult',
+                mode: GameMood.DIFFICULT,
                 winner: second.data.user,
                 loser: first.data.user,
                 winnerScore: playground.scoreBoard.playerTwoScore,
@@ -175,7 +175,7 @@ import { PlayGround } from './utils';
         const second = await this.usersService.findPlayer(client.data.opponentId);
         if (second) {
           this.pongGameService.addGameHistory({
-            mode: 'difficult',
+            mode: GameMood.DIFFICULT,
             winner: await second,
             loser: client.data.user,
             winnerScore: client.data.playground.win_score,
