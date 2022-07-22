@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Player } from '../../players/player.entity';
 import { GameMood } from '../interfaces';
 
@@ -21,4 +21,7 @@ export class GameHistory {
 
   @Column()
   loserScore: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

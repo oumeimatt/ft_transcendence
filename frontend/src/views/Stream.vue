@@ -13,6 +13,7 @@
     </div>
     <div v-else id="div-canvas">
         <canvas id="responsive-canvas" ref="game"></canvas>
+        <p style="color:aquamarine; text-align: center;">{{ winnerDisplay }}</p>
     </div>
     <Footer />
     </div>
@@ -37,6 +38,7 @@ let context = ref({} as CanvasRenderingContext2D);
 let game = ref({} as HTMLCanvasElement);
 let playground = ref(null as PlaygroundInterface);
 let message = ref('' as String);
+let winnerDisplay = ref('' as String);
 
 onMounted(() => {
     if (!props.difficulty || !props.roomname)
@@ -58,6 +60,9 @@ onMounted(() => {
 
         // Draw playground/ ball/ paddles / score in every update
         DrawGameEachUpdate();
+
+        // Display Winner at end of Game
+        DisplayWinner();
 
 
         // render
@@ -125,6 +130,15 @@ function RoomNotFound() {
         console.log('RoomNotFound');
         if (data.message) {
             message.value = data.message;
+        }
+    });
+}
+
+function DisplayWinner() {
+    (socket.value as Socket).on("DisplayWinner", (data) => {
+    const { winner, loser } = data;
+    if (winner && loser) {
+            winnerDisplay.value = winner + ' wins against ' + loser;
         }
     });
 }

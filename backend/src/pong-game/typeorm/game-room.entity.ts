@@ -17,4 +17,5 @@ export class GameRoom {
 
   @Column()
   player2: string;
+
 }
