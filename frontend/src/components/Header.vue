@@ -108,7 +108,7 @@
               </div>
           </div>
           <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-            <button class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
+            <button @click="closeSettings" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
               Close
             </button>
             <button @click="saveChanges()" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
@@ -193,6 +193,13 @@
         changeAvatar()
       if (Password2fa.value.length > 0)
         enable2fa()
+      showChangeAv.value = false;
+      show2f.value = false;
+      showChangeName.value = false;
+      showScan.value = false;
+      nickname.value = '';
+      Password2fa.value = ''
+      qr.value = '';
     }
     async function changeNickname(newnickname: String){
         if (newnickname.length > 0 && newnickname.length <= 10){
@@ -226,5 +233,16 @@
       });
       return a.filter((name) => name.startsWith(search.value))
     })
+
+    function closeSettings(){
+      showChangeAv.value = false;
+      show2f.value = false;
+      showChangeName.value = false;
+      showScan.value = false;
+      nickname.value = '';
+      Password2fa.value = ''
+      qr.value = '';
+
+    }
     // var avatar = "src/assets/"+ store.state.player.avatar
 </script>
