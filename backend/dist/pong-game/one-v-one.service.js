@@ -29,9 +29,6 @@ let OneVOneService = class OneVOneService {
         if (client.handshake.query.role === 'player') {
             this.handlePlayerConnected(client, players, wss);
         }
-        else if (client.handshake.query.role === 'spectator') {
-            this.handleSpectatorConnected(client);
-        }
     }
     async handleSpectatorConnected(client) {
         const { gamesRooms } = await this.pongGameService.getRooms();
@@ -70,6 +67,7 @@ let OneVOneService = class OneVOneService {
                 });
             }
             else {
+                players = players.filter(player => player != first);
                 client.data.side = 'right';
                 client.data.role = 'player';
                 const second = client;
@@ -163,42 +161,42 @@ let OneVOneService = class OneVOneService {
         }
     }
     handleKeyUpPressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyUpPressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyUpPressed();
         }
     }
     handleKeyDownPressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyDownPressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyDownPressed();
         }
     }
     handleKeyUpUnpressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyUpUnpressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyUpUnpressed();
         }
     }
     handleKeyDownUnpressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyDownUnpressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyDownUnpressed();
         }
     }
     handleTouchMove(client, data) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddle.touchMove(data.y, client.data.playground.bounds);
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddle.touchMove(data.y, client.data.playground.bounds);
         }
     }

@@ -53,7 +53,7 @@
 					<div v-if="store.state.friends" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
 						<div v-for="friend in store.state.friends" :key="friend">
 							<div @click="CreateDM(friend.id)" class="flex justify-start items-center space-x-2 mt-2"> 
-									<img  :src="store.methods.playerAvatar(friend)" class=" lg:ml-8 h-8 w-8 rounded-full bg-white">  <span class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 pb-4 "> <router-link :to="{name:'Chat', params: {name: friend.username, id: friend.id}}" > {{ friend.username }} </router-link>   </span> 
+									<img  :src="store.methods.playerAvatar(friend)" class=" lg:ml-8 h-8 w-8 rounded-full bg-white">  <span class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 pb-4 "> <router-link :to="{name:'Chat', params: {name: friend.username }}" > {{ friend.username }} </router-link>   </span> 
 							</div>
 						</div>
 					</div>
@@ -134,7 +134,7 @@ import { anyTypeAnnotation } from '@babel/types';
           players:room.players,
         }
         store.state.connection.emit("createRoom", roomdata);
-       	console.log(roomdata);
+       	// console.log(roomdata);
         // this.room.players.splice(0);
         //I should sent a room
     }
@@ -176,10 +176,10 @@ import { anyTypeAnnotation } from '@babel/types';
           } ) 
           .catch(err => console.log(err.message))
 		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		  .then(data=> { console.log('axios mychannels ');store.state.rooms = data.data; console.log(data.data) })
+		  .then(data=> { store.state.rooms = data.data;  })
 		//  console.log(data.data);}
 		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		.then(data=> {console.log('axios all channels ');store.state.allRooms = data.data; })
+		.then(data=> {store.state.allRooms = data.data; })
 		
 
 		store.state.connection.on("message", (data) => {store.state.rooms = data;});
@@ -209,8 +209,9 @@ import { anyTypeAnnotation } from '@babel/types';
 		// 	}
 		// }
 
-		store.state.connection.on("sendMessage", (data) => {store.state.messages = data;});
+		store.state.connection.on("sendMessage", (data) => {store.state.messages = data; console.log("messages" ,data)});
 
+		
 		//store.state.connection.on("members", (data) => {members = data;});
 
 

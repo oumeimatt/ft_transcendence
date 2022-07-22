@@ -210,7 +210,7 @@ import { identifier } from '@babel/types';
     onUpdated(async () => {
 		  await axios
           .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
-          .then(data =>{ store.state.roominfo = data.data ; console.log("here",store.state.roominfo.playerid)}) 
+          .then(data =>{ store.state.roominfo = data.data ; }) 
           .catch(err => { console.log(err)})
     
 
@@ -225,9 +225,8 @@ import { identifier } from '@babel/types';
 
       await axios
           .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
-          .then(data =>{ store.state.roominfo = data.data ; console.log("here",store.state.roominfo.playerid)}) 
+          .then(data =>{ store.state.roominfo = data.data ; }) 
           .catch(err => { console.log(err)})
-      console.log("honaaaa", store.state.roominfo.playerid)
         if (store.state.roominfo.playerid != -1){
           isMember.value = true;
         } 

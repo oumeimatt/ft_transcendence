@@ -162,13 +162,12 @@
             localStorage.setItem('user', data.data.cookie);
             store.state.player = data.data.profile;
             store.state.friends = data.data.friends;
-            console.log(data.data.friends)
             store.state.achievements = data.data.achievements
           } ) 
           .catch(err => console.log(err.message))
       await axios
           .get('http://localhost:3001/users' ,{ withCredentials: true })
-          .then(data =>{ store.state.users = data.data ; console.log(store.state.users)})
+          .then(data =>{ store.state.users = data.data ;})
           .catch(err => console.log(err.message))
     })
     async function  generateFA(){
@@ -179,12 +178,10 @@
       showScan.value = true
     }
     async function enable2fa(){
-            console.log('H22ERE');
   
           await axios
           .post('http://localhost:3001/settings/2fa/enable', {Password2fa: Password2fa.value } , {withCredentials: true })
           .then(() => {
-            console.log('HERE');
           })
           .catch((error) => console.log(error.response));
     }
@@ -201,7 +198,7 @@
             store.state.player.username = newnickname ;
             await axios
                 .patch('http://localhost:3001/settings/username' ,{username: newnickname} ,{ withCredentials: true })
-                .then(data =>{ console.log(data.data) })
+                .then(data =>{ })
                 .catch(err => console.log(err.message))
         }
     }
@@ -209,14 +206,12 @@
       const formData = new FormData()
       const imageName = store.state.player.username+'.' + ext.value
       formData.append('avatar', image.value)
-      console.log(formData)
       const headers = { 'Content-Type': 'multipart/form-data'};
       await axios
           .post(`http://localhost:3001/settings/avatar/${imageName}`, formData, {withCredentials: true , headers })
           .then(() => {
               })
           .catch((error) => console.log(error.response));
-          console.log("imageName == ",imageName)
       store.state.player.avatar = imageName
     }
     function onChange(e){
