@@ -30,6 +30,7 @@ let DifficultService = class DifficultService {
             this.handlePlayerConnected(client, players, wss);
         }
         else if (client.handshake.query.role === 'spectator') {
+            this.logger.log('spectator Connected: ' + client.id + ', roomname: ', +client.handshake.query.roomname);
             this.handleSpectatorConnected(client);
         }
     }
@@ -168,46 +169,47 @@ let DifficultService = class DifficultService {
             await this.usersService.updateStatus(client.data.user.id, player_status_enum_1.UserStatus.ONLINE);
         }
         else if (client.handshake.query.role === 'spectator') {
+            this.logger.log('spectator Disconnected: ' + client.id);
             client.leave(client.handshake.query.room);
         }
     }
     handleKeyUpPressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyUpPressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyUpPressed();
         }
     }
     handleKeyDownPressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyDownPressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyDownPressed();
         }
     }
     handleKeyUpUnpressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyUpUnpressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyUpUnpressed();
         }
     }
     handleKeyDownUnpressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyDownUnpressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyDownUnpressed();
         }
     }
     handleTouchMove(client, data) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddle.touchMove(data.y, client.data.playground.bounds);
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddle.touchMove(data.y, client.data.playground.bounds);
         }
     }

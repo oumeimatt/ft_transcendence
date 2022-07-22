@@ -6,6 +6,6 @@ export declare class AuthService {
     private jwtService;
     constructor(playerService: UsersService, jwtService: JwtService);
     login(req: any, res: any): Promise<void | "no user from 42">;
-    cb(req: any, res: any, player: Player): Promise<void>;
+    cb(res: any, player: Player): Promise<void>;
     logout(id: number, req: any, res: any): Promise<any>;
 }

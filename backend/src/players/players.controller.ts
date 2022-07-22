@@ -8,6 +8,7 @@ import { Request, Express } from "express";
 import * as fs  from "fs";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { RelationStatus } from "../relations/relation_status.enum";
+import { JwtPayload } from "../auth/jwt-payload.interface";
 
 @Controller()
 export class UsersController {
@@ -118,9 +119,10 @@ export class UsersController {
 		await this.usersService.turnOnTwoFactorAuthentication(user.id);
 	}
 
-	@Post('/2fa/authenticate')
+	@Post('/twofactorauthentication')
 	async TwoFactorAuthenticate(
 		@Req() req: Request,
+		@Response() res,
 		@Body('twaFactorCode') code: string,
 	): Promise<any> {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
@@ -128,7 +130,14 @@ export class UsersController {
 		if (!isValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
-		// set another cookie
+		const id = user.id;
+		const username = user.username;
+		const two_fa = user.two_fa;
+		const payload: JwtPayload = { username, id, two_fa };
+		const accessToken = await this.jwtService.sign(payload);
+		res.cookie('connect_sid',[accessToken]);
+		await res.clearCookie('twofa', {domain: 'localhost', path: '/'});
+		res.redirect('http://localhost:3000/home');
 	}
 
 	//- get all users
