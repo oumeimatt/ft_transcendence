@@ -7,6 +7,7 @@ export declare class ChatController {
     private chatService;
     constructor(chatService: ChatService);
     getAllMessageByRoomId(roomid: number): Promise<message[]>;
+    getMessages(userid: number, receiverid: number): Promise<message[]>;
     getMembersByRoomId(roomid: number): Promise<Player[]>;
     getRoomsByUserId(playerid: number): Promise<chatroom[]>;
     getAllRooms(playerid: number): Promise<chatroom[]>;

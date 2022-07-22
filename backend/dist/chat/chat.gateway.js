@@ -126,7 +126,7 @@ let ChatGateway = class ChatGateway {
     }
     async createDM(sender, receiverid) {
         await this.definePlayer(sender);
-        const room = await this.chatService.DMexist(this.player.id, receiverid);
+        let room = await this.chatService.DMexist(this.player.id, receiverid);
         if (!room) {
             const DM = await this.chatService.createDM(this.player.id, receiverid);
             let allrooms = await this.chatService.getAllRooms(this.player.id);
@@ -147,7 +147,6 @@ let ChatGateway = class ChatGateway {
         }
     }
     async sendDM(sender, messagedto) {
-        console.log(messagedto);
         await this.definePlayer(sender);
         let receiverid = messagedto.id;
         let roomName = receiverid + ":" + this.player.id;
@@ -155,14 +154,15 @@ let ChatGateway = class ChatGateway {
         if (!room)
             room = await this.chatService.getRoomByName(this.player.id + ":" + receiverid);
         messagedto.id = room.id;
-        console.log("====" + room.id);
         await this.chatService.createMessage(messagedto, this.player);
         for (var x of this.user) {
             let userid = await x.handshake.query.token;
             userid = await this.userService.verifyToken(userid);
             let messages = await this.chatService.getMessagesByroomId(messagedto.id);
-            if (await this.chatService.isMember(messagedto.id, userid))
+            if (await this.chatService.isMember(messagedto.id, userid)) {
+                console.log("userid username" + userid.username);
                 this.server.to(x.id).emit('sendMessage', messages);
+            }
         }
     }
 };

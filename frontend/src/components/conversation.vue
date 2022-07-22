@@ -31,7 +31,7 @@
                                                 <span class="block"> {{ message.content }} </span>
                                             </div>
                                     </li>
-                                    <li v-else class="flex justify-end">
+                                    <li v-else-if="message.playerid == store.state.player.id" class="flex justify-end">
                                         <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
                                                 <span class="block"> {{ message.content }} </span>
                                         </div>

@@ -215,7 +215,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       //before create
       //check if this channel exist
       //by name sender:receiverid || receiverid:sender
-      const room = await this.chatService.DMexist(this.player.id, receiverid);
+     // let roomName = receiverid+":"+this.player.id;
+      let room = await this.chatService.DMexist(this.player.id, receiverid);
       if (!room)
       {
         const DM = await this.chatService.createDM(this.player.id, receiverid);
@@ -246,7 +247,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
     @SubscribeMessage('send-DM')
     async sendDM(sender:Socket, messagedto : messageDto){
-      console.log(messagedto);
+     // console.log(messagedto);
       await this.definePlayer(sender);
       let receiverid = messagedto.id;
       let roomName = receiverid+":"+this.player.id;
@@ -254,7 +255,6 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       if (!room)
         room = await this.chatService.getRoomByName(this.player.id+":"+receiverid);
       messagedto.id =  room.id;
-      console.log("===="+room.id);
       await this.chatService.createMessage(messagedto, this.player);
       for (var x of this.user)
       {
@@ -264,7 +264,10 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
        // console.log(messages);
       //check if it's a member before sending the messages
         if (await this.chatService.isMember(messagedto.id, userid))
+        {
+          console.log("userid username"+userid.username);
           this.server.to(x.id).emit('sendMessage', messages);
+        }
       }
 
       //check the valid name of the channel => get the right id and add it to the message dto

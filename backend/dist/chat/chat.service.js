@@ -91,6 +91,15 @@ let ChatService = class ChatService {
         const messages = await query.getMany();
         return messages;
     }
+    async getDMs(userid, receiverid) {
+        let room = await this.getRoomByName(userid + ":" + receiverid);
+        if (!room)
+            room = await this.getRoomByName(receiverid + ":" + userid);
+        let messages = [];
+        if (room)
+            messages = await this.getMessagesByroomId(room.id);
+        return messages;
+    }
     async deleteMmebership(roomid, playrid) {
         await this.membershipRepo.delete({ playerid: playrid, roomid: roomid });
     }
@@ -134,7 +143,7 @@ let ChatService = class ChatService {
         let room = await this.roomRepo.findOne({ name: chatroomName, ischannel: false });
         if (room)
             return room;
-        chatroomName = receiverid + ":" + receiverid;
+        chatroomName = receiverid + ":" + senderid;
         room = await this.roomRepo.findOne({ name: chatroomName, ischannel: false });
         if (room)
             return room;

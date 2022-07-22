@@ -22,6 +22,9 @@ let ChatController = class ChatController {
     getAllMessageByRoomId(roomid) {
         return this.chatService.getMessagesByroomId(roomid);
     }
+    getMessages(userid, receiverid) {
+        return this.chatService.getDMs(userid, receiverid);
+    }
     getMembersByRoomId(roomid) {
         return this.chatService.getMembersByRoomId(roomid);
     }
@@ -42,6 +45,14 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ChatController.prototype, "getAllMessageByRoomId", null);
+__decorate([
+    (0, common_1.Get)('DM'),
+    __param(0, (0, common_1.Query)('userid')),
+    __param(1, (0, common_1.Query)('receiverid')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "getMessages", null);
 __decorate([
     (0, common_1.Get)('members'),
     __param(0, (0, common_1.Query)('roomid')),
