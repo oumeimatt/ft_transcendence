@@ -48,10 +48,10 @@ let UsersService = class UsersService {
     async updateUsername(id, username) {
         const updated = await this.getUserById(id);
         var regEx = /^[0-9a-zA-Z]+$/;
-        updated.username = username;
         if (!regEx.test(username)) {
             throw new common_1.BadRequestException('Username must be alphanumeric');
         }
+        updated.username = username;
         try {
             await updated.save();
         }
@@ -82,9 +82,6 @@ let UsersService = class UsersService {
                 return;
             }
         });
-        console.log("===========================================================");
-        console.log(otpauth_url);
-        console.log("===========================================================");
         return pathToServe;
     }
     async updateLevel(id, difficult) {
@@ -140,15 +137,12 @@ let UsersService = class UsersService {
         return found;
     }
     async findOrCreate(id, login) {
-        console.log("find or create > number of arguments passed: ", arguments.length);
-        console.log(id, login);
         const found = await this.userRepository.findOne({ where: { id } });
         if (found) {
             found.status = player_status_enum_1.UserStatus.ONLINE;
             await found.save();
             return found;
         }
-        console.log('not found !!');
         const newUser = new player_entity_1.Player();
         newUser.id = id;
         newUser.username = login;
@@ -158,10 +152,12 @@ let UsersService = class UsersService {
         newUser.losses = 0;
         newUser.status = player_status_enum_1.UserStatus.ONLINE;
         newUser.two_fa = false;
-        await newUser.save();
-        console.log('new User saved successfully ' + newUser);
-        if (typeof (newUser) == 'undefined') {
-            console.log('newUser is undefined');
+        try {
+            await newUser.save();
+        }
+        catch (error) {
+            console.log(error.code);
+            throw new common_1.BadRequestException();
         }
         return newUser;
     }

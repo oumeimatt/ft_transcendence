@@ -5,7 +5,7 @@ var GameMood;
 (function (GameMood) {
     GameMood["DEFAULT"] = "default";
     GameMood["DIFFICULT"] = "difficult";
-    GameMood["ONEVONE"] = "one-v-one";
+    GameMood["ONEVONE"] = "oneVone";
 })(GameMood = exports.GameMood || (exports.GameMood = {}));
 ;
 //# sourceMappingURL=game_mood.enum.js.map

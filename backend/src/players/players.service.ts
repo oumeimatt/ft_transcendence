@@ -1,14 +1,13 @@
-import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, NotFoundException, Res, Response } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
-// import { TwoFactorAuthenticationService } from "../auth/two-factor-authentication.service";
 import { GetPlayersFilterDto } from "./dto-players/get-player-filter.dto";
 import { Player } from "./player.entity";
 import { PlayerRepository } from "./player.repository";
 import { UserStatus } from "./player_status.enum";
 
 import { authenticator } from 'otplib';
-import QRCode from 'qrcode';
+// import QRCode from 'qrcode';
 const QRCode = require('qrcode');
 import * as dotenv from "dotenv";
 dotenv.config({ path: `.env` })
@@ -46,10 +45,10 @@ export class UsersService {
 
 		const updated = await this.getUserById(id);
 		var regEx = /^[0-9a-zA-Z]+$/;
-		updated.username = username;
 		if (!regEx.test(username)) {
 			throw new BadRequestException('Username must be alphanumeric');
 		}
+		updated.username = username;
 		try {
 			await updated.save();
 		} catch (error) {
@@ -73,13 +72,6 @@ export class UsersService {
 
 	async generateSecretQr(user: Player): Promise<string> {
 		const { otpauth_url } = await this.generateTwoFactorAuthenticationSecret(user);
-		// toDataURL(otpauth_url, (err, imageUrl) => {
-		// 	if (err) {
-		// 	  console.log('Error with QR');
-		// 	  return;
-		// 	}
-		// 	console.log(imageUrl);
-		//   });
 		const imageUrl = process.cwd() + "/public/qr_" + user.username + ".png";
 		const pathToServe = "qr_" + user.username + ".png";
 		QRCode.toFile(
@@ -92,13 +84,7 @@ export class UsersService {
 					  return;
 					}
 				}
-		  )
-
-		  console.log("===========================================================");
-		  console.log(otpauth_url);
-		  console.log("===========================================================");
-
-		// const qr = await QRCode.toString(otpauth_url);
+		  	)
 		return pathToServe;
 	}
 
@@ -161,15 +147,12 @@ export class UsersService {
 	}
 
 	async findOrCreate(id: number, login: string): Promise<Player> {
-		console.log("find or create > number of arguments passed: ", arguments.length);
-		console.log(id, login);
 		const found = await this.userRepository.findOne({ where: { id } });
 		if (found) {
 			found.status = UserStatus.ONLINE;
 			await found.save();
 			return found;
 		}
-		console.log('not found !!');
 		const newUser = new Player();
 		newUser.id = id;
 		newUser.username = login;
@@ -179,11 +162,15 @@ export class UsersService {
 		newUser.losses = 0;
 		newUser.status = UserStatus.ONLINE;
 		newUser.two_fa = false;
-		await newUser.save();
-		console.log('new User saved successfully ' + newUser);
-		if (typeof(newUser) == 'undefined') {
-			console.log('newUser is undefined');
+		try {
+			await newUser.save();
+		} catch (error) {
+			console.log(error.code);
+			throw new BadRequestException();
 		}
+		// if (typeof(newUser) == 'undefined') {
+		// 	console.log('newUser is undefined');
+		// }
 		return newUser;
 	}
 
