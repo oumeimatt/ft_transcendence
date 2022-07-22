@@ -19,24 +19,26 @@ import { PlaygroundInterface } from '../interfaces';
 import Draw from '../utils/Draw';
 
 const props = defineProps({
-    difficulty: String
+    difficulty: String,
+    opponent: String,
 })
 
 let message = ref('' as String);
 let socket = ref(null as unknown);
 let context = ref({} as CanvasRenderingContext2D);
 let game = ref({} as HTMLCanvasElement);
-let playground = ref(null as PlaygroundInterface);
+let playground = ref(null as PlaygroundInterface)
 
 onMounted(() => {
-    if (store.state.player.status === 'playing' || !props.difficulty) {
+    if (store.state.player.status === 'playing' || !props.difficulty || !props.opponent) {
         window.location.href = '/game';
     }
     else {
-       socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
+        socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
         query: {
                 'role': 'player',
                 'accessToken': localStorage.getItem('user'),
+                'opponent': props.opponent
             },
         });
         if (game && game.value) {
@@ -142,12 +144,12 @@ onUnmounted(() => {
     (socket.value as Socket).disconnect();
    }
 });
-
 function ConnectedTwice() {
     (socket.value as Socket).on('alreadyInGame', (data) => {
         window.location.href = '/';
     });
 }
+
 
 function DrawPlayerWaiting() {
     (socket.value as Socket).on('WaitingForPlayer', (data) => {
@@ -213,9 +215,8 @@ function DisplayWinner() {
         }
     });
 }
-
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
 #div-canvas{
   width: auto;

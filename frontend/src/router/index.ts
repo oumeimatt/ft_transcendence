@@ -10,6 +10,7 @@ import EmptyChat from '../views/EmptyChat.vue'
 import Play from '../views/Play.vue'
 import WatchGames from '../views/WatchGames.vue'
 import Stream from '../views/Stream.vue'
+import OneVOne from '../views/OneVOne.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -71,6 +72,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/stream',
     name: 'Stream',
     component: Stream,
+    props: true
+  },
+  {
+    path: '/onevone',
+    name: 'OneVOne',
+    component: OneVOne,
     props: true
   },
   // {
