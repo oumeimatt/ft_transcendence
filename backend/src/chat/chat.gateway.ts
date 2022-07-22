@@ -73,7 +73,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         // const allrooms = await this.chatService.getAllRooms(this.decoded.id);
          this.user.push(client);
         // this.title.push(`${client.id}`);
-          console.log(`On Connnect ... !${client.id} ${this.player.username}`)
+        //  console.log(`On Connnect ... !${client.id} ${this.player.username}`)
      
         // this.server.to(client.id).emit('message', rooms);//rooms
         // let messages = [];

@@ -28,7 +28,6 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 				<div class=" mt-8  pb-8  ">
@@ -159,6 +158,7 @@ import { anyTypeAnnotation } from '@babel/types';
 	async function createAndGetDm(friendid: number ){
 		CreateDM(friendid);
 		//getMessage(friendid)
+
 		await axios.get('http://localhost:3001/chat/DM', {params:{userid:store.state.player.id, receiverid:friendid}, withCredentials:true})
 		.then(data=>{store.state.messages = data.data;console.log(data.data);})
 	}
@@ -216,7 +216,9 @@ import { anyTypeAnnotation } from '@babel/types';
 		// }
 
 		
-		store.state.connection.on("sendMessage", (data) => {store.state.messages = data; console.log("messages" ,data)});
+		store.state.connection.on("sendMessage", (data) => {
+		//if data => data[0].roomid == vvariable tmp;
+			store.state.messages = data; console.log("messages" ,data)});
 		//listen to this event if and only if the roomid selected is the one we get messages from
 
 		
