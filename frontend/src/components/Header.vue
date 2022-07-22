@@ -101,8 +101,8 @@
                   You have not activated 2FA. <a  class="text-xs text-teal-700" href="https://authy.com/what-is-2fa/" target="_blank"> What is 2FA Authentication ? </a>
                   <button @click="generateFA" class="bg-neutral-300 rounded p-4 font-semibold  hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
                 </div>
-              <div v-if="showScan" class=" bg-gray-200 rounded">
-                <img :src="qr" class="p-8 h-30 w-30 rounded" alt="">
+              <div v-if="showScan" class=" bg-gray-200 rounded"> 
+                <img :src="qr" class="p-8 mx-auto h-30 w-30 rounded" alt="">
                 <label class="text-gray-600"> Type authentication code here </label>
                 <input v-model="Password2fa" type="text" maxlength="6" placeholder="123456" class=" mt-2 mb-4 pl-4 h-12 rounded ">
               </div>
@@ -173,9 +173,10 @@
     async function  generateFA(){
       await axios
           .get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
-          .then(data =>{qr.value = data.data;} ) 
+          .then(data =>{qr.value = "http://localhost:3001/"+data.data;} ) 
           .catch(err => console.log(err.message))
       showScan.value = true
+      console.log(qr.value)
     }
     async function enable2fa(){
   
