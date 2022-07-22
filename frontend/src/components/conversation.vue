@@ -12,7 +12,7 @@
 							<router-link :to="{ name:'User', params: {id: store.methods.usersInfo(name).id}}" class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Profile </router-link>
 						</li>
 						<li>
-							<a href="#" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Invite to play game</a>
+							<a href="#" @click="inviteFriend(store.methods.usersInfo(name).id)" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Invite to play game</a>
 						</li>
 						<li>
 							<a href="#" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Block</a>
@@ -75,6 +75,12 @@
 	const rightClick = () => (
 		showMenu.value = true
 	);
+
+	function inviteFriend(friendid:number){
+		console.log('Invite friend called !');
+		//check if the user is online or offline
+		store.state.connection.emit('invite-game', friendid);
+	}
 
 	
 	// store.state.connection.on("sendMessage", (data) => {messages = data;});

@@ -49,6 +49,7 @@ let ChatGateway = class ChatGateway {
             if (decoded.id === id)
                 return user;
         }
+        return null;
     }
     async handleConnection(client) {
         await this.definePlayer(client);
@@ -164,6 +165,17 @@ let ChatGateway = class ChatGateway {
             }
         }
     }
+    async invitePlay(client, guest) {
+        console.log('test !');
+        await this.definePlayer(client);
+        let socketguest = await this.getSocketid(guest);
+        if (socketguest)
+            this.server.to(socketguest.id).emit('invitation', this.player.username);
+        else
+            console.log('you are trying to invite a user who is offline !');
+    }
+    async acceptInvitation(client) {
+    }
 };
 __decorate([
     (0, websockets_1.WebSocketServer)(),
@@ -205,6 +217,18 @@ __decorate([
     __metadata("design:paramtypes", [socket_io_1.Socket, message_dto_1.messageDto]),
     __metadata("design:returntype", Promise)
 ], ChatGateway.prototype, "sendDM", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('invite-game'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Number]),
+    __metadata("design:returntype", Promise)
+], ChatGateway.prototype, "invitePlay", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('invitation-accepted'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket]),
+    __metadata("design:returntype", Promise)
+], ChatGateway.prototype, "acceptInvitation", null);
 ChatGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({ namespace: '/chat', cors: true }),
     __metadata("design:paramtypes", [auth_service_1.AuthService,

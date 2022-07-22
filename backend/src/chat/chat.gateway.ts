@@ -56,8 +56,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         if (decoded.id === id)
             return user;
       }
-     // return null;
-
+      return null;
     }
 
     //after a client has connected 
@@ -290,4 +289,24 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     //change password=> remove all the membership
 
 
+    @SubscribeMessage('invite-game')
+    async invitePlay(client:Socket, guest:number){
+      //define player
+      console.log('test !');
+      await this.definePlayer(client);
+      //guest
+      let socketguest = await this.getSocketid(guest);
+      if (socketguest)
+        this.server.to(socketguest.id).emit('invitation', this.player.username);
+      else
+        console.log('you are trying to invite a user who is offline !')
+
+      //send event => pop up to the player { only the guest =>}
+    }
+
+    @SubscribeMessage('invitation-accepted')
+    async acceptInvitation(client:Socket){
+      //send an event to redirect this user too
+
+    }
 }
