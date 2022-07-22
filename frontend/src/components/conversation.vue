@@ -2,7 +2,7 @@
 		<div id="folio" class="col-span-4 md:col-span-4 lg:col-span-5 h-screen rounded border-r border-myblue border-r ">
 				<div v-if="store.methods.usersInfo(name)" class="relative h-small bg-myblue rounded space-x-12">
 					<img :src="store.methods.playerAvatar(store.methods.usersInfo(name))" class=" absolute bg-white rounded-full left-4 h-12 w-12 bottom-2/4 translate-y-2/4 " alt="">
-					<h1  class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> {{ store.methods.usersInfo(name).username}} </h1>
+					<h1  class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> {{ store.methods.usersInfo(name).username}}  </h1>
 					<svg @click="showMenu = !showMenu" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer absolute right-2 top-1/4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
   						<path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
 					</svg>
@@ -25,7 +25,7 @@
 						<div class="w-full">
 							<div class="relative w-full p-6 overflow-y-auto">
 								<ul v-for="message in store.state.messages" :key="message" class="space-y-2">
-                                    <li v-if="message.id != store.state.player.id" class="flex justify-start items-center space-x-4">
+                                    <li v-if="message.playerid == store.methods.usersInfo(name).id" class="flex justify-start items-center space-x-4">
                                             <img :src="store.methods.playerAvatar(store.methods.usersInfo(name))" class="h-10 w-10 rounded-full bg-white " alt="">
                                             <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
                                                 <span class="block"> {{ message.content }} </span>
@@ -33,7 +33,7 @@
                                     </li>
                                     <li v-else class="flex justify-end">
                                         <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                                            <span class="block"> {{ message.content }}</span>
+                                                <span class="block"> {{ message.content }} </span>
                                         </div>
                                     </li>
                                 </ul>
@@ -46,7 +46,7 @@
 						<input v-model="store.state.message" type="text" placeholder="Message"
 							class="block h-3/6 w-full bottom-2/4 translate-y-2/4 py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
 							name="message" required />
-							<button @click="sendMessage(id)" type="submit">
+							<button @click="sendMessage(store.methods.usersInfo(name).id)" type="submit">
 								<svg class="w-6 h-6 text-gray-500 bottom-2/4 translate-y-3/4 origin-center transform rotate-90" xmlns="http://www.w3.org/2000/svg"
 									viewBox="0 0 20 20" fill="currentColor">
 									<path
@@ -64,12 +64,11 @@
 	import axios from 'axios';
     const props = defineProps <{
             name: string,
-			id: string
+			// id: string
 	}>()
 
-	function sendMessage(id: any){
-		let messageDto={ id : parseInt(id, 10) , content : store.state.message};
-		console.log("id == ",id)
+	function sendMessage(Id: any){
+		let messageDto={ id : Id , content : store.state.message};
 		store.state.connection.emit("send-DM", messageDto);
 	}
 	const showMenu = ref(false)

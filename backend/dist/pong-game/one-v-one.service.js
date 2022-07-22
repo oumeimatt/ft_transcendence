@@ -13,6 +13,7 @@ exports.OneVOneService = void 0;
 const common_1 = require("@nestjs/common");
 const players_service_1 = require("../players/players.service");
 const player_status_enum_1 = require("../players/player_status.enum");
+const interfaces_1 = require("./interfaces");
 const pong_game_service_1 = require("./pong-game.service");
 const utils_1 = require("./utils");
 let OneVOneService = class OneVOneService {
@@ -20,7 +21,7 @@ let OneVOneService = class OneVOneService {
         this.pongGameService = pongGameService;
         this.usersService = usersService;
         this.logger = new common_1.Logger('OneVOne PongGame Service: ');
-        this.emptyPlayground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false, '', '');
+        this.emptyPlayground = new utils_1.PlayGround(0, 0, 1000, 600, 'black', 9, false, '', '');
     }
     handleGetBackGround(playground) {
         return playground.getPlayGroundInterface();
@@ -28,9 +29,6 @@ let OneVOneService = class OneVOneService {
     handleUserConnected(client, players, wss) {
         if (client.handshake.query.role === 'player') {
             this.handlePlayerConnected(client, players, wss);
-        }
-        else if (client.handshake.query.role === 'spectator') {
-            this.handleSpectatorConnected(client);
         }
     }
     async handleSpectatorConnected(client) {
@@ -70,6 +68,7 @@ let OneVOneService = class OneVOneService {
                 });
             }
             else {
+                players = players.filter(player => player != first);
                 client.data.side = 'right';
                 client.data.role = 'player';
                 const second = client;
@@ -85,7 +84,7 @@ let OneVOneService = class OneVOneService {
         second.data.roomname = roomname;
         first.data.opponentId = second.data.user.id;
         second.data.opponentId = first.data.user.id;
-        const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
+        const playground = new utils_1.PlayGround(0, 0, 1000, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
         first.data.playground = playground;
         second.data.playground = playground;
         this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & ' + second.data.user.username);
@@ -105,7 +104,7 @@ let OneVOneService = class OneVOneService {
                     this.usersService.winsGame(first.data.user.id);
                     this.usersService.LostGame(second.data.user.id);
                     this.pongGameService.addGameHistory({
-                        mode: 'default',
+                        mode: interfaces_1.GameMood.ONEVONE,
                         winner: first.data.user,
                         loser: second.data.user,
                         winnerScore: playground.scoreBoard.playerOneScore,
@@ -117,7 +116,7 @@ let OneVOneService = class OneVOneService {
                     this.usersService.winsGame(second.data.user.id);
                     this.usersService.LostGame(first.data.user.id);
                     this.pongGameService.addGameHistory({
-                        mode: 'default',
+                        mode: interfaces_1.GameMood.ONEVONE,
                         winner: second.data.user,
                         loser: first.data.user,
                         winnerScore: playground.scoreBoard.playerTwoScore,
@@ -146,7 +145,7 @@ let OneVOneService = class OneVOneService {
                 const second = await this.usersService.findPlayer(client.data.opponentId);
                 if (second) {
                     this.pongGameService.addGameHistory({
-                        mode: 'default',
+                        mode: interfaces_1.GameMood.ONEVONE,
                         winner: await second,
                         loser: client.data.user,
                         winnerScore: client.data.playground.win_score,
@@ -163,42 +162,42 @@ let OneVOneService = class OneVOneService {
         }
     }
     handleKeyUpPressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyUpPressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyUpPressed();
         }
     }
     handleKeyDownPressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyDownPressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyDownPressed();
         }
     }
     handleKeyUpUnpressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyUpUnpressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyUpUnpressed();
         }
     }
     handleKeyDownUnpressed(client) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddleController.keyDownUnpressed();
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddleController.keyDownUnpressed();
         }
     }
     handleTouchMove(client, data) {
-        if (client.data.side === 'left') {
+        if (client.data.role === 'player' && client.data.side === 'left') {
             client.data.playground.leftPaddle.touchMove(data.y, client.data.playground.bounds);
         }
-        else if (client.data.side === 'right') {
+        else if (client.data.role === 'player' && client.data.side === 'right') {
             client.data.playground.rightPaddle.touchMove(data.y, client.data.playground.bounds);
         }
     }

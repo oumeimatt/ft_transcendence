@@ -6,7 +6,7 @@
 	    	<chatnavbar />
             <!-- <div class="bg-white text-black font-bold"> {{name }} {{ id }}</div> -->
 
-	    	<conversation :name="name" :id="id" />
+	    	<conversation :name="name" />
 	    </div>
 	</div>
 </template>
@@ -19,7 +19,7 @@
     import conversation from '../components/conversation.vue'
     const props = defineProps <{
             name: string,
-			id: string
+			// id: string
 	}>()
     const store = inject('store')
     const channelName = ref('')

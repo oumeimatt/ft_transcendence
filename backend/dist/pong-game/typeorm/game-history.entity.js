@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameHistory = void 0;
 const typeorm_1 = require("typeorm");
 const player_entity_1 = require("../../players/player.entity");
+const interfaces_1 = require("../interfaces");
 let GameHistory = class GameHistory {
 };
 __decorate([
@@ -38,6 +39,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], GameHistory.prototype, "loserScore", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], GameHistory.prototype, "createdAt", void 0);
 GameHistory = __decorate([
     (0, typeorm_1.Entity)()
 ], GameHistory);

@@ -60,7 +60,7 @@ let PongGameService = class PongGameService {
                     },
                 }
             ],
-            select: ['winner', 'loser', 'winnerScore', 'loserScore', 'mode']
+            select: ['winner', 'loser', 'winnerScore', 'loserScore', 'mode', 'createdAt']
         });
         games.map((game) => {
             delete game.winner.id;
