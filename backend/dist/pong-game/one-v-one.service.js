@@ -13,6 +13,7 @@ exports.OneVOneService = void 0;
 const common_1 = require("@nestjs/common");
 const players_service_1 = require("../players/players.service");
 const player_status_enum_1 = require("../players/player_status.enum");
+const interfaces_1 = require("./interfaces");
 const pong_game_service_1 = require("./pong-game.service");
 const utils_1 = require("./utils");
 let OneVOneService = class OneVOneService {
@@ -20,7 +21,7 @@ let OneVOneService = class OneVOneService {
         this.pongGameService = pongGameService;
         this.usersService = usersService;
         this.logger = new common_1.Logger('OneVOne PongGame Service: ');
-        this.emptyPlayground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false, '', '');
+        this.emptyPlayground = new utils_1.PlayGround(0, 0, 1000, 600, 'black', 9, false, '', '');
     }
     handleGetBackGround(playground) {
         return playground.getPlayGroundInterface();
@@ -83,7 +84,7 @@ let OneVOneService = class OneVOneService {
         second.data.roomname = roomname;
         first.data.opponentId = second.data.user.id;
         second.data.opponentId = first.data.user.id;
-        const playground = new utils_1.PlayGround(0, 0, 800, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
+        const playground = new utils_1.PlayGround(0, 0, 1000, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
         first.data.playground = playground;
         second.data.playground = playground;
         this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & ' + second.data.user.username);
@@ -103,7 +104,7 @@ let OneVOneService = class OneVOneService {
                     this.usersService.winsGame(first.data.user.id);
                     this.usersService.LostGame(second.data.user.id);
                     this.pongGameService.addGameHistory({
-                        mode: 'default',
+                        mode: interfaces_1.GameMood.ONEVONE,
                         winner: first.data.user,
                         loser: second.data.user,
                         winnerScore: playground.scoreBoard.playerOneScore,
@@ -115,7 +116,7 @@ let OneVOneService = class OneVOneService {
                     this.usersService.winsGame(second.data.user.id);
                     this.usersService.LostGame(first.data.user.id);
                     this.pongGameService.addGameHistory({
-                        mode: 'default',
+                        mode: interfaces_1.GameMood.ONEVONE,
                         winner: second.data.user,
                         loser: first.data.user,
                         winnerScore: playground.scoreBoard.playerTwoScore,
@@ -144,7 +145,7 @@ let OneVOneService = class OneVOneService {
                 const second = await this.usersService.findPlayer(client.data.opponentId);
                 if (second) {
                     this.pongGameService.addGameHistory({
-                        mode: 'default',
+                        mode: interfaces_1.GameMood.ONEVONE,
                         winner: await second,
                         loser: client.data.user,
                         winnerScore: client.data.playground.win_score,

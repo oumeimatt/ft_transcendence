@@ -12,11 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateGameHistoryDto = void 0;
 const class_validator_1 = require("class-validator");
 const player_entity_1 = require("../../players/player.entity");
+const interfaces_1 = require("../interfaces");
 class CreateGameHistoryDto {
 }
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsIn)([interfaces_1.GameMood.DEFAULT, interfaces_1.GameMood.DIFFICULT, interfaces_1.GameMood.ONEVONE]),
     __metadata("design:type", String)
 ], CreateGameHistoryDto.prototype, "mode", void 0);
 __decorate([

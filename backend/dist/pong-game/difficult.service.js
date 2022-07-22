@@ -13,6 +13,7 @@ exports.DifficultService = void 0;
 const common_1 = require("@nestjs/common");
 const players_service_1 = require("../players/players.service");
 const player_status_enum_1 = require("../players/player_status.enum");
+const interfaces_1 = require("./interfaces");
 const pong_game_service_1 = require("./pong-game.service");
 const utils_1 = require("./utils");
 let DifficultService = class DifficultService {
@@ -20,7 +21,7 @@ let DifficultService = class DifficultService {
         this.pongGameService = pongGameService;
         this.usersService = usersService;
         this.logger = new common_1.Logger('Difficult PongGame Service: ');
-        this.emptyPlayground = new utils_1.PlayGround(0, 0, 800, 600, 'green', 9, true, '', '');
+        this.emptyPlayground = new utils_1.PlayGround(0, 0, 1000, 600, 'green', 9, true, '', '');
     }
     handleGetBackGround(playground) {
         return playground.getPlayGroundInterface();
@@ -87,10 +88,10 @@ let DifficultService = class DifficultService {
         first.data.opponentId = second.data.user.id;
         second.data.opponentId = first.data.user.id;
         this.pongGameService.addRoom({
-            roomname, difficulty: 'difficult', player1: first.data.user.username,
+            roomname, difficulty: interfaces_1.GameMood.DIFFICULT, player1: first.data.user.username,
             player2: second.data.user.username
         });
-        const playground = new utils_1.PlayGround(0, 0, 800, 600, 'green', 9, true, first.data.user.username, second.data.user.username);
+        const playground = new utils_1.PlayGround(0, 0, 1000, 600, 'green', 9, true, first.data.user.username, second.data.user.username);
         first.data.playground = playground;
         second.data.playground = playground;
         this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & ' + second.data.user.username);
@@ -110,7 +111,7 @@ let DifficultService = class DifficultService {
                     this.usersService.winsGame(first.data.user.id);
                     this.usersService.LostGame(second.data.user.id);
                     this.pongGameService.addGameHistory({
-                        mode: 'difficult',
+                        mode: interfaces_1.GameMood.DIFFICULT,
                         winner: first.data.user,
                         loser: second.data.user,
                         winnerScore: playground.scoreBoard.playerOneScore,
@@ -122,7 +123,7 @@ let DifficultService = class DifficultService {
                     this.usersService.winsGame(second.data.user.id);
                     this.usersService.LostGame(first.data.user.id);
                     this.pongGameService.addGameHistory({
-                        mode: 'difficult',
+                        mode: interfaces_1.GameMood.DIFFICULT,
                         winner: second.data.user,
                         loser: first.data.user,
                         winnerScore: playground.scoreBoard.playerTwoScore,
@@ -152,7 +153,7 @@ let DifficultService = class DifficultService {
                 const second = await this.usersService.findPlayer(client.data.opponentId);
                 if (second) {
                     this.pongGameService.addGameHistory({
-                        mode: 'difficult',
+                        mode: interfaces_1.GameMood.DIFFICULT,
                         winner: await second,
                         loser: client.data.user,
                         winnerScore: client.data.playground.win_score,

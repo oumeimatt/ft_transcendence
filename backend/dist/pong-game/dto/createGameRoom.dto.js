@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateGameRoomDto = void 0;
 const class_validator_1 = require("class-validator");
+const interfaces_1 = require("../interfaces");
 class CreateGameRoomDto {
 }
 __decorate([
@@ -19,7 +20,7 @@ __decorate([
 ], CreateGameRoomDto.prototype, "roomname", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsIn)(['difficult', 'default']),
+    (0, class_validator_1.IsIn)([interfaces_1.GameMood.DEFAULT, interfaces_1.GameMood.DIFFICULT, interfaces_1.GameMood.ONEVONE]),
     __metadata("design:type", String)
 ], CreateGameRoomDto.prototype, "difficulty", void 0);
 __decorate([
