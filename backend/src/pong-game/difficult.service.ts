@@ -106,7 +106,6 @@ import { PlayGround } from './utils';
         this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & '+ second.data.user.username);
         const timer = setInterval(() => {
           if (playground.update(/* roomname, wss */) == false) {
-
             // get interface to send to frontend
             const pgi = this.handleGetBackGround(playground);
 
@@ -115,41 +114,47 @@ import { PlayGround } from './utils';
               .to(roomname)
               .emit('updatePlayground', { name: roomname, playground: pgi });
           } else {
-
-            // game finished
-            clearInterval(timer);
-            clearInterval(first.data.gameInterval);
-            this.logger.log('Game in Room: ' + roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
-            if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
-              this.usersService.updateLevel(first.data.user.id, true);
-              this.usersService.winsGame(first.data.user.id);
-              this.usersService.LostGame(second.data.user.id);
-              this.pongGameService.addGameHistory({
-                mode: GameMood.DIFFICULT,
-                winner: first.data.user,
-                loser: second.data.user,
-                winnerScore: playground.scoreBoard.playerOneScore,
-                loserScore: playground.scoreBoard.playerTwoScore
-              });
-            } else {
-              this.usersService.updateLevel(second.data.user.id, true);
-              this.usersService.winsGame(second.data.user.id);
-              this.usersService.LostGame(first.data.user.id);
-              this.pongGameService.addGameHistory({
-                mode: GameMood.DIFFICULT,
-                winner: second.data.user,
-                loser: first.data.user,
-                winnerScore: playground.scoreBoard.playerTwoScore,
-                loserScore: playground.scoreBoard.playerOneScore
-              });
-            }
-
-            // delete room from database
-            this.pongGameService.deleteRoom(first.data.roomname);
+            this.gameFinished(first, second, playground, wss);
           }
         }, (1.0 / 60) * 1000);
         first.data.gameInterval = timer;
         second.data.gameInterval = timer;
+  }
+
+  async gameFinished(first: Socket, second: Socket, playground: PlayGround, wss: Server) {
+    // game finished
+    clearInterval(first.data.gameInterval);
+    this.logger.log('Game in Room: ' + first.data.roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
+    if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
+      this.usersService.updateLevel(first.data.user.id, true);
+      this.usersService.winsGame(first.data.user.id);
+      this.usersService.LostGame(second.data.user.id);
+      this.pongGameService.addGameHistory({
+        mode: GameMood.DIFFICULT,
+        winner: first.data.user,
+        loser: second.data.user,
+        winnerScore: playground.scoreBoard.playerOneScore,
+        loserScore: playground.scoreBoard.playerTwoScore
+      });
+      // send event with winner and loser
+      wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+    } else {
+      this.usersService.updateLevel(second.data.user.id, true);
+      this.usersService.winsGame(second.data.user.id);
+      this.usersService.LostGame(first.data.user.id);
+      this.pongGameService.addGameHistory({
+        mode: GameMood.DIFFICULT,
+        winner: second.data.user,
+        loser: first.data.user,
+        winnerScore: playground.scoreBoard.playerTwoScore,
+        loserScore: playground.scoreBoard.playerOneScore
+      });
+      // send event with winner and loser
+      wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+    }
+
+    // delete room from database
+    this.pongGameService.deleteRoom(first.data.roomname);
   }
 
   async handleUserDisconnected(wss: Server, client: Socket) {
@@ -181,6 +186,8 @@ import { PlayGround } from './utils';
             winnerScore: client.data.playground.win_score,
             loserScore: client.handshake.query.side === 'left' && client.data.playground.scoreBoard.playerTwoScore || client.data.playground.scoreBoard.playerOneScore
           });
+          // send event with winner and loser
+          wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });
         }
         // delete room from database
         await this.pongGameService.deleteRoom(client.data.roomname);

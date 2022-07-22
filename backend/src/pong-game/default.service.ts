@@ -41,7 +41,11 @@ export class DefaultService {
   }
 
   // function handles when player is connected to the default gateway
-  async handlePlayerConnected(client: Socket, players: Socket[], wss: Server): Promise<void> {
+  async handlePlayerConnected(
+    client: Socket,
+    players: Socket[],
+    wss: Server,
+    ): Promise<void> {
     const user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
     client.data.user = user;
     const found = await this.usersService.findPlayer(user.id);
@@ -182,7 +186,7 @@ export class DefaultService {
             winnerScore: client.data.playground.win_score,
             loserScore: client.handshake.query.side === 'left' && client.data.playground.scoreBoard.playerTwoScore || client.data.playground.scoreBoard.playerOneScore
           });
-          console.log(client.data.roomname);
+          // send event with winner and loser
           wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });
         }
         // delete room from database
