@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Player } from '../../players/player.entity';
+import { GameMood } from '../interfaces';
 
 @Entity()
 export class GameHistory {
@@ -7,7 +8,7 @@ export class GameHistory {
   id: number;
 
   @Column()
-  mode: string;
+  mode: GameMood;
 
   @ManyToOne(() => Player)
   winner: Player;
@@ -20,4 +21,7 @@ export class GameHistory {
 
   @Column()
   loserScore: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

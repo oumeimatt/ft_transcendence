@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { GameMood } from '../interfaces';
 
 @Entity()
 export class GameRoom {
@@ -9,11 +10,12 @@ export class GameRoom {
   roomname: string;
 
   @Column()
-  difficulty: string;
+  difficulty: GameMood;
 
   @Column()
   player1: string;
 
   @Column()
   player2: string;
+
 }

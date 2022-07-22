@@ -1,10 +1,11 @@
 import { IsIn, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Player } from '../../players/player.entity';
+import { GameMood } from '../interfaces';
 
 export class CreateGameHistoryDto {
   @IsNotEmpty()
-  @IsString()
-  mode: string;
+  @IsIn([ GameMood.DEFAULT, GameMood.DIFFICULT, GameMood.ONEVONE ])
+  mode: GameMood;
 
   @IsNotEmpty()
   winner: Player;
