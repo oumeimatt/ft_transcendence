@@ -103,38 +103,42 @@ let DifficultService = class DifficultService {
                     .emit('updatePlayground', { name: roomname, playground: pgi });
             }
             else {
-                clearInterval(timer);
-                clearInterval(first.data.gameInterval);
-                this.logger.log('Game in Room: ' + roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
-                if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
-                    this.usersService.updateLevel(first.data.user.id, true);
-                    this.usersService.winsGame(first.data.user.id);
-                    this.usersService.LostGame(second.data.user.id);
-                    this.pongGameService.addGameHistory({
-                        mode: interfaces_1.GameMood.DIFFICULT,
-                        winner: first.data.user,
-                        loser: second.data.user,
-                        winnerScore: playground.scoreBoard.playerOneScore,
-                        loserScore: playground.scoreBoard.playerTwoScore
-                    });
-                }
-                else {
-                    this.usersService.updateLevel(second.data.user.id, true);
-                    this.usersService.winsGame(second.data.user.id);
-                    this.usersService.LostGame(first.data.user.id);
-                    this.pongGameService.addGameHistory({
-                        mode: interfaces_1.GameMood.DIFFICULT,
-                        winner: second.data.user,
-                        loser: first.data.user,
-                        winnerScore: playground.scoreBoard.playerTwoScore,
-                        loserScore: playground.scoreBoard.playerOneScore
-                    });
-                }
-                this.pongGameService.deleteRoom(first.data.roomname);
+                this.gameFinished(first, second, playground, wss);
             }
         }, (1.0 / 60) * 1000);
         first.data.gameInterval = timer;
         second.data.gameInterval = timer;
+    }
+    async gameFinished(first, second, playground, wss) {
+        clearInterval(first.data.gameInterval);
+        this.logger.log('Game in Room: ' + first.data.roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
+        if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
+            this.usersService.updateLevel(first.data.user.id, true);
+            this.usersService.winsGame(first.data.user.id);
+            this.usersService.LostGame(second.data.user.id);
+            this.pongGameService.addGameHistory({
+                mode: interfaces_1.GameMood.DIFFICULT,
+                winner: first.data.user,
+                loser: second.data.user,
+                winnerScore: playground.scoreBoard.playerOneScore,
+                loserScore: playground.scoreBoard.playerTwoScore
+            });
+            wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+        }
+        else {
+            this.usersService.updateLevel(second.data.user.id, true);
+            this.usersService.winsGame(second.data.user.id);
+            this.usersService.LostGame(first.data.user.id);
+            this.pongGameService.addGameHistory({
+                mode: interfaces_1.GameMood.DIFFICULT,
+                winner: second.data.user,
+                loser: first.data.user,
+                winnerScore: playground.scoreBoard.playerTwoScore,
+                loserScore: playground.scoreBoard.playerOneScore
+            });
+            wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+        }
+        this.pongGameService.deleteRoom(first.data.roomname);
     }
     async handleUserDisconnected(wss, client) {
         if (client.handshake.query.role === 'player' && client.data.gameInterval) {
@@ -159,6 +163,7 @@ let DifficultService = class DifficultService {
                         winnerScore: client.data.playground.win_score,
                         loserScore: client.handshake.query.side === 'left' && client.data.playground.scoreBoard.playerTwoScore || client.data.playground.scoreBoard.playerOneScore
                     });
+                    wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });
                 }
                 await this.pongGameService.deleteRoom(client.data.roomname);
                 this.logger.log('Game in Room: ' + client.data.roomname + ' Finished');

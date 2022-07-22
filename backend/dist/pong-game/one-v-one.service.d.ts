@@ -15,6 +15,7 @@ export declare class OneVOneService {
     handleSpectatorConnected(client: Socket): Promise<void>;
     handlePlayerConnected(client: Socket, players: Socket[], wss: Server): Promise<void>;
     joinPlayersToGame(first: Socket, second: Socket, wss: Server): void;
+    gameFinished(first: Socket, second: Socket, playground: PlayGround, wss: Server): Promise<void>;
     handleUserDisconnected(wss: Server, client: Socket): Promise<void>;
     handleKeyUpPressed(client: Socket): void;
     handleKeyDownPressed(client: Socket): void;

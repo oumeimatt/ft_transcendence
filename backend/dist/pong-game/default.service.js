@@ -163,7 +163,6 @@ let DefaultService = class DefaultService {
                         winnerScore: client.data.playground.win_score,
                         loserScore: client.handshake.query.side === 'left' && client.data.playground.scoreBoard.playerTwoScore || client.data.playground.scoreBoard.playerOneScore
                     });
-                    console.log(client.data.roomname);
                     wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });
                 }
                 await this.pongGameService.deleteRoom(client.data.roomname);
