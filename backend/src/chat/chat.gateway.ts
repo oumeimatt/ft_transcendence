@@ -235,6 +235,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
           this.server.to(decoded.id).emit('allrooms', allrooms);
           this.server.to(decoded.id).emit('message', rooms);
+         // this.server.to(decoded.id).emit('roomid', )
         }
       }
       else
@@ -261,8 +262,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         let  userid = await x.handshake.query.token;
         userid = await this.userService.verifyToken(userid);
         let  messages = await this.chatService.getMessagesByroomId(messagedto.id);
-       // console.log(messages);
-      //check if it's a member before sending the messages
+        // console.log(messages);
+        //check if it's a member before sending the messages
         if (await this.chatService.isMember(messagedto.id, userid))
         {
           console.log("userid username"+userid.username);
