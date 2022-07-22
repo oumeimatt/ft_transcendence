@@ -49,17 +49,34 @@ let AuthService = class AuthService {
         }
         const user = req.user;
         const player = await this.playerService.findOrCreate(user.id, user.login);
+<<<<<<< HEAD
         return this.cb(req, res, player);
     }
     async cb(req, res, player) {
+=======
+        return this.cb(res, player);
+    }
+    async cb(res, player) {
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
         passport.authenticate('42', { failureRedirect: `/auth/login` });
         const id = player.id;
         const username = player.username;
         const two_fa = player.two_fa;
         const payload = { username, id, two_fa };
         const accessToken = await this.jwtService.sign(payload);
+<<<<<<< HEAD
         res.cookie('connect_sid', [accessToken]);
         res.redirect('http://localhost:3000/home');
+=======
+        if (player.two_fa == false) {
+            res.cookie('connect_sid', [accessToken]);
+            res.redirect('http://localhost:3000/home');
+        }
+        else {
+            res.cookie('twofa', [accessToken]);
+            res.redirect('http://localhost:3000/twofactorauthentication');
+        }
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
     }
     async logout(id, req, res) {
         console.log('logout');
@@ -77,10 +94,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "login", null);
 __decorate([
+<<<<<<< HEAD
     __param(0, (0, common_1.Request)()),
     __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object, player_entity_1.Player]),
+=======
+    __param(0, (0, common_1.Response)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, player_entity_1.Player]),
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "cb", null);
 AuthService = __decorate([

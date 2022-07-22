@@ -28,7 +28,6 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 				<div class=" mt-8  pb-8  ">

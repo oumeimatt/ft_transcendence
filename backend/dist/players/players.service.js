@@ -48,10 +48,17 @@ let UsersService = class UsersService {
     async updateUsername(id, username) {
         const updated = await this.getUserById(id);
         var regEx = /^[0-9a-zA-Z]+$/;
+<<<<<<< HEAD
         updated.username = username;
         if (!regEx.test(username)) {
             throw new common_1.BadRequestException('Username must be alphanumeric');
         }
+=======
+        if (!regEx.test(username)) {
+            throw new common_1.BadRequestException('Username must be alphanumeric');
+        }
+        updated.username = username;
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
         try {
             await updated.save();
         }
@@ -82,9 +89,12 @@ let UsersService = class UsersService {
                 return;
             }
         });
+<<<<<<< HEAD
         console.log("===========================================================");
         console.log(otpauth_url);
         console.log("===========================================================");
+=======
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
         return pathToServe;
     }
     async updateLevel(id, difficult) {
@@ -140,15 +150,21 @@ let UsersService = class UsersService {
         return found;
     }
     async findOrCreate(id, login) {
+<<<<<<< HEAD
         console.log("find or create > number of arguments passed: ", arguments.length);
         console.log(id, login);
+=======
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
         const found = await this.userRepository.findOne({ where: { id } });
         if (found) {
             found.status = player_status_enum_1.UserStatus.ONLINE;
             await found.save();
             return found;
         }
+<<<<<<< HEAD
         console.log('not found !!');
+=======
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
         const newUser = new player_entity_1.Player();
         newUser.id = id;
         newUser.username = login;
@@ -158,10 +174,19 @@ let UsersService = class UsersService {
         newUser.losses = 0;
         newUser.status = player_status_enum_1.UserStatus.ONLINE;
         newUser.two_fa = false;
+<<<<<<< HEAD
         await newUser.save();
         console.log('new User saved successfully ' + newUser);
         if (typeof (newUser) == 'undefined') {
             console.log('newUser is undefined');
+=======
+        try {
+            await newUser.save();
+        }
+        catch (error) {
+            console.log(error.code);
+            throw new common_1.BadRequestException();
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
         }
         return newUser;
     }

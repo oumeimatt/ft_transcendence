@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"version":3,"file":"game_mood.enum.js","sourceRoot":"","sources":["../../../src/pong-game/interfaces/game_mood.enum.ts"],"names":[],"mappings":";;;AAAA,IAAY,QAIX;AAJD,WAAY,QAAQ;IAChB,+BAAmB,CAAA;IACnB,mCAAuB,CAAA;IACvB,iCAAqB,CAAA;AACzB,CAAC,EAJW,QAAQ,GAAR,gBAAQ,KAAR,gBAAQ,QAInB;AAAA,CAAC"}
+=======
+{"version":3,"file":"game_mood.enum.js","sourceRoot":"","sources":["../../../src/pong-game/interfaces/game_mood.enum.ts"],"names":[],"mappings":";;;AAAA,IAAY,QAIX;AAJD,WAAY,QAAQ;IAChB,+BAAmB,CAAA;IACnB,mCAAuB,CAAA;IACvB,+BAAmB,CAAA;AACvB,CAAC,EAJW,QAAQ,GAAR,gBAAQ,KAAR,gBAAQ,QAInB;AAAA,CAAC"}
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d

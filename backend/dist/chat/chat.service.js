@@ -85,7 +85,11 @@ let ChatService = class ChatService {
     }
     async getMessagesByroomId(roomid) {
         const query = await this.messageRepo.createQueryBuilder('message')
+<<<<<<< HEAD
             .select(['message.content', 'message.playerid', 'message.roomid'])
+=======
+            .select(['message.content', 'message.playerid'])
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
             .where("message.roomid = :roomid", { roomid })
             .orderBy("message.created_at");
         const messages = await query.getMany();

@@ -82,12 +82,27 @@ let UsersController = class UsersController {
         fs.unlinkSync(process.cwd() + "/public/qr_" + user.username + ".png");
         await this.usersService.turnOnTwoFactorAuthentication(user.id);
     }
+<<<<<<< HEAD
     async TwoFactorAuthenticate(req, code) {
+=======
+    async TwoFactorAuthenticate(req, res, code) {
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, code);
         if (!isValid) {
             throw new common_1.UnauthorizedException('Wrong authentication code');
         }
+<<<<<<< HEAD
+=======
+        const id = user.id;
+        const username = user.username;
+        const two_fa = user.two_fa;
+        const payload = { username, id, two_fa };
+        const accessToken = await this.jwtService.sign(payload);
+        res.cookie('connect_sid', [accessToken]);
+        await res.clearCookie('twofa', { domain: 'localhost', path: '/' });
+        res.redirect('http://localhost:3000/home');
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
     }
     async getUsers(FilterDto, req) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
@@ -143,11 +158,20 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "TwoFactorEnable", null);
 __decorate([
+<<<<<<< HEAD
     (0, common_1.Post)('/2fa/authenticate'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)('twaFactorCode')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String]),
+=======
+    (0, common_1.Post)('/twofactorauthentication'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Response)()),
+    __param(2, (0, common_1.Body)('twaFactorCode')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, String]),
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "TwoFactorAuthenticate", null);
 __decorate([

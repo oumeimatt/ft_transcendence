@@ -54,7 +54,10 @@ let ChatGateway = class ChatGateway {
         await this.definePlayer(client);
         client.data.player = this.player;
         this.user.push(client);
+<<<<<<< HEAD
         console.log(`On Connnect ... !${client.id} ${this.player.username}`);
+=======
+>>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
     }
     disconnect(socket) {
         socket.emit('Error', new common_1.UnauthorizedException());
