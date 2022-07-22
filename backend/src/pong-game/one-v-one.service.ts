@@ -2,14 +2,14 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { UsersService } from 'src/players/players.service';
 import { UserStatus } from 'src/players/player_status.enum';
-import { PlayGroundInterface } from './interfaces';
+import { GameMood, PlayGroundInterface } from './interfaces';
 import { PongGameService } from './pong-game.service';
 import { PlayGround } from './utils';
 
 @Injectable()
 export class OneVOneService {
   readonly logger = new Logger('OneVOne PongGame Service: ');
-  readonly emptyPlayground = new PlayGround(0, 0, 800, 600, 'black', 9, false, '', '');
+  readonly emptyPlayground = new PlayGround(0, 0, 1000, 600, 'black', 9, false, '', '');
   constructor(private pongGameService: PongGameService, private usersService: UsersService) {}
 
   handleGetBackGround(playground: PlayGround): PlayGroundInterface {
@@ -20,11 +20,10 @@ export class OneVOneService {
     // if the connected is a player add him to list of players
     if (client.handshake.query.role === 'player') {
       this.handlePlayerConnected(client, players, wss);
+    } else if (client.handshake.query.role === 'spectator') {
+      this.logger.log('spectator Connected: ' + client.id + ', roomname: ' + client.handshake.query.roomname);
+      this.handleSpectatorConnected(client);
     }
-    // } else if (client.handshake.query.role === 'spectator') {
-    //   this.logger.log('spectator Connected: ' + client.id + ', roomname: ', + client.handshake.query.roomname);
-    //   this.handleSpectatorConnected(client);
-    // }
   }
 
   // function handles when Spectator is connected to the oneVone gateway
@@ -42,7 +41,11 @@ export class OneVOneService {
   }
 
   // function handles when player is connected to the oneVone gateway
-  async handlePlayerConnected(client: Socket, players: Socket[], wss: Server) {
+  async handlePlayerConnected(
+    client: Socket,
+    players: Socket[],
+    wss: Server,
+    ): Promise<void> {
     const user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
     client.data.user = user;
     const found = await this.usersService.findPlayer(user.id);
@@ -93,20 +96,19 @@ export class OneVOneService {
     first.data.opponentId = second.data.user.id;
     second.data.opponentId = first.data.user.id;
 
-  //  // push room to database
-  //   this.pongGameService.addRoom({
-  //     roomname, difficulty: 'default', player1: first.data.user.username as string,
-  //     player2: second.data.user.username as string
-  //   });
+   // push room to database
+    this.pongGameService.addRoom({
+      roomname, difficulty: GameMood.ONEVONE, player1: first.data.user.username as string,
+      player2: second.data.user.username as string
+    });
 
     // create a playground for players
-    const playground = new PlayGround(0, 0, 800, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
+    const playground = new PlayGround(0, 0, 1000, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
     first.data.playground = playground;
     second.data.playground = playground;
     this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & '+ second.data.user.username);
     const timer = setInterval(() => {
       if (playground.update(/* roomname, wss */) == false) {
-
         // get interface to send to frontend
         const pgi = this.handleGetBackGround(playground);
 
@@ -115,41 +117,47 @@ export class OneVOneService {
           .to(roomname)
           .emit('updatePlayground', { name: roomname, playground: pgi });
       } else {
-
-        // game finished
-        clearInterval(timer);
-        clearInterval(first.data.gameInterval);
-        this.logger.log('Game in Room: ' + roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
-        if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
-          this.usersService.updateLevel(first.data.user.id, false);
-          this.usersService.winsGame(first.data.user.id);
-          this.usersService.LostGame(second.data.user.id);
-          this.pongGameService.addGameHistory({
-            mode: 'default',
-            winner: first.data.user,
-            loser: second.data.user,
-            winnerScore: playground.scoreBoard.playerOneScore,
-            loserScore: playground.scoreBoard.playerTwoScore
-          });
-        } else {
-          this.usersService.updateLevel(second.data.user.id, false);
-          this.usersService.winsGame(second.data.user.id);
-          this.usersService.LostGame(first.data.user.id);
-          this.pongGameService.addGameHistory({
-            mode: 'default',
-            winner: second.data.user,
-            loser: first.data.user,
-            winnerScore: playground.scoreBoard.playerTwoScore,
-            loserScore: playground.scoreBoard.playerOneScore
-          });
-        }
-
-        // // delete room from database
-        // this.pongGameService.deleteRoom(first.data.roomname);
+        this.gameFinished(first, second, playground, wss);
       }
     }, (1.0 / 60) * 1000);
     first.data.gameInterval = timer;
     second.data.gameInterval = timer;
+  }
+
+  async gameFinished(first: Socket, second: Socket, playground: PlayGround, wss: Server) {
+    // game finished
+    clearInterval(first.data.gameInterval);
+    this.logger.log('Game in Room: ' + first.data.roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
+    if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
+      this.usersService.updateLevel(first.data.user.id, false);
+      this.usersService.winsGame(first.data.user.id);
+      this.usersService.LostGame(second.data.user.id);
+      this.pongGameService.addGameHistory({
+        mode: GameMood.ONEVONE,
+        winner: first.data.user,
+        loser: second.data.user,
+        winnerScore: playground.scoreBoard.playerOneScore,
+        loserScore: playground.scoreBoard.playerTwoScore
+      });
+      // send event with winner and loser
+      wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+    } else {
+      this.usersService.updateLevel(second.data.user.id, false);
+      this.usersService.winsGame(second.data.user.id);
+      this.usersService.LostGame(first.data.user.id);
+      this.pongGameService.addGameHistory({
+        mode: GameMood.ONEVONE,
+        winner: second.data.user,
+        loser: first.data.user,
+        winnerScore: playground.scoreBoard.playerTwoScore,
+        loserScore: playground.scoreBoard.playerOneScore
+      });
+      // send event with winner and loser
+      wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+    }
+
+    // // delete room from database
+    this.pongGameService.deleteRoom(first.data.roomname);
   }
 
   async handleUserDisconnected(wss: Server, client: Socket) {
@@ -175,15 +183,17 @@ export class OneVOneService {
         const second = await this.usersService.findPlayer(client.data.opponentId);
         if (second) {
           this.pongGameService.addGameHistory({
-            mode: 'default',
+            mode: GameMood.ONEVONE,
             winner: await second,
             loser: client.data.user,
             winnerScore: client.data.playground.win_score,
             loserScore: client.handshake.query.side === 'left' && client.data.playground.scoreBoard.playerTwoScore || client.data.playground.scoreBoard.playerOneScore
           });
+          // send event with winner and loser
+          wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });
         }
-        // // delete room from database
-        // await this.pongGameService.deleteRoom(client.data.roomname);
+        // delete room from database
+        await this.pongGameService.deleteRoom(client.data.roomname);
         this.logger.log('Game in Room: ' + client.data.roomname + ' Finished');
     }
 
@@ -196,10 +206,10 @@ export class OneVOneService {
     } else if (client.handshake.query.role === 'player') {
       // Update Status to ONLINE again
       await this.usersService.updateStatus(client.data.user.id, UserStatus.ONLINE);
+    } else if (client.handshake.query.role === 'spectator') {
+      this.logger.log('spectator Disconnected: ' + client.id);
+      client.leave(client.handshake.query.room as string);
     }
-    // else if (client.handshake.query.role === 'spectator') {
-    //   client.leave(client.handshake.query.room as string);
-    // }
   }
 
   handleKeyUpPressed(client: Socket): void {

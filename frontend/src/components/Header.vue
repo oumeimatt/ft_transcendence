@@ -101,14 +101,14 @@
                   You have not activated 2FA. <a  class="text-xs text-teal-700" href="https://authy.com/what-is-2fa/" target="_blank"> What is 2FA Authentication ? </a>
                   <button @click="generateFA" class="bg-neutral-300 rounded p-4 font-semibold  hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
                 </div>
-              <div v-if="showScan" class=" bg-gray-200 rounded">
-                <img :src="qr" class="p-8 h-30 w-30 rounded" alt="">
+              <div v-if="showScan" class=" bg-gray-200 rounded"> 
+                <img :src="qr" class="p-8 mx-auto h-30 w-30 rounded" alt="">
                 <label class="text-gray-600"> Type authentication code here </label>
                 <input v-model="Password2fa" type="text" maxlength="6" placeholder="123456" class=" mt-2 mb-4 pl-4 h-12 rounded ">
               </div>
           </div>
           <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-            <button class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
+            <button @click="closeSettings" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
               Close
             </button>
             <button @click="saveChanges()" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
@@ -162,29 +162,27 @@
             localStorage.setItem('user', data.data.cookie);
             store.state.player = data.data.profile;
             store.state.friends = data.data.friends;
-            console.log(data.data.friends)
             store.state.achievements = data.data.achievements
           } ) 
           .catch(err => console.log(err.message))
       await axios
           .get('http://localhost:3001/users' ,{ withCredentials: true })
-          .then(data =>{ store.state.users = data.data ; console.log(store.state.users)})
+          .then(data =>{ store.state.users = data.data ;})
           .catch(err => console.log(err.message))
     })
     async function  generateFA(){
       await axios
           .get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
-          .then(data =>{qr.value = data.data;} ) 
+          .then(data =>{qr.value = "http://localhost:3001/"+data.data;} ) 
           .catch(err => console.log(err.message))
       showScan.value = true
+      console.log(qr.value)
     }
     async function enable2fa(){
-            console.log('H22ERE');
   
           await axios
           .post('http://localhost:3001/settings/2fa/enable', {Password2fa: Password2fa.value } , {withCredentials: true })
           .then(() => {
-            console.log('HERE');
           })
           .catch((error) => console.log(error.response));
     }
@@ -195,13 +193,20 @@
         changeAvatar()
       if (Password2fa.value.length > 0)
         enable2fa()
+      showChangeAv.value = false;
+      show2f.value = false;
+      showChangeName.value = false;
+      showScan.value = false;
+      nickname.value = '';
+      Password2fa.value = ''
+      qr.value = '';
     }
     async function changeNickname(newnickname: String){
         if (newnickname.length > 0 && newnickname.length <= 10){
             store.state.player.username = newnickname ;
             await axios
                 .patch('http://localhost:3001/settings/username' ,{username: newnickname} ,{ withCredentials: true })
-                .then(data =>{ console.log(data.data) })
+                .then(data =>{ })
                 .catch(err => console.log(err.message))
         }
     }
@@ -209,14 +214,12 @@
       const formData = new FormData()
       const imageName = store.state.player.username+'.' + ext.value
       formData.append('avatar', image.value)
-      console.log(formData)
       const headers = { 'Content-Type': 'multipart/form-data'};
       await axios
           .post(`http://localhost:3001/settings/avatar/${imageName}`, formData, {withCredentials: true , headers })
           .then(() => {
               })
           .catch((error) => console.log(error.response));
-          console.log("imageName == ",imageName)
       store.state.player.avatar = imageName
     }
     function onChange(e){
@@ -230,5 +233,16 @@
       });
       return a.filter((name) => name.startsWith(search.value))
     })
+
+    function closeSettings(){
+      showChangeAv.value = false;
+      show2f.value = false;
+      showChangeName.value = false;
+      showScan.value = false;
+      nickname.value = '';
+      Password2fa.value = ''
+      qr.value = '';
+
+    }
     // var avatar = "src/assets/"+ store.state.player.avatar
 </script>

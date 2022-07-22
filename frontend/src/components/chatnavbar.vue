@@ -52,8 +52,8 @@
 					<h1 class="text-slate-300 font-semibold text-xl mb-6">Friends</h1>
 					<div v-if="store.state.friends" class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
 						<div v-for="friend in store.state.friends" :key="friend">
-							<div @click="CreateDM(friend.id)" class="flex justify-start items-center space-x-2 mt-2"> 
-									<img  :src="store.methods.playerAvatar(friend)" class=" lg:ml-8 h-8 w-8 rounded-full bg-white">  <span class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 pb-4 "> <router-link :to="{name:'Chat', params: {name: friend.username, id: friend.id}}" > {{ friend.username }} </router-link>   </span> 
+							<div @click="createAndGetDm(friend.id)" class="flex justify-start items-center space-x-2 mt-2"> 
+									<img  :src="store.methods.playerAvatar(friend)" class=" lg:ml-8 h-8 w-8 rounded-full bg-white">  <span class="font-semibold text-slate-400 hover:underline cursor-pointer mt-4 pb-4 "> <router-link :to="{name:'Chat', params: {name: friend.username }}" > {{ friend.username }} </router-link>   </span> 
 							</div>
 						</div>
 					</div>
@@ -134,15 +134,15 @@ import { anyTypeAnnotation } from '@babel/types';
           players:room.players,
         }
         store.state.connection.emit("createRoom", roomdata);
-       	console.log(roomdata);
+       	// console.log(roomdata);
         // this.room.players.splice(0);
         //I should sent a room
     }
 
 
 
-	// function getMessage(id){
-	// 	await axios.get('http://localhost:3001/chat/messages', {params:{roomid:id}, withCredentials:true})
+	// async function getMessage(roomid : number){
+	// 	await axios.get('http://localhost:3001/chat/messages', {params:{roomid:roomid}, withCredentials:true})
 	// 	.then(data=>{})
 	// }
 
@@ -152,10 +152,16 @@ import { anyTypeAnnotation } from '@babel/types';
 	// }
 	function CreateDM(id: number){
 		console.log("id: ", id)
-		store.state.connection.emit("create-DM", id); //
+		store.state.connection.emit("create-DM", id); //id of friend
 
 	}
 
+	async function createAndGetDm(friendid: number ){
+		CreateDM(friendid);
+		//getMessage(friendid)
+		await axios.get('http://localhost:3001/chat/DM', {params:{userid:store.state.player.id, receiverid:friendid}, withCredentials:true})
+		.then(data=>{store.state.messages = data.data;console.log(data.data);})
+	}
 
 
 	function usersInfo(id: string){
@@ -175,11 +181,11 @@ import { anyTypeAnnotation } from '@babel/types';
             store.state.achievements = data.data.achievements
           } ) 
           .catch(err => console.log(err.message))
-		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		  .then(data=> { console.log('axios mychannels ');store.state.rooms = data.data; console.log(data.data) })
+		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{friendid: store.state.player.id}, withCredentials: true})
+		  .then(data=> { store.state.rooms = data.data;  })
 		//  console.log(data.data);}
 		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		.then(data=> {console.log('axios all channels ');store.state.allRooms = data.data; })
+		.then(data=> {store.state.allRooms = data.data; })
 		
 
 		store.state.connection.on("message", (data) => {store.state.rooms = data;});
@@ -209,8 +215,11 @@ import { anyTypeAnnotation } from '@babel/types';
 		// 	}
 		// }
 
-		store.state.connection.on("sendMessage", (data) => {store.state.messages = data;});
+		
+		store.state.connection.on("sendMessage", (data) => {store.state.messages = data; console.log("messages" ,data)});
+		//listen to this event if and only if the roomid selected is the one we get messages from
 
+		
 		//store.state.connection.on("members", (data) => {members = data;});
 
 

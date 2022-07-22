@@ -28,11 +28,11 @@
                 </p>
               </div>
           </div>
-          <button @click="addFriend" v-if="add == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-slate-900 font-medium py-2 px-4 rounded inline-flex items-center'>
+          <button @click="addFriend" v-if="addfr == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-slate-900 font-medium py-2 px-4 rounded inline-flex items-center'>
               <svg id='icon' class='w-4 h-4 mr-1' fill='#FFF' stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="white"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
              <span id='text' class='text-white text-sm select-none'>Add friend</span>
           </button>
-          <button v-if="isFriend == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
+          <button v-if="userIsFriend == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
@@ -116,6 +116,7 @@
 </template>
 
 <script lang="ts" setup>
+import { is } from '@babel/types';
 import axios from 'axios';
 import { defineComponent , ref, inject, onMounted,nextTick,  computed, onUpdated } from 'vue';
 import Footer from '../components/Footer.vue';
@@ -135,14 +136,25 @@ const props = defineProps<{
 
 
   onMounted( async () => {
-        // await axios
-        //   .get('http://localhost:3001/profile' ,{ withCredentials: true })
-        //   .then(data =>{
-        //     store.state.player = data.data.profile;
-        //     store.state.friends = data.data.friends;
-        //     console.log(data.data.friends)
-        //     store.state.achievements = data.data.achievements
-        //   } ) 
+        await axios
+          .get('http://localhost:3001/profile' ,{ withCredentials: true })
+          .then(data =>{
+            store.state.player = data.data.profile;
+            store.state.friends = data.data.friends;
+            console.log(data.data.friends)
+            store.state.achievements = data.data.achievements
+          } ) 
+
+      var user = store.state.friends.find( x => x.id.toString() === props.id )
+        //  console.log("use")
+      if (user != null){
+          isFriend.value = true
+          add.value = false
+      }
+      else{
+          isFriend.value = false
+          add.value = true
+      }
       getGamesHistory(parseInt(props.id, 10));
 
     })
@@ -160,6 +172,10 @@ const props = defineProps<{
   //     }
 
   // })
+
+  const userIsFriend = computed(() => isFriend.value)
+  const addfr = computed(() => add.value)
+  
 onUpdated(async  () => {
   
 
@@ -170,16 +186,7 @@ onUpdated(async  () => {
             store.state.userAchievements = data.data.achievements})
           .catch(err => console.log(err.message))
       // getGamesHistory(parseInt(props.id, 10));
-      var user = store.state.friends.find( x => x.id.toString() === props.id )
-        //  console.log("use")
-      if (user != null){
-          isFriend.value = true
-          add.value = false
-      }
-      else{
-          isFriend.value = false
-          add.value = true
-      }
+
       // await fetch('http://localhost:3001/profile') 
 			//     .then(res => res.json())
 			//     .then(data => store.state.player = data)

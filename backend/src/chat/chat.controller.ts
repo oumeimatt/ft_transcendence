@@ -22,6 +22,11 @@ export class ChatController {
         return this.chatService.getMessagesByroomId(roomid);   
     }
 
+    @Get('DM')
+    getMessages(@Query('userid') userid:number, @Query('receiverid') receiverid:number):Promise<message[]>{
+        return this.chatService.getDMs(userid, receiverid);
+    }
+
     //display usernnames => return playerid to the server-side
     @Get('members')
     getMembersByRoomId(@Query('roomid') roomid:number):Promise<Player[]>{

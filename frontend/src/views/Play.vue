@@ -53,6 +53,9 @@ onMounted(() => {
         // User Already in Another Game
         ConnectedTwice();
 
+        // Display Winner at end of Game
+        DisplayWinner();
+
         // render
         window.addEventListener('resize', () => {
         game.value.width = game.value.offsetWidth;
@@ -169,7 +172,6 @@ function DrawGameInterrupted() {
     if (playground.value != null) {
             game.value.width = game.value.offsetWidth;
             game.value.height = game.value.width * 0.6;
-            message.value = 'Second Player Left';
             Draw.updatePlayground(
                 playground.value,
                 context.value,
@@ -198,6 +200,15 @@ function DrawGameEachUpdate() {
             );
         }
         message.value = '';
+    });
+}
+
+function DisplayWinner() {
+    (socket.value as Socket).on("DisplayWinner", (data) => {
+    const { winner, loser } = data;
+    if (winner && loser) {
+            message.value = winner + ' wins against ' + loser;
+        }
     });
 }
 

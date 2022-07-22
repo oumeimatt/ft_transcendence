@@ -111,7 +111,7 @@ export class ChatService {
         return Message;
     }
 
-    async getMessagesByroomId(roomid:number):Promise<message[]>{
+    async getMessagesByroomId(roomid:number):Promise<message[]>{ 
        const query = await this.messageRepo.createQueryBuilder('message')
         .select(['message.content','message.playerid'])
         .where("message.roomid = :roomid", {roomid})
@@ -120,6 +120,18 @@ export class ChatService {
        const messages = await query.getMany();
        return messages;
     }
+    async getDMs(userid:number, receiverid:number):Promise<message[]>{
+        //find roomid
+
+        let room =await this.getRoomByName(userid+":"+receiverid);
+        if (!room)
+            room = await this.getRoomByName(receiverid+":"+userid);
+        let messages:message[]=[];
+
+        if (room)
+            messages = await this.getMessagesByroomId(room.id);
+        return messages;
+    }  
 
     async deleteMmebership(roomid :number, playrid:number){
         await this.membershipRepo.delete(
@@ -180,7 +192,7 @@ export class ChatService {
         let room = await this.roomRepo.findOne({name:chatroomName, ischannel:false});
         if (room)
             return room;
-        chatroomName = receiverid+":"+receiverid;
+        chatroomName = receiverid+":"+senderid;
         room = await this.roomRepo.findOne({name:chatroomName, ischannel:false});
         if (room)
             return room;
