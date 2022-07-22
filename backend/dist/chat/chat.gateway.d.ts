@@ -28,4 +28,6 @@ export declare class ChatGateway implements OnGatewayConnection, OnGatewayDiscon
     joinChannel(socket: Socket, roomid: number): Promise<void>;
     createDM(sender: Socket, receiverid: number): Promise<void>;
     sendDM(sender: Socket, messagedto: messageDto): Promise<void>;
+    invitePlay(client: Socket, guest: number): Promise<void>;
+    acceptInvitation(client: Socket): Promise<void>;
 }

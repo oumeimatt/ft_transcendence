@@ -95,7 +95,7 @@
 </template>
 
 <script lang="ts" setup>
-	import {inject, ref, onMounted} from 'vue';
+	import {inject, ref, onMounted, onUnmounted} from 'vue';
 	import io from "socket.io-client";
 	import axios from 'axios';
 	import { chatRoom } from '../interfaces';
@@ -202,26 +202,38 @@ import { anyTypeAnnotation } from '@babel/types';
 
 
 		store.state.connection.on("sendMessage", (data) => {
-			console.log(data);
+			//listen to this event if and only if the roomid selected is the one we get messages from
 			
 			if (data && data[0].roomid == store.state.roomSelected)
 				{
 					console.log(data[0].roomid);
 					console.log(store.state.roomSelected);
 					store.state.messages = data;
-				}// console.log("messages" ,data)}
+				}
 	 });
-		//listen to this event if and only if the roomid selected is the one we get messages from
+	
+		
 
 		
 		//store.state.connection.on("members", (data) => {members = data;});
 
+		store.state.connection.on('invitation', (data) => {
+		alert(`You are invited by ${data} to play a game`);
+		//a pop up {to accept or refuse} => {if accept => redirect this user to OnetoOne}
+		//send an event to framdani that user accept the invition and redirect him to onetoone
+		});
 
 	 })
 	function getUserName(player: any){
       var result = store.state.users.find( x=> x.id.toString() === player.id)
       return result
     }
+
+// 	onUnmounted(async () => {
+//    if (store.state.connection != null) {
+//     	store.state.connection.disconnect();
+//    }
+// });
 
 	// // 	store.state.connection.on("message", (data) => {store.state.rooms = data;
     // //   if (store.state.rooms.length !== 0){

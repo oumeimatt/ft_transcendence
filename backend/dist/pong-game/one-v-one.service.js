@@ -59,12 +59,8 @@ let OneVOneService = class OneVOneService {
             });
         }
         else {
-<<<<<<< HEAD
-            const first = players.find(player => player.handshake.query.against === client.handshake.query.username);
-=======
             const first = players.find(player => player.handshake.query.opponent === client.data.user.username
                 && player.data.user.username === client.handshake.query.opponent);
->>>>>>> ca64583a49be4640eacba5eaf6dfc5e49605b64d
             if (!first) {
                 players.push(client);
                 await this.usersService.updateStatus(user.id, player_status_enum_1.UserStatus.PLAYING);
