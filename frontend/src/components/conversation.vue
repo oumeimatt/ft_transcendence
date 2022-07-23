@@ -77,7 +77,7 @@
 	);
 
 	function inviteFriend(friendid:number){
-		console.log('Invite friend called !');
+		console.log('Invite friend called ' + friendid);
 		//check if the user is online or offline
 		store.state.connection.emit('invite-game', friendid);
 	}

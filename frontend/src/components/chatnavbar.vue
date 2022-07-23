@@ -84,14 +84,35 @@
 									<button @click="showCreate = false" class="text-gray-800 border border-solid white hover:bg-black hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" >
 										Close
 									</button>
-									<button @click="sendRoom" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-black uppercase px-6 py-3 text-sm outline-none    " type="button" >
+									<button @click="sendRoom" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-black uppercase px-6 py-3 text-sm outline-none  " type="button" >
 										Create channel
 									</button>
 								</div>
 							</div>
 						</div>
 				</div>
+				<!-- <p v-if=""></p> -->
 		</div>
+		<div v-if="invited === true" class="fixed inset-60 z-50 ">
+      		<div class=" my-6 mx-auto max-w-sm text-center ">
+        		<div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
+        			<div class=" p-5 border-b border-solid border-slate-200 rounded-t">
+            			<h3 class=" m-auto font-semibold text-xl">{{ invitationBy }}</h3>
+          			</div>
+          			<div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
+            			<router-link @click.prevent="store.state.connection.emit('invitation-accepted', opponent);"  class="text-gray-800 border 
+						border-solid white hover:bg-slate-800 hover:text-white  
+						font-bold uppercase text-sm px-6 py-3 rounded outline-none  " 
+						:to="{ name: 'OneVOne', params: { opponent: opponent , difficulty: 'oneVone' } }" >
+              				Accept
+            			</router-link>
+            			<button @click.prevent="invited = false ; opponent = ''" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    ">
+              				Refuse
+            			</button>
+         			</div>
+        		</div>
+      		</div>
+    	</div>
 </template>
 
 <script lang="ts" setup>
@@ -99,8 +120,16 @@
 	import io from "socket.io-client";
 	import axios from 'axios';
 	import { chatRoom } from '../interfaces';
-import { anyTypeAnnotation } from '@babel/types';
+	import { anyTypeAnnotation } from '@babel/types';
+	import { useRouter, useRoute } from 'vue-router';
+	//import {alert} from alertmessage;
 	const store = inject('store')
+	const router = useRouter()
+    const route = useRoute()
+
+	let invited = ref(false as boolean);
+	let invitationBy = ref('' as String)
+	let opponent = ref('' as String);
 
 	//! called first time the chat is accessed
 	store.state.connection = io('http://127.0.0.1:3001/chat',
@@ -203,13 +232,13 @@ import { anyTypeAnnotation } from '@babel/types';
 
 		store.state.connection.on("sendMessage", (data) => {
 			//listen to this event if and only if the roomid selected is the one we get messages from
-			
+			console.log('listening to event message '+ store.state.roomSelected);
 			if (data && data[0].roomid == store.state.roomSelected)
-				{
-					console.log(data[0].roomid);
-					console.log(store.state.roomSelected);
-					store.state.messages = data;
-				}
+			{
+				console.log(data[0].roomid);
+				console.log(store.state.roomSelected);
+				store.state.messages = data;
+			}
 	 });
 	
 		
@@ -218,7 +247,24 @@ import { anyTypeAnnotation } from '@babel/types';
 		//store.state.connection.on("members", (data) => {members = data;});
 
 		store.state.connection.on('invitation', (data) => {
-		alert(`You are invited by ${data} to play a game`);
+			opponent.value = data;
+			invited.value = true;
+			invitationBy.value = 'Invited To Game From ' + data;
+			console.log('invited to game' + data);
+			// alert(`You are invited by ${data} to play a game`);
+			//a pop up {to accept or refuse} => {if accept => redirect this user to OnetoOne}
+			//send an event to framdani that user accept the invition and redirect him to onetoone
+		});
+
+		store.state.connection.on('gotogame', (data) => {
+			router.push({
+			name: 'oneVone',
+			params: {
+				opponent: data,
+				difficulty: 'default'
+			},
+		})
+		//let val = new VueSimpleAlert("Alert Message.");
 		//a pop up {to accept or refuse} => {if accept => redirect this user to OnetoOne}
 		//send an event to framdani that user accept the invition and redirect him to onetoone
 		});
@@ -229,11 +275,11 @@ import { anyTypeAnnotation } from '@babel/types';
       return result
     }
 
-// 	onUnmounted(async () => {
-//    if (store.state.connection != null) {
-//     	store.state.connection.disconnect();
-//    }
-// });
+	onUnmounted(async () => {
+	if (store.state.connection != null) {
+			store.state.connection.disconnect();
+	}
+});
 
 	// // 	store.state.connection.on("message", (data) => {store.state.rooms = data;
     // //   if (store.state.rooms.length !== 0){

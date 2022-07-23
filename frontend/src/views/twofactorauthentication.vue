@@ -19,7 +19,6 @@
     import { useRoute } from 'vue-router';
     import VueCookies from 'vue-cookies';
     const store = inject('store')
-    const cookie = inject('cookie')
 
     const code2fa = ref('')
     function verifyCode(){
