@@ -260,11 +260,13 @@ import { connect } from 'http2';
 
 		store.state.connection.on('gotogame', (data) => {
 		//	console.log("data : username"+data);
+		console.log(data);
+
 			router.push({
-			name: 'oneVone',
+			name: 'OneVOne',
 			params: {
 				opponent: data,
-				difficulty: 'default'
+				difficulty: 'oneVone'
 			},
 		})
 		//let val = new VueSimpleAlert("Alert Message.");

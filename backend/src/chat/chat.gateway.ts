@@ -359,6 +359,6 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
        let socket = await this.getSocketid(vs.id);
        if (socket)
-          this.server.to(socket.id).emit('gotogame', vs.username);
+          this.server.to(socket.id).emit('gotogame', opponent);
     }
 }
