@@ -15,6 +15,7 @@ import { membershipDto } from './dto/membership-dto';
 import { RoleStatus } from './dto/membership.model';
 import { messageDto } from './dto/message-dto';
 import { RoomDto } from './dto/room-dto';
+import { membership } from './membership.entity';
 import { chatroom } from './room.entity';
 
 
@@ -285,11 +286,33 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       //send to the members
     }
 
-    // @SubscribeMessage('set-admin')
-    // async setAdmin(socket:Socket, userid:number){
-          //update role
-          //
-    // }
+      @SubscribeMessage('set-admin')
+      async setAdmin(socket:Socket,membershipdto:membershipDto){
+          this.chatService.updateMembership(membershipdto.userid, membershipdto.roomid, RoleStatus.ADMIN);
+          //send members to the concerned users
+          let members = await this.chatService.getMembersByRoomId(membershipdto.roomid);
+          let userid:any;
+          for (var x of this.user){
+            userid = await x.handshake.query.token;
+            userid =await this.userService.verifyToken(userid);
+            if (await this.chatService.isMember(membershipdto.roomid, userid))
+              this.server.to(x.id).emit('members', members);
+          }
+      }
+
+      @SubscribeMessage('remove-admin')
+      async removeAdmin(socket:Socket,membershipdto:membershipDto){
+          this.chatService.updateMembership(membershipdto.userid, membershipdto.roomid, RoleStatus.USER);
+          //send members to the concerned users
+          let members = await this.chatService.getMembersByRoomId(membershipdto.roomid);
+          let userid:any;
+          for (var x of this.user){
+            userid = await x.handshake.query.token;
+            userid =await this.userService.verifyToken(userid);
+            if (await this.chatService.isMember(membershipdto.roomid, userid))
+              this.server.to(x.id).emit('members', members);
+          }
+      }
 
     //ban-User
     //Mute-User

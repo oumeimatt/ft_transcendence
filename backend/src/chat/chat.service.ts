@@ -37,6 +37,7 @@ export class ChatService {
     ){
 
     }
+
     async createRoom(RoomDto:RoomDto, creators :Player[]):Promise<chatroom>{
         return await this.roomRepo.createRoom(RoomDto, creators);
     }
@@ -199,8 +200,20 @@ export class ChatService {
         return null;
     }
 
-    // async updateRole(role: RoleStatus):Promise<membership>{
+    /*
+        set as admin
+        remove admin
+    */
 
-    // }
+    async updateMembership(playerid:number, roomid:number, role: RoleStatus):Promise<membership>{
+        const membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid});
+        membership.role = role;
+        await membership.save();
+        return membership;
+    }
+
+
+    /*
+    */
 
 }
