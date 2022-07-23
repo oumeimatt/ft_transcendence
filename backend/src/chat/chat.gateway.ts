@@ -65,6 +65,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     //when a client joins the connection
       async handleConnection(client:Socket)
       {
+        console.log('Connected: ' + client.id);
         await this.definePlayer(client);
         //  console.log(this.player);
         client.data.player = this.player;
@@ -97,7 +98,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       handleDisconnect(client: any)
       {
         //remove this client form the connected users
-        this.user.splice(this.user.indexOf(`${client}`),1);
+        this.user = this.user.filter(us => us.id !== client.id);
         console.log(`On Disconnet ... ! ${client.id}`)
       }
 
@@ -292,7 +293,6 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     @SubscribeMessage('invite-game')
     async invitePlay(client:Socket, guest:number){
       //define player
-      console.log('test !');
       await this.definePlayer(client);
       //guest
       let socketguest = await this.getSocketid(guest);
@@ -307,6 +307,6 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     @SubscribeMessage('invitation-accepted')
     async acceptInvitation(client:Socket){
       //send an event to redirect this user too
-
+      console.log('invitation accepted');
     }
 }
