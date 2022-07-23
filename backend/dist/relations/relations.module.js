@@ -25,7 +25,7 @@ RelationModule = __decorate([
             jwt_1.JwtModule.register({
                 secret: 'pingpong',
                 signOptions: {
-                    expiresIn: '1d',
+                    expiresIn: 3600,
                 },
             }),
             typeorm_1.TypeOrmModule.forFeature([relation_repository_1.RelationRepository]),

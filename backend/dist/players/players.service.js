@@ -46,12 +46,10 @@ let UsersService = class UsersService {
         return this.userRepository.getUsers(FilterDto);
     }
     async updateUsersStatus() {
-        console.log('Updating users status');
         const onlineUsers = await this.userRepository.find({ where: { status: player_status_enum_1.UserStatus.ONLINE } });
         for (const user of onlineUsers) {
             const now = new Date();
             const diff = now.getTime() - user.last_activity.getTime();
-            console.log((diff / 1000) / 60);
             if (diff > 1000 * 60 * 500) {
                 await this.updateStatus(user.id, player_status_enum_1.UserStatus.OFFLINE);
                 console.log('User ' + user.username + ' is offline');

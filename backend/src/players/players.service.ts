@@ -42,12 +42,10 @@ export class UsersService {
 	}
 
 	async updateUsersStatus() {
-		console.log('Updating users status');
 		const onlineUsers = await this.userRepository.find({ where: { status: UserStatus.ONLINE } });
 		for (const user of onlineUsers) {
 			const now = new Date();
 			const diff = now.getTime() - user.last_activity.getTime();
-			// console.log((diff / 1000)/60);
 			if (diff > 1000 * 60 * 500) {
 				await this.updateStatus(user.id, UserStatus.OFFLINE);
 				console.log('User ' + user.username + ' is offline');
