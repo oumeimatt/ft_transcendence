@@ -36,13 +36,7 @@ bootstrap();
 
 // td list:
 
-	// ! upadte user status online/offline
-	// 	= update date column in users table for each request made by the user
-	// 		& function supervisor loop over all ONLINE users
-	// 			- if the user is inactive for more than 10 minutes, switch his status to offline
-
-
-	// get all online users
 	// login with 2fa - validate code
+	// bidirectional friend relation
 
 	

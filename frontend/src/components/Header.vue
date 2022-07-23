@@ -102,7 +102,8 @@
 				  <button @click="generateFA" class="bg-neutral-300 rounded p-4 font-semibold  hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
 				</div>
 			  <div v-if="showScan" class=" bg-gray-200 rounded"> 
-				<img :src="qr" class="p-8 mx-auto h-30 w-30 rounded" alt="">
+				<img v-if="qr.length >0 " :src="qr" class="p-8 mx-auto h-30 w-30 rounded" alt="">
+				<span v-else>Loading Qr...</span>
 				<label class="text-gray-600"> Type authentication code here </label>
 				<input v-model="Password2fa" type="text" maxlength="6" placeholder="123456" class=" mt-2 mb-4 pl-4 h-12 rounded ">
 			  </div>

@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Param, Patch, ParseIntPipe, Query, ValidationPipe, Req, Header, UseInterceptors, UploadedFile, Post, Res, Response, UnauthorizedException } from "@nestjs/common";
+import { Controller, Get, Body, Param, Patch, ParseIntPipe, Query, ValidationPipe, Req, UseInterceptors, UploadedFile, Post, Response, UnauthorizedException } from "@nestjs/common";
 import { UsersService } from "./players.service";
 import { GetPlayersFilterDto } from "./dto-players/get-player-filter.dto";
 import { RelationsService } from "../relations/relations.service";
@@ -94,7 +94,7 @@ export class UsersController {
 	): Promise<string>{
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const imageUrl = await this.usersService.generateSecretQr(user);
-		// console.log("imageUrl === ", imageUrl);
+		console.log("imageUrl === ", imageUrl);
 		return imageUrl;
 	}
 
@@ -119,9 +119,10 @@ export class UsersController {
 	async twoFactorAuthenticate(
 		@Req() req: Request,
 		@Response() res,
-		@Body('twaFactorCode') code: string,
+		@Body('twoFactorCode') code: string,
 	): Promise<any> {
-        const user = await this.usersService.verifyToken(req.cookies.connect_sid);
+		const player = await this.usersService.verifyToken(req.cookies.twofa);
+		const user = await this.usersService.getUserById(player.id);
 		const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, code);
 		if (!isValid) {
 			throw new UnauthorizedException('Wrong authentication code');
@@ -133,7 +134,7 @@ export class UsersController {
 		const payload: JwtPayload = { username, id, two_fa };
 		const accessToken = await this.jwtService.sign(payload);
 		res.cookie('connect_sid',[accessToken]);
-		res.redirect('http://localhost:3000/home');
+		res.send(accessToken);
 	}
 
 	//+ upadte user status online/offline

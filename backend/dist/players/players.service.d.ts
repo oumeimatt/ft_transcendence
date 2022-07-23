@@ -9,11 +9,11 @@ export declare class UsersService {
     constructor(userRepository: PlayerRepository, jwtService: JwtService);
     getUserById(id: number): Promise<Player>;
     getUserByUsername(username: string): Promise<Player>;
+    getUserByStatusId(id: number): Promise<Player>;
     getUsers(FilterDto: GetPlayersFilterDto): Promise<Player[]>;
     updateUsersStatus(): Promise<void>;
     updateUsername(id: number, username: string): Promise<Player>;
     updateAvatar(id: number, avatar: string): Promise<Player>;
-    generateSecretQr(user: Player): Promise<string>;
     updateLevel(id: number, difficult: boolean): Promise<Player>;
     winsGame(id: number): Promise<Player>;
     LostGame(id: number): Promise<Player>;
@@ -22,6 +22,7 @@ export declare class UsersService {
     findPlayer(id: number): Promise<Player>;
     findOrCreate(id: number, login: string): Promise<Player>;
     verifyToken(token: string): Promise<Player>;
+    generateSecretQr(user: Player): Promise<string>;
     setTwoFactorAuthenticationSecret(id: number, secret: string): Promise<void>;
     turnOnTwoFactorAuthentication(id: number): Promise<void>;
     generateTwoFactorAuthenticationSecret(user: Player): Promise<{

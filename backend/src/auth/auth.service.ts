@@ -69,6 +69,7 @@ export class AuthService {
 			res.redirect('http://localhost:3000/home');
 		}
 		else {
+			console.log('two_fa');
 			res.cookie('twofa',[accessToken]);
 			res.redirect('http://localhost:3000/twofactorauthentication');
 		}
@@ -79,6 +80,6 @@ export class AuthService {
 		await this.playerService.updateStatus(id, UserStatus.OFFLINE);
 		await logout();
 		await res.clearCookie('connect_sid', {domain: 'localhost', path: '/'});
-		return res.redirect('http://localhost:3000/home');
+		res.redirect('http://localhost:3000/home');
 	}
 }
