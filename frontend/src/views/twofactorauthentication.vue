@@ -1,6 +1,6 @@
 <template >
     <div id="notlogged" class=" flex justify-center items-center text-center h-screen"> 
-      <div class=" container w-3/5 h-2/5 bg-slate-300 rounded-lg translate-y-1/4">
+      <div class=" container w-3/5 h-1/5 bg-slate-300 rounded-lg translate-y-1/4">
         <h1 class="text-slate-800 font-bold  text-3xl pt-4 pb-4 translate-y-1/4" > Please enter 2FA code </h1>
         <p class="text-slate-600 font-semibold  text-xl pt-4 pb-4 translate-y-1/4" > Two-factor authentication (2FA) is enabled for your account. Please enter a code to log in. </p>
         <input v-model="code2fa" type="text" maxlength="6" class="p-2 bg-slate-100 mt-6 rounded ring-slate-200 ring-2" placeholder="123456">

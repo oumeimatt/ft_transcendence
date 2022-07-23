@@ -97,15 +97,20 @@
 				<input type="file" accept="image/*" @change="onChange" class=" border border-solid rounded" > 
 			  </div>
 			  <button v-on:click="show2f = !show2f" class="pt-2 font-semibold text-gray-800">2FA Authentication</button>
-				<div v-if="show2f" class="border-t p-2 space-x-4">
-				  You have not activated 2FA. <a  class="text-xs text-teal-700" href="https://authy.com/what-is-2fa/" target="_blank"> What is 2FA Authentication ? </a>
-				  <button @click="generateFA" class="bg-neutral-300 rounded p-4 font-semibold  hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
-				</div>
-			  <div v-if="showScan" class=" bg-gray-200 rounded"> 
-				<img v-if="qr.length >0 " :src="qr" class="p-8 mx-auto h-30 w-30 rounded" alt="">
-				<span v-else>Loading Qr...</span>
-				<label class="text-gray-600"> Type authentication code here </label>
-				<input v-model="Password2fa" type="text" maxlength="6" placeholder="123456" class=" mt-2 mb-4 pl-4 h-12 rounded ">
+			  <div v-if="store.state.player.two_fa == false">
+				  <div v-if="show2f" class="border-t p-2 space-x-4">
+					You have not activated 2FA. <a  class="text-xs text-teal-700" href="https://authy.com/what-is-2fa/" target="_blank"> What is 2FA Authentication ? </a>
+					<button @click="generateFA" class="bg-neutral-300 rounded p-4 font-semibold  hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
+				  </div>
+				  <div v-if="showScan" class=" bg-gray-200 rounded"> 
+					  <img v-if="qr.length >0 " :src="qr" class="p-8 mx-auto h-30 w-30 rounded" alt="">
+					  <span v-else>Loading Qr...</span>
+					  <label class="text-gray-600"> Type authentication code here </label>
+					  <input v-model="Password2fa" type="text" maxlength="6" placeholder="123456" class=" mt-2 mb-4 pl-4 h-12 rounded ">
+				  </div>
+			  </div>
+			  <div v-else>
+					<h1 v-if="show2f == true" class="text-slate-500 border-t p-4 space-x-4 "> 2FA is already activated </h1>
 			  </div>
 		  </div>
 		  <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
