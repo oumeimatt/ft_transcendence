@@ -101,6 +101,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       {
         //remove this client form the connected users
         this.user = this.user.filter(us => us.id !== client.id);
+       // this.user.splice(this.user.indexOf(`${client}`),1)
         console.log(`On Disconnet ... ! ${client.id}`)
       }
 
@@ -250,7 +251,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
     @SubscribeMessage('send-DM')
     async sendDM(sender:Socket, messagedto : messageDto){
-     // console.log(messagedto);
+      console.log(messagedto);
+     
       await this.definePlayer(sender);
       let receiverid = messagedto.id;
       let roomName = receiverid+":"+this.player.id;
@@ -315,7 +317,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           }
       }
 
-    //ban-User
+
+    //ban-User => isbanned true => emit rooms => to the banned user
     //Mute-User
     //set-admin => change role
     //remove admin => change role
@@ -326,20 +329,36 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     @SubscribeMessage('invite-game')
     async invitePlay(client:Socket, guest:number){
       //define player
+      //console.log('event invite called !')
       await this.definePlayer(client);
       //guest
+      //console.log(this.user);
       let socketguest = await this.getSocketid(guest);
+      console.log(socketguest + "Exist");
       if (socketguest)
         this.server.to(socketguest.id).emit('invitation', this.player.username);
       else
         console.log('you are trying to invite a user who is offline !')
 
-      //send event => pop up to the player { only the guest =>}
+
     }
 
     @SubscribeMessage('invitation-accepted')
-    async acceptInvitation(client:Socket){
+    async acceptInvitation(client:Socket, opponent : string){
       //send an event to redirect this user too
-      console.log('invitation accepted');
+      
+     // console.log(client.id);
+      await this.definePlayer(client);
+      //console.log('invitation accepted !! abckend '+ opponent);
+      //console.log(client.id);
+
+      //this.server.to(client.id).emit('gotogame', this.player.username);
+
+      let vs:Player = await this.userService.getUserByUsername(opponent);
+      // console.log(vs);
+
+       let socket = await this.getSocketid(vs.id);
+       if (socket)
+          this.server.to(socket.id).emit('gotogame', vs.username);
     }
 }

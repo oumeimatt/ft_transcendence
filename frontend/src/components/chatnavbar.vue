@@ -116,12 +116,13 @@
 </template>
 
 <script lang="ts" setup>
-	import {inject, ref, onMounted, onUnmounted} from 'vue';
+	import {inject, ref, onMounted, onUnmounted, customRef} from 'vue';
 	import io from "socket.io-client";
 	import axios from 'axios';
 	import { chatRoom } from '../interfaces';
 	import { anyTypeAnnotation } from '@babel/types';
 	import { useRouter, useRoute } from 'vue-router';
+import { connect } from 'http2';
 	//import {alert} from alertmessage;
 	const store = inject('store')
 	const router = useRouter()
@@ -254,9 +255,11 @@
 			// alert(`You are invited by ${data} to play a game`);
 			//a pop up {to accept or refuse} => {if accept => redirect this user to OnetoOne}
 			//send an event to framdani that user accept the invition and redirect him to onetoone
+			//store.state.connection.emit('invitation-accepted');
 		});
 
 		store.state.connection.on('gotogame', (data) => {
+		//	console.log("data : username"+data);
 			router.push({
 			name: 'oneVone',
 			params: {

@@ -140,7 +140,7 @@ export class UsersController {
 	//+ upadte user status online/offline
 	@Get('/updateUsersStatus')
 	async updateUsersStatus(): Promise<any> {
-		console.log("updateUsersStatus ----------");
+		//console.log("updateUsersStatus ----------");
 		return await this.usersService.updateUsersStatus();
 	}
 
