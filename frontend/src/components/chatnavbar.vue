@@ -259,9 +259,7 @@ import { connect } from 'http2';
 		});
 
 		store.state.connection.on('gotogame', (data) => {
-		//	console.log("data : username"+data);
-		console.log(data);
-
+			console.log('opponent: ' + data);
 			router.push({
 			name: 'OneVOne',
 			params: {

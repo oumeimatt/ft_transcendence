@@ -345,8 +345,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
     @SubscribeMessage('invitation-accepted')
     async acceptInvitation(client:Socket, opponent : string){
-      //send an event to redirect this user too
-      
+      //send an event to redirect this user too      
      // console.log(client.id);
       await this.definePlayer(client);
       //console.log('invitation accepted !! abckend '+ opponent);
@@ -356,9 +355,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
       let vs:Player = await this.userService.getUserByUsername(opponent);
       // console.log(vs);
-
        let socket = await this.getSocketid(vs.id);
        if (socket)
-          this.server.to(socket.id).emit('gotogame', opponent);
+          this.server.to(socket.id).emit('gotogame', client.data.player.username);
     }
 }

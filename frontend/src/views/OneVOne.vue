@@ -34,6 +34,7 @@ onMounted(() => {
         window.location.href = '/chat';
     }
     else {
+        console.log(props);
         socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
         query: {
                 'role': 'player',
