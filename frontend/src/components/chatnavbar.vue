@@ -122,6 +122,7 @@
 	import { chatRoom } from '../interfaces';
 	import { anyTypeAnnotation } from '@babel/types';
 	import { useRouter, useRoute } from 'vue-router';
+	//import {alert} from alertmessage;
 	const store = inject('store')
 	const router = useRouter()
     const route = useRoute()
@@ -231,7 +232,7 @@
 
 		store.state.connection.on("sendMessage", (data) => {
 			//listen to this event if and only if the roomid selected is the one we get messages from
-			
+			console.log('listening to event message '+ store.state.roomSelected);
 			if (data && data[0].roomid == store.state.roomSelected)
 			{
 				console.log(data[0].roomid);
@@ -263,6 +264,9 @@
 				difficulty: 'default'
 			},
 		})
+		//let val = new VueSimpleAlert("Alert Message.");
+		//a pop up {to accept or refuse} => {if accept => redirect this user to OnetoOne}
+		//send an event to framdani that user accept the invition and redirect him to onetoone
 		});
 
 	 })
