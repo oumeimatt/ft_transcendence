@@ -2,6 +2,7 @@ import { Header, UnauthorizedException } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Console } from 'console';
+import { SocketAddress } from 'net';
 // import { NotFoundError } from 'rxjs';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
@@ -256,19 +257,28 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         room = await this.chatService.getRoomByName(this.player.id+":"+receiverid);
       messagedto.id =  room.id;
       await this.chatService.createMessage(messagedto, this.player);
-      for (var x of this.user)
+      let socketguest = await this.getSocketid(receiverid);
+      let  messages = await this.chatService.getMessagesByroomId(messagedto.id);
+      if (socketguest)
       {
-        let  userid = await x.handshake.query.token;
-        userid = await this.userService.verifyToken(userid);
-        let  messages = await this.chatService.getMessagesByroomId(messagedto.id);
-        // console.log(messages);
-        //check if it's a member before sending the messages
-        if (await this.chatService.isMember(messagedto.id, userid))
-        {
-          console.log("userid username"+userid.username);
-          this.server.to(x.id).emit('sendMessage', messages);
-        }
+          console.log(socketguest.id);
+          this.server.to(socketguest.id).emit('sendMessage', messages);
       }
+      this.server.to(sender.id).emit('sendMessage', messages);
+      // for (var x of this.user)
+      // {
+      //   let  userid = await x.handshake.query.token;
+      //   userid = await this.userService.verifyToken(userid);
+      //   let  messages = await this.chatService.getMessagesByroomId(messagedto.id);
+      //   // console.log(messages);
+      //   //check if it's a member before sending the messages
+      //   if (await this.chatService.isMember(messagedto.id, userid))
+      //   {
+      //    // console.log("userid username"+userid.username);
+      //     console.log('send message to ', userid.username);
+      //     this.server.to(x.id).emit('sendMessage', messages);
+      //   }
+      // }
 
       //check the valid name of the channel => get the right id and add it to the message dto
       //create message
@@ -292,7 +302,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     @SubscribeMessage('invite-game')
     async invitePlay(client:Socket, guest:number){
       //define player
-      console.log('test !');
+      //console.log('test !');
       await this.definePlayer(client);
       //guest
       let socketguest = await this.getSocketid(guest);

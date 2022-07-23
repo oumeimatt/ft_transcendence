@@ -99,6 +99,7 @@
 	import io from "socket.io-client";
 	import axios from 'axios';
 	import { chatRoom } from '../interfaces';
+	//import {alert} from alertmessage;
 import { anyTypeAnnotation } from '@babel/types';
 	const store = inject('store')
 
@@ -203,11 +204,11 @@ import { anyTypeAnnotation } from '@babel/types';
 
 		store.state.connection.on("sendMessage", (data) => {
 			//listen to this event if and only if the roomid selected is the one we get messages from
-			
+			console.log('listening to event message '+ store.state.roomSelected);
 			if (data && data[0].roomid == store.state.roomSelected)
 				{
-					console.log(data[0].roomid);
-					console.log(store.state.roomSelected);
+					// console.log(data[0].roomid);
+					// console.log(store.state.roomSelected);
 					store.state.messages = data;
 				}
 	 });
@@ -218,7 +219,9 @@ import { anyTypeAnnotation } from '@babel/types';
 		//store.state.connection.on("members", (data) => {members = data;});
 
 		store.state.connection.on('invitation', (data) => {
+			console.log('test')
 		alert(`You are invited by ${data} to play a game`);
+		//let val = new VueSimpleAlert("Alert Message.");
 		//a pop up {to accept or refuse} => {if accept => redirect this user to OnetoOne}
 		//send an event to framdani that user accept the invition and redirect him to onetoone
 		});
