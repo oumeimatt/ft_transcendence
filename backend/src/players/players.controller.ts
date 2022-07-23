@@ -119,7 +119,7 @@ export class UsersController {
 	async twoFactorAuthenticate(
 		@Req() req: Request,
 		@Response() res,
-		@Body('twaFactorCode') code: string,
+		@Body('twoFactorCode') code: string,
 	): Promise<any> {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, code);

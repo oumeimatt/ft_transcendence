@@ -11,7 +11,7 @@ import Play from '../views/Play.vue'
 import WatchGames from '../views/WatchGames.vue'
 import Stream from '../views/Stream.vue'
 import OneVOne from '../views/OneVOne.vue';
-
+import twofactorauthentication from '../views/twofactorauthentication.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/auth/login',
@@ -50,6 +50,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/chat',
     name: 'EmptyChat',
     component: EmptyChat
+  },
+  {
+    path: '/twofactorauthentication',
+    name: 'twofactorauthentication',
+    component: twofactorauthentication
   },
   {
     path: '/profile',

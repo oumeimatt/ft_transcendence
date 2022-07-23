@@ -51,7 +51,6 @@ let UsersService = class UsersService {
         for (const user of onlineUsers) {
             const now = new Date();
             const diff = now.getTime() - user.last_activity.getTime();
-            console.log((diff / 1000) / 60);
             if (diff > 1000 * 60 * 500) {
                 await this.updateStatus(user.id, player_status_enum_1.UserStatus.OFFLINE);
                 console.log('User ' + user.username + ' is offline');

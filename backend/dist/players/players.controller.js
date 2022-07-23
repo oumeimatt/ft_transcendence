@@ -82,20 +82,13 @@ let UsersController = class UsersController {
         fs.unlinkSync(process.cwd() + "/public/qr_" + user.username + ".png");
         await this.usersService.turnOnTwoFactorAuthentication(user.id);
     }
-<<<<<<< HEAD
     async twoFactorAuthenticate(req, res, code) {
-=======
-    async TwoFactorAuthenticate(req, res, code) {
->>>>>>> 09486ef7950422783e10c67766b1ba1fce1526a3
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, code);
         if (!isValid) {
             throw new common_1.UnauthorizedException('Wrong authentication code');
         }
-<<<<<<< HEAD
         await res.clearCookie('twofa', { domain: 'localhost', path: '/' });
-=======
->>>>>>> 09486ef7950422783e10c67766b1ba1fce1526a3
         const id = user.id;
         const username = user.username;
         const two_fa = user.two_fa;
@@ -103,13 +96,10 @@ let UsersController = class UsersController {
         const accessToken = await this.jwtService.sign(payload);
         res.cookie('connect_sid', [accessToken]);
         res.redirect('http://localhost:3000/home');
-<<<<<<< HEAD
     }
     async updateUsersStatus() {
         console.log("updateUsersStatus ----------");
         return await this.usersService.updateUsersStatus();
-=======
->>>>>>> 09486ef7950422783e10c67766b1ba1fce1526a3
     }
     async getUsers(FilterDto, req) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
@@ -168,7 +158,7 @@ __decorate([
     (0, common_1.Post)('/twofactorauthentication'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Response)()),
-    __param(2, (0, common_1.Body)('twaFactorCode')),
+    __param(2, (0, common_1.Body)('twoFactorCode')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object, String]),
     __metadata("design:returntype", Promise)
