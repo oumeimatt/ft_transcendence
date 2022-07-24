@@ -273,6 +273,8 @@ import { connect } from 'http2';
 	 }
 	 );
 	 store.state.connection.on('room-exist', (data) => {alert(data + " : Room already exist with that Name !! ")});
+	 store.state.connection.on('player-playing', (data) =>{alert(`${data} is already playing !!`)})
+	 store.state.connection.on('player-offline', data => {alert(`${data} is offline !!`)})
 	
 		
 

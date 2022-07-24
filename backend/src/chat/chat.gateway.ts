@@ -343,15 +343,22 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
       //check if the guest is playing
       const status = await this.userService.getStatusByUserId(guest);
+      let guestUsername = (await this.userService.getUserById(guest)).username;
       if (status == UserStatus.PLAYING)
+      {
           console.log('The User is already playing')
+          this.server.to(client.id).emit('player-playing', guestUsername);
+      }
       else{
       let socketguest = await this.getSocketid(guest);
       console.log(socketguest + "Exist");
       if (socketguest)
         this.server.to(socketguest.id).emit('invitation', this.player.username);
       else
-        console.log('you are trying to invite a user who is offline !')
+        {
+         // console.log('you are trying to invite a user who is offline !')
+         this.server.to(client.id).emit('player-offline', guestUsername);
+        }
       }
 
     }
