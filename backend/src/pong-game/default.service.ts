@@ -9,7 +9,7 @@ import { PlayGround } from './utils';
 @Injectable()
 export class DefaultService {
   readonly logger = new Logger('Default PongGame Service: ');
-  readonly emptyPlayground = new PlayGround(0, 0, 1000, 600, 'black', 9, false, '', '');
+  readonly emptyPlayground = new PlayGround(0, 0, 1000, 600, '#0A5B70ff', 9, false, '', '');
   constructor(private pongGameService: PongGameService, private usersService: UsersService) {}
   
   handleGetBackGround(playground: PlayGround): PlayGroundInterface {
@@ -100,7 +100,7 @@ export class DefaultService {
     });
 
     // create a playground for players
-    const playground = new PlayGround(0, 0, 1000, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
+    const playground = new PlayGround(0, 0, 1000, 600, '#0A5B70ff', 9, false, first.data.user.username, second.data.user.username);
     first.data.playground = playground;
     second.data.playground = playground;
     this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & '+ second.data.user.username);

@@ -8,7 +8,7 @@
 			<div class="mt-8 text-xl md:text-2xl font-bold text-gray-400">
 					<span> Mode: {{ gameroom.difficulty }} </span>
 			</div>
-			<router-link class="mt-4 mb-8 w-9/12 h-9/12 md:w-8/12 md:h-6/12" :to="{name: 'Stream', params: { difficulty: gameroom.difficulty, roomname: gameroom.roomname }}">
+			<router-link class="mt-4 mb-8 w-9/12 h-9/12 md:w-6/12 md:h-4/12" :to="{name: 'Stream', params: { difficulty: gameroom.difficulty, roomname: gameroom.roomname }}">
 				<img src="../assets/bg1.jpg" alt="">
 			</router-link>
 		</div>
