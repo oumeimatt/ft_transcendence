@@ -9,6 +9,7 @@ import * as fs  from "fs";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { RelationStatus } from "../relations/relation_status.enum";
 import { JwtPayload } from "../auth/jwt-payload.interface";
+import { UserStatus } from "./player_status.enum";
 
 @Controller()
 export class UsersController {
@@ -133,6 +134,7 @@ export class UsersController {
 		const two_fa = user.two_fa;
 		const payload: JwtPayload = { username, id, two_fa };
 		const accessToken = await this.jwtService.sign(payload);
+		await this.usersService.updateStatus(user.id, UserStatus.ONLINE);
 		res.cookie('connect_sid',[accessToken]);
 		res.send(accessToken);
 	}
