@@ -12,8 +12,8 @@
         </div>
     </div>
     <div v-else id="div-canvas">
-        <canvas id="responsive-canvas" ref="game"></canvas>
-        <p style="color:aquamarine; text-align: center;">{{ winnerDisplay }}</p>
+        <canvas class="mt-12 content-center" id="responsive-canvas" ref="game"></canvas>
+        <p class="mt-8 text-xl"  style="color:aquamarine; text-align: center;">{{ winnerDisplay }}</p>
     </div>
     <Footer />
     </div>
@@ -104,6 +104,7 @@ function DrawGameInterrupted() {
                 playground.value.player2,
             );
         }
+        message.value = 'Game Was Interrupted';
     });
 }
 

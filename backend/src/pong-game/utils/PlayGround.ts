@@ -44,7 +44,7 @@ export class PlayGround {
       (this._x + this._height) / 2 - (this._y + this.getPaddleHeight()) / 2,
       this.getPaddleWidth(),
       this.getPaddleHeight(),
-      this._difficult ? 'red' : 'white',
+      this._difficult ? '#A9BCCBff' : '#A9BCCBff',
       this._difficult,
     );
     this._rightPaddle = new Paddle(
@@ -52,14 +52,14 @@ export class PlayGround {
       (this._y + this._height) / 2 - this.getPaddleHeight() / 2,
       this.getPaddleWidth(),
       this.getPaddleHeight(),
-      this._difficult ? 'red' : 'white',
+      this._difficult ? '#A9BCCBff' : '#A9BCCBff',
       this._difficult,
     );
     this._ball = new Ball(
       this._width / 2,
       this._height / 2,
       this.getRadius(),
-      difficult ? 'red' : 'white',
+      difficult ? '#A9BCCBff' : '#A9BCCBff',
       this._difficult,
     );
     this._leftPaddleController = new PaddleController(this._leftPaddle);
