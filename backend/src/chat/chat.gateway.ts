@@ -137,10 +137,10 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         for (var x of this.user)
         {
           userid = await x.handshake.query.token;
-          userid =  await this.userService.verifyToken(userid);//await this.authService.verifyJwt(userid);
+          userid =  await this.userService.verifyToken(userid);
           rooms = await this.chatService.getRoomsForUser(userid.id);
           allrooms = await this.chatService.getAllRooms(userid.id);
-      //    console.log('userid => '+userid.username);
+              //console.log('userid => '+userid.username);
           this.server.to(x.id).emit('message', rooms);
 
           this.server.to(x.id).emit('members', members);
@@ -161,6 +161,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         // this.decoded = await this.userService.verifyToken(this.decoded);
         // this.player = await this.userService.getUserById(this.decoded.id);
         await this.definePlayer(socket);
+        if (messageDto.content != '')
+        {
         await this.chatService.createMessage(messageDto,this.player);
  
         //I should send the messages only to the members
@@ -177,6 +179,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           if (await this.chatService.isMember(messageDto.id, userid))
             this.server.to(x.id).emit('sendMessage', messages);
         } 
+      }
       }
 
     @SubscribeMessage('leave-channel')
@@ -210,7 +213,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     }
 
     @SubscribeMessage('join-channel')
-    async joinChannel(socket:Socket, roomid:number){
+    async joinChannel(socket:Socket, roomid:number){ //{roomid && password} dto
+      //Doon't forget the password => when creating the mmebership
       await this.definePlayer(socket);
       await this.chatService.createMembership(this.player.id, roomid);
       //send messages && mychannels to the client
@@ -271,7 +275,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     @SubscribeMessage('send-DM')
     async sendDM(sender:Socket, messagedto : messageDto){
      // console.log(messagedto);
-     
+      if (messagedto.content != '')
+      {
       await this.definePlayer(sender);
       let receiverid = messagedto.id;
       let roomName = receiverid+":"+this.player.id;
@@ -306,6 +311,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       //check the valid name of the channel => get the right id and add it to the message dto
       //create message
       //send to the members
+    }
     }
 
       @SubscribeMessage('set-admin')
@@ -389,4 +395,6 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
        if (socket)
           this.server.to(socket.id).emit('gotogame', client.data.player.username);
     }
+
+    //ban user => update rooms && all rooms && members
 }
