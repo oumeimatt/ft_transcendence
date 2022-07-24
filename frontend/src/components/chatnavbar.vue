@@ -58,7 +58,7 @@
 					</div>
 				</div>
 				<div v-if="showCreate" class="fixed inset-36 z-50 ">
-						<div class=" my-6 mx-auto max-w-sm  ">
+						<div class=" my-6 mx-auto max-w-lg  ">
 									<!--content-->
 							<div class="border-0 rounded-lg shadow-lg w-full bg-neutral-100  ">
 										<!--header-->
@@ -76,12 +76,17 @@
 									 <label class="p-2 font-semibold text-gray-800">Password</label>
 									 <input v-model="room.password" type="password" class="bg-neutral-200 border-b rounded h-8 pl-4">
 									 <label class="p-2  font-semibold text-gray-800">Add user</label>
-									 <input v-model="room.players" type="text" class="bg-neutral-200 border-b rounded h-8 pl-4">
-									 
-
+									 <!-- <input v-model="room.players" type="text" class="bg-neutral-200 border-b rounded h-8 pl-4"> -->
+									 <input v-model="RoomMember" type="text" class="bg-neutral-200 border-b rounded h-8 pl-4">
+									<div v-for="user in matchingNames" :key="user" class="">
+										<div @click="addToMembers(user)" v-if="user != store.state.player.username">  {{ user }}</div>
+									</div>
+									<div class="flex scrollbar scrollbar-track-slate-300 scrollbar-thumb-slate-600">
+										<div v-for="player in room.players" :key="player" class="bg-slate-300 text-slate-700 w-fit h-fit p-2 mb-2 rounded mr-2"> {{ player }} </div>
+									</div>
 								</form>
 								<div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-									<button @click="showCreate = false" class="text-gray-800 border border-solid white hover:bg-black hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" >
+									<button @click="CancelCreate" class="text-gray-800 border border-solid white hover:bg-black hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" >
 										Close
 									</button>
 									<button @click="sendRoom" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-black uppercase px-6 py-3 text-sm outline-none  " type="button" >
@@ -116,7 +121,7 @@
 </template>
 
 <script lang="ts" setup>
-	import {inject, ref, onMounted, onUnmounted, customRef} from 'vue';
+	import {inject, ref, onMounted, onUnmounted,computed, customRef} from 'vue';
 	import io from "socket.io-client";
 	import axios from 'axios';
 	import { chatRoom } from '../interfaces';
@@ -131,7 +136,7 @@ import { connect } from 'http2';
 	let invited = ref(false as boolean);
 	let invitationBy = ref('' as String)
 	let opponent = ref('' as String);
-
+	const RoomMember = ref('' as string)
 	//! called first time the chat is accessed
 	store.state.connection = io('http://127.0.0.1:3001/chat',
 	{
@@ -147,25 +152,46 @@ import { connect } from 'http2';
 			players:[],
 	};
 
+
+	function CancelCreate(){
+		room.name = ''
+		room.privacy = ''
+		room.members = []
+		RoomMember.value = ''
+		showCreate.value = false
+	}
 	const showCreate = ref(false)
 	const showAllRooms = ref(false)
 	function showRooms () { showAllRooms.value = !showAllRooms.value}
 	function  createRoom () {
 		showCreate.value = true
 	}
+
+
+
+	function addToMembers(user: string){
+		if (room.players.includes(user) == false)
+			room.players.push(user)
+		RoomMember.value = ''
+		console.log(room.players)
+	}
+
+
 	function  sendRoom() {
         // console.log('Message sent !')
-		showCreate.value = false
+		// showCreate.value = false
         let roomdata={
           name: room.name,
 		  privacy:room.privacy,
           password:room.password,
           players:room.players,
         }
+		console.log(roomdata)
         store.state.connection.emit("createRoom", roomdata);
        	// console.log(roomdata);
         // this.room.players.splice(0);
         //I should sent a room
+		CancelCreate()
     }
 
 
@@ -284,6 +310,15 @@ import { connect } from 'http2';
 	}
 });
 
+	const matchingNames = computed(() => {
+	  const a=[]
+	  if (RoomMember.value.length == 0)
+	  	return ('')
+	  store.state.users.forEach(user => {
+		a.push(user.username)
+	  });
+	  return a.filter((name) => name.startsWith(RoomMember.value))
+	})
 	// // 	store.state.connection.on("message", (data) => {store.state.rooms = data;
     // //   if (store.state.rooms.length !== 0){
     // //   store.state.messageDto.id = store.state.rooms[0].id;

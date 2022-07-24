@@ -3,7 +3,6 @@
   <div v-if="store.state.player.status != 'offline'" class="Container">
     <div class="grid grid-cols-6 gap-px ">
       <chatnavbar/>
-      <div class="bg-white text-black font-bold"> {{name }} {{ id }}</div>
       <conversationRoom :name="name" :id="id"/>
       <membersBar :name="name" :id="id"/>
     </div>
