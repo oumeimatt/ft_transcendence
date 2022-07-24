@@ -3,7 +3,7 @@
     <Header />
     <div id="div-canvas">
         <canvas id="responsive-canvas" ref="game"></canvas>
-        <p style="color:aquamarine; text-align: center;">{{ message }}</p>
+        <p class="text-xl" style="color:aquamarine; text-align: center;">{{ message }}</p>
     </div>
     <Footer />
     </div>

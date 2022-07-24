@@ -333,7 +333,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       //console.log('event invite called !')
       await this.definePlayer(client);
       //guest
-      //console.log(this.user);
+
       //check if the guest is playing
       const status = await this.userService.getStatusByUserId(guest);
       if (status == UserStatus.PLAYING)

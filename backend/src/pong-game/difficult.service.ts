@@ -55,7 +55,7 @@ import { PlayGround } from './utils';
         message: 'You Are Already in a Game',
       });
     }
-    else {
+    else if (found && found.status === UserStatus.ONLINE) {
       players.push(client);
       await this.usersService.updateStatus(user.id, UserStatus.PLAYING);
       // if no one is waiting, keep him waiting
@@ -166,6 +166,11 @@ import { PlayGround } from './utils';
         );
         client.data.playground.leftPaddle.reset();
         client.data.playground.rightPaddle.reset();
+        if (client.handshake.query.side === 'left') {
+          client.data.playground.scoreBoard.playerTwoScore = client.data.playground.win_score;
+        } else {
+          client.data.playground.scoreBoard.playerOneScore = client.data.playground.win_score;
+        }
         wss.to(client.data.roomname).emit('gameInterrupted', {
           playground: this.handleGetBackGround(client.data.playground),
         });

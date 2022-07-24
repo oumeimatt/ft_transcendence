@@ -55,7 +55,7 @@ export class OneVOneService {
         message: 'You Are Already in a Game',
       });
     }
-    else {
+    else if (found && found.status === UserStatus.ONLINE) {
       const first = players.find(
         player => player.handshake.query.opponent === client.data.user.username
         && player.data.user.username === client.handshake.query.opponent);
@@ -106,7 +106,7 @@ export class OneVOneService {
     });
 
     // create a playground for players
-    const playground = new PlayGround(0, 0, 1000, 600, 'black', 9, false, first.data.user.username, second.data.user.username);
+    const playground = new PlayGround(0, 0, 1000, 600, 'black', 13, false, first.data.user.username, second.data.user.username);
     first.data.playground = playground;
     second.data.playground = playground;
     this.logger.log('Starting Game in Room: ' + roomname + ' between: ' + first.data.user.username + ' & '+ second.data.user.username);
@@ -172,6 +172,11 @@ export class OneVOneService {
         );
         client.data.playground.leftPaddle.reset();
         client.data.playground.rightPaddle.reset();
+        if (client.handshake.query.side === 'left') {
+          client.data.playground.scoreBoard.playerTwoScore = client.data.playground.win_score;
+        } else {
+          client.data.playground.scoreBoard.playerOneScore = client.data.playground.win_score;
+        }
         wss.to(client.data.roomname).emit('gameInterrupted', {
           playground: this.handleGetBackGround(client.data.playground),
         });

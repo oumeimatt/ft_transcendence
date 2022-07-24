@@ -138,12 +138,6 @@ import { connect } from 'http2';
 	let opponent = ref('' as String);
 	const RoomMember = ref('' as string)
 	//! called first time the chat is accessed
-	store.state.connection = io('http://127.0.0.1:3001/chat',
-	{
-		query:{
-			'token':localStorage.getItem('user'),
-		}
-	});//, {withCredentials:true});
 
 	const room: chatRoom = {
   			name: "",
@@ -236,6 +230,13 @@ import { connect } from 'http2';
         }
     }
 	 onMounted(async () => {
+
+		store.state.connection = io('http://127.0.0.1:3001/chat',
+		{
+			query:{
+				'token':localStorage.getItem('user'),
+			}
+		});//, {withCredentials:true});
 
 		await axios
           .get('http://localhost:3001/profile' ,{ withCredentials: true })
