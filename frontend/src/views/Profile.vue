@@ -53,9 +53,9 @@
 						<div class=""> 
 							<p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
 							<!-- games  -->
-							<div class="scrollbar scrollbar-track-slate-900 scrollbar-thumb-slate-600 h-2/6 max-h-fit">
+							<div class="scrollbar scrollbar-track-slate-900 scrollbar-thumb-slate-600   max-h-2/3">
 
-								<div v-for="game in gamesHistory" :key="game" class="grid grid-cols-3 justify-itmes-center mt-4 h-4 ">
+								<div v-for="game in gamesHistory" :key="game" class="grid grid-cols-3 justify-itmes-center mt-4  ">
 									<div class="text-neutral-900 font-semibold ">  {{ game.winner.username }}</div>
 									<div class="text-gray-900 font-black  "> <span> {{ game.winnerScore }} </span> - <span>  {{ game.loserScore }}</span>  </div>
 									<div class="text-neutral-900 font-semibold ">  {{ game.loser.username }}  </div>
