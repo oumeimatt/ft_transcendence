@@ -33,11 +33,13 @@ export class RelationsService {
 	}
 
 	async addFriend(user: Player, friend_id: number): Promise<Relation> {
-		return this.relationRepository.addFriend(user, friend_id);
+		const friend = await this.usersService.getUserById(friend_id);
+		return this.relationRepository.addFriend(user, friend);
 	}
 
 	async blockPlayer(user: Player, blocked_id: number): Promise<Relation> {
-		return this.relationRepository.blockPlayer(user, blocked_id);
+		const blocked = await this.usersService.getUserById(blocked_id);
+		return this.relationRepository.blockPlayer(user, blocked);
 	}
 
 	async unblock(user: Player, blocked_id: number): Promise<void> {
@@ -46,7 +48,7 @@ export class RelationsService {
 		// if (!block.affected){
 			// 	throw new NotFoundException(`User with ID "${blocked_id}" not found`)
 		// }
-		const block = await this.relationRepository.delete({ sender: user, receiver: blocked_id, status: RelationStatus.BLOCKED });
+		await this.relationRepository.delete({ sender: user, receiver: blocked_id, status: RelationStatus.BLOCKED });
 		console.log('friend unblocked');
 	}
 
@@ -56,7 +58,9 @@ export class RelationsService {
 		// if (!friend.affected){
 			// 	throw new NotFoundException(`Friend with ID "${friend_id}" not found`)
 		// }
-		const friend = await this.relationRepository.delete({ sender: user, receiver: friend_id, status: RelationStatus.FRIEND });
+		const friend = await this.usersService.getUserById(friend_id);
+		await this.relationRepository.delete({ sender: user, receiver: friend_id, status: RelationStatus.FRIEND });
+		await this.relationRepository.delete({ sender: friend, receiver: user.id, status: RelationStatus.FRIEND });
 		console.log('friend removed');
 	}
 }

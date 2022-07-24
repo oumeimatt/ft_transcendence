@@ -9,8 +9,8 @@ export class LoggerMiddleware implements NestMiddleware {
 		private readonly usersService: UsersService,
 	) {}
   async use(req: Request, res: Response, next: NextFunction) {
-	console.log("middleware **** ");
-	console.log(req.body);
+	// console.log("middleware **** ");
+	// console.log(req.body);
 	// console.log(`${req.method} ${req.url}`);
 	// console.log(req.cookies.connect_sid);
 	// const user = await this.usersService.verifyToken(req.cookies.connect_sid);
