@@ -31,19 +31,19 @@
 					<div>
 						<div class="w-full">
 							<div class="relative w-full p-6 overflow-y-auto">
-								<ul v-for="message in store.state.messages" :key="message" class="space-y-2">
-                                    <li v-if="message.playerid == store.state.player.id" class="flex justify-end">
-                                        <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                                                <span class="block"> {{ message.content }} </span>
-                                        </div>
-                                    </li>
-                                    <li v-else class="flex justify-start items-center space-x-4">
-                                            <!-- <img :src="store.methods.playerAvatar(store.methods.usersInfo(name))" class="h-10 w-10 rounded-full bg-white " alt=""> -->
-                                            <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                                                <span class="block"> {{ message.content }} </span>
-                                            </div>
-                                    </li>
-                                </ul>
+								<ul v-for="message in store.state.messages" :key="message" class="mb-2">
+                   <li v-if="message.playerid == store.state.player.id" class="flex justify-end">
+                       <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
+                               <span class="block"> {{ message.content }} </span>
+                       </div>
+                   </li>
+                   <li v-else class="flex justify-start items-center space-x-4">
+                           <img v-if="usersInfo(message.playerid)" :src="store.methods.playerAvatar(usersInfo(message.playerid))" class="h-10 w-10 rounded-full bg-white " alt="">
+                           <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
+                               <span class="block"> {{ message.content }}  </span>
+                           </div>
+                   </li>
+                </ul>
 							</div>
 						</div>
 					</div>
@@ -88,6 +88,7 @@ import { identifier } from '@babel/types';
 		    let messageDto={ id : props.id , content : store.state.message};
 		    // console.log("dto",messageDto);
 		    store.state.connection.emit("createMessage", messageDto);
+        store.state.message = ''
 	  }
     onMounted (async () => {
 
@@ -106,5 +107,15 @@ import { identifier } from '@babel/types';
         name: String,
         id: String
     })
+
+      function   usersInfo(id: number){
+        console.log("id", id)
+        for (var user of store.state.users) {
+            if (user.id == id){
+                return user
+            }
+        }
+        return null
+    }
 
 </script>
