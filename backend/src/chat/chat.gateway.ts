@@ -9,6 +9,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { Player } from 'src/players/player.entity';
 
 import { UsersService } from 'src/players/players.service';
+import { UserStatus } from 'src/players/player_status.enum';
 import { EntityColumnNotFound } from 'typeorm';
 import { ChatService } from './chat.service';
 import { membershipDto } from './dto/membership-dto';
@@ -332,14 +333,19 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       //console.log('event invite called !')
       await this.definePlayer(client);
       //guest
-      //console.log(this.user);
+
+      //check if the guest is playing
+      const status = await this.userService.getStatusByUserId(guest);
+      if (status == UserStatus.PLAYING)
+          console.log('The User is already playing')
+      else{
       let socketguest = await this.getSocketid(guest);
       console.log(socketguest + "Exist");
       if (socketguest)
         this.server.to(socketguest.id).emit('invitation', this.player.username);
       else
         console.log('you are trying to invite a user who is offline !')
-
+      }
 
     }
 

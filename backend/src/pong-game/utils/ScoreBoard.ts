@@ -17,6 +17,14 @@ export class ScoreBoard {
     return this._playerTwoScore;
   }
 
+  public set playerOneScore(score: number) {
+    this._playerOneScore = score;
+  }
+
+  public set playerTwoScore(score: number) {
+    this._playerTwoScore = score;
+  }
+
   public get round(): number {
     return this._round;
   }
