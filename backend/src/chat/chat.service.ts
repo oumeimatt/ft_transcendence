@@ -13,6 +13,7 @@ import { In } from 'typeorm';
 import { PlayerRepository } from 'src/players/player.repository';
 import { UsersService } from 'src/players/players.service';
 import { Player } from 'src/players/player.entity';
+import { memberDto } from './dto/member-dto';
 
 @Injectable()
 export class ChatService {
@@ -61,17 +62,23 @@ export class ChatService {
     }
    
 
-    async getMembersByRoomId(roomid:number):Promise<Player[]>{
+    async getMembersByRoomId(roomid:number):Promise<memberDto[]>{
+        let membersObj : memberDto[] =[];
+
         const usersid = await this.membershipRepo
         .createQueryBuilder('m')
         .where('m.roomid = :roomid', { roomid })
-        .select(['m.playerid'])
+        .select(['m.playerid', 'm.role'])
         .getMany();
 
         const members:Player[] = [];
         for (var id of usersid)
-            members.push(await this.userService.getUserById(id.playerid));
-        return members; //maybe I should select only [id && username]
+        {
+            let memberObj = {member: await this.userService.getUserById(id.playerid), role : id.role}
+            membersObj.push(memberObj);
+            console.log(memberObj.member.username);
+        }
+        return membersObj; //maybe I should select only [id && username]
     }
 
     async getRoomsForUser(playerid:number):Promise<chatroom[]>{

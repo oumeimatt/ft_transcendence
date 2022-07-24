@@ -6,6 +6,7 @@ import { Player } from 'src/players/player.entity';
 import { QueryResult } from 'typeorm';
 
 import { ChatService } from './chat.service';
+import { memberDto } from './dto/member-dto';
 import { RoomDto } from './dto/room-dto';
 import { membership } from './membership.entity';
 import { message } from './message.entity';
@@ -28,8 +29,8 @@ export class ChatController {
     }
 
     //display usernnames => return playerid to the server-side
-    @Get('members') //I should add role for each memebers =>  add to socket
-    getMembersByRoomId(@Query('roomid') roomid:number):Promise<Player[]>{ 
+    @Get('members') //I should add role for each members =>  add to socket
+    getMembersByRoomId(@Query('roomid') roomid:number):Promise<memberDto[]>{ 
         return this.chatService.getMembersByRoomId(roomid);
     }
 
