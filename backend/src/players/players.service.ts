@@ -20,6 +20,13 @@ export class UsersService {
 		// private readonly twofactorService: TwoFactorAuthenticationService,
 		private jwtService: JwtService,
 	) {}
+	
+	async getStatusByUserId(id:number):Promise<UserStatus>{
+		const user = await this.getUserById(id);
+		const status = user.status;
+
+		return status;
+	}
 
 	async getUserById(id: number): Promise<Player> {
 		const found = await this.userRepository.findOne(id);
