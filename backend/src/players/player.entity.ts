@@ -29,7 +29,7 @@ export class Player extends BaseEntity {
 	@Column()
 	losses: number;
 
-	@Column({ default: UserStatus.ONLINE})
+	@Column({ default: UserStatus.OFFLINE })
 	status: UserStatus;
 
 	// @Column({ type: 'date', nullable: true})
