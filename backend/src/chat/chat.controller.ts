@@ -18,9 +18,10 @@ export class ChatController {
     constructor( private chatService:ChatService){}
 
     // value returned content && playerid
+    //I should sent userid => if member
     @Get('messages') 
-    getAllMessageByRoomId(@Query('roomid') roomid:number):Promise<message[]>{
-        return this.chatService.getMessagesByroomId(roomid);   
+    getAllMessageByRoomId(@Query('roomid') roomid:number, @Query('playerid') playerid:number) :Promise<message[]>{
+        return this.chatService.getMessagesByroomId(roomid, playerid);   
     }
 
     @Get('DM')
@@ -30,8 +31,8 @@ export class ChatController {
 
     //display usernnames => return playerid to the server-side
     @Get('members') //I should add role for each members =>  add to socket
-    getMembersByRoomId(@Query('roomid') roomid:number):Promise<memberDto[]>{ 
-        return this.chatService.getMembersByRoomId(roomid);
+    getMembersByRoomId(@Query('roomid') roomid:number, @Query('playerid') playerid:number):Promise<memberDto[]>{ 
+        return this.chatService.getMembersByRoomId(roomid, playerid);
     }
 
     //Get role

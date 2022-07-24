@@ -62,8 +62,10 @@ export class ChatService {
     }
    
 
-    async getMembersByRoomId(roomid:number):Promise<memberDto[]>{
+    async getMembersByRoomId(roomid:number, playerid:number):Promise<memberDto[]>{
         let membersObj : memberDto[] =[];
+        if (await this.isMember(roomid, playerid))
+        {
 
         const usersid = await this.membershipRepo
         .createQueryBuilder('m')
@@ -78,6 +80,7 @@ export class ChatService {
             membersObj.push(memberObj);
             console.log(memberObj.member.username);
         }
+    }
         return membersObj; //maybe I should select only [id && username]
     }
 
@@ -120,14 +123,20 @@ export class ChatService {
         return Message;
     }
 
-    async getMessagesByroomId(roomid:number):Promise<message[]>{ 
-       const query = await this.messageRepo.createQueryBuilder('message')
-        .select(['message.content','message.playerid', 'message.roomid'])
-        .where("message.roomid = :roomid", {roomid})
-        .orderBy("message.created_at");
+    //Maybe I need to check if the user is member to this roomid before send
 
-       const messages = await query.getMany();
-       return messages;
+    async getMessagesByroomId(roomid:number, playerid:number):Promise<message[]>{ 
+
+        let messages :message[] =[];
+        if (await this.isMember(roomid, playerid))
+        {
+            const query = await this.messageRepo.createQueryBuilder('message')
+            .select(['message.content','message.playerid', 'message.roomid'])
+            .where("message.roomid = :roomid", {roomid})
+            .orderBy("message.created_at");
+            messages = await query.getMany();
+        }
+            return messages;
     }
 
     async getDMs(userid:number, receiverid:number):Promise<message[]>{
@@ -139,7 +148,7 @@ export class ChatService {
         let messages:message[]=[];
 
         if (room)
-            messages = await this.getMessagesByroomId(room.id);
+            messages = await this.getMessagesByroomId(room.id, userid);
         return messages;
     }  
 
