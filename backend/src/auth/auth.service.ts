@@ -65,6 +65,7 @@ export class AuthService {
 		const payload: JwtPayload = { username, id, two_fa };
 		const accessToken = await this.jwtService.sign(payload);
 		if (player.two_fa == false) {
+			console.log('HEREEEE ' + player.two_fa);
 			this.playerService.updateStatus(id, UserStatus.ONLINE);
 			res.cookie('connect_sid',[accessToken]);
 			res.redirect('http://localhost:3000/home');
@@ -78,6 +79,8 @@ export class AuthService {
 
 	async logout(id: number, req, res): Promise<any> {
 		console.log('logout');
+		const player = await this.playerService.getUserById(id);
+		console.log(player.username + player.two_fa);
 		await this.playerService.updateStatus(id, UserStatus.OFFLINE);
 		await logout();
 		await res.clearCookie('connect_sid', {domain: 'localhost', path: '/'});

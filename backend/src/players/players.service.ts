@@ -150,11 +150,9 @@ export class UsersService {
 
 	async findOrCreate(id: number, login: string): Promise<Player> {
 		const found = await this.userRepository.findOne({ where: { id } });
-		// if (found) {
-		// 	found.status = UserStatus.ONLINE;
-		// 	await found.save();
-		// 	return found;
-		// }
+		if (found) {
+			return found;
+		}
 		const newUser = new Player();
 		newUser.id = id;
 		newUser.username = login;
@@ -162,8 +160,6 @@ export class UsersService {
 		newUser.level = 0.0;
 		newUser.wins = 0;
 		newUser.losses = 0;
-		// newUser.status = UserStatus.ONLINE;
-		newUser.status = UserStatus.OFFLINE;
 		newUser.two_fa = false;
 		try {
 			await newUser.save();
@@ -213,6 +209,7 @@ export class UsersService {
 
 	async turnOnTwoFactorAuthentication(id:number) {
 		await this.userRepository.update(id, { two_fa: true });
+		console.log('Two factor authentication turned on');
 	}
 
 	//----------------------------- TwoFactorAuthentication service.ts

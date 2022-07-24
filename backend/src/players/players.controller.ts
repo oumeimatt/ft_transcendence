@@ -95,7 +95,7 @@ export class UsersController {
 	): Promise<string>{
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const imageUrl = await this.usersService.generateSecretQr(user);
-		console.log("imageUrl === ", imageUrl);
+		// console.log("imageUrl === ", imageUrl);
 		return imageUrl;
 	}
 
@@ -114,6 +114,7 @@ export class UsersController {
 		console.log('valid');
 		fs.unlinkSync(process.cwd() + "/public/qr_" + user.username + ".png");
 		await this.usersService.turnOnTwoFactorAuthentication(user.id);
+		console.log('two factor authentication enabled' + user.two_fa);
 	}
 
 	@Post('/twofactorauthentication')
