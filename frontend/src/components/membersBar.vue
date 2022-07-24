@@ -128,8 +128,8 @@
     })
     onMounted(async  () => {
 		await axios
-			.get('http://localhost:3001/chat/members' ,{params:{ roomid : props.id}, withCredentials: true })
-			.then((data) => {store.state.roomMembs = data.data; console.log("props.id" ,data.data)})
+			.get('http://localhost:3001/chat/members' ,{params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
+			.then((data) => {store.state.roomMembs = data.data; console.log("props.id" ,props.id)})
 			.catch(err => console.log(err.message))
 	})
     const owner = ref(false)

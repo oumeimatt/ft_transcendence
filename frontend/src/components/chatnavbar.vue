@@ -277,7 +277,12 @@ import { connect } from 'http2';
 		
 
 		
-		//store.state.connection.on("members", (data) => {members = data;});
+		// store.state.connection.on("members", (data) => {
+		// 	if (data && data[0].roomid == store.state.roomSelected)
+		// 	{
+		// 	store.state.roomMembs = data;
+		// 	}
+		// 	});
 
 		store.state.connection.on('invitation', (data) => {
 			opponent.value = data;
