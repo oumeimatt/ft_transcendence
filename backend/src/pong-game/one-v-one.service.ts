@@ -79,6 +79,7 @@ export class OneVOneService {
         client.data.side = 'right';
         client.data.role = 'player';
         const second = client;
+        await this.usersService.updateStatus(second.data.user.id, UserStatus.PLAYING);
         // function to add two players to a game
         this.joinPlayersToGame(first, second, wss);
       }

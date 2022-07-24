@@ -30,7 +30,7 @@ export class UsersService {
 	}
 
 	async getUserByUsername(username:string): Promise<Player> {
-		const found = await this.userRepository.findOne(username);
+		const found = await this.userRepository.findOne({username:username});
 		if (!found){
 			throw new NotFoundException(`User with ID "${username}" not found`);
 		}

@@ -81,6 +81,7 @@ export class ChatService {
         // .innerJoin('membership', 'room.id = membership.roomid')
         // .getMany();
 
+        //where playerid == playerid && user is not banned !!
          const roomsid = await this.membershipRepo
         .createQueryBuilder('p')
         .where('p.playerid = :playerid', { playerid })
@@ -121,6 +122,7 @@ export class ChatService {
        const messages = await query.getMany();
        return messages;
     }
+
     async getDMs(userid:number, receiverid:number):Promise<message[]>{
         //find roomid
 
@@ -162,6 +164,7 @@ export class ChatService {
             if (await rooms[i].ispublic == false && await this.isMember(rooms[i].id, playerid) === null)
             {
                // console.log(rooms[i].name +' is removed bcz private ');
+               //if the user is a member check if he is banned !!
                 rooms.splice(i , 1);
             }
             else
@@ -214,6 +217,18 @@ export class ChatService {
 
 
     /*
+    async updateBanStatus(playerid:number, roomid:number, ban:boolean):Promise<membership>{
+        const membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid});
+        membership.isbanned = ban; // true | false
+        await membership.save();
+
+        return membership;
+    }
+    */
+
+    /*
+        
+
     */
 
 }

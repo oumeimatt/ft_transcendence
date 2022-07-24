@@ -53,7 +53,7 @@
 						<div class=""> 
 							<p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
 							<!-- games  -->
-							<div class="scrollbar scrollbar-track-slate-900 scrollbar-thumb-slate-600 max-h-2/5">
+							<div class="scrollbar scrollbar-track-slate-900 scrollbar-thumb-slate-600 h-2/6 max-h-fit">
 
 								<div v-for="game in gamesHistory" :key="game" class="grid grid-cols-3 justify-itmes-center mt-4 h-4 ">
 									<div class="text-neutral-900 font-semibold ">  {{ game.winner.username }}</div>

@@ -69,6 +69,7 @@
 
 	function sendMessage(Id: any){
 		let messageDto={ id : Id , content : store.state.message};
+		console.log("dto",messageDto);
 		store.state.connection.emit("send-DM", messageDto);
 	}
 	const showMenu = ref(false)
