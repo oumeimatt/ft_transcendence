@@ -7,7 +7,7 @@
         <button @click.prevent="verifyCode" class=" inline-flex items-center justify-center p-0.5 ml-4 mr-8 overflow-hidden text-sm font-medium  rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white text-slate-900 focus:ring-2 focus:outline-none focus:ring-green-200 ">
            <span class=" px-5 py-3 transition-all ease-in duration-75  bg-slate-200 rounded-md group-hover:bg-opacity-0">
               Verify
-           </span >
+           </span>
         </button>
       </div>
     </div>
@@ -40,4 +40,3 @@
     background-size: cover;
   }
 </style>
-//-rj8l2W83HxmwPe1ZrqOE
