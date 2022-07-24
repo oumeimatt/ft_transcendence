@@ -28,8 +28,8 @@ export class ChatController {
     }
 
     //display usernnames => return playerid to the server-side
-    @Get('members')
-    getMembersByRoomId(@Query('roomid') roomid:number):Promise<Player[]>{
+    @Get('members') //I should add role for each memebers =>  add to socket
+    getMembersByRoomId(@Query('roomid') roomid:number):Promise<Player[]>{ 
         return this.chatService.getMembersByRoomId(roomid);
     }
 

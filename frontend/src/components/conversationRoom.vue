@@ -27,169 +27,33 @@
             </div>
           </div>
         </div>
-        <div class=" max-h-4/5 h-full scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 ">
-            <div>
-             <div class="w-full">
-
-                <!-- <div class="relative w-full p-6 overflow-y-auto">
-
-                  <ul class="space-y-2">
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/framdani.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Hidsdsdsdksmdksmkdlmsdkls</span>
-                         </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200  rounded-full shadow">
-                        <span class="block">Hiiii</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">how are you?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/mlachheb.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Loremnsectetur adipisicing elit. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">hdjnfjjfdnf?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dconsectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">hrem nsectetur adipisicingrem nsectetur adipisicingu?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem iponsectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">ffjgjgnfgjfgu</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem nsectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">hddddddm nsectetur adipisicingyou?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">hoddmkdfmfdkfnndf</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/iidzim.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur . </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200  rounded-full shadow">
-                        <span class="block">Hccccv</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">hobbbbbyo kjgjmg </span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorensectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/mlachheb.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200  rounded-full shadow">
-                        <span class="block">Hiiii</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-end">
-                      <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
-                        <span class="block">how are you?</span>
-                      </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/oel-yous.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Lorem ipsum dolor sit, amet consectetur adipisicing elitdfpkdfmkfdkkfkdfkkdf. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/mlachheb.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">Loremonsectetur adipisicing elit. </span>
-                        </div>
-                    </li>
-                    <li class="flex justify-start items-center space-x-4">
-                        <img src="../assets/mlachheb.jpeg" class="h-10 w-10 rounded-full  " alt="">
-                        <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
-                            <span class="block">idsjkndjkjdjsnkddjtetur adipisicing elit. </span>
-                        </div>
-                    </li>
-                  </ul>
-
-                </div> -->
-
-            
-          <!-- </div> -->
-        <!-- </div> -->
-      </div>
-    </div>
-        </div>
+				<div class="rounded-lg max-h-4/5 h-full scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 ">
+					<div>
+						<div class="w-full">
+							<div class="relative w-full p-6 overflow-y-auto">
+								<ul v-for="message in store.state.messages" :key="message" class="space-y-2">
+                                    <li v-if="message.playerid == store.state.player.id" class="flex justify-end">
+                                        <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-200 rounded-full shadow">
+                                                <span class="block"> {{ message.content }} </span>
+                                        </div>
+                                    </li>
+                                    <li v-else class="flex justify-start items-center space-x-4">
+                                            <!-- <img :src="store.methods.playerAvatar(store.methods.usersInfo(name))" class="h-10 w-10 rounded-full bg-white " alt=""> -->
+                                            <div class="relative max-w-xl px-4 py-2 bg-slate-600 text-gray-300 rounded-full shadow">
+                                                <span class="block"> {{ message.content }} </span>
+                                            </div>
+                                    </li>
+                                </ul>
+							</div>
+						</div>
+					</div>
+				</div>
         <div class=" h-small rounded relative mt-12">
             <div class="flex items-center justify-between  w-full p-3 border-t border-gray-800 ">
-              <input type="text" placeholder="Message"
+              <input v-model="store.state.message" type="text" placeholder="Message"
                 class="block h-3/6 w-full bottom-2/4 translate-y-2/4 py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
                 name="message" required />
-              <button type="submit">
+              <button @click="sendMessage" type="submit">
                 <svg class="w-6 h-6 text-gray-500 bottom-2/4 translate-y-3/4 origin-center transform rotate-90" xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20" fill="currentColor">
                   <path
@@ -220,7 +84,11 @@ import { identifier } from '@babel/types';
 
     }
     )
-
+    function sendMessage(){
+		    let messageDto={ id : props.id , content : store.state.message};
+		    // console.log("dto",messageDto);
+		    store.state.connection.emit("createMessage", messageDto);
+	  }
     onMounted (async () => {
 
       await axios
