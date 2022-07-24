@@ -6,7 +6,7 @@
 	    	<chatnavbar />
             <!-- <div class="bg-white text-black font-bold"> {{name }} {{ id }}</div> -->
 
-	    	<conversation :name="name" />
+	    	<conversation v-if="name" :name="name" />
 	    </div>
 	</div>
 </template>
