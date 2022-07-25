@@ -20,7 +20,7 @@
 									<svg v-if="ChatRoom.ispublic == false" xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 										<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 									</svg>
-									<img   v-if="ChatRoom.ispublic == true" src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
+									<img   v-if="ChatRoom.ispublic == true" :src="public_pic" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
 									<router-link @click="getMessages(ChatRoom.id)" :to="{name:'ChatRoom', params: {name: ChatRoom.name, id: ChatRoom.id }}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
 									<!-- <router-link  :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ ChatRoom.name }} </router-link>  -->
 								<!-- </div> -->
@@ -38,7 +38,7 @@
 								<svg  v-if="Room.ispublic == false" xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 								</svg>
-								<img  v-if="Room.ispublic == true" src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
+								<img  v-if="Room.ispublic == true" :src="public_pic" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
 								<router-link @click="getMessages(Room.id)" :to="{name:'ChatRoom', params: {name: Room.name , id: Room.id}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ Room.name }} </router-link>
 								<!-- <router-link :to="{name:'ChatRoom', params: {name: Room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ Room.name }} </router-link>  -->
 							<!-- </div> -->
@@ -132,6 +132,8 @@ import { connect } from 'http2';
 	const store = inject('store')
 	const router = useRouter()
     const route = useRoute()
+
+	const public_pic = ref(require('../assets/public.png'));
 
 	let invited = ref(false as boolean);
 	let invitationBy = ref('' as String)
