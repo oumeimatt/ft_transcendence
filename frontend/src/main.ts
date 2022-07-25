@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './index.css'
 import router from './router'
-import "../Container.sass"
+// import "../Container.sass"
 import * as Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'

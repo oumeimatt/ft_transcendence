@@ -130,6 +130,8 @@ import { connect } from 'http2';
 	const router = useRouter()
     const route = useRoute()
 
+	const public_pic = ref(require('../assets/public.png'));
+
 	let invited = ref(false as boolean);
 	let invitationBy = ref('' as String)
 	let opponent = ref('' as String);

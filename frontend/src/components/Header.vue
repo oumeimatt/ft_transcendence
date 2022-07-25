@@ -176,14 +176,10 @@
 			.then(data =>{ store.state.users = data.data ;})
 			.catch(err => console.log(err.message))
 
-		await axios
-			.get('http://localhost:3001/updateUsersStatus' ,{ withCredentials: true })
-			.then(() => {console.log('updated')})
-			.catch(err => console.log(err.message))
-		await axios
-			.get('http://localhost:3001/profile/58440' ,{ withCredentials: true })
-			.then((data) => { store.state.user = data.data ;console.log('user : ' , store.state.user.friends)})
-			.catch(err => console.log(err.message))
+		// await axios //! to be replaced by socket solution
+		// 	.get('http://localhost:3001/updateUsersStatus' ,{ withCredentials: true })
+		// 	.then(() => {console.log('updated')})
+		// 	.catch(err => console.log(err.message))
 	})
 	async function  generateFA(){
 	  await axios

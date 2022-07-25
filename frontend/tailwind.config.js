@@ -38,4 +38,11 @@ module.exports = {
   plugins: [
       require('ps-scrollbar-tailwind'),
   ],
+  css: {
+    loaderOptions: {
+      sass: {
+        data: `@import "/container.sass";`
+      }
+    }
+  }
 }

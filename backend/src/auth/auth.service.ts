@@ -1,4 +1,4 @@
-import { Injectable, Request, Response } from '@nestjs/common';
+import { BadRequestException, Injectable, Request, Response } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Player } from '../players/player.entity';
 import { UsersService } from '../players/players.service';
@@ -40,7 +40,12 @@ export class AuthService {
 
 	async login(@Request() req, @Response() res) {
 		console.log('login');
-		passport.authenticate('42');
+		// try {
+			passport.authenticate('42');
+		// } catch (error) {
+		// 	console.log(error);
+		// 	throw new BadRequestException('Login failed');
+		// }
 		if (!req.user) {
 			return 'no user from 42';
 		}
