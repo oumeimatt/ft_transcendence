@@ -14,6 +14,8 @@ import { PlayerRepository } from 'src/players/player.repository';
 import { UsersService } from 'src/players/players.service';
 import { Player } from 'src/players/player.entity';
 import { memberDto } from './dto/member-dto';
+import { RelationsService } from 'src/relations/relations.service';
+import { RelationStatus } from 'src/relations/relation_status.enum';
 
 @Injectable()
 export class ChatService {
@@ -32,7 +34,9 @@ export class ChatService {
         @InjectRepository(PlayerRepository)
         protected PlayerRepository:PlayerRepository,
 
-       protected userService:UsersService,
+        protected userService:UsersService,
+
+        protected relationService:RelationsService
         
         
     ){
@@ -44,7 +48,7 @@ export class ChatService {
     }
 
     async createDM(sender:number, receiver:number):Promise<chatroom>{
-        //check if relation => b
+        
         const chatroom = await this.roomRepo.createDM(sender, receiver);
         let User = await this.userService.getUserById(sender);
         await this.addMember(chatroom, User, RoleStatus.USER);
@@ -143,14 +147,19 @@ export class ChatService {
     async getDMs(userid:number, receiverid:number):Promise<message[]>{
         
         //! check if player is blocked 
-        
-        let room =await this.getRoomByName(userid+":"+receiverid);
-        if (!room)
-            room = await this.getRoomByName(receiverid+":"+userid);
-        let messages:message[]=[];
+        let messages : message[]=[]
 
-        if (room)
-            messages = await this.getMessagesByroomId(room.id, userid);
+        if ( await this.relationService.checkBlock(userid, receiverid) == null)
+        {
+            let room =await this.getRoomByName(userid+":"+receiverid);
+            if (!room)
+                room = await this.getRoomByName(receiverid+":"+userid);
+      
+
+            if (room)
+                messages = await this.getMessagesByroomId(room.id, userid);
+            
+        }
         return messages;
     }  
 

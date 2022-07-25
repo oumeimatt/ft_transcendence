@@ -64,8 +64,9 @@ export class RelationsService {
 		console.log('friend removed');
 	}
 
-	async checkBlock(user: Player, blocked_id: number): Promise<Relation> {
+	async checkBlock(user_id: number, blocked_id: number): Promise<Relation> {
 		const blocked = await this.usersService.getUserById(blocked_id);
+		let user = await this.usersService.getUserById(user_id);
 		return await this.relationRepository.checkBlock(user, blocked);
 	}
 }

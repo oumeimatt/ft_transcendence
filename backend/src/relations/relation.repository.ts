@@ -68,9 +68,10 @@ export class RelationRepository extends Repository<Relation> {
 	async checkBlock(user: Player, blocked: Player): Promise<Relation> {
 		const relation = await this.findOne({ where: { sender: user, receiver: blocked.id, status: RelationStatus.BLOCKED } });
 		const relation2 = await this.findOne({ where: { sender: blocked, receiver: user.id, status: RelationStatus.BLOCKED } });
-		if (relation || relation2) {
+		if (relation )
 			return relation;
-		}
+		 else if (relation2) 
+			return relation2;
 		return null;
 	}	
 }

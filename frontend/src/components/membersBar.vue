@@ -152,6 +152,12 @@
     function setAdmin(){
         // user to set as admin id == userId.value
         // room id ==== roomId.value
+        let membershipDto ={
+            userid:userId.value,
+            roomid:roomId.value
+        }
+
+        store.state.connection.emit('set-admin', membershipDto );
     }
 
     function Ban(){
