@@ -118,18 +118,29 @@
       //   console.log(isMember.value)
       //   isMember.value = true
       // }
-
+      
       joinRoom.value = true
+      
     }
 
     function leave(){
-      
+      store.state.connection.emit('leave-channel', props.id);
+      store.state.roomSelected = props.id;
     }
 
     function sendPassTojoinRoom() {
       // send the password of the channel to backend --- passwordToJoin ----
+      let joinChannelDto ={
+        roomid : props.id,
+        password :passwordToJoin.value,
+      }
+      store.state.connection.emit('join-channel', joinChannelDto);
+      store.state.roomSelected = props.id;
+
       passwordToJoin.value = ''
       joinRoom.value = false
+      
+      
     }
 
     function cancelJoin(){

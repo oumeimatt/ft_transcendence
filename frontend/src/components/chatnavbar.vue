@@ -21,7 +21,7 @@
 										<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 									</svg>
 									<img   v-if="ChatRoom.ispublic == true" :src="public_pic" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-									<router-link @click.prevent="getMessages(ChatRoom.id)" :to="{name:'ChatRoom', params: {name: ChatRoom.name, id: ChatRoom.id , isPublic: ChatRoom.ispublic}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
+									<router-link @click.prevent="getMessagesMembers(ChatRoom.id)" :to="{name:'ChatRoom', params: {name: ChatRoom.name, id: ChatRoom.id , isPublic: ChatRoom.ispublic}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
 									<!-- <router-link  :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ ChatRoom.name }} </router-link>  -->
 								<!-- </div> -->
 								<!-- <div v-if="ChatRoom.ischannel == true" class="flex justify-start items-center space-x-2 mt-4">  -->
@@ -39,7 +39,7 @@
 									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 								</svg>
 								<img  v-if="Room.ispublic == true" :src="public_pic" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-								<router-link @click.prevent="getMessages(Room.id)" :to="{name:'ChatRoom', params: {name: Room.name , id: Room.id, isPublic: Room.ispublic}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ Room.name }} </router-link>
+								<router-link @click.prevent="getMessagesMembers(Room.id)" :to="{name:'ChatRoom', params: {name: Room.name , id: Room.id, isPublic: Room.ispublic}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ Room.name }} </router-link>
 							</div>
 						</div>
 					</div>
@@ -130,7 +130,7 @@ import { connect } from 'http2';
 	const router = useRouter()
     const route = useRoute()
 
-	const public_pic = ref(require('../assets/public.png'));
+	//const public_pic = ref(require('../assets/public.png'));
 
 	let invited = ref(false as boolean);
 	let invitationBy = ref('' as String)
@@ -191,10 +191,15 @@ import { connect } from 'http2';
 
 
 
-	async function getMessages(roomid : number){
+	async function getMessagesMembers(roomid : number){
 		await axios.get('http://localhost:3001/chat/messages', {params:{roomid:roomid, playerid:store.state.player.id}, withCredentials:true})
 		.then(data=>{store.state.messages = data.data; })
 		store.state.roomSelected=roomid;
+
+		await axios
+			.get('http://localhost:3001/chat/members' ,{params:{ roomid : roomid, playerid: store.state.player.id}, withCredentials: true })
+			.then((data) => {store.state.roomMembs = data.data;})
+			.catch(err => console.log(err.message))
 	}
 
 	// function getMembers(id){
@@ -262,11 +267,13 @@ import { connect } from 'http2';
 
 		store.state.connection.on("sendMessage", (data) => {
 			//listen to this event if and only if the roomid selected is the one we get messages from
-			console.log('listening to event message '+ store.state.roomSelected);
-			if (data && data[0].roomid == store.state.roomSelected)
+			console.log('listening to event message '+ data);
+			if (data.length == 0)
+				store.state.messages = [];
+			else if (data.length != 0 && data[0].roomid == store.state.roomSelected)
 			{
-				console.log(data[0].roomid);
-				console.log(store.state.roomSelected);
+				// console.log(data[0].roomid);
+				// console.log(store.state.roomSelected);
 				store.state.messages = data;
 			}
 			
@@ -279,12 +286,12 @@ import { connect } from 'http2';
 		
 
 		
-		// store.state.connection.on("members", (data) => {
-		// 	if (data && data[0].roomid == store.state.roomSelected)
-		// 	{
-		// 	store.state.roomMembs = data;
-		// 	}
-		// 	});
+		store.state.connection.on("members", (data) => {
+			if (data && data[0].roomid == store.state.roomSelected)
+			{
+				store.state.roomMembs = data;
+			}
+			});
 
 		store.state.connection.on('invitation', (data) => {
 			opponent.value = data;

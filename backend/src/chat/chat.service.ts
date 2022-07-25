@@ -78,7 +78,7 @@ export class ChatService {
         {
             let memberObj = {member: await this.userService.getUserById(id.playerid), role : id.role}
             membersObj.push(memberObj);
-            console.log(memberObj.member.username);
+           // console.log(memberObj.member.username);
         }
     }
         return membersObj; //maybe I should select only [id && username]
@@ -200,6 +200,7 @@ export class ChatService {
     }
 
     async createMembership(playerid:number, roomid:number){
+        //before creating membership => check ppwd
         const Membership = new membership();
         Membership.playerid = playerid;
         Membership.roomid = roomid;
