@@ -10,17 +10,17 @@
                 <img @click="getMmebership" src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
               </div>
 
-              <div v-if="membership && showMemberOptions == true" >
+              <div v-if="membership && showEdit == true" >
                     <div v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class=" rounded-md mt-4">
-                        <div v-if="isPublic == 'true'" @click="setPass = !setPass" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Set Password
+                        <!-- <div v-if="isPublic == 'true'" @click="setPass = !setPass" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Set Password
+                        </div> -->
+                        <div v-if="isPublic == 'true'" @click="changePass = !changePass"  class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Change Password
                         </div>
-                        <div v-if="isPublic == 'false'" @click="changePass = !changePass"  class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Change Password
-                        </div>
-                        <div v-if="isPublic == 'false'" @click="removePassword" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Remove Password
+                        <div v-if="isPublic == 'true'" @click="removePassword" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Remove Password
                         </div>
                     </div>
               </div>
-            <div v-if="setPass" class="fixed inset-60 z-50 ">
+            <!-- <div v-if="setPass" class="fixed inset-60 z-50 ">
                 <div class=" my-6 mx-auto max-w-sm text-center ">
   
                     <div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div v-if="changePass == true" class="fixed inset-60 z-50 ">
                 <div class=" my-6 mx-auto max-w-sm text-center ">
@@ -86,24 +86,27 @@
             <h1 class="font-bold text-xl text-gray-300 mb-4"> Members </h1>
              <div  class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
                 <div v-for="member in store.state.roomMembs">
-                    <div @click="showMemberOptions = !showMemberOptions" class="flex justify-start items-center space-x-2 mt-4"> 
+                    <div v-if="member.role != 'OWNER'" @click="showOptions(member.member.id)" class="flex justify-start items-center space-x-2 mt-4"> 
                         <img  :src="store.methods.playerAvatar(member.member)" class="bg-white lg:ml-8 h-8 w-8 rounded-full">
                         <span  class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ member.member.username }} </span> 
                     </div>
                 </div>
-                <!-- <div v-if="showMemberOptions" class="z-10 divide-y bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
-				    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" >
-				    <li>
-				    	<div class="block px-4 py-2 hover:bg-gray-100 cursor-pointer dark:hover:bg-gray-600 dark:hover:text-white">Set as admin </div>
-				    </li>
-				    <li>
-				    	<a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ban</a>
-				    </li>
-				    <li>
-				    	<a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mute</a>
-				    </li>
-				    </ul>
-				</div> -->
+                    <div v-if="showMemberOptions" class="z-10 divide-y bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
+                        <ul class="py-1 text-sm text-gray-700 text-gray-200" >
+                        <li @click="setAdmin">
+                            <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
+                        </li>
+                        <li @click="Ban">
+                            <span  class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Ban</span>
+                        </li>
+                        <li @click="Mute">
+                            <span  class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Mute</span>
+                        </li>
+                        <li @click="Remove">
+                            <span  class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Remove</span>
+                        </li>
+                        </ul>
+                    </div>
               
 
 
@@ -127,14 +130,45 @@
         isPublic: String,
 
     })
+
         const owner = ref(false)
         const setPass = ref(false)
         const changePass = ref(false)
         const showMemberOptions = ref(false)
         const settedPassword = ref('' as string)
         const changedPassword = ref('' as string)
+        const userId = ref(-1 as number)
+        const roomId = ref(-1 as number)
+        const showEdit = ref(false as boolean)
+
+    function showOptions(userid: number){
+        showMemberOptions.value = !showMemberOptions.value
+        userId.value = userid
+        roomId.value = parseInt(props.id, 10)
+        console.log(userId.value, roomId.value)
+    }
 
 
+    function setAdmin(){
+        // user to set as admin id == userId.value
+        // room id ==== roomId.value
+    }
+
+    function Ban(){
+        // user to ban id == userId.value
+        // room id ==== roomId.value 
+    }
+
+    function Mute(){
+        // user to mute id == userId.value
+        // room id ==== roomId.value 
+    }
+
+
+    function Remove(){
+        // user to remove from channel id == userId.value
+        // room id ==== roomId.value 
+    }
 
     function CancelChangePass(){
         changedPassword.value = ''
@@ -149,18 +183,18 @@
         changePass.value = false 
     }
 
-    function cancelSettingPass (){
-        settedPassword.value = ''
-        setPass.value = false
-    }
+    // function cancelSettingPass (){
+    //     settedPassword.value = ''
+    //     setPass.value = false
+    // }
 
     
-    function saveSettedPassowrd() {
+    // function saveSettedPassowrd() {
 
-        // send the password to backend ----settedPassword.value------
-        settedPassword.value = ''
-        setPass.value = false
-    }
+    //     // send the password to backend ----settedPassword.value------
+    //     settedPassword.value = ''
+    //     setPass.value = false
+    // }
 
     function removePassword(){
         // remove password 
@@ -179,7 +213,7 @@
 
     const membership = ref({} as member)
     async function getMmebership(){
-            showMemberOptions.value = ! showMemberOptions.value
+            showEdit.value = ! showEdit.value
             await axios
             .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
             .then((data) => {membership.value = data.data;})
