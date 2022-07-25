@@ -2,8 +2,8 @@
   <div>
     <Header />
     <div id="div-canvas">
-        <canvas id="responsive-canvas" ref="game"></canvas>
-        <p style="color:aquamarine; text-align: center;">{{ message }}</p>
+        <canvas class="mt-12 content-center" id="responsive-canvas" ref="game"></canvas>
+        <p class="mt-8 text-xl" style="color:aquamarine; text-align: center;">{{ message }}</p>
     </div>
     <Footer />
     </div>
@@ -34,7 +34,6 @@ onMounted(() => {
         window.location.href = '/chat';
     }
     else {
-        console.log(props);
         socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
         query: {
                 'role': 'player',

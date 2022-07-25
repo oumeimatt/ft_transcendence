@@ -13,6 +13,7 @@ import { In } from 'typeorm';
 import { PlayerRepository } from 'src/players/player.repository';
 import { UsersService } from 'src/players/players.service';
 import { Player } from 'src/players/player.entity';
+import { memberDto } from './dto/member-dto';
 
 @Injectable()
 export class ChatService {
@@ -61,17 +62,26 @@ export class ChatService {
     }
    
 
-    async getMembersByRoomId(roomid:number):Promise<Player[]>{
+    async getMembersByRoomId(roomid:number, playerid:number):Promise<memberDto[]>{
+        let membersObj : memberDto[] =[];
+        if (await this.isMember(roomid, playerid))
+        {
+
         const usersid = await this.membershipRepo
         .createQueryBuilder('m')
         .where('m.roomid = :roomid', { roomid })
-        .select(['m.playerid'])
+        .select(['m.playerid', 'm.role'])
         .getMany();
 
         const members:Player[] = [];
         for (var id of usersid)
-            members.push(await this.userService.getUserById(id.playerid));
-        return members; //maybe I should select only [id && username]
+        {
+            let memberObj = {member: await this.userService.getUserById(id.playerid), role : id.role}
+            membersObj.push(memberObj);
+            console.log(memberObj.member.username);
+        }
+    }
+        return membersObj; //maybe I should select only [id && username]
     }
 
     async getRoomsForUser(playerid:number):Promise<chatroom[]>{
@@ -113,14 +123,20 @@ export class ChatService {
         return Message;
     }
 
-    async getMessagesByroomId(roomid:number):Promise<message[]>{ 
-       const query = await this.messageRepo.createQueryBuilder('message')
-        .select(['message.content','message.playerid', 'message.roomid'])
-        .where("message.roomid = :roomid", {roomid})
-        .orderBy("message.created_at");
+    //Maybe I need to check if the user is member to this roomid before send
 
-       const messages = await query.getMany();
-       return messages;
+    async getMessagesByroomId(roomid:number, playerid:number):Promise<message[]>{ 
+
+        let messages :message[] =[];
+        if (await this.isMember(roomid, playerid))
+        {
+            const query = await this.messageRepo.createQueryBuilder('message')
+            .select(['message.content','message.playerid', 'message.roomid'])
+            .where("message.roomid = :roomid", {roomid})
+            .orderBy("message.created_at");
+            messages = await query.getMany();
+        }
+            return messages;
     }
 
     async getDMs(userid:number, receiverid:number):Promise<message[]>{
@@ -132,7 +148,7 @@ export class ChatService {
         let messages:message[]=[];
 
         if (room)
-            messages = await this.getMessagesByroomId(room.id);
+            messages = await this.getMessagesByroomId(room.id, userid);
         return messages;
     }  
 

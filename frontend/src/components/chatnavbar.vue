@@ -20,8 +20,8 @@
 									<svg v-if="ChatRoom.ispublic == false" xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 										<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 									</svg>
-									<img   v-if="ChatRoom.ispublic == true" src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-									<router-link  :to="{name:'ChatRoom', params: {name: ChatRoom.name, id: ChatRoom.id }}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
+									<img   v-if="ChatRoom.ispublic == true" :src="public_pic" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
+									<router-link @click="getMessages(ChatRoom.id)" :to="{name:'ChatRoom', params: {name: ChatRoom.name, id: ChatRoom.id }}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
 									<!-- <router-link  :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ ChatRoom.name }} </router-link>  -->
 								<!-- </div> -->
 								<!-- <div v-if="ChatRoom.ischannel == true" class="flex justify-start items-center space-x-2 mt-4">  -->
@@ -38,8 +38,8 @@
 								<svg  v-if="Room.ispublic == false" xmlns="http://www.w3.org/2000/svg" class=" lg:ml-8 h-8 w-8 fill-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 								</svg>
-								<img  v-if="Room.ispublic == true" src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-								<router-link :to="{name:'ChatRoom', params: {name: Room.name , id: Room.id}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ Room.name }} </router-link>
+								<img  v-if="Room.ispublic == true" :src="public_pic" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
+								<router-link @click="getMessages(Room.id)" :to="{name:'ChatRoom', params: {name: Room.name , id: Room.id}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ Room.name }} </router-link>
 								<!-- <router-link :to="{name:'ChatRoom', params: {name: Room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ Room.name }} </router-link>  -->
 							<!-- </div> -->
 							<!-- <div  v-if="Room.ischannel == true" class="flex justify-start items-center space-x-2 mt-4">  -->
@@ -81,13 +81,13 @@
 									<div v-for="user in matchingNames" :key="user" class="">
 										<div @click="addToMembers(user)" v-if="user != store.state.player.username">  {{ user }}</div>
 									</div>
-									<div class="flex scrollbar scrollbar-track-slate-300 scrollbar-thumb-slate-600">
+									<div v-if="room.players.length > 0" class="flex scrollbar scrollbar-track-slate-300 scrollbar-thumb-slate-600">
 										<div v-for="player in room.players" :key="player" class="bg-slate-300 text-slate-700 w-fit h-fit p-2 mb-2 rounded mr-2"> {{ player }} </div>
 									</div>
 								</form>
 								<div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
 									<button @click="CancelCreate" class="text-gray-800 border border-solid white hover:bg-black hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" >
-										Close
+										Cancel
 									</button>
 									<button @click="sendRoom" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-black uppercase px-6 py-3 text-sm outline-none  " type="button" >
 										Create channel
@@ -133,6 +133,8 @@ import { connect } from 'http2';
 	const router = useRouter()
     const route = useRoute()
 
+	const public_pic = ref(require('../assets/public.png'));
+
 	let invited = ref(false as boolean);
 	let invitationBy = ref('' as String)
 	let opponent = ref('' as String);
@@ -150,9 +152,10 @@ import { connect } from 'http2';
 	function CancelCreate(){
 		room.name = ''
 		room.privacy = ''
-		room.members = []
+		room.players = []
 		RoomMember.value = ''
 		showCreate.value = false
+		console.log(room.members)
 	}
 	const showCreate = ref(false)
 	const showAllRooms = ref(false)
@@ -190,13 +193,14 @@ import { connect } from 'http2';
 
 
 
-	// async function getMessage(roomid : number){
-	// 	await axios.get('http://localhost:3001/chat/messages', {params:{roomid:roomid}, withCredentials:true})
-	// 	.then(data=>{})
-	// }
+	async function getMessages(roomid : number){
+		await axios.get('http://localhost:3001/chat/messages', {params:{roomid:roomid, playerid:store.state.player.id}, withCredentials:true})
+		.then(data=>{store.state.messages = data.data; })
+		store.state.roomSelected=roomid;
+	}
 
 	// function getMembers(id){
-	// 	await axios.get('http://localhost:3001/chat/members', {params:{roomid:id}, withCredentials:true})
+	// 	await axios.get('http://localhost:3001/chat/members', {params:{roomid:id, playerid:store.state.id}, withCredentials:true})
 	// 	.then(data=>{})
 	// }
 	function CreateDM(id: number){
@@ -267,12 +271,22 @@ import { connect } from 'http2';
 				console.log(store.state.roomSelected);
 				store.state.messages = data;
 			}
-	 });
+			
+	 }
+	 );
+	 store.state.connection.on('room-exist', (data) => {alert(data + " : Room already exist with that Name !! ")});
+	 store.state.connection.on('player-playing', (data) =>{alert(`${data} is already playing !!`)})
+	 store.state.connection.on('player-offline', data => {alert(`${data} is offline !!`)})
 	
 		
 
 		
-		//store.state.connection.on("members", (data) => {members = data;});
+		// store.state.connection.on("members", (data) => {
+		// 	if (data && data[0].roomid == store.state.roomSelected)
+		// 	{
+		// 	store.state.roomMembs = data;
+		// 	}
+		// 	});
 
 		store.state.connection.on('invitation', (data) => {
 			opponent.value = data;

@@ -81,7 +81,7 @@
 	<!--  -->
 	</div>
 	<div v-if="showModal" class="fixed inset-60 z-50 ">
-	  <div class=" my-6 mx-auto max-w-sm text-center ">
+	  <div class=" my-6 mx-auto max-w-lg text-center ">
 		<div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
 		  <div class=" p-5 border-b border-solid border-slate-200 rounded-t">
 			<h3 class=" m-auto font-semibold text-xl">Settings </h3>

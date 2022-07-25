@@ -6,7 +6,7 @@
                 <!-- ********* chat room ********  -->
               <img src="../assets/group.png" class="mx-auto" >
               <div  class=" flex itmes-center justify-center text-center  -mt-[40px] "> 
-                <p class="font-bold lg:text-2xl md:text-2xl text-gray-400"> {{ name }} </p> 
+                <p class="font-bold lg:text-2xl md:text-2xl text-gray-400"> {{ name }}</p> 
                 <img  src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
               </div>
 
@@ -70,11 +70,14 @@
           <div class="mt-16 ">
             <h1 class="font-bold text-xl text-gray-300 mb-4"> Admins </h1>
              <div class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
-                <!-- <div v-for="admin in store.methods.RoomInfo(name).admins">
-                    <div  class="flex justify-start items-center space-x-2 mt-4"> 
-                        <img v-if="store.methods.usersInfo(admin)" :src="store.methods.usersInfo(admin).pdp" class="lg:ml-8 h-8 w-8 rounded-full"> <span v-if="store.methods.usersInfo(admin)" class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ store.methods.usersInfo(admin).name }} </span> 
+                <div v-for="member in store.state.roomMembs">
+                    <div v-if="member.role == 'ADMIN'" class="flex justify-start items-center space-x-2 mt-4"> 
+                        <img  :src="store.methods.playerAvatar(member.member)" class="bg-white lg:ml-8 h-8 w-8 rounded-full"> <span  class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ member.member.username }} </span> 
                     </div>
-                </div> -->
+                    <div v-if="member.role == 'OWNER'" class="flex justify-start items-center space-x-2 mt-4"> 
+                        <img  :src="store.methods.playerAvatar(member.member)" class="bg-white lg:ml-8 h-8 w-8 rounded-full"> <span  class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ member.member.username }} </span> 
+                    </div>
+                </div>
              </div>
           </div>
 
@@ -83,13 +86,12 @@
           <div class="mt-16">
             <h1 class="font-bold text-xl text-gray-300 mb-4"> Members </h1>
              <div  class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
-                <!-- <div v-for="member in store.methods.RoomInfo(name).members">
+                <div v-for="member in store.state.roomMembs">
                     <div @click="showMemberOptions = !showMemberOptions" class="flex justify-start items-center space-x-2 mt-4"> 
-                        <img v-if="store.methods.usersInfo(member)" :src="store.methods.usersInfo(member).pdp" class="lg:ml-8 h-8 w-8 rounded-full">
-                        <span v-if="store.methods.usersInfo(member)" class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ store.methods.usersInfo(member).name }} </span> 
+                        <img  :src="store.methods.playerAvatar(member.member)" class="bg-white lg:ml-8 h-8 w-8 rounded-full">
+                        <span  class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ member.member.username }} </span> 
                     </div>
-
-                </div> -->
+                </div>
                 <!-- <div v-if="showMemberOptions" class="z-10 divide-y bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
 				    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" >
 				    <li>
@@ -117,12 +119,19 @@
 </template>
 
 <script lang="ts" setup>
+    import axios from 'axios';
     import {inject, ref, onMounted, onUpdated} from 'vue';
     const store = inject('store')
     const props = defineProps({
         name: String,
         id: String
     })
+    onMounted(async  () => {
+		await axios
+			.get('http://localhost:3001/chat/members' ,{params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
+			.then((data) => {store.state.roomMembs = data.data; console.log("props.id" ,props.id)})
+			.catch(err => console.log(err.message))
+	})
     const owner = ref(false)
     const setPass = ref(false)
     const changePass = ref(false)

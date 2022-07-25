@@ -3,8 +3,8 @@
   <div v-if="store.state.player.status != 'offline'" class="Container">
     <div class="grid grid-cols-6 gap-px ">
       <chatnavbar/>
-      <conversationRoom :name="name" :id="id"/>
-      <membersBar :name="name" :id="id"/>
+      <conversationRoom v-if="id" :name="name" :id="id"/>
+      <membersBar v-if="id" :name="name" :id="id"/>
     </div>
   </div>
 </template>

@@ -6,6 +6,7 @@ import { Player } from 'src/players/player.entity';
 import { QueryResult } from 'typeorm';
 
 import { ChatService } from './chat.service';
+import { memberDto } from './dto/member-dto';
 import { RoomDto } from './dto/room-dto';
 import { membership } from './membership.entity';
 import { message } from './message.entity';
@@ -17,9 +18,10 @@ export class ChatController {
     constructor( private chatService:ChatService){}
 
     // value returned content && playerid
+    //I should sent userid => if member
     @Get('messages') 
-    getAllMessageByRoomId(@Query('roomid') roomid:number):Promise<message[]>{
-        return this.chatService.getMessagesByroomId(roomid);   
+    getAllMessageByRoomId(@Query('roomid') roomid:number, @Query('playerid') playerid:number) :Promise<message[]>{
+        return this.chatService.getMessagesByroomId(roomid, playerid);   
     }
 
     @Get('DM')
@@ -28,9 +30,9 @@ export class ChatController {
     }
 
     //display usernnames => return playerid to the server-side
-    @Get('members')
-    getMembersByRoomId(@Query('roomid') roomid:number):Promise<Player[]>{
-        return this.chatService.getMembersByRoomId(roomid);
+    @Get('members') //I should add role for each members =>  add to socket
+    getMembersByRoomId(@Query('roomid') roomid:number, @Query('playerid') playerid:number):Promise<memberDto[]>{ 
+        return this.chatService.getMembersByRoomId(roomid, playerid);
     }
 
     //Get role
