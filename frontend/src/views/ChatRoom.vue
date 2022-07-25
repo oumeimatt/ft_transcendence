@@ -3,8 +3,9 @@
   <div v-if="store.state.player.status != 'offline'" class="Container">
     <div class="grid grid-cols-6 gap-px ">
       <chatnavbar/>
-      <conversationRoom v-if="id" :name="name" :id="id"/>
-      <membersBar v-if="id" :name="name" :id="id"/>
+      <!-- <div> {{ isMember }}}</div> -->
+      <conversationRoom v-if="name && id && isPublic" :name="name" :id="id" :isPublic="isPublic" />
+      <membersBar v-if="name && id && isPublic " :name="name" :id="id" :isPublic="isPublic" />
     </div>
   </div>
 </template>
@@ -19,7 +20,8 @@ import conversationRoom from '../components/conversationRoom.vue'
 
 const props = defineProps({
     name: String,
-    id: String
+    id: String,
+    isPublic: String,
 })
 const store = inject('store')
 const channelName = ref('')

@@ -2,25 +2,23 @@
     <div id="folio" class="invisible md:visible lg:visible col-span-1 lg:col-span-4 md:col-span-4 h-screen ">
         <div class="relative h-small bg-myblue rounded-lg">
             <h1 class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> {{ name }} </h1>
-            <button v-if="isMember == true" class="bg-slate-900 rounded h-10 w-36 font-bold absolute text-red-700 right-6 bottom-2/4 translate-y-2/4 hover:bg-red-800 hover:text-slate-900" > Leave room </button>
-            <button v-else class="bg-slate-300 rounded h-10 w-36 font-bold absolute text-gray-800 right-6 bottom-2/4 translate-y-2/4 hover:bg-slate-400" > Join Room </button>
+            <button v-if="isMember == true"  @click.prevent="leave" class="bg-slate-900 rounded h-10 w-36 font-bold absolute text-red-700 right-6 bottom-2/4 translate-y-2/4 hover:bg-red-800 hover:text-slate-900" > Leave room </button>
+            <button v-else @click.prevent="join"  class="bg-slate-300 rounded h-10 w-36 font-bold absolute text-gray-800 right-6 bottom-2/4 translate-y-2/4 hover:bg-slate-400" > Join Room </button>
         </div>
-        <div v-if="joinRoom" class="fixed inset-60 z-50 ">
+        <div v-if="joinRoom == true" class="fixed inset-60 z-50 ">
           <div class=" my-6 mx-auto max-w-sm text-center ">
-                <!--content-->
             <div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
-                  <!--header-->
               <div class=" p-5 border-b border-solid border-slate-200 rounded-t">
                 <h3 class=" m-auto font-semibold text-xl"> {{name}} </h3>
               </div>
 								<form class=" grid gap-3 grid-cols-1  p-6 border-t border-solid border-slate-200 rounded-b">
-									 <input type="password" placeholder="Password" class="bg-neutral-200 border-b rounded h-8 pl-4">
+									 <input v-model="passwordToJoin" type="password" placeholder="Password" class="bg-neutral-200 border-b rounded h-8 pl-4">
 								</form>
               <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-                <button @click="joinRoom = !joinRoom" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
+                <button @click="cancelJoin" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button">
                   Cancel
                 </button>
-                <button @click="enterPassowrd" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
+                <button @click="sendPassTojoinRoom" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button">
                   Join Room
                 </button>
               </div>
@@ -66,47 +64,89 @@
 </template>
 
 <script lang="ts" setup>
-    import {inject, onMounted, onUpdated,ref} from 'vue';
+    import {inject, onMounted, onUpdated,ref, computed, watch} from 'vue';
 	  import axios from 'axios';
-import { identifier } from '@babel/types';
+    import { identifier } from '@babel/types';
+    const props = defineProps({
+        name: String,
+        id: String,
+        isPublic: String,
+    })
     const joinRoom = ref(false)
-    const isMember = ref(false)
-    onUpdated(async () => {
-		  await axios
-          .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
-          .then(data =>{ store.state.roominfo = data.data ; }) 
-          .catch(err => { console.log(err)})
+    const store = inject('store')
+    const isMember = ref(false as boolean)
+    const passwordToJoin = ref('' as string)
+
+    // onMounted (async () => {
+      
+      
+      
+      
+      
+      
+      onUpdated(async () => {
+        await axios
+        .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
+        .then(data =>{ store.state.roominfo = data.data ; console.log("player idddddd ---- ",props.id)}) 
+        .catch(err => { console.log(err)})
+
+      if (store.state.roominfo.playerid != undefined) 
+        isMember.value =  true 
+      else
+        isMember.value = false
+      console.log("isMember = "+ isMember.value, store.state.roominfo.playerid +"roominfo")
+      // watch(isMember, (currentValue, oldValue) => {
+      //   console.log("curr",currentValue);
+      //   console.log("old",oldValue);
+      // })
+		  // await axios
+      //     .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
+      //     .then(data =>{ store.state.roominfo = data.data ; }) 
+      //     .catch(err => { console.log(err)})
     
 
-        if (store.state.roominfo.playerid != -1){
-          isMember.value = true;
-        } 
+      //   if (store.state.roominfo.playerid != -1){
+      //     isMember.value = true;
+      //   } 
 
+    })
+
+
+    function join(){
+      // if (props.isPublic == 'true'){
+      //   // will join without any problems
+      //   console.log(isMember.value)
+      //   isMember.value = true
+      // }
+
+      joinRoom.value = true
     }
-    )
+
+    function leave(){
+      
+    }
+
+    function sendPassTojoinRoom() {
+      // send the password of the channel to backend --- passwordToJoin ----
+      passwordToJoin.value = ''
+      joinRoom.value = false
+    }
+
+    function cancelJoin(){
+      passwordToJoin.value = ''
+      joinRoom.value = false
+    }
+
     function sendMessage(){
 		    let messageDto={ id : props.id , content : store.state.message};
 		    // console.log("dto",messageDto);
 		    store.state.connection.emit("createMessage", messageDto);
         store.state.message = ''
 	  }
-    onMounted (async () => {
 
-      await axios
-          .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
-          .then(data =>{ store.state.roominfo = data.data ; }) 
-          .catch(err => { console.log(err)})
-        if (store.state.roominfo.playerid != -1){
-          isMember.value = true;
-        } 
-    })
 
     // const enterPassowrd = () => (joinRoom.value = !joinRoom.value)
-    const store = inject('store')
-    const props = defineProps({
-        name: String,
-        id: String
-    })
+
 
       function   usersInfo(id: number){
         console.log("id", id)

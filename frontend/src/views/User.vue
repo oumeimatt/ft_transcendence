@@ -95,7 +95,7 @@
               <div > 
                 <p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
                 <!-- games  -->
-                <div class="scrollbar scrollbar-track-slate-900 scrollbar-thumb-slate-600 max-h-2/5">
+                <div class="scrollbar scrollbar-track-slate-900 scrollbar-thumb-slate-600 max-h-2/3">
                   <div  v-for="game in gamesHistory" :key="game" class="grid grid-cols-3 justify-itmes-center mt-4">
                     <div class="text-neutral-900 font-semibold "> {{ game.winner.username }} </div>
                     <div class="text-gray-900 font-black "> <span> {{ game.winnerScore }} </span> - <span>  {{ game.loserScore }}</span>  </div>
@@ -133,7 +133,9 @@ let gamesHistory = ref([] as unknown);
 let errors = ref('' as string)
 
 const props = defineProps<{
-  id: string
+  id: string,
+  // friend: boolean,
+  // blocked: boolean
 }>()
 
 
@@ -161,19 +163,7 @@ const props = defineProps<{
 
     })
 
-  // onMounted ( () => {
-  //     var user = store.state.users.find( x=> x.id === props.id)
 
-  //     if (user != null){
-  //         isFriend.value = true
-  //         add.value = false
-  //     }
-  //     else{
-  //         isFriend.value = false
-  //         add.value = true
-  //     }
-
-  // })
 
   const userIsFriend = computed(() => isFriend.value)
   const addfr = computed(() => add.value)

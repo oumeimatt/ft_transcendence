@@ -21,7 +21,7 @@
 										<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 									</svg>
 									<img   v-if="ChatRoom.ispublic == true" src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-									<router-link @click="getMessages(ChatRoom.id)" :to="{name:'ChatRoom', params: {name: ChatRoom.name, id: ChatRoom.id }}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
+									<router-link @click.prevent="getMessages(ChatRoom.id)" :to="{name:'ChatRoom', params: {name: ChatRoom.name, id: ChatRoom.id , isPublic: ChatRoom.ispublic}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ ChatRoom.name }} </router-link>
 									<!-- <router-link  :to="{name:'ChatRoom', params: {name: ChatRoom.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ ChatRoom.name }} </router-link>  -->
 								<!-- </div> -->
 								<!-- <div v-if="ChatRoom.ischannel == true" class="flex justify-start items-center space-x-2 mt-4">  -->
@@ -39,10 +39,7 @@
 									<path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 								</svg>
 								<img  v-if="Room.ispublic == true" src="../assets/public.png" class="lg:ml-7 h-8 w-10 fill-slate-300" fill="none" viewBox="0 0 24 24">
-								<router-link @click="getMessages(Room.id)" :to="{name:'ChatRoom', params: {name: Room.name , id: Room.id}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ Room.name }} </router-link>
-								<!-- <router-link :to="{name:'ChatRoom', params: {name: Room.name}}" class="font-semibold text-slate-400 lg:text-base md:text-sm text-2xl  hover:underline cursor-pointer pl-2 "> {{ Room.name }} </router-link>  -->
-							<!-- </div> -->
-							<!-- <div  v-if="Room.ischannel == true" class="flex justify-start items-center space-x-2 mt-4">  -->
+								<router-link @click.prevent="getMessages(Room.id)" :to="{name:'ChatRoom', params: {name: Room.name , id: Room.id, isPublic: Room.ispublic}}" class="font-bold text-slate-400 hover:underline cursor-pointer pl-1 "> {{ Room.name }} </router-link>
 							</div>
 						</div>
 					</div>
@@ -137,6 +134,7 @@ import { connect } from 'http2';
 	let invitationBy = ref('' as String)
 	let opponent = ref('' as String);
 	const RoomMember = ref('' as string)
+
 	//! called first time the chat is accessed
 
 	const room: chatRoom = {
@@ -332,6 +330,9 @@ import { connect } from 'http2';
 	  });
 	  return a.filter((name) => name.startsWith(RoomMember.value))
 	})
+
+
+
 	// // 	store.state.connection.on("message", (data) => {store.state.rooms = data;
     // //   if (store.state.rooms.length !== 0){
     // //   store.state.messageDto.id = store.state.rooms[0].id;

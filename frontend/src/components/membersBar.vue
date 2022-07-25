@@ -6,22 +6,21 @@
                 <!-- ********* chat room ********  -->
               <img src="../assets/group.png" class="mx-auto" >
               <div  class=" flex itmes-center justify-center text-center  -mt-[40px] "> 
-                <p class="font-bold lg:text-2xl md:text-2xl text-gray-400"> {{ name }}</p> 
-                <img  src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
+                <p class="font-bold lg:text-2xl md:text-2xl text-gray-400"> {{ name }} </p> 
+                <img @click="getMmebership" src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
               </div>
 
-              <!-- <div >
-                    <div v-if="store.state.editRoom" class=" rounded-md mt-4">
-                        <div @click="setPass = !setPass" v-if="store.methods.RoomInfo(name).type == 'public'" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Set Password
+              <div v-if="membership && showMemberOptions == true" >
+                    <div v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class=" rounded-md mt-4">
+                        <div v-if="isPublic == 'true'" @click="setPass = !setPass" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Set Password
                         </div>
-                        <div @click="changePass = !changePass" v-if="store.methods.RoomInfo(name).type == 'private'" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Change Password
+                        <div v-if="isPublic == 'false'" @click="changePass = !changePass"  class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Change Password
                         </div>
-                        <div v-if="store.methods.RoomInfo(name).type == 'private'" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Remove Password
+                        <div v-if="isPublic == 'false'" @click="removePassword" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Remove Password
                         </div>
                     </div>
-
-              </div> -->
-            <!-- <div v-if="setPass" class="fixed inset-60 z-50 ">
+              </div>
+            <div v-if="setPass" class="fixed inset-60 z-50 ">
                 <div class=" my-6 mx-auto max-w-sm text-center ">
   
                     <div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
@@ -29,21 +28,21 @@
                             <h3 class=" m-auto font-semibold text-xl"> {{name}} </h3>
                         </div>
 				        	<form class=" grid gap-3 grid-cols-1  p-6 border-t border-solid border-slate-200 rounded-b">
-				        		 <input type="password" placeholder="Password" class="bg-neutral-200 border-b rounded h-8 pl-4">
+				        		 <input v-model="settedPassword" type="password" placeholder="Password" class="bg-neutral-200 border-b rounded h-8 pl-4">
 				        	</form>
                         <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-                            <button @click="setPass = !setPass" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
+                            <button @click="cancelSettingPass" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " >
                               Cancel
                             </button>
-                            <button @click="savePassowrd" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
+                            <button @click="saveSettedPassowrd" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " >
                               Save Password
                             </button>
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
-            <!-- <div v-if="changePass" class="fixed inset-60 z-50 ">
+            <div v-if="changePass == true" class="fixed inset-60 z-50 ">
                 <div class=" my-6 mx-auto max-w-sm text-center ">
                   
                     <div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
@@ -52,19 +51,19 @@
                             <h3 class=" m-auto font-semibold text-xl"> {{name}} </h3>
                         </div>
 				        	<form class=" grid gap-3 grid-cols-1  p-6 border-t border-solid border-slate-200 rounded-b">
-				        		 <input type="password" placeholder="Password" class="bg-neutral-200 border-b rounded h-8 pl-4">
+				        		 <input v-model="changedPassword" type="password" placeholder="Password" class="bg-neutral-200 border-b rounded h-8 pl-4">
                             </form>
                         <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-                            <button @click="changePass = !changePass" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
+                            <button @click="CancelChangePass" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none ">
                               Cancel
                             </button>
-                            <button @click="savePassowrd" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
+                            <button @click="saveChangedPass" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none ">
                               Save Password
                             </button>
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
           </div> 
           <div class="mt-16 ">
@@ -124,18 +123,80 @@
     const store = inject('store')
     const props = defineProps({
         name: String,
-        id: String
+        id: String,
+        isPublic: String,
+
     })
-    onMounted(async  () => {
+        const owner = ref(false)
+        const setPass = ref(false)
+        const changePass = ref(false)
+        const showMemberOptions = ref(false)
+        const settedPassword = ref('' as string)
+        const changedPassword = ref('' as string)
+
+
+
+    function CancelChangePass(){
+        changedPassword.value = ''
+        changePass.value = false
+    }
+
+
+    function saveChangedPass(){
+
+        // send the new password to backend ---- changedPassword  ------
+        changedPassword.value = ''
+        changePass.value = false 
+    }
+
+    function cancelSettingPass (){
+        settedPassword.value = ''
+        setPass.value = false
+    }
+
+    
+    function saveSettedPassowrd() {
+
+        // send the password to backend ----settedPassword.value------
+        settedPassword.value = ''
+        setPass.value = false
+    }
+
+    function removePassword(){
+        // remove password 
+        // change the privacy from private to public
+    }
+
+
+
+    interface member {
+        id_membership:number,
+        role:string,
+        playerid:number,
+        roomid:number
+    }
+
+
+    const membership = ref({} as member)
+    async function getMmebership(){
+            showMemberOptions.value = ! showMemberOptions.value
+            await axios
+            .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
+            .then((data) => {membership.value = data.data;})
+            .catch(err => console.log(err.message))
+        // if (membership.value == null){
+        //     return false;
+        // }
+        // return true;
+    }
+
+
+    onUpdated(async  () => {
 		await axios
 			.get('http://localhost:3001/chat/members' ,{params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
-			.then((data) => {store.state.roomMembs = data.data; console.log("props.id" ,props.id)})
+			.then((data) => {store.state.roomMembs = data.data;})
 			.catch(err => console.log(err.message))
 	})
-    const owner = ref(false)
-    const setPass = ref(false)
-    const changePass = ref(false)
-    const showMemberOptions = ref(false)
     // const edit= ref(false)
     // const showEdit = () => (props.editRoom = !props.editRoom)
 
