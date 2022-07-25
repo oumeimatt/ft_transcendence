@@ -63,4 +63,9 @@ export class RelationsService {
 		await this.relationRepository.delete({ sender: friend, receiver: user.id, status: RelationStatus.FRIEND });
 		console.log('friend removed');
 	}
+
+	async checkBlock(user: Player, blocked_id: number): Promise<Relation> {
+		const blocked = await this.usersService.getUserById(blocked_id);
+		return await this.relationRepository.checkBlock(user, blocked);
+	}
 }

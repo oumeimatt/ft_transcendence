@@ -52,9 +52,10 @@ export class UsersController {
 		@Req() req: Request,
 		@Param('id', ParseIntPipe) id: number,
 	){
-		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
+		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const playerData = await this.usersService.getUserById(id);
 		const friends = await this.relationService.getUsersByStatus(playerData, RelationStatus.FRIEND);
+		const user = await this.usersService.getUserById(user_token.id);
 		const blockedUsers = await this.relationService.getUsersByStatus(user, RelationStatus.BLOCKED);
 		const achievements = await this.usersService.getAchievements(id);
 		const data = {
