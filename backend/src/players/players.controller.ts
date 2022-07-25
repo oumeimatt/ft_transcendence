@@ -55,10 +55,12 @@ export class UsersController {
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const playerData = await this.usersService.getUserById(id);
 		const friends = await this.relationService.getUsersByStatus(playerData, RelationStatus.FRIEND);
+		const blockedUsers = await this.relationService.getUsersByStatus(user, RelationStatus.BLOCKED);
 		const achievements = await this.usersService.getAchievements(id);
 		const data = {
 			"profile": playerData,
 			"friends": friends,
+			"blockedUsers": blockedUsers,
 			"achievements": achievements,
 		};
 		return data;
@@ -140,6 +142,7 @@ export class UsersController {
 		res.send(accessToken);
 	}
 
+	//!!!!! to be replaced by socket solution
 	//+ upadte user status online/offline
 	@Get('/updateUsersStatus')
 	async updateUsersStatus(): Promise<any> {
