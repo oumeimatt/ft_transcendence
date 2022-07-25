@@ -44,6 +44,7 @@ export class ChatService {
     }
 
     async createDM(sender:number, receiver:number):Promise<chatroom>{
+        //check if relation => b
         const chatroom = await this.roomRepo.createDM(sender, receiver);
         let User = await this.userService.getUserById(sender);
         await this.addMember(chatroom, User, RoleStatus.USER);
@@ -231,6 +232,18 @@ export class ChatService {
         membership.role = role;
         await membership.save();
         return membership;
+    }
+
+    /*
+        edit pwd == something different
+        remove pwd == ''
+    */
+    async updatePassword(roomid:number, password:string):Promise<chatroom>{
+        let room = await this.getRoomById(roomid);
+        room.password = password;
+        await room.save();
+
+        return room;
     }
 
 

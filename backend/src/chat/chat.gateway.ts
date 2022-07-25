@@ -408,4 +408,19 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     }
 
     //ban user => update rooms && all rooms && members
+
+    @SubscribeMessage('edit-pwd')
+    async editPwd(client:Socket, JoinChanneldto:JoinChannelDto){
+
+      await this.definePlayer(client);
+
+      await this.chatService.updatePassword(JoinChanneldto.roomid, JoinChanneldto.password);
+    }
+
+    @SubscribeMessage('remove-pwd')
+    async removePwd(client:Socket, roomid:number){
+      await this.definePlayer(client);
+
+      await this.chatService.updatePassword(roomid, '');
+    }
 }

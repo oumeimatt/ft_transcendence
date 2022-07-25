@@ -179,6 +179,11 @@
     function saveChangedPass(){
 
         // send the new password to backend ---- changedPassword  ------
+        let upadtePwdDto={
+            roomid:props.id,
+            password:changedPassword.value
+        }
+        store.state.connection.emit('edit-pwd',upadtePwdDto);
         changedPassword.value = ''
         changePass.value = false 
     }
@@ -198,7 +203,8 @@
 
     function removePassword(){
         // remove password 
-        // change the privacy from private to public
+        // change the privacy from private to public => la ma3ndha ta3ala9a b private ola public 
+        store.state.connection.emit('remove-pwd', props.id);
     }
 
 
