@@ -140,8 +140,9 @@ export class ChatService {
     }
 
     async getDMs(userid:number, receiverid:number):Promise<message[]>{
-        //find roomid
-
+        
+        //! check if player is blocked 
+        
         let room =await this.getRoomByName(userid+":"+receiverid);
         if (!room)
             room = await this.getRoomByName(receiverid+":"+userid);

@@ -18,7 +18,7 @@ export class ChatController {
     constructor( private chatService:ChatService){}
 
     // value returned content && playerid
-    //I should sent userid => if member
+    //I should send userid => if member
     @Get('messages') 
     getAllMessageByRoomId(@Query('roomid') roomid:number, @Query('playerid') playerid:number) :Promise<message[]>{
         return this.chatService.getMessagesByroomId(roomid, playerid);   
