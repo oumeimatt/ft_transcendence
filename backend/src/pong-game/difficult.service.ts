@@ -45,7 +45,8 @@ import { PlayGround } from './utils';
     client: Socket,
     players: Socket[],
     wss: Server,
-  ): Promise<void> {
+  ): Promise<void>
+  {
     const user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
     client.data.user = user;
     const found = await this.usersService.findPlayer(user.id);
@@ -166,10 +167,13 @@ import { PlayGround } from './utils';
         );
         client.data.playground.leftPaddle.reset();
         client.data.playground.rightPaddle.reset();
+        let loserScore = 0;
         if (client.data.side === 'left') {
           client.data.playground.scoreBoard.playerTwoScore = client.data.playground.win_score;
+          loserScore = client.data.playground.scoreBoard.playerOneScore;
         } else {
           client.data.playground.scoreBoard.playerOneScore = client.data.playground.win_score;
+          loserScore = client.data.playground.scoreBoard.playerTwoScore;
         }
         wss.to(client.data.roomname).emit('gameInterrupted', {
           playground: this.handleGetBackGround(client.data.playground),
@@ -189,7 +193,7 @@ import { PlayGround } from './utils';
             winner: await second,
             loser: client.data.user,
             winnerScore: client.data.playground.win_score,
-            loserScore: 0
+            loserScore: loserScore
           });
           // send event with winner and loser
           wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });

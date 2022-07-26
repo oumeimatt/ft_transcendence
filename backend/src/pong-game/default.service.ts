@@ -167,10 +167,13 @@ export class DefaultService {
         );
         client.data.playground.leftPaddle.reset();
         client.data.playground.rightPaddle.reset();
+        let loserScore = 0;
         if (client.data.side === 'left') {
           client.data.playground.scoreBoard.playerTwoScore = client.data.playground.win_score;
+          loserScore = client.data.playground.scoreBoard.playerOneScore;
         } else {
           client.data.playground.scoreBoard.playerOneScore = client.data.playground.win_score;
+          loserScore = client.data.playground.scoreBoard.playerTwoScore;
         }
         wss.to(client.data.roomname).emit('gameInterrupted', {
           playground: this.handleGetBackGround(client.data.playground),
@@ -178,7 +181,7 @@ export class DefaultService {
         // clearInterval if not destroyed
         clearInterval(client.data.gameInterval);
         this.logger.log('Game Interval Cleared');
-
+          
         // Update Level and wins and loses for both players
         await this.usersService.updateLevel(client.data.opponentId, false);
         await this.usersService.winsGame(client.data.opponentId);
@@ -190,7 +193,7 @@ export class DefaultService {
             winner: await second,
             loser: client.data.user,
             winnerScore: client.data.playground.win_score,
-            loserScore: 0
+            loserScore: loserScore
           });
           // send event with winner and loser
           wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });
