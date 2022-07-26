@@ -92,20 +92,27 @@
                     </div>
                 </div>
                     <div v-if="showMemberOptions && membership" class="z-10 divide-y bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
-                        <ul v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
-                        <li v-if="isAlreadyAdmin == false" @click="setAdmin">
-                            <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
-                        </li>
-                        <li @click="Ban">
-                            <span  class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Ban</span>
-                        </li>
-                        <li @click="Mute">
-                            <span  class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Mute</span>
-                        </li>
-                        <li @click="Remove">
-                            <span  class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Remove</span>
-                        </li>
-                        </ul>
+                        <div v-if="userId != store.state.player.id">
+                            <ul v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
+                            
+                            <li  v-if="isAlreadyAdmin == true && isBanned == true">
+                                <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white"> Unban </span>
+                            </li>
+                            <li v-if="isAlreadyAdmin == false" @click="setAdmin">
+                                <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
+                            </li>
+                            <li @click="Ban">
+                                <span  class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Ban</span>
+                            </li>
+                            <li  @click="Mute">
+                                <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Mute</span>
+                            </li>
+                            <li  @click="Remove">
+                                <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Remove</span>
+                            </li>
+                            </ul>
+
+                        </div>
                     </div>
               
 
@@ -140,6 +147,7 @@
         const userId = ref(-1 as number)
         const roomId = ref(-1 as number)
         const showEdit = ref(false as boolean)
+        const isBanned = ref(false as boolean)
 
     function showOptions(userid: number){
         showMemberOptions.value = !showMemberOptions.value
@@ -153,15 +161,17 @@
 
     const isAlreadyAdmin = ref(false as boolean ) 
     async function checkIfAlreadyAdmin(userId: number){
-        let member = '' as string
+        let member = {} as member
         await axios
             .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: userId}, withCredentials: true })
-            .then((data) => {member = data.data.role;})
+            .then((data) => {member = data.data;})
             .catch(err => console.log(err.message))
-        if (member == 'ADMIN')
+        if (member.role == 'ADMIN')
             isAlreadyAdmin.value = true;
         else
             isAlreadyAdmin.value = false
+        if (member.isbanned == true)
+            isBanned.value = true
     }
 
     function setAdmin(){
@@ -176,8 +186,26 @@
     }
 
     function Ban(){
+        isBanned.value = true
         // user to ban id == userId.value
-        // room id ==== roomId.value 
+        // room id ==== roomId.value
+
+        let membershipDto ={
+            userid:userId.value,
+            roomid:roomId.value
+        }
+
+        store.state.connection.emit('ban-user', membershipDto );
+    
+    }
+
+    function unBan(){
+         let membershipDto ={
+            userid:userId.value,
+            roomid:roomId.value
+        }
+
+        store.state.connection.emit('unban-user', membershipDto );
     }
 
     function Mute(){
@@ -211,7 +239,7 @@
         }
         store.state.connection.emit('edit-pwd',upadtePwdDto);
         changedPassword.value = ''
-        changePass.value = false 
+        changePass.value = false  
     }
 
     // function cancelSettingPass (){
@@ -234,7 +262,7 @@
     }
 
 
-
+ 
     interface member {
         id_membership:number,
         role:string,
