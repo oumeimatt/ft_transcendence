@@ -88,7 +88,10 @@
     onMounted( async () => {
 		await axios
           	.get('http://localhost:3001/profile' ,{ withCredentials: true })
-          	.then(data =>{store.state.player = data.data.profile;})
+          	.then(data =>{store.state.player = data.data.profile;
+			store.state.friends = data.data.friends;
+			store.state.achievements = data.data.achievements;
+			store.state.blockedUsers = data.data.blockedUsers})
 			.catch(err => console.log(err))
         getGamesHistory(store.state.player.id);
     })

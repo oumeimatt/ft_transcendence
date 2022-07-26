@@ -39,8 +39,11 @@
             <span id='text' class='text-white text-sm select-none ml-2 '>Friends</span>
               <svg @click="frMenu = !frMenu" class="w-5 h-5 ml-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
           </button>
-          <button @click="unblockFriend" v-if="isBlocked" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
+          <button @click="unblockFriend" v-if="blocked" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
             <span id='text' class='ml-2 mr-2 text-white text-sm select-none ml-2 '>Unblock</span>
+          </button>
+          <button  v-if="blockedby == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
+            <span id='text' class='ml-2 mr-2 text-white text-sm select-none ml-2 '>You are Blocked</span>
           </button>
             <div v-if="frMenu" class=" divide-y absolute bottom-16 right-3 divide-gray-100 rounded shadow w-36 bg-slate-800">
               <ul class="py-1 text-sm text-gray-700 text-gray-200">
@@ -125,10 +128,11 @@ import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue'
 import Profile from './Profile.vue'
 const store = inject('store')
-const add = ref(true)
-const isFriend = ref(false)
-const frMenu = ref(false)
-const isBlocked = ref(false)
+const add = ref(true as boolean)
+const isFriend = ref(false as boolean)
+const frMenu = ref(false as boolean)
+const isBlocked = ref(false as boolean)
+const isBlockedBy = ref(false as boolean)
 let gamesHistory = ref([] as unknown);
 let errors = ref('' as string)
 
@@ -159,6 +163,31 @@ const props = defineProps<{
           isFriend.value = false
           add.value = true
       }
+
+      var blocked = store.state.blockedUsers.find( x => x.id.toString() === props.id )
+         console.log("blocked === ", blocked.username)
+      if (blocked != null){
+          isBlocked.value = true
+          add.value = false
+      }
+      else{
+          isBlocked.value = false
+          add.value = true
+      }
+
+
+      var blockedBy = store.state.userBlockedUsers.find( x => x.id === store.state.player.id )
+         console.log("blockedby === ", blockedBy.username)
+      if (blockedBy != null){
+          isBlockedBy.value = true
+          add.value = false
+          isBlocked.value = false
+          isFriend.value = false
+      }
+      else{
+          isBlockedBy.value = false
+          add.value = true
+      }
       getGamesHistory(parseInt(props.id, 10));
 
     })
@@ -167,6 +196,9 @@ const props = defineProps<{
 
   const userIsFriend = computed(() => isFriend.value)
   const addfr = computed(() => add.value)
+  const blocked = computed (() => isBlocked.value)
+  const blockedby = computed(() => isBlockedBy.value)
+  
   
 onUpdated(async  () => {
   
@@ -175,7 +207,8 @@ onUpdated(async  () => {
           .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
           .then(data =>{ store.state.user = data.data.profile;
             store.state.userFriends = data.data.friends;
-            store.state.userAchievements = data.data.achievements})
+            store.state.userAchievements = data.data.achievements;
+            store.state.userBlockedUsers = data.data.userBlockedUsers})
           .catch(err => console.log(err.message))
       // getGamesHistory(parseInt(props.id, 10));
 

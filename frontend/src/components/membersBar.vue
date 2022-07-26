@@ -12,36 +12,12 @@
 
               <div v-if="membership && showEdit == true" >
                     <div v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class=" rounded-md mt-4">
-                        <!-- <div v-if="isPublic == 'true'" @click="setPass = !setPass" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Set Password
-                        </div> -->
                         <div v-if="isPublic == 'true'" @click="changePass = !changePass"  class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Change Password
                         </div>
                         <div v-if="isPublic == 'true'" @click="removePassword" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Remove Password
                         </div>
                     </div>
               </div>
-            <!-- <div v-if="setPass" class="fixed inset-60 z-50 ">
-                <div class=" my-6 mx-auto max-w-sm text-center ">
-  
-                    <div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
-                        <div class=" p-5 border-b border-solid border-slate-200 rounded-t">
-                            <h3 class=" m-auto font-semibold text-xl"> {{name}} </h3>
-                        </div>
-				        	<form class=" grid gap-3 grid-cols-1  p-6 border-t border-solid border-slate-200 rounded-b">
-				        		 <input v-model="settedPassword" type="password" placeholder="Password" class="bg-neutral-200 border-b rounded h-8 pl-4">
-				        	</form>
-                        <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-                            <button @click="cancelSettingPass" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " >
-                              Cancel
-                            </button>
-                            <button @click="saveSettedPassowrd" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " >
-                              Save Password
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
             <div v-if="changePass == true" class="fixed inset-60 z-50 ">
                 <div class=" my-6 mx-auto max-w-sm text-center ">
                   

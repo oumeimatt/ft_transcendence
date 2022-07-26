@@ -168,7 +168,8 @@
 			localStorage.setItem('user', data.data.cookie);
 			store.state.player = data.data.profile;
 			store.state.friends = data.data.friends;
-			store.state.achievements = data.data.achievements
+			store.state.achievements = data.data.achievements;
+			store.state.blockedUsers = data.data.blockedUsers
 		  } ) 
 		  .catch(err => console.log(err.message))
 		await axios

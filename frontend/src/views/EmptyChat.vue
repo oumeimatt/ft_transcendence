@@ -5,7 +5,6 @@
 	    <div class="grid grid-cols-6 gap-px  ">
 	    	<chatnavbar />
 			<div id="bg">
-
 			</div>
 	    </div>
 	</div>
