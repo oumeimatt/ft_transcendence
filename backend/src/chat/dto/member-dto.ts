@@ -4,6 +4,6 @@ import { RoleStatus } from "./membership.model";
 export class memberDto{
     member:Player;
     role:RoleStatus;
-    //isbanned
-    //ismuted
+    isbanned:boolean;
+    ismuted:boolean;
 }

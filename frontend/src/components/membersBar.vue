@@ -177,7 +177,24 @@
 
     function Ban(){
         // user to ban id == userId.value
-        // room id ==== roomId.value 
+        // room id ==== roomId.value
+
+        let membershipDto ={
+            userid:userId.value,
+            roomid:roomId.value
+        }
+
+        store.state.connection.emit('ban-user', membershipDto );
+    
+    }
+
+    function unBan(){
+         let membershipDto ={
+            userid:userId.value,
+            roomid:roomId.value
+        }
+
+        store.state.connection.emit('unban-user', membershipDto );
     }
 
     function Mute(){
