@@ -12,6 +12,7 @@ import { JwtStrategy } from '../auth/jwt.strategy';
 import { RelationRepository } from '../relations/relation.repository';
 import { membership } from 'src/chat/membership.entity';
 import { roomRepository } from 'src/chat/room.repository';
+import { AppGateway } from './app.gateway';
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { roomRepository } from 'src/chat/room.repository';
     providers: [
         UsersService,
         JwtStrategy,
+        AppGateway,
     ],
     exports: [UsersService],
 })

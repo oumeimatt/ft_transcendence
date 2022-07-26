@@ -9,7 +9,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { OneVOneService } from './one-v-one.service';
 
-@WebSocketGateway({ namespace: '/oneVone', cors: true })
+@WebSocketGateway({ namespace: '/oneVone', cors: true, path: '/game/oneVone' })
 export class OneVOneGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {

@@ -1,4 +1,4 @@
-<!-- <template >
+<template >
   <div v-if="store.state.player.status == 'offline'"> 
     <div id="notlogged" class=" flex justify-center items-center text-center h-screen"> 
       <div class=" container w-3/5 h-44 bg-slate-300 rounded-lg translate-y-1/4">
@@ -28,9 +28,9 @@
     height: 100vh;
     background-size: cover;
   }
-</style> -->
+</style>
 
-<template >
+<!-- <template >
   <div v-if="store.state.player.status == 'offline'"> 
     <div id="notlogged" class=" flex justify-center items-center text-center h-screen"> 
       <div class=" container w-3/5 h-44 bg-slate-300 rounded-lg translate-y-1/4">
@@ -54,8 +54,8 @@
   function signin(){
       axios
       .get('http://localhost:3001/auth/login')
-      .then(response => {
-        console.log('REQUEST');
+      .then((response) => {
+        console.log('REQUEST*************', response);
       })
       .catch(error => {
         console.log(error);
@@ -71,4 +71,4 @@
     height: 100vh;
     background-size: cover;
   }
-</style>
+</style> -->

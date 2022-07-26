@@ -9,7 +9,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { DefaultService } from './default.service';
 
-@WebSocketGateway({ namespace: '/default', cors: true })
+@WebSocketGateway({ namespace: '/default', cors: true, path: '/game/default' })
 export class DefaultGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {

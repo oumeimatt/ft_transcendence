@@ -15,9 +15,17 @@ export class AuthController {
 	@UseGuards(AuthGuard('42'))
 	async FortyTwoAuth(
 		@Req() req: Request,
-		@Res() res: Response
+		// @Res() res: Response
+		@Response() res,
 	): Promise<any> {
-		return this.authService.login(req, res);
+		try {
+			this.authService.login(req, res);
+		} catch (error) {
+			console.log('HEREEEEEEEEEEEEEE');
+			console.log(error);
+			// res.redirect('http://localhost:3000/home');
+		}
+
 	}
 
 	@Get('/logout')

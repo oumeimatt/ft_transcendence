@@ -36,7 +36,9 @@ bootstrap();
 
 // td list:
 
-	// login with 2fa - validate code
-	// bidirectional friend relation
+	//+ catch expired token exception
+	//+ users status depending on connectedUsers table
+	
+
 
 	

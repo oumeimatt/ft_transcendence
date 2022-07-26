@@ -160,6 +160,7 @@ export class UsersService {
 		if (found) {
 			return found;
 		}
+		console.log('create new user');
 		const newUser = new Player();
 		newUser.id = id;
 		newUser.username = login;
@@ -182,6 +183,7 @@ export class UsersService {
 
 	async verifyToken(token: string): Promise<Player> {
 
+		console.log('verifyToken');
 		try {
 			const decoded = await this.jwtService.verify(token.toString());
 			if (typeof decoded === 'object' && 'id' in decoded)

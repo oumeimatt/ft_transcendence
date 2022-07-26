@@ -9,7 +9,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { DifficultService } from './difficult.service';
 
-@WebSocketGateway({ namespace: '/difficult', cors: true })
+@WebSocketGateway({ namespace: '/difficult', cors: true, path: '/game/difficult' })
 export class DifficultGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
