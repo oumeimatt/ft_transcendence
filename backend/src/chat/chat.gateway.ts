@@ -183,7 +183,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       {
         //I should update rooms && members to the concerned users
         //send rooms(mychannels to the player) && send members to the members
-        
+
         // ==== check if the player is a member be3da
         await this.definePlayer(socket);
         await this.chatService.deleteMmebership(roomid, this.decoded.id);
@@ -335,7 +335,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           }
       }
 
-      @SubscribeMessage('remove-admin') //kick-user
+      /* 
+      @SubscribeMessage('remove-admin') 
       async removeAdmin(socket:Socket,membershipdto:membershipDto){
           this.chatService.updateMembership(membershipdto.userid, membershipdto.roomid, RoleStatus.USER);
           //send members to the concerned users
@@ -347,7 +348,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
             if (await this.chatService.isMember(membershipdto.roomid, userid))
               this.server.to(x.id).emit('members', members);
           }
-      }
+      } */
 
 
     //ban-User => isbanned true => emit rooms => to the banned user
@@ -445,6 +446,28 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
                 this.server.to(x.id).emit('members', members);
       }
 
-      //send members to all the members of this channel
+   
+    }
+
+    @SubscribeMessage('ban-user')
+    async banUser(client:Socket, membershipdto:membershipDto){
+
+      await this.definePlayer(client);
+      await this.chatService.updateBanStatus(membershipdto.userid, membershipdto.roomid, true);
+
+      //send all channels + My channels to this user 
+
+      //send members to all the concerned users => {only if isbanned is returned}
+    }
+
+    @SubscribeMessage('unban-user')
+    async unbanUser(client:Socket, membershipdto:membershipDto){
+      await this.definePlayer(client);
+      await this.chatService.updateBanStatus(membershipdto.userid, membershipdto.roomid, false);
+
+      //send all channels + My channels to this user 
+
+      //send members to all the concerned users => {only if isbanned is returned}
+
     }
 }
