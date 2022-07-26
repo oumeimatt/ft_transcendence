@@ -31,7 +31,6 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 				const found = await this.usersService.findPlayer(user.id);
 				if (found) {
 					this.connectedUsers.push({ playerId: found.id , clientId: client.id });
-					console.log("Connected", client.id, found.username);
 					client.emit('connected', { clientId: client.id, PlayreId: found.id })
 				}
 			} catch(err) {

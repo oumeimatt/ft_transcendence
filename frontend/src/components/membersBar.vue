@@ -189,6 +189,11 @@
     function Remove(){
         // user to remove from channel id == userId.value
         // room id ==== roomId.value 
+        let membershipdto ={
+            roomid:roomId.value,
+            userid : userId.value
+        }
+        store.state.connection.emit('remove-user', membershipdto);
     }
 
     function CancelChangePass(){

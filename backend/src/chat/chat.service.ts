@@ -256,7 +256,7 @@ export class ChatService {
     }
 
 
-    /*
+    
     async updateBanStatus(playerid:number, roomid:number, ban:boolean):Promise<membership>{
         const membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid});
         membership.isbanned = ban; // true | false
@@ -264,7 +264,7 @@ export class ChatService {
 
         return membership;
     }
-    */
+    
 
     /*
         

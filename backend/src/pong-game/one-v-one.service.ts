@@ -172,7 +172,7 @@ export class OneVOneService {
         );
         client.data.playground.leftPaddle.reset();
         client.data.playground.rightPaddle.reset();
-        if (client.handshake.query.side === 'left') {
+        if (client.data.side === 'left') {
           client.data.playground.scoreBoard.playerTwoScore = client.data.playground.win_score;
         } else {
           client.data.playground.scoreBoard.playerOneScore = client.data.playground.win_score;
@@ -195,7 +195,7 @@ export class OneVOneService {
             winner: await second,
             loser: client.data.user,
             winnerScore: client.data.playground.win_score,
-            loserScore: client.handshake.query.side === 'left' && client.data.playground.scoreBoard.playerTwoScore || client.data.playground.scoreBoard.playerOneScore
+            loserScore: 0
           });
           // send event with winner and loser
           wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });
