@@ -6,8 +6,7 @@ import { UserStatus } from '../players/player_status.enum';
 import { JwtPayload } from './jwt-payload.interface';
 const logout = require('express-passport-logout');
 import * as dotenv from "dotenv";
-dotenv.config({ path: `.env` })
-// const passportHttp = require('passport-http');
+dotenv.config({ path: `.env` });
 
 const passport = require('passport');
 const FortyTwoStrategy = require('passport-42').Strategy;
@@ -19,7 +18,6 @@ passport.use(new FortyTwoStrategy({
 	callbackURL: process.env.CALLBACK_URL,
 	},
 	async function(accessToken: string, refreshToken: string, profile: any, cb: any) {
-		// console.log(profile);
 		const user = {
 			id: profile._json.id,
 			login: profile._json.login,
@@ -38,20 +36,17 @@ export class AuthService {
 		private jwtService: JwtService,
 	) {}
 
-	async login(@Request() req, @Response() res) {
+	async login(
+		@Request() req,
+		@Response() res,
+	) {
 		console.log('login');
-		// try {
-			passport.authenticate('42');
-		// } catch (error) {
-		// 	console.log(error);
-		// 	throw new BadRequestException('Login failed');
-		// }
+		passport.authenticate('42', {failureRedirect: "/"});
 		if (!req.user) {
 			return 'no user from 42';
 		}
 		const user = req.user;
 		const player = await this.playerService.findOrCreate(user.id, user.login);
-		// console.log(player);
 		// for (const [i, j] of Object.entries(player)) {
 		// 	console.log(i, j);
 		// }
@@ -59,11 +54,9 @@ export class AuthService {
 	}
 
 	async cb(
-		// @Request() req,
 		@Response() res,
 		player: Player
 	) {
-		passport.authenticate('42', {failureRedirect: `/auth/login`});
 		const id = player.id;
 		const username = player.username;
 		const two_fa = player.two_fa;

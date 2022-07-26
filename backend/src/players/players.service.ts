@@ -183,7 +183,7 @@ export class UsersService {
 
 	async verifyToken(token: string): Promise<Player> {
 
-		console.log('verifyToken');
+		// console.log('verifyToken');
 		try {
 			const decoded = await this.jwtService.verify(token.toString());
 			if (typeof decoded === 'object' && 'id' in decoded)

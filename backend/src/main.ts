@@ -40,5 +40,8 @@ bootstrap();
 	//+ users status depending on connectedUsers table
 	
 
+//! errors
+//[Nest] 6028  - 07/26/2022, 9:45:29 PM   ERROR [ExceptionsHandler] ENOENT: no such file or directory, stat '/Users/iidzim/Desktop/ft_transcendence/backend/public/index.html'
+
 
 	
