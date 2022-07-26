@@ -9,8 +9,8 @@ import { GameHistory } from "src/pong-game/typeorm/game-history.entity";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    // host: '127.0.0.1',
-    host: '10.11.1.10',
+    host: '127.0.0.1',
+    // host: '10.11.1.10',
     port: 5432,
     username: 'ping',
     password: 'pong',

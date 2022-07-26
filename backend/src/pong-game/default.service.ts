@@ -45,7 +45,8 @@ export class DefaultService {
     client: Socket,
     players: Socket[],
     wss: Server,
-    ): Promise<void> {
+    ): Promise<void>
+  {
     const user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
     client.data.user = user;
     const found = await this.usersService.findPlayer(user.id);

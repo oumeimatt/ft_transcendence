@@ -70,8 +70,8 @@ export class AuthService {
 		const payload: JwtPayload = { username, id, two_fa };
 		const accessToken = await this.jwtService.sign(payload);
 		if (player.two_fa == false) {
-			console.log('HEREEEE ' + player.two_fa);
-			this.playerService.updateStatus(id, UserStatus.ONLINE);
+			if (player.status === UserStatus.OFFLINE)
+				this.playerService.updateStatus(id, UserStatus.ONLINE);
 			res.cookie('connect_sid',[accessToken]);
 			res.redirect('http://localhost:3000/home');
 		}

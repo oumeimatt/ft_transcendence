@@ -160,6 +160,7 @@ export class UsersService {
 		if (found) {
 			return found;
 		}
+		console.log('create new user');
 		const newUser = new Player();
 		newUser.id = id;
 		newUser.username = login;

@@ -8,28 +8,31 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'http';
 import { Socket } from 'socket.io';
-import { UsersService } from './players/players.service';
-import { UserStatus } from './players/player_status.enum';
+import { Player } from './player.entity';
+import { UsersService } from './players.service';
+import { UserStatus } from './player_status.enum';
 
-@WebSocketGateway({ namespace: '/connect', cors: true })
+@WebSocketGateway({ namespace: '/connect', cors: true, path: '/user/connected' })
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	
+	private connectedUsers: { playerId: number, clientId: string }[];
 	@WebSocketServer()
 	server: Server;
 	private logger: Logger = new Logger('Connect Gateway');
-	constructor(private usersService: UsersService) {}
+	constructor(private usersService: UsersService) {
+		this.connectedUsers = [];
+	}
 	// user: number = 0;
 	
 	async handleConnection(client: any) {
-		if (client.handshake.query.accessToken !== null) {
+		if (client.handshake.query.accessToken != 'null') {
 			try {
 				const user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
-				client.data.user = user;
 				const found = await this.usersService.findPlayer(user.id);
 				if (found) {
-					this.logger.log(`User ${user.username} is already connected`);
-					client.data.user = found;
-					this.usersService.updateStatus(found.id, UserStatus.ONLINE);
+					this.connectedUsers.push({ playerId: found.id , clientId: client.id });
+					console.log("Connected", client.id, found.username);
+					client.emit('connected', { clientId: client.id, PlayreId: found.id })
 				}
 			} catch(err) {
 				this.logger.error(err);
@@ -38,13 +41,14 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 	}
 
 	//& called whenever client connects to the server
-	handleDisconnect(client: Socket, ...args: any[]) {
-		if (client.handshake.query.accessToken !== null) {
-			if (client.data.user) {
-				this.logger.log(`User ${client.data.user.username} disconnected`);
-				this.usersService.updateStatus(client.data.user.id, UserStatus.OFFLINE);
-			}
-		}
+	async handleDisconnect(client: Socket, ...args: any[]) {
+		const user = this.connectedUsers.find(us => us.clientId === client.id);
+		
+		this.connectedUsers = this.connectedUsers.filter(us => us.clientId !== client.id);
+		
+		const found = this.connectedUsers.find(us => us.playerId === user.playerId);
+		// if (!found)
+		// 	await this.usersService.updateStatus(user.playerId, UserStatus.OFFLINE);
 	}
 
 
