@@ -17,7 +17,7 @@
                    Online
                 </p>
               </div>
-              <div v-if="store.state.user.status == 'ingame'" class="h-4 w-4 bg-blue-600 mt-2 rounded-full  ml-4"> 
+              <div v-if="store.state.user.status == 'playing'" class="h-4 w-4 bg-blue-600 mt-2 rounded-full  ml-4"> 
                 <p class="opacity-0 w-full text-gray-400 hover:opacity-100 pl-6 -mt-1">
                    Playing 
                 </p>

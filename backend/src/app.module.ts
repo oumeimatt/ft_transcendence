@@ -10,7 +10,7 @@ import { ChatModule } from './chat/chat.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { LoggerMiddleware } from './config/logger.middleware';
-import { AppGateway } from './app.gateway';
+import { AppGateway } from './players/app.gateway';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { AppGateway } from './app.gateway';
     ChatModule,
   ],
   controllers: [],
-  providers: [AppGateway],
+  providers: [],
 })
 export class AppModule {}
 // export class AppModule implements NestModule{

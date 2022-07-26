@@ -12,11 +12,18 @@
   provide('store', store);
   onMounted(() => {
     socket.value = io('http://localhost' + ':3001/connect', {
-    query: {
+      path: '/user/connected',
+      query: {
         'accessToken': localStorage.getItem('user'),
       },
     });
+
+    (socket.value as Socket).on("connected", (data) => {
+      console.log('data: ', data);
+    });
+
   });
+
 
 </script>
 

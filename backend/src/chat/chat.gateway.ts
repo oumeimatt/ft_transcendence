@@ -181,8 +181,10 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       @SubscribeMessage('leave-channel')
       async leaveChannel(socket:Socket, roomid:number)
       {
-      //I should update rooms && members to the concerned users
-      //send rooms(mychannels to the player) && send members to the members
+        //I should update rooms && members to the concerned users
+        //send rooms(mychannels to the player) && send members to the members
+        
+        // ==== check if the player is a member be3da
         await this.definePlayer(socket);
         await this.chatService.deleteMmebership(roomid, this.decoded.id);
         const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
@@ -193,13 +195,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
    
  
-      //  let messages = [];
-      //  if (rooms.length != 0)
-      //      messages = await this.chatService.getMessagesByroomId(rooms[0].id, this.player.id);
-      //  //  console.log(`the connected users  ${x.id}`);
-      //    this.server.to(socket.id).emit('sendMessage', messages);
         let members = [];
-      //members = await this.chatService.getMembersByRoomId(roomid, this.player.id);
         let userid:any;
         for (var x of this.user)
         {
@@ -208,7 +204,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
             userid = await x.handshake.headers.query.token;
             userid = await this.userService.verifyToken(userid);
             members = await this.chatService.getMembersByRoomId(roomid, userid.id);
-       // if (await this.chatService.isMember(roomid, userid))
+                // if (await this.chatService.isMember(roomid, userid))
             this.server.to(x.id).emit('members', members);
           }
         }
@@ -422,5 +418,33 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       await this.definePlayer(client);
 
       await this.chatService.updatePassword(roomid, '');
+    }
+
+    //remove a user => {for this user {send my channnels} for all the concerned users send members
+    //}
+
+    @SubscribeMessage('remove-user')
+    async kickUser(client : Socket, membershipdto: membershipDto ){
+
+      await this.definePlayer(client);
+      await this.chatService.deleteMmebership(membershipdto.roomid, membershipdto.userid);
+
+      let removedUser = await this.getSocketid(membershipdto.userid);
+      if (removedUser)
+      {
+          let rooms = await this.chatService.getRoomsForUser(membershipdto.userid);
+          let allrooms = await this.chatService.getAllRooms(membershipdto.userid);
+          this.server.to(removedUser.id).emit('message', rooms);//
+          this.server.to(removedUser.id).emit('allrooms', allrooms);
+      }
+      let members = await this.chatService.getMembersByRoomId(membershipdto.roomid, this.player.id);
+      for (var x of this.user){
+        let userid = await x.handshake.query.token;
+            userid = await this.userService.verifyToken(userid);
+            if (await this.chatService.isMember(membershipdto.roomid, userid.id))
+                this.server.to(x.id).emit('members', members);
+      }
+
+      //send members to all the members of this channel
     }
 }

@@ -33,10 +33,11 @@ onMounted(() => {
         window.location.href = '/game';
     }
     else {
-       socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
-        query: {
-                'role': 'player',
+        socket.value = io('http://localhost:3001/' + props.difficulty, {
+            path: '/game/' + props.difficulty,
+            query: {
                 'accessToken': localStorage.getItem('user'),
+                'role': 'player',
             },
         });
         if (game && game.value) {

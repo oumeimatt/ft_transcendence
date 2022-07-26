@@ -35,9 +35,10 @@ onMounted(() => {
     }
     else {
         socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
-        query: {
-                'role': 'player',
+            path: '/game/' + props.difficulty,
+            query: {
                 'accessToken': localStorage.getItem('user'),
+                'role': 'player',
                 'opponent': props.opponent
             },
         });
