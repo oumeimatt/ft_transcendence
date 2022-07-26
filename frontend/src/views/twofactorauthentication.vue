@@ -33,15 +33,13 @@
 <script lang="ts" setup>
     import { inject, ref } from 'vue';
     import axios from 'axios';
-    import { useRoute } from 'vue-router';
-    import VueCookies from 'vue-cookies';
     const store = inject('store')
 
 
     function tfaConditions(){
         if (store.state.player.two_fa == true && store.state.player.status == 'offline')
-            return true
-        return false
+            return true;
+        return false;
     }
     const code2fa = ref('')
     function verifyCode(){

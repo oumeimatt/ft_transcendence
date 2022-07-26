@@ -339,7 +339,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           }
       }
 
-      @SubscribeMessage('remove-admin')
+      @SubscribeMessage('remove-admin') //kick-user
       async removeAdmin(socket:Socket,membershipdto:membershipDto){
           this.chatService.updateMembership(membershipdto.userid, membershipdto.roomid, RoleStatus.USER);
           //send members to the concerned users

@@ -152,7 +152,7 @@
 	function toggleNav () {showMenu.value = !showMenu.value}
 	function toggleModal() {showModal.value = !showModal.value}
 	function showSugg(){
-	  if (this.search == '' || this.search == "search...")
+	  if (search.value == '' || search.value == "search...")
 		return false
 	  return true
 	}

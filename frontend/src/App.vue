@@ -9,12 +9,7 @@
 
   let socket = ref(null as unknown);
 
-  // export default defineComponent({
-  //   name: 'App',
-  //   setup () {
-      provide('store', store);
-  //   },
-  // });
+  provide('store', store);
   onMounted(() => {
     socket.value = io('http://localhost' + ':3001/connect', {
     query: {
@@ -23,3 +18,7 @@
     });
   });
 </script>
+
+<style lang="sass">
+@import "./Styles/container.sass"
+</style>

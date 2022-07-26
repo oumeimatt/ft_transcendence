@@ -12,10 +12,11 @@ import { ChatController } from './chat.controller';
 import { membership } from './membership.entity';
 import { message } from './message.entity';
 import { PlayerRepository } from 'src/players/player.repository';
+import { RelationModule } from 'src/relations/relations.module';
 
 
 @Module({
-  imports:[AuthModule, TypeOrmModule.forFeature([roomRepository, PlayerRepository, membership, message]),],
+  imports:[AuthModule,RelationModule , TypeOrmModule.forFeature([roomRepository, PlayerRepository, membership, message]),],
   providers: [ChatGateway, ChatService],
   controllers: [ChatController], //ChatService, RoomService, JwtStrategy, AuthService],
 })
