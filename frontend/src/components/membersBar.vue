@@ -7,7 +7,7 @@
               <img src="../assets/group.png" class="mx-auto" >
               <div  class=" flex itmes-center justify-center text-center  -mt-[40px] "> 
                 <p class="font-bold lg:text-2xl md:text-2xl text-gray-400"> {{ name }} </p> 
-                <img @click="getMmebership" src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
+                <img @click="getMmebership(store.state.player.id)" src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
               </div>
 
               <div v-if="membership && showEdit == true" >
@@ -91,9 +91,9 @@
                         <span  class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ member.member.username }} </span> 
                     </div>
                 </div>
-                    <div v-if="showMemberOptions" class="z-10 divide-y bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
-                        <ul class="py-1 text-sm text-gray-700 text-gray-200" >
-                        <li @click="setAdmin">
+                    <div v-if="showMemberOptions && membership" class="z-10 divide-y bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
+                        <ul v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
+                        <li v-if="isAlreadyAdmin == false" @click="setAdmin">
                             <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
                         </li>
                         <li @click="Ban">
@@ -146,8 +146,23 @@
         userId.value = userid
         roomId.value = parseInt(props.id, 10)
         console.log(userId.value, roomId.value)
+        getMmebership(store.state.player.id)
+        showEdit.value = !showEdit.value
+        checkIfAlreadyAdmin(userid)
     }
 
+    const isAlreadyAdmin = ref(false as boolean ) 
+    async function checkIfAlreadyAdmin(userId: number){
+        let member = '' as string
+        await axios
+            .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: userId}, withCredentials: true })
+            .then((data) => {member = data.data.role;})
+            .catch(err => console.log(err.message))
+        if (member == 'ADMIN')
+            isAlreadyAdmin.value = true;
+        else
+            isAlreadyAdmin.value = false
+    }
 
     function setAdmin(){
         // user to set as admin id == userId.value
@@ -224,10 +239,13 @@
 
 
     const membership = ref({} as member)
-    async function getMmebership(){
-            showEdit.value = ! showEdit.value
+
+
+    async function getMmebership(playerid: number){
+            if (playerid == store.state.player.id)
+                showEdit.value = ! showEdit.value
             await axios
-            .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
+            .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: playerid}, withCredentials: true })
             .then((data) => {membership.value = data.data;})
             .catch(err => console.log(err.message))
         // if (membership.value == null){
@@ -237,11 +255,17 @@
     }
 
 
+
     onUpdated(async  () => {
 		await axios
 			.get('http://localhost:3001/chat/members' ,{params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
 			.then((data) => {store.state.roomMembs = data.data;})
 			.catch(err => console.log(err.message))
+
+        // await axios
+        //     .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
+        //     .then((data) => {membership.value = data.data;})
+        //     .catch(err => console.log(err.message))
 	})
     // const edit= ref(false)
     // const showEdit = () => (props.editRoom = !props.editRoom)
