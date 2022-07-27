@@ -71,17 +71,20 @@
                         <div v-if="userId != store.state.player.id">
                             <ul v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
                             
-                            <li v-if="isAlreadyAdmin == false && isBanned == false" @click="setAdmin">
+                            <li v-if="isAlreadyAdmin == false && isBanned == false && isMuted == false" @click="setAdmin">
                                 <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
                             </li>
-                            <li @click="unBan" v-if="(membership.role == 'ADMIN' || membership.role == 'OWNER') && isBanned == true">
+                            <li @click="unBan" v-if="(membership.role == 'ADMIN' || membership.role == 'OWNER') && isBanned == true && isMuted == false">
                                 <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white"> Unban </span>
                             </li>
-                            <li v-if="isBanned == false" @click="Ban">
+                            <li v-if="isBanned == false && isMuted == false" @click="Ban">
                                 <span  class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Ban</span>
                             </li>
-                            <li v-if="isBanned == false" @click="MuteClick">
+                            <li v-if="isBanned == false && isMuted == false" @click="MuteClick">
                                 <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Mute</span>
+                            </li>
+                            <li v-if="isBanned == false && isMuted == true" @click="Unmute">
+                                <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Unmute</span>
                             </li>
                             <li class="block px-4 py-2 hover:bg-gray-200 text-white hover:text-black space-x-2 space-y-2" v-if="mute == true">
                                 <label for=""> mute for 
@@ -94,7 +97,7 @@
 
                                 </div>
                             </li>
-                            <li v-if="isBanned== false" @click="Remove">
+                            <li v-if="isBanned== false && isMuted == false" @click="Remove">
                                 <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Remove</span>
                             </li>
                             </ul>
@@ -137,6 +140,7 @@
         const isBanned = ref(false as boolean)
         const mute = ref(false)
         const muteDuration = ref(0 as number)
+        const isMuted = ref(false as boolean)
 
 
     function showOptions(userid: number){
@@ -162,6 +166,7 @@
             isAlreadyAdmin.value = false
         // if (member.isbanned == true)
         isBanned.value = member.isbanned
+        isMuted.value = member.ismuted
         console.log("isbanned === " + member.isbanned,"|| is admin"+ isAlreadyAdmin.value )
     }
 
@@ -214,19 +219,31 @@
         muteDuration.value = 0
         mute.value = false
         showMemberOptions.value = false
+        isMuted.value = true
     }
 
     function CancelMute(){
         muteDuration.value = 0
         mute.value = false
         showMemberOptions.value = false
-
     }
 
     function MuteClick(){
         mute.value = !mute.value
         
         
+    }
+
+    function   Unmute (){
+        let mutedto={
+            roomid:roomId.value,
+            userid:userId.value,
+        }
+        store.state.connection.emit('unmute-user', mutedto);
+        muteDuration.value = 0
+        mute.value = false
+        showMemberOptions.value = false
+        isMuted.value = false
     }
 
     function Remove(){
