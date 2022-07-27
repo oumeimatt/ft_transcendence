@@ -53,6 +53,6 @@ export class ChatController {
 
     @Get('isMember')
     getMembership(@Query('roomid') roomid:number, @Query('playerid') playerid:number):Promise<membership>{
-        return this.chatService.isMember(roomid, playerid);
+        return this.chatService.getMembership(roomid, playerid);
     }
 }

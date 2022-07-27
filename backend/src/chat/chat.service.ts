@@ -177,6 +177,12 @@ export class ChatService {
         return null;
     }
 
+    async getMembership(roomid:number, playerid:number):Promise<membership>
+    {
+        let membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid});
+        return membership;
+    }
+
     // async isNotBannedMember(roomid:number, playerid:number):Promise<boolean>{  //is membernotbanned
     //     //const membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid, isbanned:true});
     //     const membership = await this.isMember(roomid, playerid);

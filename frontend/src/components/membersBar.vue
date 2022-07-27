@@ -95,13 +95,13 @@
                         <div v-if="userId != store.state.player.id">
                             <ul v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
                             
-                            <li  v-if="isAlreadyAdmin == true && isBanned == true">
+                            <li @click="unBan" v-if="isAlreadyAdmin == true && isBanned == true">
                                 <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white"> Unban </span>
                             </li>
                             <li v-if="isAlreadyAdmin == false" @click="setAdmin">
                                 <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
                             </li>
-                            <li @click="Ban">
+                            <li v-if="isBanned == false" @click="Ban">
                                 <span  class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Ban</span>
                             </li>
                             <li  @click="Mute">
@@ -170,6 +170,7 @@
             isAlreadyAdmin.value = true;
         else
             isAlreadyAdmin.value = false
+        console.log("isbanned === ",member.isbanned)
         if (member.isbanned == true)
             isBanned.value = true
     }
