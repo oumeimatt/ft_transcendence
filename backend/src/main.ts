@@ -38,7 +38,8 @@ bootstrap();
 
 	//+ catch expired token exception
 	//+ users status depending on connectedUsers table
-	
+	//+ remove last_activity from player entity
+
 
 //! errors
 //[Nest] 6028  - 07/26/2022, 9:45:29 PM   ERROR [ExceptionsHandler] ENOENT: no such file or directory, stat '/Users/iidzim/Desktop/ft_transcendence/backend/public/index.html'

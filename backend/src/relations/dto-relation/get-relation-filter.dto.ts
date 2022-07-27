@@ -1,5 +1,4 @@
 import { IsIn, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
-import { GetPlayer } from "../../players/get-player.decorator";
 import { Player } from "../../players/player.entity";
 import { RelationStatus } from "../relation_status.enum";
 

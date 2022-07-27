@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Player } from "../players/player.entity";
 import { RelationStatus } from "./relation_status.enum";
 

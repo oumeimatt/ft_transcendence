@@ -28,7 +28,7 @@ export class AuthController {
         @Res() res: Response,
     ): Promise<any> {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
-        return this.authService.logout(user.id, req, res);
+        return this.authService.logout(user.id, res);
     }
 
 }

@@ -7,9 +7,7 @@ import { RelationStatus } from "./relation_status.enum";
 
 @EntityRepository(Relation)
 export class RelationRepository extends Repository<Relation> {
-	constructor(
-		// @Inject(forwardRef( () => UsersService))
-	) { super() }
+	constructor() { super() }
 
 	async getRelations(FilterDto: GetRelationFilterDto): Promise<Relation[]> {
 		const { id, status } = FilterDto;
@@ -24,19 +22,13 @@ export class RelationRepository extends Repository<Relation> {
 		return relations;
 	}
 
-	// async addFriend(user: Player, friend_id: number): Promise<Relation> {
 	async addFriend(user: Player, friend: Player): Promise<Relation> {
 
-		// const exist = await this.findOne({ where: { sender: user, receiver: friend.id, status: RelationStatus.FRIEND } });
-		// if (exist) {
-		// 	console.log('already friend');
-		// 	return exist;
-		// }
 		//td: check if the user is not blocked -> add friend
 		const blocked = await this.findOne({ where: { sender: user, receiver: friend.id, status: RelationStatus.BLOCKED } });
 		const blocked2 = await this.findOne({ where: { sender: friend, receiver: user.id, status: RelationStatus.BLOCKED } });
 		if (blocked || blocked2) {
-			console.log('user is blocked !!!!!!!!!!!!');
+			console.log('You cannot add this user, user is blocked !');
 			throw new BadRequestException('You cannot add this user, user is blocked');
 		}
 		const relation_user = new Relation();

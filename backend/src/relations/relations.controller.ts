@@ -1,6 +1,5 @@
 import { Controller, Delete, Param, ParseIntPipe, Post, Req, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { GetPlayer } from "../players/get-player.decorator";
 import { Player } from "../players/player.entity";
 import { Relation } from "./relation.entity";
 import { RelationsService } from "./relations.service";
@@ -15,11 +14,6 @@ export class RelationsController {
 		private readonly relationService: RelationsService,
 		private readonly usersService: UsersService,
 	) {}
-
-	// @Get()
-	// getRelations(@Query(ValidationPipe) FilterDto: GetRelationFilterDto): Promise<Relation[]> {
-	// 	return this.relationService.getRelations(FilterDto);
-	// }
 
 	@Post('add/:id')
 	@UsePipes(ValidationPipe)

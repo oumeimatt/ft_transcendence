@@ -7,7 +7,6 @@ import { PlayerRepository } from "./player.repository";
 import { UserStatus } from "./player_status.enum";
 
 import { authenticator } from 'otplib';
-// import QRCode from 'qrcode';
 const QRCode = require('qrcode');
 import * as dotenv from "dotenv";
 dotenv.config({ path: `.env` })
@@ -17,15 +16,12 @@ export class UsersService {
 	constructor(
 		@InjectRepository(PlayerRepository)
 		private userRepository: PlayerRepository,
-		// private readonly twofactorService: TwoFactorAuthenticationService,
 		private jwtService: JwtService,
 	) {}
 	
-	async getStatusByUserId(id:number):Promise<UserStatus>{
+	async getStatusByUserId(id:number): Promise<UserStatus> {
 		const user = await this.getUserById(id);
-		const status = user.status;
-
-		return status;
+		return user.status;
 	}
 
 	async getUserById(id: number): Promise<Player> {
@@ -52,21 +48,21 @@ export class UsersService {
 		return found;
 	}
 
-	async getUsers(FilterDto: GetPlayersFilterDto):Promise<Player[]> {
+	async getUsers(FilterDto: GetPlayersFilterDto): Promise<Player[]> {
 		return this.userRepository.getUsers(FilterDto);
 	}
 
-	async updateUsersStatus() {
-		const onlineUsers = await this.userRepository.find({ where: { status: UserStatus.ONLINE } });
-		for (const user of onlineUsers) {
-			const now = new Date();
-			const diff = now.getTime() - user.last_activity.getTime();
-			if (diff > 1000 * 60 * 500) {
-				await this.updateStatus(user.id, UserStatus.OFFLINE);
-				console.log('User ' + user.username + ' is offline');
-			}
-		}
-	}
+	// async updateUsersStatus() {
+	// 	const onlineUsers = await this.userRepository.find({ where: { status: UserStatus.ONLINE } });
+	// 	for (const user of onlineUsers) {
+	// 		const now = new Date();
+	// 		const diff = now.getTime() - user.last_activity.getTime();
+	// 		if (diff > 1000 * 60 * 500) {
+	// 			await this.updateStatus(user.id, UserStatus.OFFLINE);
+	// 			console.log('User ' + user.username + ' is offline');
+	// 		}
+	// 	}
+	// }
 
 	async updateUsername(id: number, username: string): Promise<Player> {
 
@@ -173,17 +169,13 @@ export class UsersService {
 			await newUser.save();
 		} catch (error) {
 			console.log(error.code);
-			throw new BadRequestException();
+			throw new BadRequestException('error while creating user');
 		}
-		// if (typeof(newUser) == 'undefined') {
-		// 	console.log('newUser is undefined');
-		// }
 		return newUser;
 	}
 
 	async verifyToken(token: string): Promise<Player> {
 
-		// console.log('verifyToken');
 		try {
 			const decoded = await this.jwtService.verify(token.toString());
 			if (typeof decoded === 'object' && 'id' in decoded)
@@ -193,6 +185,8 @@ export class UsersService {
 			throw new BadRequestException('Token expired');
 		}
 	}
+	
+	//----------------------------- TwoFactorAuthentication service.ts
 
 	async generateSecretQr(user: Player): Promise<string> {
 		const { otpauth_url } = await this.generateTwoFactorAuthenticationSecret(user);
@@ -204,7 +198,7 @@ export class UsersService {
 			[],
 			(err, img) => {
 					if (err) {
-					  console.log('Error with QR');
+					  console.log('Error with QRcode');
 					  return;
 					}
 				}
@@ -212,23 +206,16 @@ export class UsersService {
 		return pathToServe;
 	}
 
-	async setTwoFactorAuthenticationSecret(id:number , secret: string) {
-		await this.userRepository.update(id, { secret: secret });
-	}
-
 	async turnOnTwoFactorAuthentication(id:number) {
 		await this.userRepository.update(id, { two_fa: true });
 		console.log('Two factor authentication turned on');
 	}
-
-	//----------------------------- TwoFactorAuthentication service.ts
 
 	async generateTwoFactorAuthenticationSecret(user: Player) {
 
         const secret = authenticator.generateSecret();
 		const token = authenticator.generate(secret);
         const otpauth_url = authenticator.keyuri(token, process.env.APP_NAME, secret);
-        // await this.setTwoFactorAuthenticationSecret(user.id, secret);
 		await this.userRepository.update(user.id, { secret: secret });
         return { secret, otpauth_url };
     }

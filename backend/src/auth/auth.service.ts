@@ -21,7 +21,6 @@ passport.use(new FortyTwoStrategy({
 		const user = {
 			id: profile._json.id,
 			login: profile._json.login,
-			// email: profile._json.email,
 			accessToken: accessToken,
 			refreshToken: refreshToken,
 		}
@@ -43,13 +42,13 @@ export class AuthService {
 		console.log('login');
 		passport.authenticate('42', {failureRedirect: "/"});
 		if (!req.user) {
-			return 'no user from 42';
+			throw new BadRequestException('Invalid credentials');
 		}
 		const user = req.user;
 		const player = await this.playerService.findOrCreate(user.id, user.login);
-		// for (const [i, j] of Object.entries(player)) {
-		// 	console.log(i, j);
-		// }
+		for (const [i, j] of Object.entries(player)) {
+			console.log(i, j);
+		}
 		return this.cb(res, player);
 	}
 
@@ -69,16 +68,14 @@ export class AuthService {
 			res.redirect('http://localhost:3000/home');
 		}
 		else {
-			console.log('two_fa');
+			console.log('two_factor authentication');
 			res.cookie('twofa',[accessToken]);
 			res.redirect('http://localhost:3000/twofactorauthentication');
 		}
 	}
 
-	async logout(id: number, req, res): Promise<any> {
+	async logout(id: number, res): Promise<any> {
 		console.log('logout');
-		const player = await this.playerService.getUserById(id);
-		console.log(player.username + player.two_fa);
 		await this.playerService.updateStatus(id, UserStatus.OFFLINE);
 		await logout();
 		await res.clearCookie('connect_sid', {domain: 'localhost', path: '/'});

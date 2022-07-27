@@ -1,5 +1,4 @@
-import { IsIn, IsNotEmpty } from "class-validator";
-import { GetPlayer } from "../../players/get-player.decorator";
+import { IsNotEmpty } from "class-validator";
 import { Player } from "../../players/player.entity";
 
 export class CreateRelationDto {

@@ -8,7 +8,6 @@ import {
 import { Server } from 'http';
 import { Socket } from 'socket.io';
 import { UsersService } from './players.service';
-import { UserStatus } from './player_status.enum';
 
 @WebSocketGateway({ namespace: '/connect', cors: true, path: '/user/connected' })
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {

@@ -1,8 +1,6 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, Unique, UpdateDateColumn,  } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, Unique, UpdateDateColumn } from "typeorm";
 import { UserStatus } from "./player_status.enum";
-// import { Game } from "../games/game.entity";
 import { Relation } from "../relations/relation.entity";
-import { Exclude } from "class-transformer";
 import { membership } from "src/chat/membership.entity";
 import { message } from "src/chat/message.entity";
 import { GameHistory } from "src/pong-game/typeorm/game-history.entity";
@@ -32,18 +30,12 @@ export class Player extends BaseEntity {
 	@Column({ default: UserStatus.OFFLINE })
 	status: UserStatus;
 
-	// @Column({ type: 'date', nullable: true})
 	@UpdateDateColumn()
 	last_activity: Date;
 
 	@Column({ default: false })
 	two_fa: boolean;
 
-	// @OneToMany(
-	// 	type => Relation,
-	// 	relation => relation.receiver,
-	// 	{ eager: true })
-	// receivers: Relation[];
 	@Column({ nullable: true })
 	secret: string;
 
@@ -54,12 +46,21 @@ export class Player extends BaseEntity {
 	)
 	senders: Relation[];
 
-	@OneToMany(()=> membership, membership=>membership.Player)
+	@OneToMany(
+		()=> membership,
+		membership=>membership.Player
+	)
     memberships : membership[];
 
-    @OneToMany(()=>message, message=> message.Player)
+    @OneToMany(
+		()=>message,
+		message=> message.Player
+	)
     messages:message[];
 
-	@OneToMany(() => GameHistory, gameHistory => gameHistory.winner || gameHistory.winner)
+	@OneToMany(
+		() => GameHistory,
+		gameHistory => gameHistory.winner || gameHistory.winner
+	)
 	gameHistory: GameHistory;
 }

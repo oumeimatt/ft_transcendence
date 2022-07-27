@@ -1,11 +1,6 @@
-import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/croodles';
 import { Player } from "./player.entity";
-import { UserStatus } from "./player_status.enum";
 import { EntityRepository, Repository } from "typeorm";
-import { CreateUserDto } from "./dto-players/create-player.dto";
 import { GetPlayersFilterDto } from "./dto-players/get-player-filter.dto";
-import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 
 @EntityRepository(Player)
 export class PlayerRepository extends Repository<Player> {

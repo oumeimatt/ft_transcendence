@@ -2,7 +2,6 @@ import { Controller, Get, Body, Param, Patch, ParseIntPipe, Query, ValidationPip
 import { UsersService } from "./players.service";
 import { GetPlayersFilterDto } from "./dto-players/get-player-filter.dto";
 import { RelationsService } from "../relations/relations.service";
-import { AuthGuard } from "@nestjs/passport";
 import { JwtService } from "@nestjs/jwt";
 import { Request, Express } from "express";
 import * as fs  from "fs";
@@ -14,21 +13,17 @@ import { UserStatus } from "./player_status.enum";
 @Controller()
 export class UsersController {
 	constructor(
-		// @Inject(forwardRef( () => RelationsService))
 		private readonly usersService: UsersService,
 		private readonly relationService: RelationsService,
 		private jwtService: JwtService,
-		// private readonly gameService: GameService,
 	){}
 
 	@Get('/twoFaUser')
 	async playerAuth(
 		@Req() req: Request,
 	) {
-		console.log('+++++++++++++');
 		const user = await this.usersService.verifyToken(req.cookies.twofa);
 		const playerData = await this.usersService.getUserById(user.id);
-		console.log("user === ", playerData.username, playerData.two_fa, playerData.status);
 		return { "profile": playerData };
 	}
 
@@ -39,7 +34,6 @@ export class UsersController {
 	) {
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const playerData = await this.usersService.getUserById(user.id);
-		console.log("user === ", playerData.username, playerData.two_fa, playerData.status);
 		// for (const [i, j] of Object.entries(user)) {
 		// 	console.log(i, j);
 		// }
@@ -99,7 +93,6 @@ export class UsersController {
     ){
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         fs.writeFileSync(process.cwd().substring(0,process.cwd().length - 7) + "frontend/public/assets/"+imageName, avatar.buffer);
-        // console.log("imagename === ", imageName)
 		return this.usersService.updateAvatar(user.id, imageName);
     }
 
@@ -156,13 +149,12 @@ export class UsersController {
 		res.send(accessToken);
 	}
 
-	//!!!!! to be replaced by socket solution
-	//+ upadte user status online/offline
-	@Get('/updateUsersStatus')
-	async updateUsersStatus(): Promise<any> {
-		//console.log("updateUsersStatus ----------");
-		return await this.usersService.updateUsersStatus();
-	}
+	// //!!!!! to be replaced by socket solution
+	// //+ upadte user status online/offline
+	// @Get('/updateUsersStatus')
+	// async updateUsersStatus(): Promise<any> {
+		// return await this.usersService.updateUsersStatus();
+	// }
 
 	//- get all users
 	@Get('/users')
