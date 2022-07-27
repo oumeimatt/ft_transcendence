@@ -204,7 +204,12 @@
         // mute for : ----muteDuration.value ----
         // user to mute id == userId.value
         // room id ==== roomId.value 
-
+        let mutedto={
+            roomid:roomId.value,
+            userid:userId.value,
+            duration:muteDuration.value,
+        }
+        store.state.connection.emit('mute-user', mutedto);
         // after send duration to backend 
         muteDuration.value = 0
         mute.value = false
@@ -299,13 +304,17 @@
     }
 
 
+    onMounted(async () => {
+       
 
+    })
     onUpdated(async  () => {
 		await axios
 			.get('http://localhost:3001/chat/members' ,{params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
 			.then((data) => {store.state.roomMembs = data.data;})
 			.catch(err => console.log(err.message))
 
+       
         // await axios
         //     .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
         //     .then((data) => {membership.value = data.data;})

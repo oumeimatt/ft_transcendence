@@ -304,6 +304,11 @@ import { connect } from 'http2';
 			//store.state.connection.emit('invitation-accepted');
 		});
 
+		 store.state.connection.on('unmute-user', (data) => {
+          console.log('catch event of unmute') ;
+                store.state.connection.emit('unmute-user', data);
+        })
+
 		store.state.connection.on('gotogame', (data) => {
 			console.log('opponent: ' + data);
 			router.push({

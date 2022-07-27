@@ -291,6 +291,15 @@ export class ChatService {
 
         return membership;
     }
+
+    async updateMuteStatus(playerid:number, roomid:number, mute:boolean):Promise<membership>{
+        const membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid});
+        membership.ismuted = mute; // true | false
+        await membership.save();
+
+        return membership;
+
+    }
     
 
     /*

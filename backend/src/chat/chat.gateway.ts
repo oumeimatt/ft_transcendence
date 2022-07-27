@@ -1,4 +1,5 @@
-import { Header, UnauthorizedException } from '@nestjs/common';
+import { helper } from '@dicebear/avatars/dist/utils';
+import { ConsoleLogger, Header, UnauthorizedException } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Console } from 'console';
@@ -16,6 +17,7 @@ import { JoinChannelDto } from './dto/join-channel-dto';
 import { membershipDto } from './dto/membership-dto';
 import { RoleStatus } from './dto/membership.model';
 import { messageDto } from './dto/message-dto';
+import { muteDto } from './dto/mute-dto';
 import { RoomDto } from './dto/room-dto';
 import { membership } from './membership.entity';
 import { chatroom } from './room.entity';
@@ -69,7 +71,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     //when a client joins the connection
       async handleConnection(client:Socket)
       {
-          //console.log('Connected: ' + client.id);
+          console.log('Connected: ' + client.id);
           await this.definePlayer(client);
           client.data.player = this.player;
           this.user.push(client);
@@ -139,7 +141,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       async onCreateMessage(socket:Socket, messageDto:messageDto)
       {
         await this.definePlayer(socket);
-        if (messageDto.content != '' && await this.chatService.isMember(messageDto.id, this.player.id))
+        let member = await this.chatService.isMember(messageDto.id, this.player.id);
+        if (messageDto.content != '' && member && member.ismuted == false)
         {
            await this.chatService.createMessage(messageDto,this.player);
  
@@ -163,11 +166,14 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       @SubscribeMessage('leave-channel')
       async leaveChannel(socket:Socket, roomid:number)
       {
+
         //I should update rooms && members to the concerned users
         //send rooms(mychannels to the player) && send members to the members
 
-        // ==== check if the player is a member be3da
+        // ==== check if the player is a member be3da not banned
         await this.definePlayer(socket);
+        if (await this.chatService.isMember(roomid, this.player.id))
+        {
         await this.chatService.deleteMmebership(roomid, this.decoded.id);
         const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
         this.server.to(socket.id).emit('message', rooms);//rooms
@@ -190,6 +196,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
                   this.server.to(x.id).emit('members', members);
           }
         }
+      }
       }
 
       @SubscribeMessage('join-channel')
@@ -485,5 +492,88 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
                 this.server.to(x.id).emit('members', members);
       }
 
+    }
+
+     private helper(client:Socket,membership:muteDto ){
+      // await this.chatService.updateMuteStatus(membershipdto.userid, membershipdto.roomid, false);
+      // let members = await this.chatService.getMembersByRoomId(membershipdto.roomid, membershipdto.userid);
+      // for (var x of this.user){
+      //   let userid = await x.handshake.query.token;
+      //   if (userid){
+      //       userid = await this.userService.verifyToken(userid);
+      //       if ((await this.chatService.isMember(membershipdto.roomid, userid.id))) //member and not banned
+      //         {
+      //           this.server.to(x.id).emit('members', members);
+      //           //setTimeout(this.helper, mutedto.duration * 60* 1000, x, membership);
+      //         }
+      //   }
+      // }
+      let dto = {
+        userid:membership.userid,
+        roomid:membership.roomid
+      }
+      this.server.to(client.id).emit('unmute-user', membership);
+    }
+
+    @SubscribeMessage('mute-user')
+    async muteUser(client:Socket, mutedto:muteDto){
+      
+      await this.definePlayer(client);
+      await this.chatService.updateMuteStatus(mutedto.userid, mutedto.roomid, true);
+
+      let mutedUser = await this.getSocketid(mutedto.userid);
+      let members = await this.chatService.getMembersByRoomId(mutedto.roomid, this.player.id);
+      // if (mutedUser){
+      //   this.server.to(mutedUser.id).emit('members', members);
+      // }
+      for (var x of this.user){
+        if (x.handshake.query){
+        let userid = await x.handshake.query.token;
+        
+            userid = await this.userService.verifyToken(userid);
+            if ((await this.chatService.isMember(mutedto.roomid, userid.id))) //member and not banned
+              {
+                this.server.to(x.id).emit('members', members);
+                let membership = {
+                  roomid:mutedto.roomid,
+                  userid:mutedto.userid
+                }
+                setTimeout(() => {
+                //  console.log('send event of unmute to ', x.id);
+                  this.server.to(x.id).emit('unmute-user', membership);
+                 // this.server.to(String(roomID)).emit('unmute', { roomID, userID });
+                }, mutedto.duration *60* 1000);
+              }
+        }
+       
+      }
+    //   let membership =
+    //   {
+    //     roomid : mutedto.roomid,
+    //     userid : mutedto.userid
+    //   }
+    // let r = setTimeout(
+    //   this.helper, mutedto.duration *   1000, membership);
+    }
+
+    @SubscribeMessage('unmute-user')
+    async unmuteUser(client:Socket, membershipdto:membershipDto){
+      await this.definePlayer(client);
+      await this.chatService.updateMuteStatus(membershipdto.userid, membershipdto.roomid, false);
+
+      let unmutedUser = await this.getSocketid(membershipdto.userid);
+      let members = await this.chatService.getMembersByRoomId(membershipdto.roomid, this.player.id);
+      if (unmutedUser){
+        this.server.to(unmutedUser.id).emit('members', members);
+      }
+      for (var x of this.user){
+        if (x.handshake.query){
+        let userid = await x.handshake.query.token;
+      
+            userid = await this.userService.verifyToken(userid);
+            if ((await this.chatService.isMember(membershipdto.roomid, userid.id))) //member and not banned
+                this.server.to(x.id).emit('members', members);
+        }
+      }
     }
 }
