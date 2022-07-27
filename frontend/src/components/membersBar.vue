@@ -80,8 +80,11 @@
                             <li v-if="isBanned == false" @click="Ban">
                                 <span  class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Ban</span>
                             </li>
-                            <li v-if="isBanned == false" @click="MuteClick">
+                            <li v-if="isBanned == false && isMuted == false" @click="MuteClick">
                                 <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Mute</span>
+                            </li>
+                            <li v-if="isBanned == false && isMuted == true" @click="Unmute">
+                                <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Unmute</span>
                             </li>
                             <li class="block px-4 py-2 hover:bg-gray-200 text-white hover:text-black space-x-2 space-y-2" v-if="mute == true">
                                 <label for=""> mute for 
@@ -137,6 +140,7 @@
         const isBanned = ref(false as boolean)
         const mute = ref(false)
         const muteDuration = ref(0 as number)
+        const isMuted = ref(false as boolean)
 
 
     function showOptions(userid: number){
@@ -162,6 +166,7 @@
             isAlreadyAdmin.value = false
         // if (member.isbanned == true)
         isBanned.value = member.isbanned
+        isMuted.value = member.ismuted
         console.log("isbanned === " + member.isbanned,"|| is admin"+ isAlreadyAdmin.value )
     }
 
@@ -214,19 +219,26 @@
         muteDuration.value = 0
         mute.value = false
         showMemberOptions.value = false
+        isMuted.value = true
     }
 
     function CancelMute(){
         muteDuration.value = 0
         mute.value = false
         showMemberOptions.value = false
-
     }
 
     function MuteClick(){
         mute.value = !mute.value
         
         
+    }
+
+    function   Unmute (){
+        muteDuration.value = 0
+        mute.value = false
+        showMemberOptions.value = false
+        isMuted.value = false
     }
 
     function Remove(){
