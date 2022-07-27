@@ -13,6 +13,12 @@ export class membership extends BaseEntity{
     @Column()
     role:RoleStatus;
 
+    @Column()
+    isbanned:boolean;
+
+    @Column()
+    ismuted:boolean;
+
     @Column({ name: 'playerid' })
     playerid: number;
 

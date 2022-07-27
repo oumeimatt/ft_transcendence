@@ -81,7 +81,7 @@ export class ChatService {
         const members:Player[] = [];
         for (var id of usersid)
         {
-            let memberObj = {member: await this.userService.getUserById(id.playerid), role : id.role}
+            let memberObj = {member: await this.userService.getUserById(id.playerid), role : id.role,isbanned:id.isbanned, ismuted:id.ismuted }
             membersObj.push(memberObj);
            // console.log(memberObj.member.username);
         }
@@ -89,20 +89,21 @@ export class ChatService {
         return membersObj; //maybe I should select only [id && username]
     }
 
-    async getRoomsForUser(playerid:number):Promise<chatroom[]>{
+    async getRoomsForUser(playerid:number):Promise<chatroom[]>{ 
         
        //! select * from room INNER JOIN membership ON (membership.Playerid=36 and room.id=membership.roomid);
         // const rooms = await this.roomRepo.createQueryBuilder('room')
         // .innerJoin('membership', 'room.id = membership.roomid')
         // .getMany();
 
-        //where playerid == playerid && user is not banned !!
-         const roomsid = await this.membershipRepo
+        //where playerid == playerid && is not banned !!
+        const isbanned = false;
+        const roomsid = await this.membershipRepo
         .createQueryBuilder('p')
         .where('p.playerid = :playerid', { playerid })
+        .andWhere('p.isbanned = :isbanned', {isbanned})
         .select(['p.roomid'])
         .getMany();
-        //console.log('faiiiled !');
 
         let rooms = [];
     
@@ -170,10 +171,34 @@ export class ChatService {
 
     async isMember(roomid:number, playerid:number):Promise<membership>{
 
-        const membership = await this.membershipRepo.findOne({playerid, roomid});
+        const membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid, isbanned:false});
         if (membership)
             return membership
         return null;
+    }
+
+    async getMembership(roomid:number, playerid:number):Promise<membership>
+    {
+        let membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid});
+        return membership;
+    }
+
+    // async isNotBannedMember(roomid:number, playerid:number):Promise<boolean>{  //is membernotbanned
+    //     //const membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid, isbanned:true});
+    //     const membership = await this.isMember(roomid, playerid);
+    //     if (membership && membership.isbanned == false)
+    //         return true;
+        
+    //     return false;
+    // }
+
+    async isBanned(roomid:number, playerid:number):Promise<boolean>{
+        let result = await this.membershipRepo.findOne({roomid:roomid, playerid:playerid});
+       
+        if (result && result.isbanned == true)
+            return true;
+        return false;
+        
     }
 
     async getAllRooms(playerid:number):Promise<chatroom[]>{
@@ -184,11 +209,11 @@ export class ChatService {
         .getMany();
         
         //if the channel os private=>check if the user is a member
+        //if public check if is not banned
         let i = 0;
         while (i < rooms.length)
         {
-            // console.log(rooms[1].name+" => "+rooms[1].ispublic)
-            if (await rooms[i].ispublic == false && await this.isMember(rooms[i].id, playerid) === null)
+            if ((rooms[i].ispublic == false && await this.isMember(rooms[i].id, playerid) === null) || (rooms[i].ispublic == true && await this.isBanned(rooms[i].id, playerid) == true))
             {
                // console.log(rooms[i].name +' is removed bcz private ');
                //if the user is a member check if he is banned !!
@@ -215,6 +240,8 @@ export class ChatService {
         const Membership = new membership();
         Membership.playerid = playerid;
         Membership.roomid = roomid;
+        Membership.isbanned = false;
+        Membership.ismuted = false;
         Membership.role =   RoleStatus.USER;
         await Membership.save();
     }
@@ -256,7 +283,7 @@ export class ChatService {
     }
 
 
-    /*
+    
     async updateBanStatus(playerid:number, roomid:number, ban:boolean):Promise<membership>{
         const membership = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid});
         membership.isbanned = ban; // true | false
@@ -264,7 +291,7 @@ export class ChatService {
 
         return membership;
     }
-    */
+    
 
     /*
         

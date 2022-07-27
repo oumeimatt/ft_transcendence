@@ -1,8 +1,9 @@
-import { Controller, Get, UseGuards, Req, Res, Response, Post, Body, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, Res, Response, UseInterceptors, UseFilters } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request } from "express";
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from '../players/players.service';
+import { AuthExceptionFilter } from './auth-exception.filter';
 
 @Controller('/auth')
 export class AuthController {
@@ -12,12 +13,13 @@ export class AuthController {
 	) {}
 
 	@Get('/login')
+	@UseFilters(new AuthExceptionFilter())
 	@UseGuards(AuthGuard('42'))
 	async FortyTwoAuth(
 		@Req() req: Request,
-		@Res() res: Response
+		@Response() res,
 	): Promise<any> {
-		return this.authService.login(req, res);
+		this.authService.login(req, res);
 	}
 
 	@Get('/logout')
@@ -29,15 +31,4 @@ export class AuthController {
         return this.authService.logout(user.id, req, res);
     }
 
-	// @Post('/2fa')
-	// async TwoFactorAuth(
-	// 	@Req() req: Request,
-	// 	@Body('twaFactorCode') code: string,
-	// ): Promise<any> {
-    //     const user = await this.usersService.verifyToken(req.cookies.connect_sid);
-	// 	const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, code);
-	// 	if (!isValid) {
-	// 		throw new UnauthorizedException('Wrong authentication code');
-	// 	}
-	// }
 }

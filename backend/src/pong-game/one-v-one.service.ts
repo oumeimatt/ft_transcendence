@@ -45,7 +45,8 @@ export class OneVOneService {
     client: Socket,
     players: Socket[],
     wss: Server,
-    ): Promise<void> {
+    ): Promise<void>
+  {
     const user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
     client.data.user = user;
     const found = await this.usersService.findPlayer(user.id);
@@ -159,7 +160,7 @@ export class OneVOneService {
       wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
     }
 
-    // // delete room from database
+    // delete room from database
     this.pongGameService.deleteRoom(first.data.roomname);
   }
 
@@ -172,10 +173,13 @@ export class OneVOneService {
         );
         client.data.playground.leftPaddle.reset();
         client.data.playground.rightPaddle.reset();
-        if (client.handshake.query.side === 'left') {
+        let loserScore = 0;
+        if (client.data.side === 'left') {
           client.data.playground.scoreBoard.playerTwoScore = client.data.playground.win_score;
+          loserScore = client.data.playground.scoreBoard.playerOneScore;
         } else {
           client.data.playground.scoreBoard.playerOneScore = client.data.playground.win_score;
+          loserScore = client.data.playground.scoreBoard.playerTwoScore;
         }
         wss.to(client.data.roomname).emit('gameInterrupted', {
           playground: this.handleGetBackGround(client.data.playground),
@@ -195,7 +199,7 @@ export class OneVOneService {
             winner: await second,
             loser: client.data.user,
             winnerScore: client.data.playground.win_score,
-            loserScore: client.handshake.query.side === 'left' && client.data.playground.scoreBoard.playerTwoScore || client.data.playground.scoreBoard.playerOneScore
+            loserScore: loserScore
           });
           // send event with winner and loser
           wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });

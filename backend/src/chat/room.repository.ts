@@ -28,11 +28,11 @@ export class roomRepository extends Repository<chatroom>{
             Membership.role = RoleStatus.USER;
             Membership.Player = user;
             Membership.room = Room;
-            //Membership.isbanned = false;
-            //Membership.ismuted = false;
+            Membership.isbanned = false;
+            Membership.ismuted = false;
             await Membership.save();
         }
-        //update the last one to be the owner
+        //update the last one to be the owner => already done in chhat gateway
 
 
         return Room;
@@ -56,6 +56,8 @@ export class roomRepository extends Repository<chatroom>{
         Membership.role =role;
         Membership.Player = creator;
         Membership.room = room;
+         Membership.ismuted = false;
+        Membership.isbanned = false;
         await Membership.save();
     }
  
@@ -69,30 +71,9 @@ export class roomRepository extends Repository<chatroom>{
         .where('room.id = :id', {id})
         .select(['room.id', 'room.name', 'room.ispublic', 'room.ischannel'])
         .getOne();
-
-       // console.log(room);
+        
         return room;
 
     }
-
-    // async getRoomsForUser(Playerid:number):Promise<void>{
-    //     //! The new query
-        
-    //     //select * from room where id IN (select roomid from membership where Playerid=Playerid)
-
-
-    //    const query = await this.createQueryBuilder('membership')
-    //    .where('name = :Playerid', {Playerid})
-    //  //  console.log(await query.getMany());
-    //   // const rooms = await query.getMany();
-
-    //   // return rooms;
-
-    // }
-
-    // async addUserToRoom(room:room, user:Player):Promise<room>{
-    //     await room.Players.push(user);
-    //     return room;
-    // }
 
 }

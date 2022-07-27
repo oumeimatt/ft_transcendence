@@ -36,7 +36,12 @@ bootstrap();
 
 // td list:
 
-	// login with 2fa - validate code
-	// bidirectional friend relation
+	//+ catch expired token exception
+	//+ users status depending on connectedUsers table
+	
+
+//! errors
+//[Nest] 6028  - 07/26/2022, 9:45:29 PM   ERROR [ExceptionsHandler] ENOENT: no such file or directory, stat '/Users/iidzim/Desktop/ft_transcendence/backend/public/index.html'
+
 
 	
