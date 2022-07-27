@@ -442,8 +442,10 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       let allrooms = await this.chatService.getAllRooms(membershipdto.userid);
 
       let bannedUser = await this.getSocketid(membershipdto.userid);
+      if (bannedUser){
       this.server.to(bannedUser.id).emit('message', rooms);//
       this.server.to(bannedUser.id).emit('allrooms', allrooms);
+      }
 
       //send members to all the concerned users(members not banned) => {only if isbanned is returned}
       let members = await this.chatService.getMembersByRoomId(membershipdto.roomid, this.player.id);
@@ -469,8 +471,10 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       let allrooms = await this.chatService.getAllRooms(membershipdto.userid);
 
       let unbannedUser = await this.getSocketid(membershipdto.userid);
+      if (unbannedUser){
       this.server.to(unbannedUser.id).emit('message', rooms);//
       this.server.to(unbannedUser.id).emit('allrooms', allrooms);
+      }
 
       //send members to all the concerned users(members not banned) => {only if isbanned is returned}
       let members = await this.chatService.getMembersByRoomId(membershipdto.roomid, this.player.id);
