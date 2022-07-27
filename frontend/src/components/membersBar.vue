@@ -71,17 +71,28 @@
                         <div v-if="userId != store.state.player.id">
                             <ul v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
                             
-                            <li @click="unBan" v-if="isAlreadyAdmin == true && isBanned == true">
-                                <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white"> Unban </span>
-                            </li>
                             <li v-if="isAlreadyAdmin == false" @click="setAdmin">
                                 <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
+                            </li>
+                            <li @click="unBan" v-if="(membership.role == 'ADMIN' || membership.role == 'OWNER') && isBanned == true">
+                                <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white"> Unban </span>
                             </li>
                             <li v-if="isBanned == false" @click="Ban">
                                 <span  class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Ban</span>
                             </li>
-                            <li  @click="Mute">
+                            <li  @click="MuteClick">
                                 <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Mute</span>
+                            </li>
+                            <li class="block px-4 py-2 hover:bg-gray-200 text-white hover:text-black space-x-2 space-y-2" v-if="mute == true">
+                                <label for=""> mute for 
+                                    <input v-model="muteDuration" class="rounded bg-slate-300 text-slate-800 font-semibold" type="number" min="0" max="120">
+                                    mins
+                                </label>
+                                <div class="flex ">
+                                    <button @click="CancelMute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 font-semibold rounded  hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Cancel </button>
+                                    <button @click="Mute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 rounded font-semibold hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Save </button>
+
+                                </div>
                             </li>
                             <li  @click="Remove">
                                 <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Remove</span>
@@ -124,6 +135,9 @@
         const roomId = ref(-1 as number)
         const showEdit = ref(false as boolean)
         const isBanned = ref(false as boolean)
+        const mute = ref(false)
+        const muteDuration = ref(0 as number)
+
 
     function showOptions(userid: number){
         showMemberOptions.value = !showMemberOptions.value
@@ -142,13 +156,13 @@
             .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: userId}, withCredentials: true })
             .then((data) => {member = data.data;})
             .catch(err => console.log(err.message))
-        if (member.role == 'ADMIN')
+        if (member.role == 'ADMIN' || member.role == 'OWNER')
             isAlreadyAdmin.value = true;
         else
             isAlreadyAdmin.value = false
-        console.log("isbanned === ",member.isbanned)
-        if (member.isbanned == true)
-            isBanned.value = true
+        // if (member.isbanned == true)
+        isBanned.value = member.isbanned
+        console.log("isbanned === " + member.isbanned,"|| is admin"+ isAlreadyAdmin.value )
     }
 
     function setAdmin(){
@@ -163,7 +177,6 @@
     }
 
     function Ban(){
-        isBanned.value = true
         // user to ban id == userId.value
         // room id ==== roomId.value
 
@@ -173,7 +186,8 @@
         }
 
         store.state.connection.emit('ban-user', membershipDto );
-    
+        isBanned.value = true
+        showMemberOptions.value = false
     }
 
     function unBan(){
@@ -181,15 +195,34 @@
             userid:userId.value,
             roomid:roomId.value
         }
-
         store.state.connection.emit('unban-user', membershipDto );
+        isBanned.value = false
+        showMemberOptions.value = false
     }
 
     function Mute(){
+        // mute for : ----muteDuration.value ----
         // user to mute id == userId.value
         // room id ==== roomId.value 
+
+        // after send duration to backend 
+        muteDuration.value = 0
+        mute.value = false
+        showMemberOptions.value = false
     }
 
+    function CancelMute(){
+        muteDuration.value = 0
+        mute.value = false
+        showMemberOptions.value = false
+
+    }
+
+    function MuteClick(){
+        mute.value = !mute.value
+        
+        
+    }
 
     function Remove(){
         // user to remove from channel id == userId.value
@@ -199,6 +232,7 @@
             userid : userId.value
         }
         store.state.connection.emit('remove-user', membershipdto);
+        showMemberOptions.value = false
     }
 
     function CancelChangePass(){

@@ -149,8 +149,8 @@ const props = defineProps<{
           .then(data =>{
             store.state.player = data.data.profile;
             store.state.friends = data.data.friends;
-            console.log(data.data.friends)
-            store.state.achievements = data.data.achievements
+            store.state.achievements = data.data.achievements;
+            store.state.blockedUsers = data.data.blockedUsers
           } ) 
 
       var user = store.state.friends.find( x => x.id.toString() === props.id )
