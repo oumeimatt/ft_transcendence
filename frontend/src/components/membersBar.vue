@@ -71,13 +71,13 @@
                         <div v-if="userId != store.state.player.id">
                             <ul v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
                             
-                            <li v-if="isAlreadyAdmin == false && isBanned == false" @click="setAdmin">
+                            <li v-if="isAlreadyAdmin == false && isBanned == false && isMuted == false" @click="setAdmin">
                                 <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
                             </li>
-                            <li @click="unBan" v-if="(membership.role == 'ADMIN' || membership.role == 'OWNER') && isBanned == true">
+                            <li @click="unBan" v-if="(membership.role == 'ADMIN' || membership.role == 'OWNER') && isBanned == true && isMuted == false">
                                 <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white"> Unban </span>
                             </li>
-                            <li v-if="isBanned == false" @click="Ban">
+                            <li v-if="isBanned == false && isMuted == false" @click="Ban">
                                 <span  class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Ban</span>
                             </li>
                             <li v-if="isBanned == false && isMuted == false" @click="MuteClick">
@@ -97,7 +97,7 @@
 
                                 </div>
                             </li>
-                            <li v-if="isBanned== false" @click="Remove">
+                            <li v-if="isBanned== false && isMuted == false" @click="Remove">
                                 <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Remove</span>
                             </li>
                             </ul>

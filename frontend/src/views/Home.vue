@@ -1,8 +1,8 @@
 <template >
   <div class="bg-black ">
     <Header />
-    <div v-if="store.state.player.status != 'offline'">
-      <div id="bg" class="flex flex-col space-y-96" >
+    <div  v-if="store.state.player.status != 'offline'">
+      <div id="bg" class=" flex flex-col space-y-96" >
           <div id="opacity" class="h-screen w-screen pt-40">
             <h1 class="text-7xl font-bold text-center text-gray-300">ENJOY PONG GAME </h1>
             <!-- <p class="pl-40 pr-40 pt-10 text-1xl font-bold text-center text-gray-300"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua </p> -->
@@ -12,8 +12,8 @@
               </div>
           </div>
       </div>
-      <div class="Container flex flex-col justify-center items-center  lg:ml-20 lg:mr-20 md:ml-10 md:mr-10" >
-        <div>
+      <div class=" flex flex-col justify-center items-center  lg:ml-20 lg:mr-20 md:ml-10 md:mr-10" >
+        <div class="Container">
           <h1 class="text-slate-300	 text-2xl">About </h1>
 
            <p class="text-slate-300	 text-m" > Pong is one of the first computer games that ever created, this simple "tennis like" game features two paddles and a ball, the goal is to defeat your opponent by being the first one to gain points, a player gets a point once the opponent misses a ball. The game can be played with two human players. The game was originally developed by Allan Alcorn and released in 1972 by Atari corporations. Soon, Pong became a huge success, and became the first commercially successful game, on 1975, Atari release a home edition of Pong (the first version was played on Arcade machines) which sold 150,000 units. Today, the Pong Game is considered to be the game which started the video games industry, as it proved that the video games market can produce significant revenues. </p>
