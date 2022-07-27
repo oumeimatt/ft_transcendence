@@ -235,6 +235,11 @@
     }
 
     function   Unmute (){
+        let mutedto={
+            roomid:roomId.value,
+            userid:userId.value,
+        }
+        store.state.connection.emit('unmute-user', mutedto);
         muteDuration.value = 0
         mute.value = false
         showMemberOptions.value = false
