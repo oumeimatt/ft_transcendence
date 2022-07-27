@@ -196,8 +196,8 @@ export class UsersService {
 
 	async generateSecretQr(user: Player): Promise<string> {
 		const { otpauth_url } = await this.generateTwoFactorAuthenticationSecret(user);
-		const imageUrl = process.cwd() + "/public/qr_" + user.username + ".png";
-		const pathToServe = "qr_" + user.username + ".png";
+		const imageUrl = process.cwd() + "/public/qr_" + user.id + ".png";
+		const pathToServe = "qr_" + user.id + ".png";
 		QRCode.toFile(
 			imageUrl,
 			otpauth_url.toString(),

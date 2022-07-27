@@ -1,5 +1,6 @@
 <template >
-    <div v-if="tfaConditions == true">
+    <div v-if="store.state.player.two_fa == true && store.state.player.status == 'offline' ">
+
 
         <div id="notlogged" class=" flex justify-center items-center text-center h-screen"> 
           <div class=" container w-3/5 h-1/5 bg-slate-300 rounded-lg translate-y-1/4">
@@ -31,16 +32,23 @@
   </template>
 
 <script lang="ts" setup>
-    import { inject, ref } from 'vue';
+    import { inject, ref, onMounted } from 'vue';
     import axios from 'axios';
+import { computed } from '@vue/reactivity';
     const store = inject('store')
 
 
-    function tfaConditions(){
-        if (store.state.player.two_fa == true && store.state.player.status == 'offline')
-            return true;
-        return false;
-    }
+    onMounted( async () => {
+        await axios
+          .get('http://localhost:3001/twoFaUser',  {withCredentials: true })
+          .then((data) => {
+              store.state.player = data.data.profile;
+              console.log("statusss ",store.state.player.status);
+          })
+          .catch((error) => { console.log(error) })
+    })
+
+
     const code2fa = ref('')
     function verifyCode(){
         axios

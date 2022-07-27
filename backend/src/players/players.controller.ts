@@ -21,16 +21,28 @@ export class UsersController {
 		// private readonly gameService: GameService,
 	){}
 
+	@Get('/twoFaUser')
+	async playerAuth(
+		@Req() req: Request,
+	) {
+		console.log('+++++++++++++');
+		const user = await this.usersService.verifyToken(req.cookies.twofa);
+		const playerData = await this.usersService.getUserById(user.id);
+		console.log("user === ", playerData.username, playerData.two_fa, playerData.status);
+		return { "profile": playerData };
+	}
+
 	//- get logged user profile
 	@Get('/profile')
 	async getProfile(
 		@Req() req: Request,
 	) {
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
+		const playerData = await this.usersService.getUserById(user.id);
+		console.log("user === ", playerData.username, playerData.two_fa, playerData.status);
 		// for (const [i, j] of Object.entries(user)) {
 		// 	console.log(i, j);
 		// }
-		const playerData = await this.usersService.getUserById(user.id);
 		const friends = await this.relationService.getUsersByStatus(user, RelationStatus.FRIEND);
 		const blockedUsers = await this.relationService.getUsersByStatus(user, RelationStatus.BLOCKED);
 		const achievements = await this.usersService.getAchievements(user.id);
@@ -98,7 +110,7 @@ export class UsersController {
 	): Promise<string>{
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const imageUrl = await this.usersService.generateSecretQr(user);
-		// console.log("imageUrl === ", imageUrl);
+		console.log("imageUrl === ", imageUrl);
 		return imageUrl;
 	}
 
@@ -115,7 +127,7 @@ export class UsersController {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
 		console.log('valid');
-		fs.unlinkSync(process.cwd() + "/public/qr_" + user.username + ".png");
+		fs.unlinkSync(process.cwd() + "/public/qr_" + user.id + ".png");
 		await this.usersService.turnOnTwoFactorAuthentication(user.id);
 		console.log('two factor authentication enabled' + user.two_fa);
 	}
@@ -126,6 +138,7 @@ export class UsersController {
 		@Response() res,
 		@Body('twoFactorCode') code: string,
 	): Promise<any> {
+		console.log('HEREEEE');
 		const player = await this.usersService.verifyToken(req.cookies.twofa);
 		const user = await this.usersService.getUserById(player.id);
 		const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, code);
