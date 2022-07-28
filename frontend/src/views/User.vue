@@ -101,7 +101,7 @@
           <!---------------------- BLOCKED  --------------------->
           <button v-if="!store.state.userInfo.isFriend && 
            !store.state.userInfo.userIsBlocked 
-          && store.state.userInfo.isFriend.amIBlocked"  id='button'
+          && store.state.userInfo.amIBlocked"  id='button'
            class='absolute bottom-3 right-3 justify-center focus:outline-none 
            space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 
            rounded inline-flex items-center'>
@@ -243,9 +243,8 @@ const props = defineProps<{
             store.state.friends = data.data.friends;
             store.state.achievements = data.data.achievements;
             store.state.blockedUsers = data.data.blockedUsers;
-            // console.log("my blockedusers  ", store.state.blockedUsers[0].username)
             store.state.spinn = false
-          } ) 
+          } )
 
         await axios
           .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
@@ -253,7 +252,6 @@ const props = defineProps<{
             store.state.userFriends = data.data.friends;
             store.state.userAchievements = data.data.achievements;
             store.state.userBlockedUsers = data.data.blockedUsers
-            // console.log("blockedusers of user ", store.state.userBlockedUsers[0].username)
             store.state.spinn = false })
           .catch(err => console.log(err.message))
 
@@ -271,7 +269,7 @@ const props = defineProps<{
             store.state.userInfo.amIBlocked = true
             return;
           }
-          let userIsBlocked = store.state.blockedUsers.find( x => x.id === store.state.player.id)
+          let userIsBlocked = store.state.blockedUsers.find( x => x.id.toString() === props.id)
           if (userIsBlocked  != null){
             store.state.userInfo.isFriend = false
             store.state.userInfo.userIsBlocked = true

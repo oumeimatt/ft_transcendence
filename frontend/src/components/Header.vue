@@ -213,28 +213,26 @@
 			store.state.userInfo.amIBlocked = false
 			return;
 		}
-		else{
-				let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
-				if (iamblocked != null){
-					store.state.userInfo.isFriend = false
-					store.state.userInfo.userIsBlocked = false
-					store.state.userInfo.amIBlocked = true
-					return;
-				}
-				else {
-						let userIsBlocked = store.state.blockedUsers.find( x => x.id === store.state.player.id)
-						if (userIsBlocked  != null){
-							store.state.userInfo.isFriend = false
-							store.state.userInfo.userIsBlocked = true
-							store.state.userInfo.amIBlocked = false
-						}
-						else{
-							store.state.userInfo.isFriend = false
-							store.state.userInfo.userIsBlocked = false
-							store.state.userInfo.amIBlocked = false
-						}
-					}
+
+		let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
+		if (iamblocked != null){
+			store.state.userInfo.isFriend = false
+			store.state.userInfo.userIsBlocked = false
+			store.state.userInfo.amIBlocked = true
+			return;
 		}
+		let userIsBlocked = store.state.blockedUsers.find( x => x.id === playerid)
+		if (userIsBlocked  != null){
+			store.state.userInfo.isFriend = false
+			store.state.userInfo.userIsBlocked = true
+			store.state.userInfo.amIBlocked = false
+		}
+		else{
+			store.state.userInfo.isFriend = false
+			store.state.userInfo.userIsBlocked = false
+			store.state.userInfo.amIBlocked = false
+		}
+
 	}
 
 
@@ -252,7 +250,7 @@
 	}
 
 
-	
+
 	onMounted(async  () => {
 		store.state.spinn = true
 		await axios

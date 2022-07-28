@@ -19,7 +19,7 @@
     });
 
     (socket.value as Socket).on("connected", (data) => {
-      console.log('connectedUsers: ', data.connectedUsers);
+      // console.log('connectedUsers: ', data.connectedUsers);
     });
 
   });
