@@ -275,8 +275,11 @@ export class ChatService {
         remove pwd == ''
     */
     async updatePassword(roomid:number, password:string):Promise<chatroom>{
+        
         let room = await this.getRoomById(roomid);
-        room.password = password;
+        let salt =   await bcrypt.genSalt();
+        room.password = await bcrypt.hash(password, salt);
+        room.salt = salt;
         await room.save();
 
         return room;
