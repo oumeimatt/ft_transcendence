@@ -195,7 +195,6 @@
 
 	onMounted(async  () => {
 		// store.state.spinn = true
-		console.log("im here8")
 		await axios
 			.get('http://localhost:3001/profile' ,{ withCredentials: true })
 			.then(data =>{
@@ -205,14 +204,11 @@
 			store.state.friends = data.data.friends;
 			store.state.achievements = data.data.achievements;
 			store.state.blockedUsers = data.data.blockedUsers
-			console.log('my profile',data.data)
 		  } ) 
 		  .catch(err => console.log(err.message))
-		  console.log("im here9")
 		await axios
 			.get('http://localhost:3001/users' ,{ withCredentials: true })
 			.then(data =>{ store.state.users = data.data ;
-				console.log('users',data.data)
 			})
 			.catch(err => console.log(err.message))
 		store.state.spinn = false;
@@ -223,7 +219,6 @@
 
 	async function getInfos(playerid: number){
 		store.state.spinn = true
-		console.log("im here 10")
 		await axios
           .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
           .then(data =>{ store.state.user = data.data.profile;
@@ -282,7 +277,6 @@
 
 
 	async function  generateFA(){
-		console.log("im here 11")
 		await axios
 			.get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
 			.then(data =>{qr.value = "http://localhost:3001/"+data.data; } ) 
@@ -293,7 +287,6 @@
 
 
 	async function enable2fa(){
-		console.log("im here 12")
 		  await axios
 		  .post('http://localhost:3001/settings/2fa/enable', {Password2fa: Password2fa.value } , {withCredentials: true })
 		  .then(() => {
@@ -324,7 +317,6 @@
 	async function changeNickname(newnickname: String){
 		if (newnickname.length > 0 && newnickname.length <= 10){
 			store.state.player.username = newnickname ;
-			console.log("im here 13")
 			await axios
 				.patch('http://localhost:3001/settings/username' ,
 				{username: newnickname} ,{ withCredentials: true })
@@ -347,7 +339,6 @@
 	  const imageName = store.state.player.username+'.' + ext.value
 	  formData.append('avatar', image.value)
 	  const headers = { 'Content-Type': 'multipart/form-data'};
-	  console.log("im here 14")
 	  await axios
 		  .post(`http://localhost:3001/settings/avatar/${imageName}`, 
 		  formData, {withCredentials: true , headers })
@@ -387,7 +378,6 @@
 	}
 
 	async function getGamesHistory(playerid: number) {
-		console.log("im here15")
 		axios
 			.get('http://localhost:3001/pong-game/games-history/' + playerid)
 			.then((data) => {

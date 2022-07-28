@@ -1,16 +1,17 @@
 <template>
   <div>
-    <div v-if="store.state.spinn == true" class="bg-black">
-      <div id="bg">
-        <div class="mx-auto">
-          <LoadingBar />
-        </div>
-      </div>
+
+
+    <div v-if="store.state.player.id == id">
+        <Profile />
     </div>
     <div v-else>
-
-      <div v-if="store.state.player.id == id">
-          <Profile />
+              <div v-if="store.state.spinn == true" class="bg-black">
+        <div id="bg">
+          <div class="mx-auto">
+            <LoadingBar />
+          </div>
+        </div>
       </div>
       <div v-else>
         <Header /> 
@@ -242,7 +243,6 @@ const props = defineProps<{
 
   onMounted( async () => {
       store.state.spinn = true
-      console.log("im here0")
         // await axios
         //   .get('http://localhost:3001/profile' ,{ withCredentials: true })
         //   .then(data =>{
@@ -258,7 +258,6 @@ const props = defineProps<{
 
       async function getInfos(playerid: number){
           // console.log("playerid::",playerid)
-          console.log("im here2")
           store.state.spinn = true
           await axios
                 .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
@@ -276,7 +275,6 @@ const props = defineProps<{
 
           var user = store.state.userFriends.find( x => x.id === store.state.player.id)
           if (user != null){
-            console.log("friend with: ", playerid)
             store.state.userInfo.isFriend = true
             store.state.userInfo.userIsBlocked = false
             store.state.userInfo.amIBlocked = false
@@ -286,7 +284,6 @@ const props = defineProps<{
 
           let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
           if (iamblocked != null){
-            console.log("blocked by: ", playerid)
             store.state.userInfo.isFriend = false
             store.state.userInfo.userIsBlocked = false
             store.state.userInfo.amIBlocked = true
@@ -295,7 +292,6 @@ const props = defineProps<{
           }
           let userIsBlocked = store.state.blockedUsers.find( x => x.id === playerid)
           if (userIsBlocked  != null){
-            console.log("i blocked : ", playerid)
             store.state.userInfo.isFriend = false
             store.state.userInfo.userIsBlocked = true
             store.state.userInfo.amIBlocked = false
@@ -311,7 +307,6 @@ const props = defineProps<{
       store.state.userInfo.userIsBlocked = false
       store.state.userInfo.amIBlocked = false
       frMenu.value = false
-      console.log("im here3")
         axios
             .delete("http://localhost:3001/relation/unfollow/" + props.id , { withCredentials: true } )
             .then(data => { })
@@ -324,7 +319,6 @@ const props = defineProps<{
         store.state.userInfo.isFriend = true
         store.state.userInfo.userIsBlocked = false
         store.state.userInfo.amIBlocked = false
-        console.log("im here4")
             axios.post("http://localhost:3001/relation/add/" + props.id , {} , { withCredentials: true } ) 
             .then(data => { })
             .catch(error =>  console.error( error));
@@ -337,7 +331,6 @@ const props = defineProps<{
         store.state.userInfo.userIsBlocked = true
         store.state.userInfo.amIBlocked = false
         frMenu.value = false
-        console.log("im here5")
         axios.post("http://localhost:3001/relation/block/" + props.id, {}, { withCredentials: true } ) 
             .then(data => {})
             .catch(error =>  console.error( error));
@@ -350,7 +343,6 @@ const props = defineProps<{
         store.state.userInfo.userIsBlocked = false
         store.state.userInfo.amIBlocked = false
         frMenu.value = false
-        console.log("im here6")
         axios.delete("http://localhost:3001/relation/unblock/" + props.id ,{ withCredentials: true } )
             .then(data => {})
             .catch(error =>  console.error( error));
@@ -367,7 +359,6 @@ const props = defineProps<{
 
     // function to get history of a player
     async function getGamesHistory() {
-      console.log("im here7")
 		  await axios
 		      .get('http://localhost:3001/pong-game/games-history/' + props.id)
 		      .then((data) => {
