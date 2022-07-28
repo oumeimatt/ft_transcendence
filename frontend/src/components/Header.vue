@@ -231,7 +231,6 @@
           .catch(err => console.log(err.message))
 
 		getGamesHistory(playerid);
-		console.log("innnnn")
 
 
 		store.state.userInfo.isFriend = false
