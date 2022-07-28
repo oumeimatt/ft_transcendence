@@ -16,7 +16,7 @@ import { Player } from 'src/players/player.entity';
 import { memberDto } from './dto/member-dto';
 import { RelationsService } from 'src/relations/relations.service';
 import { RelationStatus } from 'src/relations/relation_status.enum';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class ChatService {
     constructor(
@@ -300,11 +300,14 @@ export class ChatService {
         return membership;
 
     }
+
+    async validatingRoomPwd(room:chatroom, password:string):Promise<boolean>{
+        const hash = await bcrypt.hash(password, room.salt);
+        if (room.password === hash )
+            return true;
+        return false;
+    }
     
-
-    /*
-        
-
-    */
+    
 
 }

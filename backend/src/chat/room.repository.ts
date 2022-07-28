@@ -6,6 +6,7 @@ import { memoryUsage } from "process";
 import { membership } from "./membership.entity";
 import { RoleStatus } from "./dto/membership.model";
 import { Player } from "src/players/player.entity";
+import * as bcrypt from 'bcrypt';
 
 @EntityRepository(chatroom)
 export class roomRepository extends Repository<chatroom>{
@@ -19,7 +20,8 @@ export class roomRepository extends Repository<chatroom>{
         if (privacy === 'Private')
             Room.ispublic = false;
         //hash this password
-        Room.password = password;
+        Room.salt = await bcrypt.genSalt();
+        Room.password = await bcrypt.hash(password, Room.salt);
         await Room.save();
 
         for (var user of creators)

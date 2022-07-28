@@ -203,7 +203,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       async joinChannel(socket:Socket, JoinChanneldto:JoinChannelDto){
         await this.definePlayer(socket);
         let room = await this.chatService.getRoomById(JoinChanneldto.roomid);
-        if (room.password == JoinChanneldto.password)
+        if (await this.chatService.validatingRoomPwd(room, JoinChanneldto.password) == true)
         {
           await this.chatService.createMembership(this.player.id, JoinChanneldto.roomid);
           //send messages && mychannels to the client

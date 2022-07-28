@@ -21,6 +21,9 @@ export class chatroom extends BaseEntity{
     @Column()//{select:false}
     password:string;
 
+    @Column()
+    salt:string;
+
     // @ManyToMany(()=>player)
     // @JoinTable()
     // players:player[];
