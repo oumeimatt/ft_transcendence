@@ -229,11 +229,18 @@
             store.state.userBlockedUsers = data.data.blockedUsers
             store.state.spinn = false })
           .catch(err => console.log(err.message))
-		  
-		getGamesHistory(playerid);
-		var user = store.state.userFriends.find( x => x.id === store.state.player.id)
 
+		getGamesHistory(playerid);
+		console.log("innnnn")
+
+
+		store.state.userInfo.isFriend = false
+		store.state.userInfo.userIsBlocked = false
+		store.state.userInfo.amIBlocked = false
+
+		var user = store.state.userFriends.find( x => x.id === store.state.player.id)
 		if (user != null){
+			console.log("friend with: ", playerid)
 			store.state.userInfo.isFriend = true
 			store.state.userInfo.userIsBlocked = false
 			store.state.userInfo.amIBlocked = false
@@ -242,6 +249,7 @@
 
 		let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
 		if (iamblocked != null){
+			console.log("blocked by: ", playerid)
 			store.state.userInfo.isFriend = false
 			store.state.userInfo.userIsBlocked = false
 			store.state.userInfo.amIBlocked = true
@@ -249,6 +257,7 @@
 		}
 		let userIsBlocked = store.state.blockedUsers.find( x => x.id === playerid)
 		if (userIsBlocked  != null){
+			console.log("i blocked : ", playerid)
 			store.state.userInfo.isFriend = false
 			store.state.userInfo.userIsBlocked = true
 			store.state.userInfo.amIBlocked = false

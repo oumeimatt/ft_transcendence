@@ -109,9 +109,7 @@
               You are Blocked
             </span>
           </button>
-
-
-          
+  
          <!-- {{ props.nickname }} -->
         </div>
         <div class="flex my-0 mx-auto w-3/5 bg-slate-500 h-6 mb-6 relative">
@@ -127,7 +125,7 @@
                border-neutral-800"> Friends </p>
                <div  class="pt-4 flex items-scretch space-x-2">
                 <div v-for="friend in store.state.userFriends" :key="friend" class="flex ">
-                    <router-link  :to="{ name:'User', params: {id: friend.id}}">
+                    <router-link @click="getInfos(friend.id)" :to="{ name:'User', params: {id: friend.id}}">
                      <img :src="store.methods.playerAvatar(friend)" 
                      class="rounded-full bg-white w-10 h-10 "> </router-link>
                 </div>
@@ -245,41 +243,56 @@ const props = defineProps<{
             store.state.spinn = false
           } )
 
-        await axios
-          .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
-          .then(data =>{ store.state.user = data.data.profile;
-            store.state.userFriends = data.data.friends;
-            store.state.userAchievements = data.data.achievements;
-            store.state.userBlockedUsers = data.data.blockedUsers
-            store.state.spinn = false })
-          .catch(err => console.log(err.message))
+       getInfos(parseInt(props.id, 10)) 
+        
+
+    })
+
+      async function getInfos(playerid: number){
+          console.log("playerid::",playerid)
+          await axios
+                .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
+                .then(data =>{ store.state.user = data.data.profile;
+                  store.state.userFriends = data.data.friends;
+                  store.state.userAchievements = data.data.achievements;
+                  store.state.userBlockedUsers = data.data.blockedUsers
+                  store.state.spinn = false })
+                .catch(err => console.log(err.message))
+
+          getGamesHistory(playerid);
+          console.log("innnnn")
+
+
+          store.state.userInfo.isFriend = false
+          store.state.userInfo.userIsBlocked = false
+          store.state.userInfo.amIBlocked = false
 
           var user = store.state.userFriends.find( x => x.id === store.state.player.id)
           if (user != null){
+            console.log("friend with: ", playerid)
             store.state.userInfo.isFriend = true
             store.state.userInfo.userIsBlocked = false
             store.state.userInfo.amIBlocked = false
             return;
           }
+
           let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
           if (iamblocked != null){
+            console.log("blocked by: ", playerid)
             store.state.userInfo.isFriend = false
             store.state.userInfo.userIsBlocked = false
             store.state.userInfo.amIBlocked = true
             return;
           }
-          let userIsBlocked = store.state.blockedUsers.find( x => x.id.toString() === props.id)
+          let userIsBlocked = store.state.blockedUsers.find( x => x.id === playerid)
           if (userIsBlocked  != null){
+            console.log("i blocked : ", playerid)
             store.state.userInfo.isFriend = false
             store.state.userInfo.userIsBlocked = true
             store.state.userInfo.amIBlocked = false
           }
 
-
-          getGamesHistory();
-
-    })
-
+        }
 
   
 
