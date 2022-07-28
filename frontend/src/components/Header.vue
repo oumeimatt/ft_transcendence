@@ -191,63 +191,6 @@
 	const showScan = ref(false)
 	const Password2fa = ref('' as string)
 	let infos = {} as UserInfos
-	function toggleNav () {showMenu.value = !showMenu.value}
-	function toggleModal() {showModal.value = !showModal.value}
-
-	async function getInfos(playerid: number){
-		console.log("playerid::",playerid)
-		await axios
-          .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
-          .then(data =>{ store.state.user = data.data.profile;
-            store.state.userFriends = data.data.friends;
-            store.state.userAchievements = data.data.achievements;
-            store.state.userBlockedUsers = data.data.blockedUsers
-            store.state.spinn = false })
-          .catch(err => console.log(err.message))
-		
-		var user = store.state.userFriends.find( x => x.id === store.state.player.id)
-
-		if (user != null){
-			store.state.userInfo.isFriend = true
-			store.state.userInfo.userIsBlocked = false
-			store.state.userInfo.amIBlocked = false
-			return;
-		}
-
-		let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
-		if (iamblocked != null){
-			store.state.userInfo.isFriend = false
-			store.state.userInfo.userIsBlocked = false
-			store.state.userInfo.amIBlocked = true
-			return;
-		}
-		let userIsBlocked = store.state.blockedUsers.find( x => x.id === playerid)
-		if (userIsBlocked  != null){
-			store.state.userInfo.isFriend = false
-			store.state.userInfo.userIsBlocked = true
-			store.state.userInfo.amIBlocked = false
-		}
-		else{
-			store.state.userInfo.isFriend = false
-			store.state.userInfo.userIsBlocked = false
-			store.state.userInfo.amIBlocked = false
-		}
-
-	}
-
-
-	function showSugg(){
-	  if (search.value == '' || search.value == "search...")
-		return false
-	  return true
-	}
-
-
-
-	function getUser(username: string){
-	  var result = store.state.users.find( x=> x.username === username)
-	  return result.id
-	}
 
 
 
@@ -270,13 +213,64 @@
 			.get('http://localhost:3001/users' ,{ withCredentials: true })
 			.then(data =>{ store.state.users = data.data ; store.state.spinn = false})
 			.catch(err => console.log(err.message))
-			
-
-		// await axios //! to be replaced by socket solution
-		// 	.get('http://localhost:3001/updateUsersStatus' ,{ withCredentials: true })
-		// 	.then(() => {console.log('updated')})
-		// 	.catch(err => console.log(err.message))
+		
 	})
+
+
+	function toggleModal() {showModal.value = !showModal.value}
+
+	async function getInfos(playerid: number){
+		console.log("playerid::",playerid)
+		await axios
+          .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
+          .then(data =>{ store.state.user = data.data.profile;
+            store.state.userFriends = data.data.friends;
+            store.state.userAchievements = data.data.achievements;
+            store.state.userBlockedUsers = data.data.blockedUsers
+            store.state.spinn = false })
+          .catch(err => console.log(err.message))
+		  
+		getGamesHistory(playerid);
+		var user = store.state.userFriends.find( x => x.id === store.state.player.id)
+
+		if (user != null){
+			store.state.userInfo.isFriend = true
+			store.state.userInfo.userIsBlocked = false
+			store.state.userInfo.amIBlocked = false
+			return;
+		}
+
+		let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
+		if (iamblocked != null){
+			store.state.userInfo.isFriend = false
+			store.state.userInfo.userIsBlocked = false
+			store.state.userInfo.amIBlocked = true
+			return;
+		}
+		let userIsBlocked = store.state.blockedUsers.find( x => x.id === playerid)
+		if (userIsBlocked  != null){
+			store.state.userInfo.isFriend = false
+			store.state.userInfo.userIsBlocked = true
+			store.state.userInfo.amIBlocked = false
+		}
+
+	}
+
+
+	function showSugg(){
+	  if (search.value == '' || search.value == "search...")
+		return false
+	  return true
+	}
+
+
+
+	function getUser(username: string){
+	  var result = store.state.users.find( x=> x.username === username)
+	  return result.id
+	}
+
+
 	async function  generateFA(){
 		store.state.spinn = true
 		await axios
@@ -297,6 +291,8 @@
 		  })
 		  .catch((error) => console.log(error.response));
 	}
+
+
 	function saveChanges(){
 	  if (nickname.value.length > 0)
 		changeNickname(nickname.value)
@@ -313,6 +309,9 @@
 	  qr.value = '';
 	  showModal.value = false
 	}
+
+
+
 	async function changeNickname(newnickname: String){
 		if (newnickname.length > 0 && newnickname.length <= 10){
 			store.state.player.username = newnickname ;
@@ -331,6 +330,9 @@
 					})
 		}
 	}
+
+
+
 	async function changeAvatar(){
 	  const formData = new FormData()
 	  const imageName = store.state.player.username+'.' + ext.value
@@ -344,10 +346,16 @@
 		  .catch((error) => console.log(error.response));
 	  store.state.player.avatar = imageName
 	}
+
+
+
 	function onChange(e){
 	  image.value = e.target.files[0]
 	  ext.value = image.value.name.split('.')[image.value.name.split.length - 1]
 	}
+
+
+
 	const matchingNames = computed(() => {
 	  const a=[]
 	  store.state.users.forEach(user => {
@@ -355,6 +363,7 @@
 	  });
 	  return a.filter((name) => name.startsWith(search.value))
 	})
+
 
 	function closeSettings(){
 	  showChangeAv.value = false;
@@ -367,5 +376,18 @@
 	  showModal.value = false
 
 	}
-	// var avatar = "src/assets/"+ store.state.player.avatar
+
+	async function getGamesHistory(playerid: number) {
+      	store.state.spinn = true
+		axios
+			.get('http://localhost:3001/pong-game/games-history/' + playerid)
+			.then((data) => {
+				store.state.usergamesHistory = data.data.gamesHistory;
+    			store.state.spinn = false
+			})
+			.catch(err => {
+				errors.value = err.message ?? 'unknown';
+			});
+	  }
+
 </script>

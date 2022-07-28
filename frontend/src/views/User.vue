@@ -190,7 +190,7 @@
                 <p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
                 <!-- games  -->
                 <div class="scrollbar scrollbar-track-slate-900 scrollbar-thumb-slate-600 max-h-2/3">
-                  <div  v-for="game in gamesHistory" :key="game" 
+                  <div  v-for="game in store.state.usergamesHistory" :key="game" 
                   class="grid grid-cols-3 justify-itmes-center mt-4">
                     <div class="text-neutral-900 font-semibold "> {{ game.winner.username }} </div>
                     <div class="text-gray-900 font-black ">
@@ -226,7 +226,6 @@ import LoadingBar from '../components/LoadingBar.vue';
 import { UserInfo } from '../interfaces';
 const store = inject('store')
 const frMenu = ref(false as boolean)
-let gamesHistory = ref([] as unknown);
 let errors = ref('' as string)
 
 const props = defineProps<{
@@ -277,7 +276,7 @@ const props = defineProps<{
           }
 
 
-          getGamesHistory(parseInt(props.id, 10));
+          getGamesHistory();
 
     })
 
@@ -335,18 +334,17 @@ const props = defineProps<{
     }
 
     // function to get history of a player
-    async function getGamesHistory(id: number) {
+    async function getGamesHistory() {
       store.state.spinn = true
 		  axios
-		  .get('http://localhost:3001/pong-game/games-history/' + props.id)
-		  .then((data) => {
-		  	gamesHistory.value = data.data.gamesHistory;
-        store.state.spinn = false
-		  })
-		  .catch(err => {
-		  	errors.value = err.message ?? 'unknown';
-		  });
-      return (gamesHistory.value)
+		      .get('http://localhost:3001/pong-game/games-history/' + props.id)
+		      .then((data) => {
+		      	  store.state.usergamesHistory = data.data.gamesHistory;
+              store.state.spinn = false
+		      })
+		      .catch(err => {
+		      	  errors.value = err.message ?? 'unknown';
+		      });
 	  }
 </script>
 
