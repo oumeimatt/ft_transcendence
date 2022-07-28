@@ -45,6 +45,7 @@ export class roomRepository extends Repository<chatroom>{
 
         DM.name = sender+":"+receiver;
         DM.ischannel = false;
+        DM.salt = '';
         DM.password='';
         DM.ispublic = false;
         
