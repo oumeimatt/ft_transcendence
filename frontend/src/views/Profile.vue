@@ -19,7 +19,7 @@
 					-translate-x-2/4 text-slate-400" > level {{ store.state.player.level}} %  
 				</p>
 			</div>
-			<div class="cent pt-8 ">
+			<div class="cent pt-8">
 				<div class="grid md:grid-cols-1 lg:grid-cols-1 
 					gap-1 lg-gap-1  text-center   mt-8" >
 					<div class="p-4 bg-slate-500 rounded-md " > 

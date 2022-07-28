@@ -55,7 +55,7 @@ const state = reactive<{player: PlayerProfile, user: PlayerProfile, friends: Pla
     messages: [],
     roomSelected:0,
     roomMembs: [],
-    spinn: true,
+    spinn: false,
     usergamesHistory: []
 
     // membershipdtp:{

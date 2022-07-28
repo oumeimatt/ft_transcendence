@@ -14,9 +14,6 @@
 						<li>
 							<a href="#" @click="inviteFriend(store.methods.usersInfo(name).id)" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Invite to play game</a>
 						</li>
-						<li>
-							<a href="#" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Block</a>
-						</li>
 						</ul>
 					</div>
 				</div>
@@ -85,7 +82,6 @@
 		store.state.connection.emit('invite-game', friendid);
 	}
 
-	
 	// store.state.connection.on("sendMessage", (data) => {messages = data;});
 	//  onMounted(async () => {
 	// 	await axios

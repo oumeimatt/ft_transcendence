@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div mx-auto>
         <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
     </div>
 </template>

@@ -173,7 +173,6 @@
 	import Signin from '../views/Signin.vue'
 
 
-
 	const store = inject('store')
 	const nickname = ref('' as string)
 	const showMenu = ref(false as boolean);
@@ -190,12 +189,13 @@
 	const qr = ref('' as string)
 	const showScan = ref(false)
 	const Password2fa = ref('' as string)
-	let infos = {} as UserInfos
+	let infos = ref({} as UserInfos)
 
 
 
 	onMounted(async  () => {
-		store.state.spinn = true
+		// store.state.spinn = true
+		console.log("im here8")
 		await axios
 			.get('http://localhost:3001/profile' ,{ withCredentials: true })
 			.then(data =>{
@@ -205,29 +205,31 @@
 			store.state.friends = data.data.friends;
 			store.state.achievements = data.data.achievements;
 			store.state.blockedUsers = data.data.blockedUsers
-			store.state.spinn = false
+			console.log('my profile',data.data)
 		  } ) 
 		  .catch(err => console.log(err.message))
-		store.state.spinn = true
+		  console.log("im here9")
 		await axios
 			.get('http://localhost:3001/users' ,{ withCredentials: true })
-			.then(data =>{ store.state.users = data.data ; store.state.spinn = false})
+			.then(data =>{ store.state.users = data.data ;
+				console.log('users',data.data)
+			})
 			.catch(err => console.log(err.message))
-		
+		store.state.spinn = false;
 	})
 
 
 	function toggleModal() {showModal.value = !showModal.value}
 
 	async function getInfos(playerid: number){
-		console.log("playerid::",playerid)
+		store.state.spinn = true
+		console.log("im here 10")
 		await axios
           .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
           .then(data =>{ store.state.user = data.data.profile;
             store.state.userFriends = data.data.friends;
             store.state.userAchievements = data.data.achievements;
-            store.state.userBlockedUsers = data.data.blockedUsers
-            store.state.spinn = false })
+            store.state.userBlockedUsers = data.data.blockedUsers })
           .catch(err => console.log(err.message))
 
 		getGamesHistory(playerid);
@@ -239,28 +241,28 @@
 
 		var user = store.state.userFriends.find( x => x.id === store.state.player.id)
 		if (user != null){
-			console.log("friend with: ", playerid)
 			store.state.userInfo.isFriend = true
 			store.state.userInfo.userIsBlocked = false
 			store.state.userInfo.amIBlocked = false
+			store.state.spinn = false
 			return;
 		}
 
 		let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
 		if (iamblocked != null){
-			console.log("blocked by: ", playerid)
 			store.state.userInfo.isFriend = false
 			store.state.userInfo.userIsBlocked = false
 			store.state.userInfo.amIBlocked = true
+			store.state.spinn = false
 			return;
 		}
 		let userIsBlocked = store.state.blockedUsers.find( x => x.id === playerid)
 		if (userIsBlocked  != null){
-			console.log("i blocked : ", playerid)
 			store.state.userInfo.isFriend = false
 			store.state.userInfo.userIsBlocked = true
 			store.state.userInfo.amIBlocked = false
 		}
+		store.state.spinn = false
 
 	}
 
@@ -280,10 +282,10 @@
 
 
 	async function  generateFA(){
-		store.state.spinn = true
+		console.log("im here 11")
 		await axios
 			.get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
-			.then(data =>{qr.value = "http://localhost:3001/"+data.data; store.state.spinn = false} ) 
+			.then(data =>{qr.value = "http://localhost:3001/"+data.data; } ) 
 			.catch(err => console.log(err.message))
 		showScan.value = true
 		console.log(qr.value)
@@ -291,11 +293,10 @@
 
 
 	async function enable2fa(){
-		store.state.spinn = true
+		console.log("im here 12")
 		  await axios
 		  .post('http://localhost:3001/settings/2fa/enable', {Password2fa: Password2fa.value } , {withCredentials: true })
 		  .then(() => {
-			store.state.spinn = false
 		  })
 		  .catch((error) => console.log(error.response));
 	}
@@ -323,11 +324,11 @@
 	async function changeNickname(newnickname: String){
 		if (newnickname.length > 0 && newnickname.length <= 10){
 			store.state.player.username = newnickname ;
-			store.state.spinn = true
+			console.log("im here 13")
 			await axios
 				.patch('http://localhost:3001/settings/username' ,
 				{username: newnickname} ,{ withCredentials: true })
-				.then(data =>{ store.state.spinn = false })
+				.then(data =>{ })
 				.catch(
 					err => { 
 						console.log(err.message);
@@ -346,11 +347,11 @@
 	  const imageName = store.state.player.username+'.' + ext.value
 	  formData.append('avatar', image.value)
 	  const headers = { 'Content-Type': 'multipart/form-data'};
-	  store.state.spinn = true
+	  console.log("im here 14")
 	  await axios
 		  .post(`http://localhost:3001/settings/avatar/${imageName}`, 
 		  formData, {withCredentials: true , headers })
-		  .then(() => { store.state.spinn = false })
+		  .then(() => {  })
 		  .catch((error) => console.log(error.response));
 	  store.state.player.avatar = imageName
 	}
@@ -386,12 +387,11 @@
 	}
 
 	async function getGamesHistory(playerid: number) {
-      	store.state.spinn = true
+		console.log("im here15")
 		axios
 			.get('http://localhost:3001/pong-game/games-history/' + playerid)
 			.then((data) => {
 				store.state.usergamesHistory = data.data.gamesHistory;
-    			store.state.spinn = false
 			})
 			.catch(err => {
 				errors.value = err.message ?? 'unknown';
