@@ -18,7 +18,7 @@
               <div class="ml-6 font-semibold text-3xl  text-gray-400 "> 
                 {{ store.state.user.username }}
               </div>
-              <div v-if="store.state.user.status == 'online'"
+              <div v-if="isConnected() && store.state.user.status != 'playing'"
                class="h-4 w-4 bg-green-600 mt-2 rounded-full  ml-4">
                 <p class="opacity-0 text-gray-400 hover:opacity-100 
                   pl-6 -mt-1">
@@ -31,7 +31,7 @@
                    Playing 
                 </p>
               </div>
-              <div v-if="store.state.user.status == 'offline'" 
+              <div v-if="!isConnected() && store.state.user.status != 'playing'" 
               class="h-2 w-2 ring-4 ring-gray-600 mt-2 rounded-full  ml-4"> 
                 <p class="opacity-0 text-gray-400 hover:opacity-100 pl-6 -mt-2">
                    Offline
@@ -223,7 +223,6 @@ import { defineComponent , ref, inject, onMounted,nextTick,  computed} from 'vue
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
 import Profile from './Profile.vue';
-import { HalfCircleSpinner } from 'epic-spinners';
 import LoadingBar from '../components/LoadingBar.vue';
 import { UserInfo } from '../interfaces';
 const store = inject('store')
@@ -295,7 +294,7 @@ const props = defineProps<{
 
         }
 
-  
+
 
     function removeFriend(){
       store.state.userInfo.isFriend = false
@@ -363,6 +362,16 @@ const props = defineProps<{
 		      	  errors.value = err.message ?? 'unknown';
 		      });
 	  }
+
+
+    function isConnected(): boolean {
+      const found: number =  store.state.connectedUsers.find(user => user.playerId === store.state.user.id );
+      if (found)
+        return true;
+      else
+        return false;
+    }
+
 </script>
 
 <style>
