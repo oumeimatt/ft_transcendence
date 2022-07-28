@@ -24,6 +24,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 		if (client.handshake.query.accessToken != 'null') {
 			try {
 				const user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
+				// console.log('handle connection -> verify');
 				const found = await this.usersService.findPlayer(user.id);
 				if (found) {
 					this.connectedUsers.push({ playerId: found.id , clientId: client.id });
@@ -37,7 +38,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	handleDisconnect(client: Socket, ...args: any[]) {
 		const user = this.connectedUsers.find(us => us.clientId === client.id);
-		console.log(user);
+		console.log('handle disconnect ' + user.playerId + '  -  ' + user.clientId);
 		this.connectedUsers = this.connectedUsers.filter(us => us.clientId !== client.id);
 		this.server.emit('connected', { connectedUsers: this.connectedUsers });
 	}

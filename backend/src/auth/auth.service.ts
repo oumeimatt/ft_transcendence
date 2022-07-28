@@ -46,9 +46,9 @@ export class AuthService {
 		}
 		const user = req.user;
 		const player = await this.playerService.findOrCreate(user.id, user.login);
-		for (const [i, j] of Object.entries(player)) {
-			console.log(i, j);
-		}
+		// for (const [i, j] of Object.entries(player)) {
+		// 	console.log(i, j);
+		// }
 		return this.cb(res, player);
 	}
 

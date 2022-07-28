@@ -22,6 +22,7 @@ export class UsersController {
 	async playerAuth(
 		@Req() req: Request,
 	) {
+		// console.log('twofa Auth check -> verify');
 		const user = await this.usersService.verifyToken(req.cookies.twofa);
 		const playerData = await this.usersService.getUserById(user.id);
 		return { "profile": playerData };
@@ -32,6 +33,7 @@ export class UsersController {
 	async getProfile(
 		@Req() req: Request,
 	) {
+		// console.log('getProfile - controller');
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const playerData = await this.usersService.getUserById(user.id);
 		// for (const [i, j] of Object.entries(user)) {
@@ -58,6 +60,7 @@ export class UsersController {
 		@Req() req: Request,
 		@Param('id', ParseIntPipe) id: number,
 	){
+		// console.log('users profile -> verify');
 		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const playerData = await this.usersService.getUserById(id);
 		const friends = await this.relationService.getUsersByStatus(playerData, RelationStatus.FRIEND);
@@ -79,8 +82,9 @@ export class UsersController {
 		@Req() req: Request,
 		@Body('username') username: string,
 	){
+		// console.log('update username -> verify');
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
-		return this.usersService.updateUsername(user.id, username);
+		return await this.usersService.updateUsername(user.id, username);
 	}
 
 	//- update avatar
@@ -91,9 +95,10 @@ export class UsersController {
 		@Param('imageName') imageName : string,
 		@UploadedFile() avatar: Express.Multer.File,
     ){
+		// console.log('update avatar -> verify');
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         fs.writeFileSync(process.cwd().substring(0,process.cwd().length - 7) + "frontend/public/assets/"+imageName, avatar.buffer);
-		return this.usersService.updateAvatar(user.id, imageName);
+		return await this.usersService.updateAvatar(user.id, imageName);
     }
 
 	//- enable two factor authentication
@@ -101,6 +106,7 @@ export class UsersController {
 	async updateTwoFa(
 		@Req() req: Request,
 	): Promise<string>{
+		// console.log('generate 2fa -> verify');
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const imageUrl = await this.usersService.generateSecretQr(user);
 		console.log("imageUrl === ", imageUrl);
@@ -112,6 +118,7 @@ export class UsersController {
 		@Req() req: Request,
 		@Body('Password2fa') Password2fa: string,
 	): Promise<void> {
+		// console.log('enable 2fa -> verify');
         const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const user = await this.usersService.getUserById(user_token.id);
 		const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, Password2fa);
@@ -131,7 +138,7 @@ export class UsersController {
 		@Response() res,
 		@Body('twoFactorCode') code: string,
 	): Promise<any> {
-		console.log('HEREEEE');
+		// console.log('2fa auth -> verify');
 		const player = await this.usersService.verifyToken(req.cookies.twofa);
 		const user = await this.usersService.getUserById(player.id);
 		const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, code);
@@ -162,6 +169,7 @@ export class UsersController {
 		@Query(ValidationPipe) FilterDto: GetPlayersFilterDto,
 		@Req() req: Request,
 	) {
+		// console.log('get all users -> verify');
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		return this.usersService.getUsers(FilterDto);
 	}

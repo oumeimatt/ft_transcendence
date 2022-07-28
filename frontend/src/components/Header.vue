@@ -114,10 +114,10 @@
 			  </div>
 		  </div>
 		  <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-			<button @click="closeSettings" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button" v-on:click="toggleModal()">
+			<button @click="closeSettings" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button">
 			  Close
 			</button>
-			<button @click="saveChanges()" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button" v-on:click="toggleModal()">
+			<button @click="saveChanges()" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button">
 			  Save Changes
 			</button>
 		  </div>
@@ -215,7 +215,7 @@
 		enable2fa()
 	  showChangeAv.value = false;
 	  show2f.value = false;
-	  showChangeName.value = false;
+	//   showChangeName.value = false;
 	  showScan.value = false;
 	  nickname.value = '';
 	  Password2fa.value = ''
@@ -228,7 +228,14 @@
 			await axios
 				.patch('http://localhost:3001/settings/username' ,{username: newnickname} ,{ withCredentials: true })
 				.then(data =>{ store.state.spinn = false })
-				.catch(err => console.log(err.message))
+				.catch(
+					err => { 
+						console.log(err.message);
+						// if (err.response.status == 400){
+							// console.log('Username already exists');  <!-- ! msg alert  -->
+						// }
+						return false;
+					})
 		}
 	}
 	async function changeAvatar(){

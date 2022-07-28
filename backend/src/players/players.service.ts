@@ -75,7 +75,7 @@ export class UsersService {
 		try {
 			await updated.save();
 		} catch (error) {
-			console.log(error.code);
+			console.log('updateUsername -> duplicated !! ' + error.code);
 			if (error.code === '23505') {
 				throw new BadRequestException('Username already exists');
 			} else {
@@ -168,7 +168,7 @@ export class UsersService {
 		try {
 			await newUser.save();
 		} catch (error) {
-			console.log(error.code);
+			console.log('findOrCreate' + error.code);
 			throw new BadRequestException('error while creating user');
 		}
 		return newUser;
@@ -176,6 +176,7 @@ export class UsersService {
 
 	async verifyToken(token: string): Promise<Player> {
 
+		// console.log('verify token');
 		try {
 			const decoded = await this.jwtService.verify(token.toString());
 			if (typeof decoded === 'object' && 'id' in decoded)
@@ -198,7 +199,7 @@ export class UsersService {
 			[],
 			(err, img) => {
 					if (err) {
-					  console.log('Error with QRcode');
+					  console.log('Error with QRcode' + err);
 					  return;
 					}
 				}
