@@ -3,17 +3,8 @@
 import { Script } from "vm";
 import { reactive } from "vue";
 import { io, Socket } from 'socket.io-client';
-
-interface Profile {
-    id: number,
-    username: string
-    avatar: string,
-    level: number,
-    status: string,
-    two_fa: boolean,
-    recievers: Profile[],
-    senders: Profile[]
-}
+import { PlayerProfile } from '../interfaces/PlayerProfile'
+import { UserInfos } from '../interfaces'
 
 interface chatRoom {
     id: number,
@@ -37,12 +28,12 @@ interface messageDto {
 }
 
 interface roomMember {
-    member: Profile,
+    member: PlayerProfile,
     role: string
 }
 
 
-const state = reactive<{player: Profile, user: Profile, friends: Profile[], achievements: string[], blockedUsers: Profile[], userFriends: Profile[], userAchievements:string[], userbBlockedUsers: Profile[] ,users: Profile[], rooms:chatRoom[], allRooms:chatRoom[], imageUrl: string, owner:boolean, editRoom: boolean, connection: Socket, roominfo: roomRole, message: string, messages: messageDto[], roomSelected:number, roomMembs: roomMember[], spinn: boolean}> ({
+const state = reactive<{player: PlayerProfile, user: PlayerProfile, friends: PlayerProfile[], achievements: string[], blockedUsers: PlayerProfile[], userFriends: PlayerProfile[], userAchievements:string[], userbBlockedUsers: PlayerProfile[], userInfo : UserInfos ,users: PlayerProfile[], rooms:chatRoom[], allRooms:chatRoom[], imageUrl: string, owner:boolean, editRoom: boolean, connection: Socket, roominfo: roomRole, message: string, messages: messageDto[], roomSelected:number, roomMembs: roomMember[], spinn: boolean}> ({
     player :{id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     user : {id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     friends: [],
@@ -51,6 +42,7 @@ const state = reactive<{player: Profile, user: Profile, friends: Profile[], achi
     userFriends:[],
     userAchievements: [],
     userBlockedUsers: [],
+    userInfo: {isFriend: false, userIsBlocked: false, amIBlocked: false},
     users: [],
     rooms: [],
     allRooms: [],
@@ -110,7 +102,7 @@ const methods = reactive({
 	// 	}
 	// 	return null
 	// },
-    playerAvatar(player:Profile ){
+    playerAvatar(player:PlayerProfile ){
         if (player.avatar.startsWith("https://avatars.dicebear.com") || player.avatar.startsWith("public/assets")){
             return player.avatar
         }
