@@ -1,19 +1,13 @@
 <template>
   <div>
-
-
     <div v-if="store.state.player.id == id">
         <Profile />
     </div>
     <div v-else>
-              <div v-if="store.state.spinn == true" class="bg-black">
-        <div id="bg">
-          <div class="mx-auto">
-            <LoadingBar />
-          </div>
+      <div>
+        <div v-if="store.state.spinn == true">
+          <LoadingBar :start="store.state.spinn" />
         </div>
-      </div>
-      <div v-else>
         <Header /> 
         <div v-if="store.state.player.status != 'offline'" class="Container">
           <div id="container2" class="relative mb-11 text-white">
@@ -242,17 +236,18 @@ const props = defineProps<{
 
 
   onMounted( async () => {
-      store.state.spinn = true
-        // await axios
-        //   .get('http://localhost:3001/profile' ,{ withCredentials: true })
-        //   .then(data =>{
-        //     store.state.player = data.data.profile;
-        //     store.state.friends = data.data.friends;
-        //     store.state.achievements = data.data.achievements;
-        //     store.state.blockedUsers = data.data.blockedUsers;
-        //   } )
+      // store.state.spinn = true
+      //   await axios
+      //     .get('http://localhost:3001/profile' ,{ withCredentials: true })
+      //     .then(data =>{
+      //       store.state.player = data.data.profile;
+      //       store.state.friends = data.data.friends;
+      //       store.state.achievements = data.data.achievements;
+      //       store.state.blockedUsers = data.data.blockedUsers;
+      //     } )
 
-        getInfos(parseInt(props.id, 10))  
+        getInfos(parseInt(props.id, 10))
+        store.state.spinn = false
 
     })
 

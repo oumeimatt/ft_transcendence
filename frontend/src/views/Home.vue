@@ -1,13 +1,16 @@
 <template >
 <div>
-    <div v-if="store.state.spinn == true" class="bg-black">
+    <!-- <div v-if="store.state.spinn == true" class="bg-black">
       <div id="bg">
         <div class="mx-auto">
           <LoadingBar />
         </div>
       </div>
-    </div>
-    <div v-else class="bg-black ">
+    </div> -->
+    <div class="bg-black ">
+      <div v-if="store.state.spinn == true">
+        <LoadingBar :start="store.state.spinn" />
+      </div>
       <Header />
       <div  v-if="store.state.player.status != 'offline'">
         <div id="bg" class=" flex flex-col space-y-96" >

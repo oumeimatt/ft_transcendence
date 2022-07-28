@@ -1,13 +1,32 @@
 <template>
-    <div mx-auto>
-        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+  <div class="spin">
+    <div class="rin">
+          <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
 </script>
 
 <style>
+
+.spin {
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+
+}
+
+.rin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0 auto;
+  height: 100%;
+}
 .lds-ring {
   display: inline-block;
   position: relative;
@@ -25,6 +44,7 @@
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #fff transparent transparent transparent;
+  background-color: transparent;
 }
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;

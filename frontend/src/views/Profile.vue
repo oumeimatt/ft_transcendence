@@ -1,5 +1,8 @@
 <template>
 	<div>
+		<div v-if="store.state.spinn == true">
+          <LoadingBar :start="store.state.spinn" />
+        </div>
 		<Header /> 
 		<div  v-if="store.state.player.status != 'offline'" class="Container">
 			<div id="bg" class=" relative mb-11 text-white">
@@ -28,7 +31,7 @@
 						</p>
 						<div  class="pt-4 flex items-scretch space-x-2">
                             <div v-for="friend in store.state.friends" :key="friend">
-							    <router-link  :to="{ name:'User', params: {id: friend.id}}"> 
+							    <router-link @click="getInfos(friend.id)" :to="{ name:'User', params: {id: friend.id}}"> 
 									<img :src="store.methods.playerAvatar(friend)" 
 										class="w-10 h-10 rounded-full bg-white"> 
 								</router-link>
@@ -123,7 +126,9 @@
     import axios from 'axios';
 	import { defineComponent , ref, inject, onMounted} from 'vue';
     import Footer from '../components/Footer.vue';
-    import Header from '../components/Header.vue'
+    import Header from '../components/Header.vue';
+	import LoadingBar from '../components/LoadingBar.vue'
+
     const store = inject('store')
 	const addFriend = ref(false)
 	let gamesHistory = ref([] as unknown);
@@ -140,8 +145,54 @@
 			store.state.spinn = false})
 			.catch(err => console.log(err))
         getGamesHistory(store.state.player.id);
+		store.state.spinn = false
 
     })
+
+	 async function getInfos(playerid: number){
+          // console.log("playerid::",playerid)
+          store.state.spinn = true
+          await axios
+                .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
+                .then(data =>{ store.state.user = data.data.profile;
+                  store.state.userFriends = data.data.friends;
+                  store.state.userAchievements = data.data.achievements;
+                  store.state.userBlockedUsers = data.data.blockedUsers})
+                .catch(err => console.log(err.message))
+
+          getGamesHistory(playerid);
+
+          store.state.userInfo.isFriend = false
+          store.state.userInfo.userIsBlocked = false
+          store.state.userInfo.amIBlocked = false
+
+          var user = store.state.userFriends.find( x => x.id === store.state.player.id)
+          if (user != null){
+            store.state.userInfo.isFriend = true
+            store.state.userInfo.userIsBlocked = false
+            store.state.userInfo.amIBlocked = false
+            store.state.spinn = false
+            return;
+          }
+
+          let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
+          if (iamblocked != null){
+            store.state.userInfo.isFriend = false
+            store.state.userInfo.userIsBlocked = false
+            store.state.userInfo.amIBlocked = true
+            store.state.spinn = false
+            return;
+          }
+          let userIsBlocked = store.state.blockedUsers.find( x => x.id === playerid)
+          if (userIsBlocked  != null){
+            store.state.userInfo.isFriend = false
+            store.state.userInfo.userIsBlocked = true
+            store.state.userInfo.amIBlocked = false
+          }
+          store.state.spinn = false
+
+        }
+
 
 	function getUserAvatar(id: number){
       var result = store.state.users.find( x=> x.id === id)
@@ -150,12 +201,10 @@
 
 	// function to get history of a player
 	async function getGamesHistory(id: number) {
-		store.state.spinn = true
 		axios
 		.get('http://localhost:3001/pong-game/games-history/' + id)
 		.then((data) => {
 			gamesHistory.value = data.data.gamesHistory;
-			store.state.spinn = false
 		})
 		.catch(err => {
 			errors.value = err.message ?? 'unknown';

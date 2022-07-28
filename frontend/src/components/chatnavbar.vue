@@ -264,14 +264,14 @@
 	async function getMessagesMembers(roomid : number){
 		store.state.spinn = true
 		await axios.get('http://localhost:3001/chat/messages', {params:{roomid:roomid, playerid:store.state.player.id}, withCredentials:true})
-		.then(data=>{store.state.messages = data.data; store.state.spinn = false})
+		.then(data=>{store.state.messages = data.data;})
 		store.state.roomSelected=roomid;
 
-		store.state.spinn = true
 		await axios
 			.get('http://localhost:3001/chat/members' ,{params:{ roomid : roomid, playerid: store.state.player.id}, withCredentials: true })
-			.then((data) => {store.state.roomMembs = data.data; store.state.spinn = false})
+			.then((data) => {store.state.roomMembs = data.data; })
 			.catch(err => console.log(err.message))
+		store.state.spinn = false
 	}
 
 	// function getMembers(id){
@@ -297,7 +297,8 @@
 		// console.log("Room selected  " + store.state.roomSelected);
 		store.state.spinn = true
 		await axios.get('http://localhost:3001/chat/DM', {params:{userid:store.state.player.id, receiverid:friendid}, withCredentials:true})
-		.then(data=>{store.state.messages = data.data; store.state.spinn = false})
+		.then(data=>{store.state.messages = data.data; })
+		store.state.spinn = false
 		//store.state.roomSelected = getRoomId(friendid);
 	}
 
@@ -325,26 +326,28 @@
             store.state.player = data.data.profile;
             store.state.friends = data.data.friends;
             store.state.achievements = data.data.achievements
-			store.state.spinn = false
+
           } ) 
           .catch(err => console.log(err.message))
 
-		  store.state.spinn = true
-		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		  .then(data=> { store.state.rooms = data.data;  store.state.spinn = false})
-		//  console.log(data.data);}
+
+		  await axios
+		  	.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
+		  	.then(data=> { store.state.rooms = data.data; })
 
 
-		store.state.spinn = true
-		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		.then(data=> {store.state.allRooms = data.data; store.state.spinn = false })
+
+		await axios
+			.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
+			.then(data=> {store.state.allRooms = data.data; })
+			.catch(err => { console.log(err)})
 		
+		store.state.spinn = false
+
+
 
 		store.state.connection.on("message", (data) => {store.state.rooms = data;});
-
 		store.state.connection.on("allrooms", (data) => {store.state.allRooms = data;});
-
-
 		store.state.connection.on("sendMessage", (data) => {
 			//listen to this event if and only if the roomid selected is the one we get messages from
 			// console.log('listening to event message '+ data);
@@ -355,24 +358,20 @@
 				// console.log(data[0].roomid);
 				// console.log(store.state.roomSelected);
 				store.state.messages = data;
-			}
-			
+			}	
 	 }
 	 );
-	 store.state.connection.on('room-exist', (data) => {alert(data + " : Room already exist with that Name !! ")});
-	 store.state.connection.on('player-playing', (data) =>{alert(`${data} is already playing !!`)})
-	 store.state.connection.on('player-offline', data => {alert(`${data} is offline !!`)})
-	
-		
+		 store.state.connection.on('room-exist', (data) => {alert(data + " : Room already exist with that Name !! ")});
+		 store.state.connection.on('player-playing', (data) =>{alert(`${data} is already playing !!`)})
+		 store.state.connection.on('player-offline', data => {alert(`${data} is offline !!`)})
 
-		
+
 		store.state.connection.on("members", (data) => {
 			if (data && data[0].roomid == store.state.roomSelected)
 			{
 				store.state.roomMembs = data;
 			}
 			});
-
 		store.state.connection.on('invitation', (data) => {
 			opponent.value = data;
 			invited.value = true;
@@ -383,12 +382,10 @@
 			//send an event to framdani that user accept the invition and redirect him to onetoone
 			//store.state.connection.emit('invitation-accepted');
 		});
-
 		 store.state.connection.on('unmute-user', (data) => {
         //   console.log('catch event of unmute') ;
                 store.state.connection.emit('unmute-user', data);
         })
-
 		store.state.connection.on('gotogame', (data) => {
 			// console.log('opponent: ' + data);
 			router.push({
@@ -404,6 +401,8 @@
 		});
 
 	 })
+
+
 	function getUserName(player: any){
       var result = store.state.users.find( x=> x.id.toString() === player.id)
       return result

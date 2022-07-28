@@ -1,5 +1,8 @@
 <template>
-    <Header /> 
+  <div v-if="store.state.spinn == true">
+        <LoadingBar :start="store.state.spinn" />
+  </div>
+  <Header /> 
   <div v-if="store.state.player.status != 'offline'" class="Container">
     <div class="grid grid-cols-6 gap-px ">
       <chatnavbar/>
@@ -17,6 +20,7 @@ import Footer from '../components/Footer.vue';
 import chatnavbar from '../components/chatnavbar.vue'
 import membersBar from '../components/membersBar.vue'
 import conversationRoom from '../components/conversationRoom.vue'
+import LoadingBar from '../components/LoadingBar.vue'
 
 const props = defineProps({
     name: String,
