@@ -178,6 +178,9 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         const rooms = await this.chatService.getRoomsForUser(this.decoded.id);
         this.server.to(socket.id).emit('message', rooms);//rooms
 
+        let allrooms = await this.chatService.getAllRooms(this.player.id);
+        this.server.to(socket.id).emit('allrooms', allrooms);
+
         let messages = [];
         this.server.to(socket.id).emit('sendMessage', messages);
 
