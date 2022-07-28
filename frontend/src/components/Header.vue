@@ -174,8 +174,6 @@
 
 
 
-
-
 	const store = inject('store')
 	const nickname = ref('' as string)
 	const showMenu = ref(false as boolean);
@@ -240,17 +238,21 @@
 	}
 
 
-
-
 	function showSugg(){
 	  if (search.value == '' || search.value == "search...")
 		return false
 	  return true
 	}
+
+
+
 	function getUser(username: string){
 	  var result = store.state.users.find( x=> x.username === username)
 	  return result.id
 	}
+
+
+	
 	onMounted(async  () => {
 		store.state.spinn = true
 		await axios
