@@ -28,29 +28,74 @@
                 </p>
               </div>
           </div>
-          <button @click="addFriend" v-if="addfr == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-slate-900 font-medium py-2 px-4 rounded inline-flex items-center'>
-              <svg id='icon' class='w-4 h-4 mr-1' fill='#FFF' stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="white"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+          <!---------------------- ADD FRIEND --------------------->
+
+          <button v-if="!store.state.userInfo.isFriend &&
+           !store.state.userInfo.userIsBlocked && 
+           !store.state.userInfo.isFriend.amIBlocked"
+            @click="addFriend" id='button' 
+            class='absolute bottom-3 right-3 justify-center focus:outline-none
+             space-between bg-slate-900 font-medium py-2 px-4 rounded inline-flex 
+             items-center'>
+              <svg id='icon' class='w-4 h-4 mr-1' fill='#FFF' stroke-linecap="round"
+               stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="white"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
              <span id='text' class='text-white text-sm select-none'>Add friend</span>
           </button>
-          <button v-if="userIsFriend == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
-             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+          <!----------------------  FRIENDS  --------------------->
+
+          <button v-if="store.state.userInfo.isFriend && 
+          !store.state.userInfo.userIsBlocked && !store.state.userInfo.isFriend.amIBlocked"
+           id='button' class='absolute bottom-3 right-3 justify-center 
+           focus:outline-none space-between bg-gray-900 hover:bg-slate-900 
+           font-medium py-2 px-2 rounded inline-flex items-center'>
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="" 
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
             <span id='text' class='text-white text-sm select-none ml-2 '>Friends</span>
               <svg @click="frMenu = !frMenu" class="w-5 h-5 ml-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
           </button>
-          <button @click="unblockFriend" v-if="blocked" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
-            <span id='text' class='ml-2 mr-2 text-white text-sm select-none ml-2 '>Unblock</span>
-          </button>
-          <button  v-if="blockedby == true" id='button' class='absolute bottom-3 right-3 justify-center focus:outline-none space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex items-center'>
-            <span id='text' class='ml-2 mr-2 text-white text-sm select-none ml-2 '>You are Blocked</span>
-          </button>
+
             <div v-if="frMenu" class=" divide-y absolute bottom-16 right-3 divide-gray-100 rounded shadow w-36 bg-slate-800">
               <ul class="py-1 text-sm text-gray-700 text-gray-200">
+                          <!---------------------- REMOVE FRIEND --------------------->
+
               <li @click="removeFriend" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Remove friend </li>
+                          <!---------------------- BLOCK FRIEND --------------------->
+
               <li @click="blockFriend" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Block </li>
               </ul>
             </div>
+
+          <!---------------------- UNBLOCK --------------------->
+          
+          <button v-if="!store.state.userInfo.isFriend &&
+           store.state.userInfo.userIsBlocked
+          && !store.state.userInfo.isFriend.amIBlocked"
+           @click="unblockFriend" id='button' class='absolute bottom-3 right-3
+            justify-center focus:outline-none space-between bg-gray-900 
+            hover:bg-slate-900 font-medium py-2 px-2 rounded inline-flex
+             items-center'>
+            <span id='text' class='ml-2 mr-2 text-white text-sm 
+            select-none ml-2 '>Unblock</span>
+          </button>
+
+
+          <!---------------------- BLOCKED  --------------------->
+          <button v-if="!store.state.userInfo.isFriend && 
+           !store.state.userInfo.userIsBlocked 
+          && store.state.userInfo.isFriend.amIBlocked"  id='button'
+           class='absolute bottom-3 right-3 justify-center focus:outline-none 
+           space-between bg-gray-900 hover:bg-slate-900 font-medium py-2 px-2 
+           rounded inline-flex items-center'>
+            <span id='text' class='ml-2 mr-2 text-white text-sm select-none ml-2 '>
+              You are Blocked
+            </span>
+          </button>
+
+
+          
          <!-- {{ props.nickname }} -->
         </div>
         <div class="flex my-0 mx-auto w-3/5 bg-slate-500 h-6 mb-6 relative">
@@ -125,25 +170,18 @@ import { is } from '@babel/types';
 import axios from 'axios';
 import { defineComponent , ref, inject, onMounted,nextTick,  computed, onUpdated } from 'vue';
 import Footer from '../components/Footer.vue';
-import Header from '../components/Header.vue'
-import Profile from './Profile.vue'
-import { HalfCircleSpinner } from 'epic-spinners'
-import LoadingBar from '../components/LoadingBar.vue'
-
-
+import Header from '../components/Header.vue';
+import Profile from './Profile.vue';
+import { HalfCircleSpinner } from 'epic-spinners';
+import LoadingBar from '../components/LoadingBar.vue';
+import { UserInfo } from '../interfaces';
 const store = inject('store')
-const add = ref(true as boolean)
-const isFriend = ref(false as boolean)
 const frMenu = ref(false as boolean)
-const isBlocked = ref(false as boolean)
-const isBlockedBy = ref(false as boolean)
 let gamesHistory = ref([] as unknown);
 let errors = ref('' as string)
 
 const props = defineProps<{
   id: string,
-  // friend: boolean,
-  // blocked: boolean
 }>()
 
 
@@ -156,83 +194,53 @@ const props = defineProps<{
             store.state.friends = data.data.friends;
             store.state.achievements = data.data.achievements;
             store.state.blockedUsers = data.data.blockedUsers;
+            // console.log("my blockedusers  ", store.state.blockedUsers[0].username)
             store.state.spinn = false
           } ) 
 
-      var user = store.state.friends.find( x => x.id.toString() === props.id )
-        //  console.log("use")
-      if (user != null){
-          isFriend.value = true
-          add.value = false
-      }
-      else{
-          isFriend.value = false
-          add.value = true
-      }
+        await axios
+          .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
+          .then(data =>{ store.state.user = data.data.profile;
+            store.state.userFriends = data.data.friends;
+            store.state.userAchievements = data.data.achievements;
+            store.state.userBlockedUsers = data.data.blockedUsers
+            // console.log("blockedusers of user ", store.state.userBlockedUsers[0].username)
+            store.state.spinn = false })
+          .catch(err => console.log(err.message))
 
-      var blocked = store.state.blockedUsers.find( x => x.id.toString() === props.id )
-        //  console.log("blocked === ", blocked.username)
-      if (blocked != null){
-          isBlocked.value = true
-          add.value = false
-      }
-      else{
-          isBlocked.value = false
-          add.value = true
-      }
+          var user = store.state.userFriends.find( x => x.id === store.state.player.id)
+          if (user != null){
+            store.state.userInfo.isFriend = true
+            store.state.userInfo.userIsBlocked = false
+            store.state.userInfo.amIBlocked = false
+            return;
+          }
+          let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
+          if (iamblocked != null){
+            store.state.userInfo.isFriend = false
+            store.state.userInfo.userIsBlocked = false
+            store.state.userInfo.amIBlocked = true
+            return;
+          }
+          let userIsBlocked = store.state.blockedUsers.find( x => x.id === store.state.player.id)
+          if (userIsBlocked  != null){
+            store.state.userInfo.isFriend = false
+            store.state.userInfo.userIsBlocked = true
+            store.state.userInfo.amIBlocked = false
+          }
 
 
-      var blockedBy = store.state.userBlockedUsers.find( x => x.id === store.state.player.id )
-        //  console.log("blockedby === ", blockedBy.username)
-      if (blockedBy != null){
-          isBlockedBy.value = true
-          add.value = false
-          isBlocked.value = false
-          isFriend.value = false
-      }
-      else{
-          isBlockedBy.value = false
-          add.value = true
-      }
       getGamesHistory(parseInt(props.id, 10));
 
     })
 
 
-
-  const userIsFriend = computed(() => isFriend.value)
-  const addfr = computed(() => add.value)
-  const blocked = computed (() => isBlocked.value)
-  const blockedby = computed(() => isBlockedBy.value)
   
-  
-onUpdated(async  () => {
-  
-      store.state.spinn = true
-      await axios
-          .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
-          .then(data =>{ store.state.user = data.data.profile;
-            store.state.userFriends = data.data.friends;
-            store.state.userAchievements = data.data.achievements;
-            store.state.userBlockedUsers = data.data.userBlockedUsers
-            store.state.spinn = false })
-          .catch(err => console.log(err.message))
-      // getGamesHistory(parseInt(props.id, 10));
-
-      // await fetch('http://localhost:3001/profile') 
-			//     .then(res => res.json())
-			//     .then(data => store.state.player = data)
-			//     .catch(err => console.log(err.message))
-      // await fetch('http://localhost:3001/users') 
-			//     .then(res => res.json())
-			//     .then(data => store.state.users = data)
-			//     .catch(err => console.log(err.message)) 
-    })
 
     async function removeFriend(){
-        add.value = true,
-        isFriend.value = false
-        isBlocked.value = false
+      store.state.userInfo.isFriend = false
+      store.state.userInfo.userIsBlocked = false
+      store.state.userInfo.amIBlocked = false
         frMenu.value = false
         store.state.spinn = true
         axios.delete("http://localhost:3001/relation/unfollow/" + props.id , { withCredentials: true } )
@@ -241,9 +249,10 @@ onUpdated(async  () => {
         await nextTick()
     }
     async function addFriend (){
-        isFriend.value = true;
-        isBlocked.value = false
-        add.value = false
+
+        store.state.userInfo.isFriend = true
+        store.state.userInfo.userIsBlocked = false
+        store.state.userInfo.amIBlocked = false
         await nextTick()
         store.state.spinn = true
         axios.post("http://localhost:3001/relation/add/" + props.id , {} , { withCredentials: true } ) // or the line below 
@@ -253,9 +262,9 @@ onUpdated(async  () => {
     }
 
     function blockFriend () {
-        isBlocked.value = true
-        add.value = false
-        isFriend.value = false
+        store.state.userInfo.isFriend = false
+        store.state.userInfo.userIsBlocked = true
+        store.state.userInfo.amIBlocked = false
         frMenu.value = false
         store.state.spinn = true
         axios.post("http://localhost:3001/relation/block/" + props.id, {}, { withCredentials: true } ) // or the line below 
@@ -264,9 +273,9 @@ onUpdated(async  () => {
             .catch(error =>  console.error( error));
     }
     function unblockFriend (){
-        add.value = true
-        isBlocked.value = false
-        isFriend.value = false
+        store.state.userInfo.isFriend = false
+        store.state.userInfo.userIsBlocked = false
+        store.state.userInfo.amIBlocked = false
         frMenu.value = false
         store.state.spinn = true
         axios.delete("http://localhost:3001/relation/unblock/" + props.id ,{ withCredentials: true } )
@@ -303,13 +312,13 @@ onUpdated(async  () => {
   }
 
 
-  #loading {
+  /* #loading {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
-  }
+  } */
 
 </style>

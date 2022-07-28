@@ -12,7 +12,8 @@
 		  <img src="../assets/pong.png" class="mr-3 h-6 sm:h-9 " alt="" />
 		</router-link>
 		<router-link :to="{name:'Home'}">
-		  <span class="self-center text-xl font-semibold md:whitespace-nowrap text-gray-300"> <span class="logo">YDA PONG </span></span>
+		  <span class="self-center text-xl font-semibold md:whitespace-nowrap 
+		  text-gray-300"> <span class="logo">YDA PONG </span></span>
 		</router-link>
 	  </a>
   <!--  -->
@@ -20,20 +21,31 @@
 	  <div class="flex md:order-1">
 		<div class="hidden relative md:block w-80">
 		  <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-			<svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+			<svg class="w-5 h-5 text-gray-500" fill="currentColor"
+			 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd"
+			  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 
+			  4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+			   clip-rule="evenodd"></path></svg>
 		  </div>
-		  <input type="text" onfocus="this.value=''" id="search-navbar" class=" block p-2 pl-10 w-full bg-slate-700 rounded-xl border border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500 border-gray-600 placeholder-gray-400 text-gray-300  focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." v-model="search">
+		  <input type="text" onfocus="this.value=''" id="search-navbar" 
+		  class=" block p-2 pl-10 w-full bg-slate-700 rounded-xl border 
+		  border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500
+		   border-gray-600 placeholder-gray-400 text-gray-300  focus:ring-blue-500 
+		   focus:border-blue-500" placeholder="Search..." v-model="search">
 			<div v-if="showSugg() == true"> 
-			  <div v-for="user in matchingNames" :key="user" class=" z-10 bg-slate-700 rounded-md shadow-xl lg:absolute top-11  w-full absolute">
+			  <div v-for="user in matchingNames" :key="user" class=" z-10 bg-slate-700 
+			  rounded-md shadow-xl lg:absolute top-11  w-full absolute">
 				<div v-if="user != store.state.player.username">
-				  <router-link  :to="{ name:'User', params: {id: getUser(user)}}"> 
-					<div class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-neutral-600">
+				  <router-link @click="getInfos(getUser(user))" :to="{ name:'User', params: {id: getUser(user)}}"> 
+					<div class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 
+					hover:text-indigo-100 border-b border-neutral-600">
 					  {{ user }} </div>
 				  </router-link>
 				</div>
 				<div v-else>
 				  <router-link :to="{name:'profile'}">
-				  <div class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-neutral-600">
+				  <div class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 
+				  hover:text-indigo-100 border-b border-neutral-600">
 					{{ user }} </div>
 				</router-link>
 
@@ -51,28 +63,39 @@
 		<ul class="flex mt-4 flex-nowrap flex-row  mt-0 space-x-4 text-sm font-medium">
 		  <li>
 			<router-link :to="{name:'Home'}">
-			  <a class="block py-2  pl-3 mt-1 border-0 p-0 hover:text-white text-gray-300  hover:bg-transparent border-gray-700" aria-current="page"> Home</a>
+			  <a class="block py-2  pl-3 mt-1 border-0 p-0 hover:text-white 
+			  text-gray-300  hover:bg-transparent border-gray-700" aria-current="page"> Home</a>
 			</router-link>
 		  </li>
 		  <li>
 			<router-link :to="{name :'Game'}">
-			  <a class="block py-2  pl-3 mt-1 border-0 p-0 hover:text-white text-gray-300  hover:bg-transparent border-gray-700">Game</a>
+			  <a class="block py-2  pl-3 mt-1 border-0 p-0 hover:text-white 
+			  text-gray-300  hover:bg-transparent border-gray-700">Game</a>
 			</router-link>
 		  </li>
 		  <li>
 			<router-link :to="{name:'EmptyChat'}">
-			  <a  class="block py-2  pl-3 mt-1 pr-4  border-0 p-0 text-gray-300 hover:text-white hover:bg-transparent border-gray-700">Chat</a>
+			  <a  class="block py-2  pl-3 mt-1 pr-4  border-0 p-0 text-gray-300 
+			  hover:text-white hover:bg-transparent border-gray-700">Chat</a>
 			</router-link>
 		  </li>
 		  <li>
-			  <button @click="show = !show" type="button" class="translate-y-1/4 bottom-2/4  flex mr-3 text-sm rounded-full md:mr-0 focus:ring-2 focus:ring-gray-300 focus:ring-gray-600"   data-dropdown-toggle="dropdown">
-			  <img class="w-8 h-8 rounded-full bg-white " :src="store.methods.playerAvatar(store.state.player)" alt="">
-			  <div v-if="show" class=" z-10 bg-slate-700 rounded-md shadow-xl lg:absolute top-11 right-0 w-44 absolute">
-				<router-link  to="/Profile" class="block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-slate-800">
+			  <button @click="show = !show" type="button" class="translate-y-1/4 
+			  bottom-2/4  flex mr-3 text-sm rounded-full md:mr-0 focus:ring-2 focus:ring-gray-300
+			   focus:ring-gray-600"   data-dropdown-toggle="dropdown">
+			  <img class="w-8 h-8 rounded-full bg-white " 
+			  :src="store.methods.playerAvatar(store.state.player)" alt="">
+			  <div v-if="show" class=" z-10 bg-slate-700 rounded-md shadow-xl 
+			  lg:absolute top-11 right-0 w-44 absolute">
+				<router-link  to="/Profile" class="block px-4 py-2 text-sm 
+				text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 border-b border-slate-800">
 				  Profile </router-link> 
-				<button type="button" @click="toggleModal()" class="w-44 block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100  border-b border-slate-800">Settings
+				<button type="button" @click="toggleModal()" class="w-44 block
+				 px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 
+				  border-b border-slate-800">Settings
 				</button>
-				<a  href="http://localhost:3001/auth/logout" class=" w-44 block px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100  ">Logout</a>
+				<a  href="http://localhost:3001/auth/logout" class=" w-44 block px-4 py-2 
+				text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100  ">Logout</a>
 			  </div>
 			</button>
 		  </li>
@@ -86,38 +109,52 @@
 		  <div class=" p-5 border-b border-solid border-slate-200 rounded-t">
 			<h3 class=" m-auto font-semibold text-xl">Settings </h3>
 		  </div>
-		  <div class=" grid gap-3 grid-cols-1  p-6  border-t border-solid border-slate-200 rounded-b">
-			<button v-on:click="showChangeName = !showChangeName" class="pb-4 border-b text-gray-800 font-semibold" >Change Username</button> 
+		  <div class=" grid gap-3 grid-cols-1  p-6  border-t border-solid
+		   border-slate-200 rounded-b">
+			<button v-on:click="showChangeName = !showChangeName" class="pb-4 
+			border-b text-gray-800 font-semibold" >Change Username</button> 
 				<div v-if="showChangeName" class="border-b p-2 pb-4 space-x-4">
 				  <span class="text-s "> Username :</span>
-				  <input v-model="nickname" placeholder="max 10 letters" class=" border border-solid rounded" > 
+				  <input v-model="nickname" placeholder="max 10 letters" 
+				  class=" border border-solid rounded" > 
 				</div>
-			<button v-on:click="showChangeAv = !showChangeAv" class="p-2 pb-4 border-b font-semibold text-gray-800">Change Avatar</button>
+			<button v-on:click="showChangeAv = !showChangeAv" class="p-2 pb-4 border-b 
+			font-semibold text-gray-800">Change Avatar</button>
 			  <div v-if="showChangeAv" class="border-b p-2 pb-4 space-x-4 w-full">
 				<input type="file" accept="image/*" @change="onChange" class=" border border-solid rounded" > 
 			  </div>
-			  <button v-on:click="show2f = !show2f" class="pt-2 font-semibold text-gray-800">2FA Authentication</button>
+			  <button v-on:click="show2f = !show2f" class="pt-2 font-semibold 
+			  text-gray-800">2FA Authentication</button>
 			  <div v-if="store.state.player.two_fa == false">
 				  <div v-if="show2f" class="border-t p-2 space-x-4">
-					You have not activated 2FA. <a  class="text-xs text-teal-700" href="https://authy.com/what-is-2fa/" target="_blank"> What is 2FA Authentication ? </a>
-					<button @click="generateFA" class="bg-neutral-300 rounded p-4 font-semibold  hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
+					You have not activated 2FA. <a  class="text-xs text-teal-700" 
+					href="https://authy.com/what-is-2fa/" target="_blank"> What is 2FA Authentication ? </a>
+					<button @click="generateFA" class="bg-neutral-300 rounded p-4 
+					font-semibold  hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
 				  </div>
 				  <div v-if="showScan" class=" bg-gray-200 rounded"> 
 					  <img v-if="qr.length >0 " :src="qr" class="p-8 mx-auto h-30 w-30 rounded" alt="">
 					  <span v-else>Loading Qr...</span>
 					  <label class="text-gray-600"> Type authentication code here </label>
-					  <input v-model="Password2fa" type="text" maxlength="6" placeholder="123456" class=" mt-2 mb-4 pl-4 h-12 rounded ">
+					  <input v-model="Password2fa" type="text" maxlength="6" placeholder="123456" 
+					  class=" mt-2 mb-4 pl-4 h-12 rounded ">
 				  </div>
 			  </div>
 			  <div v-else>
-					<h1 v-if="show2f == true" class="text-slate-500 border-t p-4 space-x-4 "> 2FA is already activated </h1>
+					<h1 v-if="show2f == true" class="text-slate-500 border-t p-4 space-x-4 ">
+					 2FA is already activated </h1>
 			  </div>
 		  </div>
-		  <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-			<button @click="closeSettings" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button">
+		  <div class="flex items-center justify-center space-x-8  p-6 border-t 
+		  border-solid border-slate-200 rounded-b">
+			<button @click="closeSettings" class="text-gray-800 border border-solid
+			 white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm
+			  px-6 py-3 rounded outline-none    " >
 			  Close
 			</button>
-			<button @click="saveChanges()" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button">
+			<button @click="saveChanges()" class="text-gray-800 font-bold hover:border 
+			hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 
+			uppercase px-6 py-3 text-sm outline-none    " >
 			  Save Changes
 			</button>
 		  </div>
@@ -132,7 +169,13 @@
 <script lang="ts" setup>
 	import axios from 'axios';
 	import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
+	import { UserInfos } from '../interfaces/UserInfos';
 	import Signin from '../views/Signin.vue'
+
+
+
+
+
 	const store = inject('store')
 	const nickname = ref('' as string)
 	const showMenu = ref(false as boolean);
@@ -148,9 +191,57 @@
 	const ext = ref(''as string)
 	const qr = ref('' as string)
 	const showScan = ref(false)
-	const Password2fa = ref('' as string) 
+	const Password2fa = ref('' as string)
+	let infos = {} as UserInfos
 	function toggleNav () {showMenu.value = !showMenu.value}
 	function toggleModal() {showModal.value = !showModal.value}
+
+	async function getInfos(playerid: number){
+		console.log("playerid::",playerid)
+		await axios
+          .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
+          .then(data =>{ store.state.user = data.data.profile;
+            store.state.userFriends = data.data.friends;
+            store.state.userAchievements = data.data.achievements;
+            store.state.userBlockedUsers = data.data.blockedUsers
+            store.state.spinn = false })
+          .catch(err => console.log(err.message))
+		
+		var user = store.state.userFriends.find( x => x.id === store.state.player.id)
+
+		if (user != null){
+			store.state.userInfo.isFriend = true
+			store.state.userInfo.userIsBlocked = false
+			store.state.userInfo.amIBlocked = false
+			return;
+		}
+		else{
+				let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
+				if (iamblocked != null){
+					store.state.userInfo.isFriend = false
+					store.state.userInfo.userIsBlocked = false
+					store.state.userInfo.amIBlocked = true
+					return;
+				}
+				else {
+						let userIsBlocked = store.state.blockedUsers.find( x => x.id === store.state.player.id)
+						if (userIsBlocked  != null){
+							store.state.userInfo.isFriend = false
+							store.state.userInfo.userIsBlocked = true
+							store.state.userInfo.amIBlocked = false
+						}
+						else{
+							store.state.userInfo.isFriend = false
+							store.state.userInfo.userIsBlocked = false
+							store.state.userInfo.amIBlocked = false
+						}
+					}
+		}
+	}
+
+
+
+
 	function showSugg(){
 	  if (search.value == '' || search.value == "search...")
 		return false
@@ -220,13 +311,15 @@
 	  nickname.value = '';
 	  Password2fa.value = ''
 	  qr.value = '';
+	  showModal.value = false
 	}
 	async function changeNickname(newnickname: String){
 		if (newnickname.length > 0 && newnickname.length <= 10){
 			store.state.player.username = newnickname ;
 			store.state.spinn = true
 			await axios
-				.patch('http://localhost:3001/settings/username' ,{username: newnickname} ,{ withCredentials: true })
+				.patch('http://localhost:3001/settings/username' ,
+				{username: newnickname} ,{ withCredentials: true })
 				.then(data =>{ store.state.spinn = false })
 				.catch(
 					err => { 
@@ -245,7 +338,8 @@
 	  const headers = { 'Content-Type': 'multipart/form-data'};
 	  store.state.spinn = true
 	  await axios
-		  .post(`http://localhost:3001/settings/avatar/${imageName}`, formData, {withCredentials: true , headers })
+		  .post(`http://localhost:3001/settings/avatar/${imageName}`, 
+		  formData, {withCredentials: true , headers })
 		  .then(() => { store.state.spinn = false })
 		  .catch((error) => console.log(error.response));
 	  store.state.player.avatar = imageName
@@ -270,6 +364,7 @@
 	  nickname.value = '';
 	  Password2fa.value = ''
 	  qr.value = '';
+	  showModal.value = false
 
 	}
 	// var avatar = "src/assets/"+ store.state.player.avatar
