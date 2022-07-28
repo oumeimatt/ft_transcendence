@@ -146,19 +146,20 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         {
            await this.chatService.createMessage(messageDto,this.player);
  
-        //I should send the messages only to the members
-
+          //I should send the messages only to the members
           let userid:any;
           let messages:any;
           for (var x of this.user)
           {
-              // (`the connected users  ${x.id}`);
             userid = await x.handshake.query.token;
             userid = await this.userService.verifyToken(userid);
-            messages = await this.chatService.getMessagesByroomId(messageDto.id, this.player.id);
+           // messages = await this.chatService.getMessagesByroomId(messageDto.id, this.player.id);
               // getMessagesByroomId(messageDtoid, userid.id) no need to check if it's a member
             if ((await this.chatService.isMember(messageDto.id, userid)))
-                this.server.to(x.id).emit('sendMessage', messages);
+              {
+                messages = await this.chatService.getMessagesByroomId(messageDto.id, userid.id)
+                this.server.to(x.id).emit('sendMessage', messages); //getMessage for each member
+              }
           } 
         }
       }
