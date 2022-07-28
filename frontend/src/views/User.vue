@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+
       <div v-if="store.state.player.id == id">
           <Profile />
       </div>
@@ -127,6 +127,10 @@ import { defineComponent , ref, inject, onMounted,nextTick,  computed, onUpdated
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue'
 import Profile from './Profile.vue'
+import { HalfCircleSpinner } from 'epic-spinners'
+import LoadingBar from '../components/LoadingBar.vue'
+
+
 const store = inject('store')
 const add = ref(true as boolean)
 const isFriend = ref(false as boolean)
@@ -144,13 +148,15 @@ const props = defineProps<{
 
 
   onMounted( async () => {
+      store.state.spinn = true
         await axios
           .get('http://localhost:3001/profile' ,{ withCredentials: true })
           .then(data =>{
             store.state.player = data.data.profile;
             store.state.friends = data.data.friends;
             store.state.achievements = data.data.achievements;
-            store.state.blockedUsers = data.data.blockedUsers
+            store.state.blockedUsers = data.data.blockedUsers;
+            store.state.spinn = false
           } ) 
 
       var user = store.state.friends.find( x => x.id.toString() === props.id )
@@ -165,7 +171,7 @@ const props = defineProps<{
       }
 
       var blocked = store.state.blockedUsers.find( x => x.id.toString() === props.id )
-         console.log("blocked === ", blocked.username)
+        //  console.log("blocked === ", blocked.username)
       if (blocked != null){
           isBlocked.value = true
           add.value = false
@@ -177,7 +183,7 @@ const props = defineProps<{
 
 
       var blockedBy = store.state.userBlockedUsers.find( x => x.id === store.state.player.id )
-         console.log("blockedby === ", blockedBy.username)
+        //  console.log("blockedby === ", blockedBy.username)
       if (blockedBy != null){
           isBlockedBy.value = true
           add.value = false
@@ -202,13 +208,14 @@ const props = defineProps<{
   
 onUpdated(async  () => {
   
-
+      store.state.spinn = true
       await axios
           .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
           .then(data =>{ store.state.user = data.data.profile;
             store.state.userFriends = data.data.friends;
             store.state.userAchievements = data.data.achievements;
-            store.state.userBlockedUsers = data.data.userBlockedUsers})
+            store.state.userBlockedUsers = data.data.userBlockedUsers
+            store.state.spinn = false })
           .catch(err => console.log(err.message))
       // getGamesHistory(parseInt(props.id, 10));
 
@@ -227,8 +234,9 @@ onUpdated(async  () => {
         isFriend.value = false
         isBlocked.value = false
         frMenu.value = false
+        store.state.spinn = true
         axios.delete("http://localhost:3001/relation/unfollow/" + props.id , { withCredentials: true } )
-            .then(data => console.log(data.data))
+            .then(data => { store.state.spinn = false })
             .catch(error =>  console.error( error));
         await nextTick()
     }
@@ -237,9 +245,10 @@ onUpdated(async  () => {
         isBlocked.value = false
         add.value = false
         await nextTick()
+        store.state.spinn = true
         axios.post("http://localhost:3001/relation/add/" + props.id , {} , { withCredentials: true } ) // or the line below 
         // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
-            .then(data => console.log(data.data))
+            .then(data => { store.state.spinn = false})
             .catch(error =>  console.error( error));
     }
 
@@ -248,9 +257,10 @@ onUpdated(async  () => {
         add.value = false
         isFriend.value = false
         frMenu.value = false
+        store.state.spinn = true
         axios.post("http://localhost:3001/relation/block/" + props.id, {}, { withCredentials: true } ) // or the line below 
         // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
-            .then(data => console.log(data.data))
+            .then(data => {store.state.spinn = false})
             .catch(error =>  console.error( error));
     }
     function unblockFriend (){
@@ -258,8 +268,9 @@ onUpdated(async  () => {
         isBlocked.value = false
         isFriend.value = false
         frMenu.value = false
+        store.state.spinn = true
         axios.delete("http://localhost:3001/relation/unblock/" + props.id ,{ withCredentials: true } )
-            .then(data => console.log(data.data))
+            .then(data => { store.state.spinn = false})
             .catch(error =>  console.error( error));
     }
     function getUserAvatar(id: number){
@@ -269,10 +280,12 @@ onUpdated(async  () => {
 
     // function to get history of a player
     async function getGamesHistory(id: number) {
+      store.state.spinn = true
 		  axios
 		  .get('http://localhost:3001/pong-game/games-history/' + props.id)
 		  .then((data) => {
 		  	gamesHistory.value = data.data.gamesHistory;
+        store.state.spinn = false
 		  })
 		  .catch(err => {
 		  	errors.value = err.message ?? 'unknown';
@@ -287,6 +300,16 @@ onUpdated(async  () => {
     background-attachment: scroll;
     height: 300px;
     background-size: cover;
+  }
+
+
+  #loading {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
   }
 
 </style>

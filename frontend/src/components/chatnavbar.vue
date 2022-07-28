@@ -192,13 +192,15 @@ import { connect } from 'http2';
 
 
 	async function getMessagesMembers(roomid : number){
+		store.state.spinn = true
 		await axios.get('http://localhost:3001/chat/messages', {params:{roomid:roomid, playerid:store.state.player.id}, withCredentials:true})
-		.then(data=>{store.state.messages = data.data; })
+		.then(data=>{store.state.messages = data.data; store.state.spinn = false})
 		store.state.roomSelected=roomid;
 
+		store.state.spinn = true
 		await axios
 			.get('http://localhost:3001/chat/members' ,{params:{ roomid : roomid, playerid: store.state.player.id}, withCredentials: true })
-			.then((data) => {store.state.roomMembs = data.data;})
+			.then((data) => {store.state.roomMembs = data.data; store.state.spinn = false})
 			.catch(err => console.log(err.message))
 	}
 
@@ -223,8 +225,9 @@ import { connect } from 'http2';
 		CreateDM(friendid);
 		store.state.roomSelected = await getRoomId(friendid);
 		console.log("Room selected  " + store.state.roomSelected);
+		store.state.spinn = true
 		await axios.get('http://localhost:3001/chat/DM', {params:{userid:store.state.player.id, receiverid:friendid}, withCredentials:true})
-		.then(data=>{store.state.messages = data.data;})
+		.then(data=>{store.state.messages = data.data; store.state.spinn = false})
 		//store.state.roomSelected = getRoomId(friendid);
 	}
 
@@ -245,19 +248,26 @@ import { connect } from 'http2';
 			}
 		});//, {withCredentials:true});
 
+		store.state.spinn = true
 		await axios
           .get('http://localhost:3001/profile' ,{ withCredentials: true })
           .then(data =>{
             store.state.player = data.data.profile;
             store.state.friends = data.data.friends;
             store.state.achievements = data.data.achievements
+			store.state.spinn = false
           } ) 
           .catch(err => console.log(err.message))
+
+		  store.state.spinn = true
 		  await axios.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		  .then(data=> { store.state.rooms = data.data;  })
+		  .then(data=> { store.state.rooms = data.data;  store.state.spinn = false})
 		//  console.log(data.data);}
+
+
+		store.state.spinn = true
 		await axios.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
-		.then(data=> {store.state.allRooms = data.data; })
+		.then(data=> {store.state.allRooms = data.data; store.state.spinn = false })
 		
 
 		store.state.connection.on("message", (data) => {store.state.rooms = data;});

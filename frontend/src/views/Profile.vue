@@ -86,12 +86,14 @@
 	let errors = ref('' as string)
 
     onMounted( async () => {
+		store.state.spinn = true
 		await axios
           	.get('http://localhost:3001/profile' ,{ withCredentials: true })
           	.then(data =>{store.state.player = data.data.profile;
 			store.state.friends = data.data.friends;
 			store.state.achievements = data.data.achievements;
-			store.state.blockedUsers = data.data.blockedUsers})
+			store.state.blockedUsers = data.data.blockedUsers;
+			store.state.spinn = false})
 			.catch(err => console.log(err))
         getGamesHistory(store.state.player.id);
     })
@@ -103,10 +105,12 @@
 
 	// function to get history of a player
 	async function getGamesHistory(id: number) {
+		store.state.spinn = true
 		axios
 		.get('http://localhost:3001/pong-game/games-history/' + id)
 		.then((data) => {
 			gamesHistory.value = data.data.gamesHistory;
+			store.state.spinn = false
 		})
 		.catch(err => {
 			errors.value = err.message ?? 'unknown';

@@ -161,6 +161,7 @@
 	  return result.id
 	}
 	onMounted(async  () => {
+		store.state.spinn = true
 		await axios
 			.get('http://localhost:3001/profile' ,{ withCredentials: true })
 			.then(data =>{
@@ -170,12 +171,15 @@
 			store.state.friends = data.data.friends;
 			store.state.achievements = data.data.achievements;
 			store.state.blockedUsers = data.data.blockedUsers
+			store.state.spinn = false
 		  } ) 
 		  .catch(err => console.log(err.message))
+		store.state.spinn = true
 		await axios
 			.get('http://localhost:3001/users' ,{ withCredentials: true })
-			.then(data =>{ store.state.users = data.data ;})
+			.then(data =>{ store.state.users = data.data ; store.state.spinn = false})
 			.catch(err => console.log(err.message))
+			
 
 		// await axios //! to be replaced by socket solution
 		// 	.get('http://localhost:3001/updateUsersStatus' ,{ withCredentials: true })
@@ -183,18 +187,22 @@
 		// 	.catch(err => console.log(err.message))
 	})
 	async function  generateFA(){
-	  await axios
-		  .get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
-		  .then(data =>{qr.value = "http://localhost:3001/"+data.data;} ) 
-		  .catch(err => console.log(err.message))
-	  showScan.value = true
-	  console.log(qr.value)
+		store.state.spinn = true
+		await axios
+			.get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
+			.then(data =>{qr.value = "http://localhost:3001/"+data.data; store.state.spinn = false} ) 
+			.catch(err => console.log(err.message))
+		showScan.value = true
+		console.log(qr.value)
 	}
+
+
 	async function enable2fa(){
-  
+		store.state.spinn = true
 		  await axios
 		  .post('http://localhost:3001/settings/2fa/enable', {Password2fa: Password2fa.value } , {withCredentials: true })
 		  .then(() => {
+			store.state.spinn = false
 		  })
 		  .catch((error) => console.log(error.response));
 	}
@@ -216,9 +224,10 @@
 	async function changeNickname(newnickname: String){
 		if (newnickname.length > 0 && newnickname.length <= 10){
 			store.state.player.username = newnickname ;
+			store.state.spinn = true
 			await axios
 				.patch('http://localhost:3001/settings/username' ,{username: newnickname} ,{ withCredentials: true })
-				.then(data =>{ })
+				.then(data =>{ store.state.spinn = false })
 				.catch(err => console.log(err.message))
 		}
 	}
@@ -227,10 +236,10 @@
 	  const imageName = store.state.player.username+'.' + ext.value
 	  formData.append('avatar', image.value)
 	  const headers = { 'Content-Type': 'multipart/form-data'};
+	  store.state.spinn = true
 	  await axios
 		  .post(`http://localhost:3001/settings/avatar/${imageName}`, formData, {withCredentials: true , headers })
-		  .then(() => {
-			  })
+		  .then(() => { store.state.spinn = false })
 		  .catch((error) => console.log(error.response));
 	  store.state.player.avatar = imageName
 	}

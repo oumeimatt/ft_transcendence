@@ -60,14 +60,16 @@
 
           <div class="mt-16">
             <h1 class="font-bold text-xl text-gray-300 mb-4"> Members </h1>
-             <div  class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
+            <div  class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
                 <div v-for="member in store.state.roomMembs">
                     <div v-if="member.role != 'OWNER'" @click="showOptions(member.member.id)" class="flex justify-start items-center space-x-2 mt-4"> 
                         <img  :src="store.methods.playerAvatar(member.member)" class="bg-white lg:ml-8 h-8 w-8 rounded-full">
                         <span  class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ member.member.username }} </span> 
                     </div>
                 </div>
-                    <div v-if="showMemberOptions && membership" class="z-10 divide-y bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
+            </div>
+          </div>
+                    <div v-if="showMemberOptions && membership" class="z-10 -ml-40 -mt-4  bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
                         <div v-if="userId != store.state.player.id">
                             <ul v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
                             
@@ -104,11 +106,6 @@
 
                         </div>
                     </div>
-              
-
-
-          </div>
-          </div>
 
           <!-- ******* ADMINS *******  -->
 
@@ -128,19 +125,19 @@
 
     })
 
-        const owner = ref(false)
-        const setPass = ref(false)
-        const changePass = ref(false)
-        const showMemberOptions = ref(false)
-        const settedPassword = ref('' as string)
-        const changedPassword = ref('' as string)
-        const userId = ref(-1 as number)
-        const roomId = ref(-1 as number)
-        const showEdit = ref(false as boolean)
-        const isBanned = ref(false as boolean)
-        const mute = ref(false)
-        const muteDuration = ref(0 as number)
-        const isMuted = ref(false as boolean)
+    const owner = ref(false)
+    const setPass = ref(false)
+    const changePass = ref(false)
+    const showMemberOptions = ref(false)
+    const settedPassword = ref('' as string)
+    const changedPassword = ref('' as string)
+    const userId = ref(-1 as number)
+    const roomId = ref(-1 as number)
+    const showEdit = ref(false as boolean)
+    const isBanned = ref(false as boolean)
+    const mute = ref(false)
+    const muteDuration = ref(0 as number)
+    const isMuted = ref(false as boolean)
 
 
     function showOptions(userid: number){
@@ -156,9 +153,10 @@
     const isAlreadyAdmin = ref(false as boolean ) 
     async function checkIfAlreadyAdmin(userId: number){
         let member = {} as member
+        store.state.spinn = true
         await axios
             .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: userId}, withCredentials: true })
-            .then((data) => {member = data.data;})
+            .then((data) => {member = data.data; store.state.spinn = false})
             .catch(err => console.log(err.message))
         if (member.role == 'ADMIN' || member.role == 'OWNER')
             isAlreadyAdmin.value = true;
@@ -167,7 +165,6 @@
         // if (member.isbanned == true)
         isBanned.value = member.isbanned
         isMuted.value = member.ismuted
-        console.log("isbanned === " + member.isbanned,"|| is admin"+ isAlreadyAdmin.value )
     }
 
     function setAdmin(){
@@ -235,11 +232,6 @@
     }
 
     function   Unmute (){
-        let mutedto={
-            roomid:roomId.value,
-            userid:userId.value,
-        }
-        store.state.connection.emit('unmute-user', mutedto);
         muteDuration.value = 0
         mute.value = false
         showMemberOptions.value = false
@@ -310,9 +302,10 @@
     async function getMmebership(playerid: number){
             if (playerid == store.state.player.id)
                 showEdit.value = ! showEdit.value
+            store.state.spinn =  true
             await axios
             .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: playerid}, withCredentials: true })
-            .then((data) => {membership.value = data.data;})
+            .then((data) => {membership.value = data.data; store.state.spinn = false})
             .catch(err => console.log(err.message))
         // if (membership.value == null){
         //     return false;

@@ -42,7 +42,7 @@ interface roomMember {
 }
 
 
-const state = reactive<{player: Profile, user: Profile, friends: Profile[], achievements: string[], blockedUsers: Profile[], userFriends: Profile[], userAchievements:string[], userbBlockedUsers: Profile[] ,users: Profile[], rooms:chatRoom[], allRooms:chatRoom[], imageUrl: string, owner:boolean, editRoom: boolean, connection: Socket, roominfo: roomRole, message: string, messages: messageDto[], roomSelected:number, roomMembs: roomMember[]}> ({
+const state = reactive<{player: Profile, user: Profile, friends: Profile[], achievements: string[], blockedUsers: Profile[], userFriends: Profile[], userAchievements:string[], userbBlockedUsers: Profile[] ,users: Profile[], rooms:chatRoom[], allRooms:chatRoom[], imageUrl: string, owner:boolean, editRoom: boolean, connection: Socket, roominfo: roomRole, message: string, messages: messageDto[], roomSelected:number, roomMembs: roomMember[], spinn: boolean}> ({
     player :{id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     user : {id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     friends: [],
@@ -62,7 +62,8 @@ const state = reactive<{player: Profile, user: Profile, friends: Profile[], achi
     message:"",
     messages: [],
     roomSelected:0,
-    roomMembs: []
+    roomMembs: [],
+    spinn: true
 
     // membershipdtp:{
     //     roomid:null,

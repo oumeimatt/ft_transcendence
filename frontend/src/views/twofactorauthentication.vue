@@ -39,11 +39,13 @@ import { computed } from '@vue/reactivity';
 
 
     onMounted( async () => {
+      store.state.spinn = true
         await axios
           .get('http://localhost:3001/twoFaUser',  {withCredentials: true })
           .then((data) => {
               store.state.player = data.data.profile;
               console.log("statusss ",store.state.player.status);
+              store.state.spinn = false
           })
           .catch((error) => { console.log(error) })
     })
@@ -51,9 +53,11 @@ import { computed } from '@vue/reactivity';
 
     const code2fa = ref('')
     function verifyCode(){
+      store.state.spinn = true
         axios
         .post('http://localhost:3001/twofactorauthentication', {twoFactorCode: code2fa.value }, {withCredentials: true })
         .then((data) => { 
+            store.state.spinn = false
             window.location.href = '/home';
         })
         .catch(err => {});
