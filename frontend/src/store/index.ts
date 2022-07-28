@@ -33,7 +33,32 @@ interface roomMember {
 }
 
 
-const state = reactive<{player: PlayerProfile, user: PlayerProfile, friends: PlayerProfile[], achievements: string[], blockedUsers: PlayerProfile[], userFriends: PlayerProfile[], userAchievements:string[], userbBlockedUsers: PlayerProfile[], userInfo : UserInfos ,users: PlayerProfile[], rooms:chatRoom[], allRooms:chatRoom[], imageUrl: string, owner:boolean, editRoom: boolean, connection: Socket, roominfo: roomRole, message: string, messages: messageDto[], roomSelected:number, roomMembs: roomMember[], spinn: boolean, usergamesHistory: unknown}> ({
+const state = reactive<{
+        player: PlayerProfile,
+        user: PlayerProfile,
+        friends: PlayerProfile[],
+        achievements: string[],
+        blockedUsers: PlayerProfile[],
+        userFriends: PlayerProfile[],
+        userAchievements:string[],
+        userbBlockedUsers: PlayerProfile[],
+        userInfo : UserInfos,
+        users: PlayerProfile[],
+        rooms:chatRoom[],
+        allRooms:chatRoom[],
+        imageUrl: string,
+        owner:boolean,
+        editRoom: boolean,
+        connection: Socket,
+        roominfo: roomRole,
+        message: string,
+        messages: messageDto[],
+        roomSelected:number,
+        roomMembs: roomMember[],
+        spinn: boolean,
+        usergamesHistory: unknown,
+        connectedUsers: number[]
+    }> ({
     player :{id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     user : {id:-1, username:'',avatar:'' ,level:-1, status:'offline',two_fa:false, recievers: [], senders: [] },
     friends: [],
@@ -56,7 +81,8 @@ const state = reactive<{player: PlayerProfile, user: PlayerProfile, friends: Pla
     roomSelected:0,
     roomMembs: [],
     spinn: false,
-    usergamesHistory: []
+    usergamesHistory: [],
+    connectedUsers: [],
 
     // membershipdtp:{
     //     roomid:null,
