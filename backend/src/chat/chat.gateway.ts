@@ -71,7 +71,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     //when a client joins the connection
       async handleConnection(client:Socket)
       {
-          console.log('Connected: ' + client.id);
+          ('Connected: ' + client.id);
           await this.definePlayer(client);
           client.data.player = this.player;
           this.user.push(client);
@@ -89,7 +89,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         //remove this client form the connected users
         this.user = this.user.filter(us => us.id !== client.id);
        // this.user.splice(this.user.indexOf(`${client}`),1)
-      //  console.log(`On Disconnet ... ! ${client.id}`)
+      //  (`On Disconnet ... ! ${client.id}`)
       }
 
       @SubscribeMessage('createRoom')
@@ -109,7 +109,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           if (user) // user not found protected in frontend
             this.players.push(user);
         }
-      //  console.log('players => '+this.players);
+      //  ('players => '+this.players);
         // this.players.push(socket.data.player); 
 
         const room =  await this.chatService.createRoom(roomdto,this.players); //! users
@@ -125,7 +125,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           userid =  await this.userService.verifyToken(userid);
           rooms = await this.chatService.getRoomsForUser(userid.id);
           allrooms = await this.chatService.getAllRooms(userid.id);
-              //console.log('userid => '+userid.username);
+              //('userid => '+userid.username);
           this.server.to(x.id).emit('message', rooms);
 
           this.server.to(x.id).emit('members', members); //only if the channel is selected
@@ -152,7 +152,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           let messages:any;
           for (var x of this.user)
           {
-              // console.log(`the connected users  ${x.id}`);
+              // (`the connected users  ${x.id}`);
             userid = await x.handshake.query.token;
             userid = await this.userService.verifyToken(userid);
             messages = await this.chatService.getMessagesByroomId(messageDto.id, this.player.id);
@@ -269,7 +269,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
 
     @SubscribeMessage('send-DM')
     async sendDM(sender:Socket, messagedto : messageDto){
-     // console.log(messagedto);
+     // (messagedto);
       if (messagedto.content != '')
       {
       await this.definePlayer(sender);
@@ -285,7 +285,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       let messages =  await this.chatService.getDMs(receiverid, this.player.id);;
       if (socketguest)
       {
-         // console.log(socketguest.id);
+         // (socketguest.id);
           this.server.to(socketguest.id).emit('sendMessage', messages);
       }
       this.server.to(sender.id).emit('sendMessage', messages);
@@ -294,12 +294,12 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       //   let  userid = await x.handshake.query.token;
       //   userid = await this.userService.verifyToken(userid);
       //   let  messages = await this.chatService.getMessagesByroomId(messagedto.id);
-      //   // console.log(messages);
+      //   // (messages);
       //   //check if it's a member before sending the messages
       //   if (await this.chatService.isMember(messagedto.id, userid))
       //   {
-      //    // console.log("userid username"+userid.username);
-      //     console.log('send message to ', userid.username);
+      //    // ("userid username"+userid.username);
+      //     ('send message to ', userid.username);
       //     this.server.to(x.id).emit('sendMessage', messages);
       //   }
       // }
@@ -351,7 +351,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     @SubscribeMessage('invite-game')
     async invitePlay(client:Socket, guest:number){
       //define player
-      //console.log('event invite called !')
+      //('event invite called !')
       await this.definePlayer(client);
       //guest
 
@@ -360,12 +360,12 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       let guestUsername = (await this.userService.getUserById(guest)).username;
       if (status == UserStatus.PLAYING)
       {
-          console.log('The User is already playing')
+          ('The User is already playing')
           this.server.to(client.id).emit('player-playing', guestUsername);
       }
       else{
       let socketguest = await this.getSocketid(guest);
-      console.log(socketguest + "Exist");
+      (socketguest + "Exist");
       if (socketguest)
         this.server.to(socketguest.id).emit('invitation', this.player.username);
       else
@@ -379,15 +379,15 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     @SubscribeMessage('invitation-accepted')
     async acceptInvitation(client:Socket, opponent : string){
       //send an event to redirect this user too      
-     // console.log(client.id);
+     // (client.id);
       await this.definePlayer(client);
-      //console.log('invitation accepted !! abckend '+ opponent);
-      //console.log(client.id);
+      //('invitation accepted !! abckend '+ opponent);
+      //(client.id);
 
       //this.server.to(client.id).emit('gotogame', this.player.username);
 
       let vs:Player = await this.userService.getUserByUsername(opponent);
-      // console.log(vs);
+      // (vs);
        let socket = await this.getSocketid(vs.id);
        if (socket)
           this.server.to(socket.id).emit('gotogame', client.data.player.username);
@@ -539,7 +539,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
                   userid:mutedto.userid
                 }
                 setTimeout(() => {
-                //  console.log('send event of unmute to ', x.id);
+                //  ('send event of unmute to ', x.id);
                   this.server.to(x.id).emit('unmute-user', membership);
                  // this.server.to(String(roomID)).emit('unmute', { roomID, userID });
                 }, mutedto.duration *60* 1000);

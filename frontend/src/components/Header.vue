@@ -308,7 +308,7 @@
 		enable2fa()
 	  showChangeAv.value = false;
 	  show2f.value = false;
-	  showChangeName.value = false;
+	//   showChangeName.value = false;
 	  showScan.value = false;
 	  nickname.value = '';
 	  Password2fa.value = ''
@@ -323,7 +323,14 @@
 				.patch('http://localhost:3001/settings/username' ,
 				{username: newnickname} ,{ withCredentials: true })
 				.then(data =>{ store.state.spinn = false })
-				.catch(err => console.log(err.message))
+				.catch(
+					err => { 
+						console.log(err.message);
+						// if (err.response.status == 400){
+							// console.log('Username already exists');  <!-- ! msg alert  -->
+						// }
+						return false;
+					})
 		}
 	}
 	async function changeAvatar(){
