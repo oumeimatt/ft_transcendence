@@ -18,9 +18,9 @@ async function bootstrap() {
 //   SwaggerModule.setup('api', app, document);
 
 	app.use(cookieParser());
-	app.enableCors({origin: "http://localhost:3000", credentials: true}); // edited
+	app.enableCors({origin: "http://" + process.env.FRONTEND_HOST, credentials: true}); // edited
 //   app.enableCors({
-//     origin: ["http://localhost:3000/", "https://api.intra.42.fr/"],
+//     origin: ["http://" + process.env.FRONTEND_HOST, "https://api.intra.42.fr/"],
 //     methods: ['GET', 'POST', 'DELETE', 'OPTIONS', 'HEAD'],
 //     credentials: true
 //   });

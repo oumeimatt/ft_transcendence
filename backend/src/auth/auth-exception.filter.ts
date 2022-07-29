@@ -11,7 +11,7 @@ export class AuthExceptionFilter implements ExceptionFilter {
         const status = exception.getStatus();
         const message = exception.message;
         if (status === 401) 
-            response.redirect('http://localhost:3000/home');
+            response.redirect('http://' + process.env.FRONTEND_HOST +'/home');
         else {
             response.status(status).json({
                 statusCode: status,

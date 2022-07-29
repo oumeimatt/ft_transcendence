@@ -145,7 +145,7 @@ export class UsersController {
 		if (!isValid) {
 			throw new UnauthorizedException('Wrong authentication code');
 		}
-		await res.clearCookie('twofa', {domain: 'localhost', path: '/'});
+		await res.clearCookie('twofa', {domain: process.env.FRONTEND_HOST , path: '/'});
 		const id = user.id;
 		const username = user.username;
 		const two_fa = user.two_fa;

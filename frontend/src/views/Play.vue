@@ -29,7 +29,7 @@ let game = ref({} as HTMLCanvasElement);
 let playground = ref(null as PlaygroundInterface);
 
 onMounted(() => {
-    if (store.state.player.status === 'playing' || !props.difficulty) {
+    if (store.state.player.status === 'playing' || !props.difficulty  || !localStorage.getItem('user')) {
         window.location.href = '/game';
     }
     else {
@@ -57,6 +57,18 @@ onMounted(() => {
 
             // Display Winner at end of Game
             DisplayWinner();
+
+            // Token Expired Error
+            VerifyTokenFailed();
+
+            // User Wasn't Found
+            VerifyUserFailed();
+
+            // Opponent is Missed couldn't find him in db
+            OpponentMissed();
+
+            // Game Wasn't Saved
+            UnsavedGame();
 
             // render
             window.addEventListener('resize', () => {
@@ -214,6 +226,31 @@ function DisplayWinner() {
         }
     });
 }
+
+function VerifyTokenFailed() {
+    (socket.value as Socket).on("TokenError", (data) => {
+        window.location.href = '/';
+    });
+}
+
+function VerifyUserFailed() {
+    (socket.value as Socket).on("UserError", (data) => {
+        window.location.href = '/';
+    });
+}
+
+function OpponentMissed() {
+    (socket.value as Socket).on("OpponentMissed", (data) => {
+        message.value = data.message;
+    });
+}
+
+function UnsavedGame() {
+    (socket.value as Socket).on("UnsavedGame", (data) => {
+        message.value = data.message;
+    });
+}
+
 
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
