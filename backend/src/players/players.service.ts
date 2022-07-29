@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GetPlayersFilterDto } from "./dto-players/get-player-filter.dto";
@@ -169,9 +169,9 @@ export class UsersService {
 			const decoded = await this.jwtService.verify(token.toString());
 			if (typeof decoded === 'object' && 'id' in decoded)
 				return decoded;
-			throw new BadRequestException();
+			throw new UnauthorizedException();
 		} catch(error) {
-			throw new BadRequestException('Token expired');
+			throw new UnauthorizedException('Token expired');
 		}
 	}
 	
