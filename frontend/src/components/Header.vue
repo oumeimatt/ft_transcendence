@@ -107,7 +107,7 @@
 		</div>
 		<!--  -->
 		</div>
-		<div v-if="showModal" class="fixed inset-60 z-50 ">
+		<div v-if="showModal == true || store.state.player.first_time == true" class="fixed inset-60 z-50 ">
 		<div class=" my-6 mx-auto max-w-lg text-center ">
 			<div class="border-0 rounded-lg shadow-lg w-full bg-white  ">
 			<div class=" p-5 border-b border-solid border-slate-200 rounded-t">
@@ -152,12 +152,12 @@
 			</div>
 			<div class="flex items-center justify-center space-x-8  p-6 border-t 
 			border-solid border-slate-200 rounded-b">
-				<button @click="closeSettings" class="text-gray-800 border border-solid
+				<button @click.prevent="closeSettings" class="text-gray-800 border border-solid
 				white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm
 				px-6 py-3 rounded outline-none    " >
 				Close
 				</button>
-				<button @click="saveChanges()" class="text-gray-800 font-bold hover:border 
+				<button @click.prevent="saveChanges()" class="text-gray-800 font-bold hover:border 
 				hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 
 				uppercase px-6 py-3 text-sm outline-none    " >
 					
@@ -345,6 +345,17 @@
 		showChangeName.value = false;
 		showModal.value = false
 	  }
+	  if (store.state.player.first_time == true){
+		await axios
+			.get('http://localhost:3001/first_time' ,{ withCredentials: true })
+			.then(data =>{ store.state.player.first_time = false} ) 
+			.catch(err => {
+				if (err.response.status == 401){
+					store.state.player.status = 'offline'
+					window.location.href = '/auth/login';
+				}
+				})
+	  }
 	}
 
 
@@ -411,7 +422,8 @@
 	})
 
 
-	function closeSettings(){
+	async function closeSettings(){
+	  store.state.spinn = true
 	  showChangeAv.value = false;
 	  show2f.value = false;
 	  showChangeName.value = false;
@@ -421,7 +433,20 @@
 	  qr.value = '';
 	  showModal.value = false
 	  invalidUsername.value = false
-
+	  if (store.state.player.first_time == true){
+		  await axios
+			.get('http://localhost:3001/first_time' ,{ withCredentials: true })
+			.then(data =>{ store.state.player.first_time = false ;
+			showModal.value = false} ) 
+			.catch(err => {
+				if (err.response.status == 401){
+					store.state.player.status = 'offline'
+					window.location.href = '/auth/login';
+				}
+				})
+	  }
+	  store.state.spinn = false
+					console.log('show',showModal.value)
 	}
 
 	async function getGamesHistory(playerid: number) {

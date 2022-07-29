@@ -76,6 +76,14 @@ export class UsersController {
 		return data;
 	}
 
+	@Get('/first_time')
+	async firstTime(
+		@Req() req: Request
+	){
+		const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
+		await this.usersService.firstTime(user_token.id);
+	}
+
 	//- update username
 	@Patch('/settings/username')
 	async updateUsername(

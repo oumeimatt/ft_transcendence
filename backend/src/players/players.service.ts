@@ -52,6 +52,14 @@ export class UsersService {
 		return this.userRepository.getUsers(FilterDto);
 	}
 
+	async firstTime(id: number): Promise<any> {
+		const user = await this.getUserById(id);
+		if(user){
+			user.first_time = false;
+			await user.save();
+		}
+	}
+
 	async updateUsername(id: number, username: string): Promise<Player> {
 
 		const updated = await this.getUserById(id);

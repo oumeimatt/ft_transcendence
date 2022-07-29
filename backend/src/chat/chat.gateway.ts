@@ -93,7 +93,7 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
   
       private disconnect(socket: Socket)
       {
-        socket.emit('Error', new UnauthorizedException());
+       // socket.emit('Error', new UnauthorizedException());
         socket.disconnect();
       }
       
@@ -380,17 +380,15 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       let guestUsername = (await this.userService.getUserById(guest)).username;
       if (status == UserStatus.PLAYING)
       {
-          ('The User is already playing')
           this.server.to(client.id).emit('player-playing', guestUsername);
       }
+      else if (status == UserStatus.OFFLINE)
+        this.server.to(client.id).emit('player-offline', guestUsername);
       else{
-      let socketguest = await this.getSocketid(guest);
+        let socketguest = await this.getSocketid(guest);
       if (socketguest)
         this.server.to(socketguest.id).emit('invitation', this.player.username);
-      else
-        {
-          this.server.to(client.id).emit('player-offline', guestUsername);
-        }
+      
       }
     }
     }

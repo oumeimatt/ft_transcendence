@@ -30,6 +30,9 @@ export class Player extends BaseEntity {
 	@Column({ default: UserStatus.OFFLINE })
 	status: UserStatus;
 
+	@Column({ default: true })
+	first_time: boolean;
+
 	@Column({ default: false })
 	two_fa: boolean;
 
