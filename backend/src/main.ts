@@ -38,7 +38,6 @@ bootstrap();
 
 	//+ catch expired token exception
 	//+ users status depending on connectedUsers table
-	//+ remove last_activity from player entity
 
 
 //! errors

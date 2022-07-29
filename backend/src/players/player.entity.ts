@@ -30,9 +30,6 @@ export class Player extends BaseEntity {
 	@Column({ default: UserStatus.OFFLINE })
 	status: UserStatus;
 
-	@UpdateDateColumn()
-	last_activity: Date;
-
 	@Column({ default: false })
 	two_fa: boolean;
 
