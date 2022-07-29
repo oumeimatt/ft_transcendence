@@ -129,8 +129,6 @@ export class ChatService {
         return Message;
     }
 
-    //Maybe I need to check if the user is member to this roomid before send
-
     async getMessagesByroomId(roomid:number, playerid:number):Promise<message[]>{ 
 
         let messages :message[] =[];
@@ -141,7 +139,15 @@ export class ChatService {
             .where("message.roomid = :roomid", {roomid})
             .orderBy("message.created_at");
             messages = await query.getMany();
-        }
+            //remove messages from the blocked user
+            let i = 0;
+            while (i < messages.length){
+                if (await this.relationService.checkBlock(messages[i].playerid, playerid) != null)
+                    messages.splice(i, 1);
+                else
+                    i++;
+            }
+        } 
             return messages;
     }
 
@@ -150,7 +156,7 @@ export class ChatService {
         //! check if player is blocked 
         let messages : message[]=[]
 
-        if ( await this.relationService.checkBlock(userid, receiverid) == null)
+        if (await this.relationService.checkBlock(userid, receiverid) == null)
         {
             let room =await this.getRoomByName(userid+":"+receiverid);
             if (!room)
@@ -275,8 +281,11 @@ export class ChatService {
         remove pwd == ''
     */
     async updatePassword(roomid:number, password:string):Promise<chatroom>{
+        
         let room = await this.getRoomById(roomid);
-        room.password = password;
+        let salt =   await bcrypt.genSalt();
+        room.password = await bcrypt.hash(password, salt);
+        room.salt = salt;
         await room.save();
 
         return room;

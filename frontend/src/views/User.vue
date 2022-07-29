@@ -1,10 +1,13 @@
 <template>
   <div>
-
-      <div v-if="store.state.player.id == id">
-          <Profile />
-      </div>
-      <div v-else>
+    <div v-if="store.state.player.id == id">
+        <Profile />
+    </div>
+    <div v-else>
+      <div>
+        <div v-if="store.state.spinn == true">
+          <LoadingBar :start="store.state.spinn" />
+        </div>
         <Header /> 
         <div v-if="store.state.player.status != 'offline'" class="Container">
           <div id="container2" class="relative mb-11 text-white">
@@ -15,7 +18,7 @@
               <div class="ml-6 font-semibold text-3xl  text-gray-400 "> 
                 {{ store.state.user.username }}
               </div>
-              <div v-if="store.state.user.status == 'online'"
+              <div v-if="isConnected() && store.state.user.status != 'playing'"
                class="h-4 w-4 bg-green-600 mt-2 rounded-full  ml-4">
                 <p class="opacity-0 text-gray-400 hover:opacity-100 
                   pl-6 -mt-1">
@@ -28,7 +31,7 @@
                    Playing 
                 </p>
               </div>
-              <div v-if="store.state.user.status == 'offline'" 
+              <div v-if="!isConnected() && store.state.user.status != 'playing'" 
               class="h-2 w-2 ring-4 ring-gray-600 mt-2 rounded-full  ml-4"> 
                 <p class="opacity-0 text-gray-400 hover:opacity-100 pl-6 -mt-2">
                    Offline
@@ -109,13 +112,11 @@
               You are Blocked
             </span>
           </button>
-
-
-          
+  
          <!-- {{ props.nickname }} -->
         </div>
         <div class="flex my-0 mx-auto w-3/5 bg-slate-500 h-6 mb-6 relative">
-          <div class="bg-slate-700 h-6 " style="width: 0%"> </div>
+          <div class="bg-slate-700 h-6 " :style="'width:'+ store.state.user.level * 10 +'%;'"> </div>
           <p class="inline-block z-10 absolute left-2/4 
           -translate-x-2/4 text-slate-400" > level  {{ store.state.user.level }}%  </p>
         </div>
@@ -127,7 +128,7 @@
                border-neutral-800"> Friends </p>
                <div  class="pt-4 flex items-scretch space-x-2">
                 <div v-for="friend in store.state.userFriends" :key="friend" class="flex ">
-                    <router-link  :to="{ name:'User', params: {id: friend.id}}">
+                    <router-link @click="getInfos(friend.id)" :to="{ name:'User', params: {id: friend.id}}">
                      <img :src="store.methods.playerAvatar(friend)" 
                      class="rounded-full bg-white w-10 h-10 "> </router-link>
                 </div>
@@ -190,7 +191,7 @@
                 <p class="text-2xl font-semibold pb-4 border-b border-neutral-800  "> Games </p>
                 <!-- games  -->
                 <div class="scrollbar scrollbar-track-slate-900 scrollbar-thumb-slate-600 max-h-2/3">
-                  <div  v-for="game in gamesHistory" :key="game" 
+                  <div  v-for="game in store.state.usergamesHistory" :key="game" 
                   class="grid grid-cols-3 justify-itmes-center mt-4">
                     <div class="text-neutral-900 font-semibold "> {{ game.winner.username }} </div>
                     <div class="text-gray-900 font-black ">
@@ -210,6 +211,7 @@
     </div>
     </div>
     <Footer />
+    </div>
 
       </div>
 </template>
@@ -217,16 +219,14 @@
 <script lang="ts" setup>
 import { is } from '@babel/types';
 import axios from 'axios';
-import { defineComponent , ref, inject, onMounted,nextTick,  computed, onUpdated } from 'vue';
+import { defineComponent , ref, inject, onMounted,nextTick,  computed} from 'vue';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
 import Profile from './Profile.vue';
-import { HalfCircleSpinner } from 'epic-spinners';
 import LoadingBar from '../components/LoadingBar.vue';
 import { UserInfo } from '../interfaces';
 const store = inject('store')
 const frMenu = ref(false as boolean)
-let gamesHistory = ref([] as unknown);
 let errors = ref('' as string)
 
 const props = defineProps<{
@@ -235,119 +235,143 @@ const props = defineProps<{
 
 
   onMounted( async () => {
-      store.state.spinn = true
-        await axios
-          .get('http://localhost:3001/profile' ,{ withCredentials: true })
-          .then(data =>{
-            store.state.player = data.data.profile;
-            store.state.friends = data.data.friends;
-            store.state.achievements = data.data.achievements;
-            store.state.blockedUsers = data.data.blockedUsers;
-            store.state.spinn = false
-          } )
+      // store.state.spinn = true
+      //   await axios
+      //     .get('http://localhost:3001/profile' ,{ withCredentials: true })
+      //     .then(data =>{
+      //       store.state.player = data.data.profile;
+      //       store.state.friends = data.data.friends;
+      //       store.state.achievements = data.data.achievements;
+      //       store.state.blockedUsers = data.data.blockedUsers;
+      //     } )
 
-        await axios
-          .get('http://localhost:3001/profile/' + props.id ,{ withCredentials: true })
-          .then(data =>{ store.state.user = data.data.profile;
-            store.state.userFriends = data.data.friends;
-            store.state.userAchievements = data.data.achievements;
-            store.state.userBlockedUsers = data.data.blockedUsers
-            store.state.spinn = false })
-          .catch(err => console.log(err.message))
+        getInfos(parseInt(props.id, 10))
+        store.state.spinn = false
+
+    })
+
+      async function getInfos(playerid: number){
+          // console.log("playerid::",playerid)
+          store.state.spinn = true
+          await axios
+                .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
+                .then(data =>{ store.state.user = data.data.profile;
+                  store.state.userFriends = data.data.friends;
+                  store.state.userAchievements = data.data.achievements;
+                  store.state.userBlockedUsers = data.data.blockedUsers})
+                .catch(err => console.log(err.message))
+
+          getGamesHistory(playerid);
+
+          store.state.userInfo.isFriend = false
+          store.state.userInfo.userIsBlocked = false
+          store.state.userInfo.amIBlocked = false
 
           var user = store.state.userFriends.find( x => x.id === store.state.player.id)
           if (user != null){
             store.state.userInfo.isFriend = true
             store.state.userInfo.userIsBlocked = false
             store.state.userInfo.amIBlocked = false
+            store.state.spinn = false
             return;
           }
+
           let iamblocked =  store.state.userBlockedUsers.find( x => x.id === store.state.player.id)
           if (iamblocked != null){
             store.state.userInfo.isFriend = false
             store.state.userInfo.userIsBlocked = false
             store.state.userInfo.amIBlocked = true
+            store.state.spinn = false
             return;
           }
-          let userIsBlocked = store.state.blockedUsers.find( x => x.id.toString() === props.id)
+          let userIsBlocked = store.state.blockedUsers.find( x => x.id === playerid)
           if (userIsBlocked  != null){
             store.state.userInfo.isFriend = false
             store.state.userInfo.userIsBlocked = true
             store.state.userInfo.amIBlocked = false
           }
+          store.state.spinn = false
+
+        }
 
 
-          getGamesHistory(parseInt(props.id, 10));
 
-    })
-
-
-  
-
-    async function removeFriend(){
+    function removeFriend(){
       store.state.userInfo.isFriend = false
       store.state.userInfo.userIsBlocked = false
       store.state.userInfo.amIBlocked = false
-        frMenu.value = false
-        store.state.spinn = true
-        axios.delete("http://localhost:3001/relation/unfollow/" + props.id , { withCredentials: true } )
-            .then(data => { store.state.spinn = false })
+      frMenu.value = false
+        axios
+            .delete("http://localhost:3001/relation/unfollow/" + props.id , { withCredentials: true } )
+            .then(data => { })
             .catch(error =>  console.error( error));
-        await nextTick()
     }
-    async function addFriend (){
+
+
+    function addFriend (){
 
         store.state.userInfo.isFriend = true
         store.state.userInfo.userIsBlocked = false
         store.state.userInfo.amIBlocked = false
-        await nextTick()
-        store.state.spinn = true
-        axios.post("http://localhost:3001/relation/add/" + props.id , {} , { withCredentials: true } ) // or the line below 
-        // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
-            .then(data => { store.state.spinn = false})
+            axios.post("http://localhost:3001/relation/add/" + props.id , {} , { withCredentials: true } ) 
+            .then(data => { })
             .catch(error =>  console.error( error));
     }
+
+
 
     function blockFriend () {
         store.state.userInfo.isFriend = false
         store.state.userInfo.userIsBlocked = true
         store.state.userInfo.amIBlocked = false
         frMenu.value = false
-        store.state.spinn = true
-        axios.post("http://localhost:3001/relation/block/" + props.id, {}, { withCredentials: true } ) // or the line below 
-        // axios.post("http://localhost:3001/relation/add/" + props.id , props.id ,{ withCredentials: true } )
-            .then(data => {store.state.spinn = false})
+        axios.post("http://localhost:3001/relation/block/" + props.id, {}, { withCredentials: true } ) 
+            .then(data => {})
             .catch(error =>  console.error( error));
     }
+
+
+
     function unblockFriend (){
         store.state.userInfo.isFriend = false
         store.state.userInfo.userIsBlocked = false
         store.state.userInfo.amIBlocked = false
         frMenu.value = false
-        store.state.spinn = true
         axios.delete("http://localhost:3001/relation/unblock/" + props.id ,{ withCredentials: true } )
-            .then(data => { store.state.spinn = false})
+            .then(data => {})
             .catch(error =>  console.error( error));
     }
+
+
+
     function getUserAvatar(id: number){
       var result = store.state.users.find( x=> x.id === id)
       return result.avatar
     }
 
+
+
     // function to get history of a player
-    async function getGamesHistory(id: number) {
-      store.state.spinn = true
-		  axios
-		  .get('http://localhost:3001/pong-game/games-history/' + props.id)
-		  .then((data) => {
-		  	gamesHistory.value = data.data.gamesHistory;
-        store.state.spinn = false
-		  })
-		  .catch(err => {
-		  	errors.value = err.message ?? 'unknown';
-		  });
-      return (gamesHistory.value)
+    async function getGamesHistory() {
+		  await axios
+		      .get('http://localhost:3001/pong-game/games-history/' + props.id)
+		      .then((data) => {
+		      	  store.state.usergamesHistory = data.data.gamesHistory;
+		      })
+		      .catch(err => {
+		      	  errors.value = err.message ?? 'unknown';
+		      });
 	  }
+
+
+    function isConnected(): boolean {
+      const found: number =  store.state.connectedUsers.find(user => user.playerId === store.state.user.id );
+      if (found)
+        return true;
+      else
+        return false;
+    }
+
 </script>
 
 <style>
@@ -358,14 +382,12 @@ const props = defineProps<{
     background-size: cover;
   }
 
-
-  /* #loading {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  } */
-
+  #bg {
+    /* background: url("../assets/bg.jpg") no-repeat; */
+    background-image: url("../assets/bg1.jpg");
+    width: 100vw;
+    height: 80vh;
+    /* background-size: contain; */
+    background-size: cover;
+  }
 </style>

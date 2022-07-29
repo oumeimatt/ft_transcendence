@@ -1,5 +1,7 @@
 <template>
-
+  <div v-if="store.state.spinn == true">
+        <LoadingBar :start="store.state.spinn" />
+  </div>
 	<Header />
 	<div v-if="store.state.player.status != 'offline'" class="Container">
 	    <div class="grid grid-cols-6 gap-px  ">
@@ -16,6 +18,7 @@
     import Footer from '../components/Footer.vue';
     import chatnavbar from '../components/chatnavbar.vue'
     const store = inject('store')
+    import LoadingBar from '../components/LoadingBar.vue'
 
 </script>
  <style scoped>

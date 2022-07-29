@@ -45,3 +45,5 @@ bootstrap();
 
 
 	
+// website: http://10.11.11.1
+// redirect uri: http://10.11.11.1:3001/auth/login
