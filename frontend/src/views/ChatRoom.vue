@@ -30,4 +30,6 @@ const props = defineProps({
 const store = inject('store')
 const channelName = ref('')
 
+// window.location.href = '/chat'
+
 </script>

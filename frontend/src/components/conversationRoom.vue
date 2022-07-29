@@ -15,10 +15,10 @@
 									 <input v-model="passwordToJoin" type="password" placeholder="Password" class="bg-neutral-200 border-b rounded h-8 pl-4">
 								</form>
               <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-                <button @click="cancelJoin" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    " type="button">
+                <button @click.prevent="cancelJoin" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none    ">
                   Cancel
                 </button>
-                <button @click="sendPassTojoinRoom" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    " type="button">
+                <button @click.prevent="sendPassTojoinRoom" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none    ">
                   Join Room
                 </button>
               </div>
@@ -51,7 +51,7 @@
               <input v-model="store.state.message" type="text" placeholder="Message"
                 class="block h-3/6 w-full bottom-2/4 translate-y-2/4 py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
                 name="message" required />
-              <button @click="sendMessage" type="submit">
+              <button @click.prevent="sendMessage" type="submit">
                 <svg class="w-6 h-6 text-gray-500 bottom-2/4 translate-y-3/4 origin-center transform rotate-90" xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20" fill="currentColor">
                   <path
@@ -85,17 +85,20 @@
       
       
       onUpdated(async () => {
-        store.state.spinn = true
         await axios
             .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
             .then(data =>{ store.state.roominfo = data.data ;}) 
-            .catch(err => { console.log(err)})
+            .catch(err => {
+              if (err.response.status == 401){
+                store.state.player.status = 'offline'
+                window.location.href = '/auth/login';
+              }
+			    })
 
         if (store.state.roominfo.playerid != undefined) 
           isMember.value =  true 
         else
           isMember.value = false
-        store.state.spinn = false
       // console.log("isMember = "+ isMember.value, store.state.roominfo.playerid +"roominfo")
       // watch(isMember, (currentValue, oldValue) => {
       //   console.log("curr",currentValue);

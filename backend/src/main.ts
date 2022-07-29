@@ -38,7 +38,6 @@ bootstrap();
 
 	//+ catch expired token exception
 	//+ users status depending on connectedUsers table
-	//+ remove last_activity from player entity
 
 
 //! errors
@@ -46,3 +45,5 @@ bootstrap();
 
 
 	
+// website: http://10.11.11.1
+// redirect uri: http://10.11.11.1:3001/auth/login

@@ -6,17 +6,17 @@
 			<div class="pb-4">
 				<button class="mt-8 flex justify-start items-center
 				 md:space-x-2" >
-					<svg @click="createRoom" xmlns="http://www.w3.org/2000/svg" 
+					<svg @click.prevent="createRoom" xmlns="http://www.w3.org/2000/svg" 
 					class="md:h-8 md:w-8 h-4 w-4 fill-slate-400" viewBox="0 0 20 20">
 						<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000
 						 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1
 						  1 0 100-2h-2V7z" clip-rule="evenodd" />
 					</svg> 
-					<div @click="createRoom" class="text-slate-400 
+					<div @click.prevent="createRoom" class="text-slate-400 
 						lg:text-xl md:text-xl  text-sm  font-bold hover:underline "> Create channel
 					</div> 
 				</button>
-				<button @click="showRooms" class="mt-8 flex 
+				<button @click.prevent="showRooms" class="mt-8 flex 
 					justify-start items-center md:space-x-2" >
 					<svg xmlns="http://www.w3.org/2000/svg" 
 						class="md:h-8 md:w-8 h-4 w-4 fill-slate-400"
@@ -89,7 +89,7 @@
 						class=" h-5/6 scrollbar scrollbar-track-zinc-900 
 						scrollbar-thumb-zinc-600 max-h-2/3">
 						<div v-for="friend in store.state.friends" :key="friend">
-							<div @click="createAndGetDm(friend.id)" 
+							<div @click.prevent="createAndGetDm(friend.id)" 
 								class="flex justify-start items-center space-x-2 mt-2"> 
 								<img  :src="store.methods.playerAvatar(friend)" 
 									class=" lg:ml-8 h-8 w-8 rounded-full bg-white">  
@@ -128,7 +128,7 @@
 								 <input v-model="RoomMember" type="text" 
 								 	class="bg-neutral-200 border-b rounded h-8 pl-4">
 								<div v-for="user in matchingNames" :key="user" class="">
-									<div @click="addToMembers(user)" v-if="user != store.state.player.username">  
+									<div @click.prevent="addToMembers(user)" v-if="user != store.state.player.username">  
 										{{ user }}
 									</div>
 								</div>
@@ -142,12 +142,12 @@
 							</form>
 							<div class="flex items-center justify-center space-x-8 
 								 p-6 border-t border-solid border-slate-200 rounded-b">
-								<button @click="CancelCreate" class="text-gray-800 border 
+								<button @click.prevent="CancelCreate" class="text-gray-800 border 
 									border-solid white hover:bg-black hover:text-white  font-bold 
 										uppercase text-sm px-6 py-3 rounded outline-none ">
 									Cancel
 								</button>
-								<button @click="sendRoom" class="text-gray-800 font-bold hover:border 
+								<button @click.prevent="sendRoom" class="text-gray-800 font-bold hover:border 
 									hover:rounded hover:border-solid hover:white hover:text-white
 									 hover:bg-black uppercase px-6 py-3 text-sm outline-none  ">
 									Create channel
@@ -265,12 +265,23 @@
 		store.state.spinn = true
 		await axios.get('http://localhost:3001/chat/messages', {params:{roomid:roomid, playerid:store.state.player.id}, withCredentials:true})
 		.then(data=>{store.state.messages = data.data;})
+		.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 		store.state.roomSelected=roomid;
 
 		await axios
 			.get('http://localhost:3001/chat/members' ,{params:{ roomid : roomid, playerid: store.state.player.id}, withCredentials: true })
 			.then((data) => {store.state.roomMembs = data.data; })
-			.catch(err => console.log(err.message))
+			.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 		store.state.spinn = false
 	}
 
@@ -298,6 +309,12 @@
 		store.state.spinn = true
 		await axios.get('http://localhost:3001/chat/DM', {params:{userid:store.state.player.id, receiverid:friendid}, withCredentials:true})
 		.then(data=>{store.state.messages = data.data; })
+		.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 		store.state.spinn = false
 		//store.state.roomSelected = getRoomId(friendid);
 	}
@@ -328,19 +345,34 @@
             store.state.achievements = data.data.achievements
 
           } ) 
-          .catch(err => console.log(err.message))
+          .catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 
 
 		  await axios
 		  	.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 		  	.then(data=> { store.state.rooms = data.data; })
-
+			.catch(err => {
+				if (err.response.status == 401){
+					store.state.player.status = 'offline'
+					window.location.href = '/auth/login';
+				}
+			})
 
 
 		await axios
 			.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 			.then(data=> {store.state.allRooms = data.data; })
-			.catch(err => { console.log(err)})
+			.catch(err => {
+				if (err.response.status == 401){
+					store.state.player.status = 'offline'
+					window.location.href = '/auth/login';
+				}
+			})
 		
 		store.state.spinn = false
 

@@ -93,42 +93,7 @@ const state = reactive<{
 
 
 const methods = reactive({
-    changeNickname(newnickname: string){
-        if (newnickname.length > 0 && newnickname.length <= 10){
-            state.player.username = newnickname ;
-            
-        }
-        // 
-    },
-    changeAvatar(){
-        state.player.avatar = state.imageUrl
-    },
-    logout(){
 
-    },
-    // roomOwner(owner: string){
-    //     if (state.player.username == owner){
-    //         state.owner = true
-    //     }
-    //     else
-    //         state.owner = false
-    // },
-    // RoomInfo(name: string){
-	// 	for (var room of state.rooms) {
-	// 		if (room.name == name){
-	// 			return room
-	// 		}
-	// 	}
-	// 	return null
-	// },
-    // allRoomInfo(name: string){
-	// 	for (var room of state.allRooms) {
-	// 		if (room.name == name){
-	// 			return room
-	// 		}
-	// 	}
-	// 	return null
-	// },
     playerAvatar(player:PlayerProfile ){
         if (player.avatar.startsWith("https://avatars.dicebear.com") || player.avatar.startsWith("public/assets")){
             return player.avatar

@@ -31,7 +31,7 @@
 						</p>
 						<div  class="pt-4 flex items-scretch space-x-2">
                             <div v-for="friend in store.state.friends" :key="friend">
-							    <router-link @click="getInfos(friend.id)" :to="{ name:'User', params: {id: friend.id}}"> 
+							    <router-link @click="getInfos(friend.id)" :to="{ name:'User', params: {username: friend.username}}"> 
 									<img :src="store.methods.playerAvatar(friend)" 
 										class="w-10 h-10 rounded-full bg-white"> 
 								</router-link>
@@ -143,7 +143,12 @@
 			store.state.achievements = data.data.achievements;
 			store.state.blockedUsers = data.data.blockedUsers;
 			store.state.spinn = false})
-			.catch(err => console.log(err))
+			.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
         getGamesHistory(store.state.player.id);
 		store.state.spinn = false
 
@@ -158,7 +163,12 @@
                   store.state.userFriends = data.data.friends;
                   store.state.userAchievements = data.data.achievements;
                   store.state.userBlockedUsers = data.data.blockedUsers})
-                .catch(err => console.log(err.message))
+                .catch(err => {
+					if (err.response.status == 401){
+						store.state.player.status = 'offline'
+						window.location.href = '/auth/login';
+					}
+			})
 
           getGamesHistory(playerid);
 

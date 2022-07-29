@@ -26,5 +26,7 @@
 	}>()
     const store = inject('store')
     const channelName = ref('')
+
+    
     
 </script>

@@ -19,17 +19,23 @@
             </div>
           </div>
       </div>
-      <div v-else-if="store.state.player.status != 'offline'">
+      <div v-else-if="store.state.player.two_fa == true && store.state.player.status != 'offline'">
           <div id="notlogged" class=" flex justify-center items-center text-center h-screen"> 
             <div class=" container w-3/5 h-1/5 bg-slate-300 rounded-lg translate-y-1/4">
               <h1 class="text-slate-800 font-bold  text-3xl pt-4 pb-4 translate-y-1/4" > You are already logged in </h1>
+              <button @click.prevent="goBackHome" class="translate-y-2/4 inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                Home
+              </button>
             </div>
           </div>
       </div>
       <div v-else>
-          <div id="notlogged" class=" flex justify-center items-center text-center h-screen"> 
+          <div id="notlogged" class=" flex justify-center items-center text-center h-screen">
             <div class=" container w-3/5 h-1/5 bg-slate-300 rounded-lg translate-y-1/4">
               <h1 class="text-slate-800 font-bold  text-3xl pt-4 pb-4 translate-y-1/4" > 2FA is not activated yet ! </h1>
+              <button @click.prevent="goBackHome" class="translate-y-2/4 inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                Home
+              </button>
             </div>
           </div>
       </div>
@@ -43,20 +49,22 @@
     const store = inject('store')
     import LoadingBar from '../components/LoadingBar.vue'
 
-
     onMounted( async () => {
       store.state.spinn = true
         await axios
           .get('http://localhost:3001/twoFaUser',  {withCredentials: true })
           .then((data) => {
-              store.state.player = data.data.profile;
-              console.log("statusss ",store.state.player.status);
-              
+            store.state.player = data.data.profile;
+            console.log("statusss ",store.state.player.status);
           })
-          .catch((error) => { console.log(error) })
+			    .catch(err => {
+			      if (err.response.status == 401){
+			      	store.state.player.status = 'offline'
+              window.location.href =  '/auth/login'
+            }
+			      })
           store.state.spinn = false
     })
-
 
     const code2fa = ref('')
     function verifyCode(){
@@ -64,8 +72,18 @@
         .post('http://localhost:3001/twofactorauthentication', {twoFactorCode: code2fa.value }, {withCredentials: true })
         .then((data) => { 
             window.location.href = '/home';
+
         })
-        .catch(err => {});
+			  .catch(err => {
+			  if (err.response.status == 401){
+			  	store.state.player.status = 'offline'
+          window.location.href =  '/auth/login'
+        }
+			})
+    }
+  
+    function goBackHome(){
+        window.location.href = '/home';
     }
 
 </script>
