@@ -85,7 +85,6 @@
       
       
       onUpdated(async () => {
-        store.state.spinn = true
         await axios
             .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
             .then(data =>{ store.state.roominfo = data.data ;}) 
@@ -95,7 +94,6 @@
           isMember.value =  true 
         else
           isMember.value = false
-        store.state.spinn = false
       // console.log("isMember = "+ isMember.value, store.state.roominfo.playerid +"roominfo")
       // watch(isMember, (currentValue, oldValue) => {
       //   console.log("curr",currentValue);

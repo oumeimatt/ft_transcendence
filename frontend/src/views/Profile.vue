@@ -31,7 +31,7 @@
 						</p>
 						<div  class="pt-4 flex items-scretch space-x-2">
                             <div v-for="friend in store.state.friends" :key="friend">
-							    <router-link @click="getInfos(friend.id)" :to="{ name:'User', params: {id: friend.id}}"> 
+							    <router-link @click="getInfos(friend.id)" :to="{ name:'User', params: {username: friend.username}}"> 
 									<img :src="store.methods.playerAvatar(friend)" 
 										class="w-10 h-10 rounded-full bg-white"> 
 								</router-link>

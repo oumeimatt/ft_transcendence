@@ -270,7 +270,7 @@
 		await axios
 			.get('http://localhost:3001/chat/members' ,{params:{ roomid : roomid, playerid: store.state.player.id}, withCredentials: true })
 			.then((data) => {store.state.roomMembs = data.data; })
-			.catch(err => console.log(err.message))
+			.catch(err => {})
 		store.state.spinn = false
 	}
 
@@ -328,7 +328,7 @@
             store.state.achievements = data.data.achievements
 
           } ) 
-          .catch(err => console.log(err.message))
+          .catch(err => {})
 
 
 		  await axios
@@ -340,7 +340,7 @@
 		await axios
 			.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 			.then(data=> {store.state.allRooms = data.data; })
-			.catch(err => { console.log(err)})
+			.catch(err => {})
 		
 		store.state.spinn = false
 
