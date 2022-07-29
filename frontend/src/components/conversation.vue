@@ -3,7 +3,7 @@
 				<div v-if="store.methods.usersInfo(name)" class="relative h-small bg-myblue rounded space-x-12">
 					<img :src="store.methods.playerAvatar(store.methods.usersInfo(name))" class=" absolute bg-white rounded-full left-4 h-12 w-12 bottom-2/4 translate-y-2/4 " alt="">
 					<h1  class="absolute font-bold text-2xl left-6 text-gray-400 bottom-2/4 translate-y-2/4"> {{ store.methods.usersInfo(name).username}}  </h1>
-					<svg @click="showMenu = !showMenu" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer absolute right-2 top-1/4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+					<svg @click.prevent="showMenu = !showMenu" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer absolute right-2 top-1/4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
   						<path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
 					</svg>
 					<div v-if="showMenu" id="dropdownLeft" class="z-10 absolute right-8 top-2 divide-y divide-gray-100 rounded shadow w-44 bg-slate-800">
@@ -12,7 +12,7 @@
 							<router-link :to="{ name:'User', params: {username: name}}" class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Profile </router-link>
 						</li>
 						<li>
-							<a href="#" @click="inviteFriend(store.methods.usersInfo(name).id)" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Invite to play game</a>
+							<a href="#" @click.prevent="inviteFriend(store.methods.usersInfo(name).id)" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Invite to play game</a>
 						</li>
 						</ul>
 					</div>
@@ -43,7 +43,7 @@
 						<input v-model="store.state.message" type="text" placeholder="Message"
 							class="block h-3/6 w-full bottom-2/4 translate-y-2/4 py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700"
 							name="message" required />
-							<button @click="sendMessage(store.methods.usersInfo(name).id)" type="submit">
+							<button @click.prevent="sendMessage(store.methods.usersInfo(name).id)" type="submit">
 								<svg class="w-6 h-6 text-gray-500 bottom-2/4 translate-y-3/4 origin-center transform rotate-90" xmlns="http://www.w3.org/2000/svg"
 									viewBox="0 0 20 20" fill="currentColor">
 									<path
@@ -83,18 +83,7 @@
 	}
 
 	// store.state.connection.on("sendMessage", (data) => {messages = data;});
-	//  onMounted(async () => {
-	// 	await axios
-    //       .get('http://localhost:3001/users' ,{ withCredentials: true })
-    //       .then(data =>{ store.state.users = data.data ; console.log(store.state.users)})
-    //       .catch(err => console.log(err.message))
-	// 	id.value = store.methods.usersInfo(props.name).id
-	// 	console.log(" [ value] "+id.value)
-	// // 	function CreateDM(){
-	// // 	store.state.connection.emit("create-DM", id.value); //
 
-	// // }
-	// })
 
 </script>
 

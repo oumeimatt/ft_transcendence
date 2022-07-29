@@ -7,14 +7,14 @@
               <img src="../assets/group.png" class="mx-auto" >
               <div  class=" flex itmes-center justify-center text-center  -mt-[40px] "> 
                 <p class="font-bold lg:text-2xl md:text-2xl text-gray-400"> {{ name }} </p> 
-                <img @click="getMmebership(store.state.player.id)" src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
+                <img @click.prevent="getMmebership(store.state.player.id)" src="../assets/edit.png" class="h-4 w-4 ml-4  mt-2" alt="">
               </div>
 
               <div v-if="membership && showEdit == true" >
                     <div v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class=" rounded-md mt-4">
-                        <div @click="changePass = !changePass"  class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Change Password
+                        <div @click.prevent="changePass = !changePass"  class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Change Password
                         </div>
-                        <div @click="removePassword" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Remove Password
+                        <div @click.prevent="removePassword" class="cursor-pointer block py-2 text-sm text-gray-300 hover:underline  ">Remove Password
                         </div>
                     </div>
               </div>
@@ -30,10 +30,10 @@
 				        		 <input v-model="changedPassword" type="password" placeholder="Password" class="bg-neutral-200 border-b rounded h-8 pl-4">
                             </form>
                         <div class="flex items-center justify-center space-x-8  p-6 border-t border-solid border-slate-200 rounded-b">
-                            <button @click="CancelChangePass" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none ">
+                            <button @click.prevent="CancelChangePass" class="text-gray-800 border border-solid white hover:bg-slate-800 hover:text-white  font-bold uppercase text-sm px-6 py-3 rounded outline-none ">
                               Cancel
                             </button>
-                            <button @click="saveChangedPass" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none ">
+                            <button @click.prevent="saveChangedPass" class="text-gray-800 font-bold hover:border hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 uppercase px-6 py-3 text-sm outline-none ">
                               Save Password
                             </button>
                         </div>
@@ -62,31 +62,28 @@
             <h1 class="font-bold text-xl text-gray-300 mb-4"> Members </h1>
             <div  class=" h-5/6 scrollbar scrollbar-track-zinc-900 scrollbar-thumb-zinc-600 max-h-2/3">
                 <div v-for="member in store.state.roomMembs">
-                    <div v-if="member.role != 'OWNER'" @click="showOptions(member.member.id)" class="flex justify-start items-center space-x-2 mt-4"> 
+                    <div v-if="member.role != 'OWNER'" @click.prevent="showOptions(member.member.id)" class="flex justify-start items-center space-x-2 mt-4"> 
                         <img  :src="store.methods.playerAvatar(member.member)" class="bg-white lg:ml-8 h-8 w-8 rounded-full">
                         <span  class="font-semibold text-slate-400 hover:underline cursor-pointer "> {{ member.member.username }} </span> 
                     </div>
                 </div>
             </div>
           </div>
-                    <div v-if="showMemberOptions && membership" class="z-10 -ml-40 -mt-4  bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
-                        <div v-if="userId != store.state.player.id">
-                            <ul v-if="membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
+                    <div v-if="showMemberOptions && membership " class="z-10 ml-40 -mt-4  bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
+                        <div v-if="userId != store.state.player.id && isMuted == false">
+                            <ul v-if=" membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
                             
-                            <li v-if="isAlreadyAdmin == false && isBanned == false && isMuted == false" @click="setAdmin">
+                            <li v-if="isAlreadyAdmin == false && isBanned == false && isMuted == false" @click.prevent="setAdmin">
                                 <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
                             </li>
-                            <li @click="unBan" v-if="(membership.role == 'ADMIN' || membership.role == 'OWNER') && isBanned == true && isMuted == false">
+                            <li @click.prevent="unBan" v-if="(membership.role == 'ADMIN' || membership.role == 'OWNER') && isBanned == true && isMuted == false">
                                 <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white"> Unban </span>
                             </li>
-                            <li v-if="isBanned == false && isMuted == false" @click="Ban">
+                            <li v-if="isBanned == false && isMuted == false" @click.prevent="Ban">
                                 <span  class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Ban</span>
                             </li>
-                            <li v-if="isBanned == false && isMuted == false" @click="MuteClick">
+                            <li v-if="isBanned == false && isMuted == false" @click.prevent="MuteClick">
                                 <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Mute</span>
-                            </li>
-                            <li v-if="isBanned == false && isMuted == true" @click="Unmute">
-                                <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Unmute</span>
                             </li>
                             <li class="block px-4 py-2 hover:bg-gray-200 text-white hover:text-black space-x-2 space-y-2" v-if="mute == true">
                                 <label for=""> mute for 
@@ -94,8 +91,8 @@
                                     mins
                                 </label>
                                 <div class="flex ">
-                                    <button @click="CancelMute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 font-semibold rounded  hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Cancel </button>
-                                    <button @click="Mute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 rounded font-semibold hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Save </button>
+                                    <button @click.prevent="CancelMute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 font-semibold rounded  hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Cancel </button>
+                                    <button @click.prevent="Mute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 rounded font-semibold hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Save </button>
 
                                 </div>
                             </li>
@@ -140,14 +137,16 @@
     const isMuted = ref(false as boolean)
 
 
-    function showOptions(userid: number){
+    async function showOptions(userid: number){
         showMemberOptions.value = !showMemberOptions.value
-        userId.value = userid
-        roomId.value = parseInt(props.id, 10)
-        console.log(userId.value, roomId.value)
-        getMmebership(store.state.player.id)
-        showEdit.value = !showEdit.value
-        checkIfAlreadyAdmin(userid)
+        if (showMemberOptions.value == true){
+            userId.value = userid
+            roomId.value = parseInt(props.id, 10)
+            console.log(userId.value, roomId.value)
+            await getMmebership(store.state.player.id)
+            showEdit.value = !showEdit.value
+            await checkIfAlreadyAdmin(userid)
+        }
     }
 
     const isAlreadyAdmin = ref(false as boolean ) 

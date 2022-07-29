@@ -36,7 +36,7 @@
 			border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500
 			border-gray-600 placeholder-gray-400 text-gray-300  focus:ring-blue-500 
 			focus:border-blue-500" placeholder="Search..." v-model="search">
-				<div v-if="showSugg() == true"> 
+			  <div v-if="showSugg() == true"> 
 				<div v-for="user in matchingNames" :key="user" class=" z-10 bg-slate-700 
 				rounded-md shadow-xl lg:absolute top-11  w-full absolute">
 					<div v-if="user != store.state.player.username">
@@ -56,7 +56,7 @@
 					</div>
 					
 				</div>
-				</div>
+			  </div>
 			</div>        
 
 		</div>
