@@ -65,13 +65,13 @@ export class AuthService {
 			if (player.status === UserStatus.OFFLINE)
 				this.playerService.updateStatus(id, UserStatus.ONLINE);
 			res.cookie('connect_sid',[accessToken]);
-			res.redirect('http://localhost:3000/home');
+			res.redirect('http://' + process.env.FRONTEND_HOST +'/home');
 		}
 		else {
 			console.log('two_factor authentication');
 			this.playerService.updateStatus(id, UserStatus.TWOFA);
 			res.cookie('twofa',[accessToken]);
-			res.redirect('http://localhost:3000/twofactorauthentication');
+			res.redirect('http://' + process.env.FRONTEND_HOST +'/twofactorauthentication');
 		}
 	}
 
@@ -79,7 +79,7 @@ export class AuthService {
 		console.log('logout');
 		await this.playerService.updateStatus(id, UserStatus.OFFLINE);
 		await logout();
-		await res.clearCookie('connect_sid', {domain: 'localhost', path: '/'});
-		res.redirect('http://localhost:3000/home');
+		await res.clearCookie('connect_sid', {domain: process.env.FRONTEND_HOST, path: '/'});
+		res.redirect('http://' + process.env.FRONTEND_HOST +'/home');
 	}
 }

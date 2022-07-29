@@ -329,7 +329,7 @@
     }
 	 onMounted(async () => {
 
-		store.state.connection = io('http://127.0.0.1:3001/chat',
+		store.state.connection = io('http://localhost:3001/chat',
 		{
 			query:{
 				'token':localStorage.getItem('user'),

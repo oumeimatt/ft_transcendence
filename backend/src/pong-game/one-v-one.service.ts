@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
+import { Player } from 'src/players/player.entity';
 import { UsersService } from 'src/players/players.service';
 import { UserStatus } from 'src/players/player_status.enum';
 import { GameMood, PlayGroundInterface } from './interfaces';
@@ -47,9 +48,23 @@ export class OneVOneService {
     wss: Server,
     ): Promise<void>
   {
-    const user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
+    let user: Player;
+    let found: Player;
+    try {
+      user = await this.usersService.verifyToken(client.handshake.query.accessToken as string);
+    } catch (err) {
+      this.logger.error('Token Wasn\'t Verified');
+      client.emit('TokenError', { message: 'Token Wasn\'t Verified' });
+      return;
+    }
     client.data.user = user;
-    const found = await this.usersService.findPlayer(user.id);
+    try {
+    found = await this.usersService.findPlayer(user.id);
+    } catch (err) {
+      this.logger.error('Verify Your Credentials');
+      client.emit('UserError', { message: 'Verify Your Credentials' });
+      return;
+    }
     if (found && found.status === UserStatus.PLAYING) {
       client.emit('alreadyInGame', {
         player: user.username,
@@ -63,7 +78,13 @@ export class OneVOneService {
       if (!first) {
         // if he inters first keep him waiting
         players.push(client);
-        await this.usersService.updateStatus(user.id, UserStatus.PLAYING);
+        try {
+          await this.usersService.updateStatus(user.id, UserStatus.PLAYING);
+        } catch (err) {
+          players = players.filter(pl => pl !== client);
+          this.logger.error('Couldn\'t Update Status');
+          return;
+        }
         // if opponent didnt enter the game yet
         client.data.side = 'left';
         client.data.role = 'player';
@@ -80,7 +101,12 @@ export class OneVOneService {
         client.data.side = 'right';
         client.data.role = 'player';
         const second = client;
-        await this.usersService.updateStatus(second.data.user.id, UserStatus.PLAYING);
+        try {
+          await this.usersService.updateStatus(second.data.user.id, UserStatus.PLAYING);
+        } catch (err) {
+          this.logger.error('Couldn\'t Update Status');
+          return;
+        }
         // function to add two players to a game
         this.joinPlayersToGame(first, second, wss);
       }
@@ -128,43 +154,79 @@ export class OneVOneService {
     second.data.gameInterval = timer;
   }
 
-  async gameFinished(first: Socket, second: Socket, playground: PlayGround, wss: Server) {
+  async gameFinished(first: Socket, second: Socket, playground: PlayGround, wss: Server): Promise<void> {
     // game finished
     clearInterval(first.data.gameInterval);
     this.logger.log('Game in Room: ' + first.data.roomname + ' between: ', first.data.user.username + ' & ' + second.data.user.username + ' Finished');
     if (playground.scoreBoard.playerOneScore > playground.scoreBoard.playerTwoScore) {
-      this.usersService.updateLevel(first.data.user.id, false);
-      this.usersService.winsGame(first.data.user.id);
-      this.usersService.LostGame(second.data.user.id);
-      this.pongGameService.addGameHistory({
-        mode: GameMood.ONEVONE,
-        winner: first.data.user,
-        loser: second.data.user,
-        winnerScore: playground.scoreBoard.playerOneScore,
-        loserScore: playground.scoreBoard.playerTwoScore
-      });
-      // send event with winner and loser
-      wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+      try {
+        await this.usersService.updateLevel(first.data.user.id, false);
+      } catch (err) {
+        this.logger.error('Couldn\'t Update Level');
+      }
+      try {
+        await this.usersService.winsGame(first.data.user.id);
+      } catch (err) {
+        this.logger.error('Couldn\'t Update User: ' + first.data.user.id + ' Wins');
+      }
+      try {
+        await this.usersService.LostGame(second.data.user.id);
+      } catch (err) {
+        this.logger.error('Couldn\'t Update User: ' + second.data.user.id + ' Losses');
+      }
+      try {
+        this.pongGameService.addGameHistory({
+          mode: GameMood.ONEVONE,
+          winner: first.data.user,
+          loser: second.data.user,
+          winnerScore: playground.scoreBoard.playerOneScore,
+          loserScore: playground.scoreBoard.playerTwoScore
+        });
+        // send event with winner and loser
+        wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+      } catch (err) {
+        this.logger.error('Couldn\'t Save Game');
+      }
     } else {
-      this.usersService.updateLevel(second.data.user.id, false);
-      this.usersService.winsGame(second.data.user.id);
-      this.usersService.LostGame(first.data.user.id);
-      this.pongGameService.addGameHistory({
-        mode: GameMood.ONEVONE,
-        winner: second.data.user,
-        loser: first.data.user,
-        winnerScore: playground.scoreBoard.playerTwoScore,
-        loserScore: playground.scoreBoard.playerOneScore
-      });
-      // send event with winner and loser
-      wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+      try {
+        await this.usersService.updateLevel(second.data.user.id, false);
+      } catch (err) {
+        this.logger.error('Couldn\'t Update Level');
+      }
+      try {
+        await this.usersService.winsGame(second.data.user.id);
+      } catch (err) {
+        this.logger.error('Couldn\'t Update User: ' + second.data.user.id + ' Wins');
+      }
+      try {
+        await this.usersService.LostGame(first.data.user.id);
+      } catch (err) {
+        this.logger.error('Couldn\'t Update User: ' + first.data.user.id + ' Losses');
+      }
+      try {
+        this.pongGameService.addGameHistory({
+          mode: GameMood.ONEVONE,
+          winner: second.data.user,
+          loser: first.data.user,
+          winnerScore: playground.scoreBoard.playerTwoScore,
+          loserScore: playground.scoreBoard.playerOneScore
+        });
+        // send event with winner and loser
+        wss.to(first.data.roomname).emit('DisplayWinner', { winner: first.data.user.username, loser: second.data.user.username });
+      } catch (err) {
+        this.logger.error('Couldn\'t Save Game');
+      }
     }
 
     // delete room from database
-    this.pongGameService.deleteRoom(first.data.roomname);
+    try {
+      this.pongGameService.deleteRoom(first.data.roomname);
+    } catch (err) {
+      this.logger.error('Couldn\'t Delete Room');
+    }
   }
 
-  async handleUserDisconnected(wss: Server, client: Socket) {
+  async handleUserDisconnected(wss: Server, client: Socket): Promise<void> {
     if (client.handshake.query.role === 'player' && client.data.gameInterval) {
       if (client.data.gameInterval._destroyed === false) {
         client.data.playground.ball.reset(
@@ -189,35 +251,71 @@ export class OneVOneService {
         this.logger.log('Game Interval Cleared');
 
         // Update Level and wins and loses for both players
-        await this.usersService.updateLevel(client.data.opponentId, false);
-        await this.usersService.winsGame(client.data.opponentId);
-        await this.usersService.LostGame(client.data.user.id);
-        const second = await this.usersService.findPlayer(client.data.opponentId);
-        if (second) {
-          this.pongGameService.addGameHistory({
-            mode: GameMood.ONEVONE,
-            winner: await second,
-            loser: client.data.user,
-            winnerScore: client.data.playground.win_score,
-            loserScore: loserScore
-          });
-          // send event with winner and loser
-          wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });
+        try {
+          await this.usersService.updateLevel(client.data.opponentId, false);
+        } catch(err) {
+          this.logger.error('Couldn\'t Update Level');
+        }
+        try {
+          await this.usersService.winsGame(client.data.opponentId);
+        } catch(err) {
+          this.logger.error('Couldn\'t Update User: ' + client.data.opponentId + ' Wins');
+        }
+        try {
+          await this.usersService.LostGame(client.data.user.id);
+        } catch(err) {
+          this.logger.error('Couldn\'t Update User: ' + client.data.user.id + ' Losses');
+        }
+        let second: Player;
+        try {
+          second = await this.usersService.findPlayer(client.data.opponentId);
+        } catch (err) {
+          this.logger.error('Couldn\'t get Opponent');
+          wss.to(client.data.roomname).emit('OpponentMissed', { message: 'Opponent Wasn\'t Found' });
+          return;
+        }
+        try {
+          if (second) {
+            this.pongGameService.addGameHistory({
+              mode: GameMood.ONEVONE,
+              winner: await second,
+              loser: client.data.user,
+              winnerScore: 13,
+              loserScore: loserScore
+            });
+            // send event with winner and loser
+            wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });
+          }
+        } catch (err) {
+          this.logger.error('Couldn\'t Save Game');
+          wss.to(client.data.roomname).emit('UnsavedGame', { message: 'Game Wasn\'t Saved' });
         }
         // delete room from database
-        await this.pongGameService.deleteRoom(client.data.roomname);
-        this.logger.log('Game in Room: ' + client.data.roomname + ' Finished');
+        try {
+          await this.pongGameService.deleteRoom(client.data.roomname);
+          this.logger.log('Game in Room: ' + client.data.roomname + ' Finished');
+        } catch (err) {
+          this.logger.error('Couldn\'t Delete Room');
+        }
     }
 
       // client left room
       client.leave(client.data.roomname);
 
       // Update Status to ONLINE again
-      await this.usersService.updateStatus(client.data.user.id, UserStatus.ONLINE);
+      try {
+        await this.usersService.updateStatus(client.data.user.id, UserStatus.ONLINE);
+      } catch (err) {
+        this.logger.error('Couldn\'t Update Status');
+      }
 
     } else if (client.handshake.query.role === 'player') {
       // Update Status to ONLINE again
-      await this.usersService.updateStatus(client.data.user.id, UserStatus.ONLINE);
+      try {
+        await this.usersService.updateStatus(client.data.user.id, UserStatus.ONLINE);
+      } catch (err) {
+        this.logger.error('Couldn\'t Update Status');
+      }
     } else if (client.handshake.query.role === 'spectator') {
       this.logger.log('spectator Disconnected: ' + client.id);
       client.leave(client.handshake.query.room as string);

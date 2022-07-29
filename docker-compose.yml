@@ -9,9 +9,9 @@ services:
       - POSTGRES_DB=pong_db
     ports:
       - 5432:5432
-    networks:
-      ponggame:
-        ipv4_address: 10.5.0.2
+    # networks:
+    #   ponggame:
+    #     ipv4_address: 10.5.0.2
     volumes: 
       - database:/var/lib/postgresql/data
   backend:
@@ -20,9 +20,9 @@ services:
       dockerfile: 'Dockerfile'
     ports:
       - '3001:3001'
-    networks:
-      ponggame:
-        ipv4_address: 10.5.0.3
+    # networks:
+    #   ponggame:
+    #     ipv4_address: 10.5.0.3
     env_file:
       - ./backend/.env
 
@@ -32,18 +32,18 @@ services:
       dockerfile: 'Dockerfile'
     ports:
       - 80:80
-    networks:
-      ponggame:
-        ipv4_address: 10.5.0.4
+    # networks:
+    #   ponggame:
+    #     ipv4_address: 10.5.0.4
 
 
-networks:
-  ponggame:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.5.0.0/16
-          gateway: 10.5.0.1
+# networks:
+#   ponggame:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 10.5.0.0/16
+#           gateway: 10.5.0.1
 
 volumes:
   database: {}
