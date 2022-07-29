@@ -1,0 +1,49 @@
+version: '2.2'
+
+services:   
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=ping
+      - POSTGRES_PASSWORD=pong
+      - POSTGRES_DB=pong_db
+    ports:
+      - 5432:5432
+    networks:
+      ponggame:
+        ipv4_address: 10.5.0.2
+    volumes: 
+      - database:/var/lib/postgresql/data
+  backend:
+    build:
+      context: ./backend
+      dockerfile: 'Dockerfile'
+    ports:
+      - '3001:3001'
+    networks:
+      ponggame:
+        ipv4_address: 10.5.0.3
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: 'Dockerfile'
+    ports:
+      - 80:80
+    networks:
+      ponggame:
+        ipv4_address: 10.5.0.4
+
+
+networks:
+  ponggame:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
+
+volumes:
+  database: {}
