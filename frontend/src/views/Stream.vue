@@ -46,8 +46,10 @@ onMounted(() => {
         window.location.href = '/watchgames';
     }
     else {
+        console.log(props);
         socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
-        query: {
+            path: '/game/' + props.difficulty,
+            query: {
                 'role': 'spectator',
                 'roomname': props.roomname
             },

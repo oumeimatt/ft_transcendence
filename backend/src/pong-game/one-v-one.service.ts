@@ -59,7 +59,7 @@ export class OneVOneService {
     }
     client.data.user = user;
     try {
-      found = await this.usersService.findPlayer(user.id);
+    found = await this.usersService.findPlayer(user.id);
     } catch (err) {
       this.logger.error('Verify Your Credentials');
       client.emit('UserError', { message: 'Verify Your Credentials' });
@@ -77,13 +77,14 @@ export class OneVOneService {
         && player.data.user.username === client.handshake.query.opponent);
       if (!first) {
         // if he inters first keep him waiting
+        players.push(client);
         try {
           await this.usersService.updateStatus(user.id, UserStatus.PLAYING);
         } catch (err) {
+          players = players.filter(pl => pl !== client);
           this.logger.error('Couldn\'t Update Status');
           return;
         }
-        players.push(client);
         // if opponent didnt enter the game yet
         client.data.side = 'left';
         client.data.role = 'player';
@@ -279,7 +280,7 @@ export class OneVOneService {
               mode: GameMood.ONEVONE,
               winner: await second,
               loser: client.data.user,
-              winnerScore: client.data.playground.win_score,
+              winnerScore: 13,
               loserScore: loserScore
             });
             // send event with winner and loser
