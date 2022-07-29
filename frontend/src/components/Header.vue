@@ -115,8 +115,9 @@
 			border-b text-gray-800 font-semibold" >Change Username</button> 
 				<div v-if="showChangeName" class="border-b p-2 pb-4 space-x-4">
 				  <span class="text-s "> Username :</span>
-				  <input v-model="nickname" placeholder="max 10 letters" 
+				  <input v-model="nickname" placeholder="max 10 letters" maxlength="10"
 				  class=" border border-solid rounded" > 
+				  <span v-if="invalidUsername == true" class="text-red-500 text-sm "> Invalid username  </span>
 				</div>
 			<button v-on:click="showChangeAv = !showChangeAv" class="p-2 pb-4 border-b 
 			font-semibold text-gray-800">Change Avatar</button>
@@ -155,6 +156,7 @@
 			<button @click="saveChanges()" class="text-gray-800 font-bold hover:border 
 			hover:rounded hover:border-solid hover:white hover:text-white hover:bg-slate-800 
 			uppercase px-6 py-3 text-sm outline-none    " >
+				
 			  Save Changes
 			</button>
 		  </div>
@@ -171,7 +173,7 @@
 	import { defineComponent ,  computed, ref, inject, onMounted } from 'vue';
 	import { UserInfos } from '../interfaces/UserInfos';
 	import Signin from '../views/Signin.vue'
-
+	import LoadinBar from '../components/LoadingBar.vue'
 
 	const store = inject('store')
 	const nickname = ref('' as string)
@@ -189,8 +191,7 @@
 	const qr = ref('' as string)
 	const showScan = ref(false)
 	const Password2fa = ref('' as string)
-	let infos = ref({} as UserInfos)
-
+	const invalidUsername = ref(false as boolean)	
 
 
 	onMounted(async  () => {
@@ -295,41 +296,48 @@
 	}
 
 
-	function saveChanges(){
+	async function saveChanges(){
+	store.state.spinn = true
 	  if (nickname.value.length > 0)
-		changeNickname(nickname.value)
+		await changeNickname(nickname.value)
 	  if (ext.value.length > 0)
-		changeAvatar()
+		await changeAvatar()
 	  if (Password2fa.value.length > 0)
-		enable2fa()
+		await enable2fa()
 	  showChangeAv.value = false;
 	  show2f.value = false;
-	//   showChangeName.value = false;
 	  showScan.value = false;
 	  nickname.value = '';
 	  Password2fa.value = ''
 	  qr.value = '';
-	  showModal.value = false
+	  store.state.spinn = false
+	  if (invalidUsername.value == false){
+		showChangeName.value = false;
+		showModal.value = false
+	  }
 	}
 
 
 
 	async function changeNickname(newnickname: String){
+		
+		invalidUsername.value = false
 		if (newnickname.length > 0 && newnickname.length <= 10){
-			store.state.player.username = newnickname ;
+			
 			await axios
 				.patch('http://localhost:3001/settings/username' ,
 				{username: newnickname} ,{ withCredentials: true })
-				.then(data =>{ })
+				.then(data =>{ store.state.player.username = newnickname ; })
 				.catch(
 					err => { 
-						console.log(err.message);
-						// if (err.response.status == 400){
+						// console.log(err.response.status);
+						if (err.response.status == 400){
+							invalidUsername.value = true
 							// console.log('Username already exists');  <!-- ! msg alert  -->
-						// }
-						return false;
+						}
 					})
 		}
+		
 	}
 
 
@@ -374,6 +382,7 @@
 	  Password2fa.value = ''
 	  qr.value = '';
 	  showModal.value = false
+	  invalidUsername.value = false
 
 	}
 
