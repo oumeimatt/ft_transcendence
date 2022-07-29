@@ -143,7 +143,12 @@
 			store.state.achievements = data.data.achievements;
 			store.state.blockedUsers = data.data.blockedUsers;
 			store.state.spinn = false})
-			.catch(err => console.log(err))
+			.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
         getGamesHistory(store.state.player.id);
 		store.state.spinn = false
 
@@ -158,7 +163,12 @@
                   store.state.userFriends = data.data.friends;
                   store.state.userAchievements = data.data.achievements;
                   store.state.userBlockedUsers = data.data.blockedUsers})
-                .catch(err => console.log(err.message))
+                .catch(err => {
+					if (err.response.status == 401){
+						store.state.player.status = 'offline'
+						window.location.href = '/auth/login';
+					}
+			})
 
           getGamesHistory(playerid);
 

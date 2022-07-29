@@ -250,7 +250,12 @@ const props = defineProps<{
 			.get('http://localhost:3001/users' ,{ withCredentials: true })
 			.then(data =>{ store.state.users = data.data ;
 			})
-			.catch(err => {})
+			.catch(err => {
+        if (err.response.status == 401){
+          store.state.player.status = 'offline'
+          window.location.href = '/auth/login';
+        }
+			})
       
       user = store.methods.usersInfo(props.username)
       if (user) {
@@ -276,6 +281,10 @@ const props = defineProps<{
                   {
                       userNotFound.value = true
                       store.state.spinn = false
+                  }
+                  if (err.response.status == 401){
+                    store.state.player.status = 'offline'
+                    window.location.href = '/auth/login';
                   }
                 
                 })
@@ -326,7 +335,12 @@ const props = defineProps<{
           axios
               .delete("http://localhost:3001/relation/unfollow/" + user.id , { withCredentials: true } )
               .then(data => { })
-              .catch(error =>  console.error( error));
+              .catch(err => {
+                if (err.response.status == 401){
+                  store.state.player.status = 'offline'
+                  window.location.href = '/auth/login';
+                }
+              })
       }
     }
 
@@ -339,7 +353,12 @@ const props = defineProps<{
         store.state.userInfo.amIBlocked = false
             axios.post("http://localhost:3001/relation/add/" + user.id , {} , { withCredentials: true } ) 
             .then(data => { })
-            .catch(error =>  console.error( error));
+            .catch(err => {
+                if (err.response.status == 401){
+                  store.state.player.status = 'offline'
+                  window.location.href = '/auth/login';
+                }
+              })
       }
     }
 
@@ -354,7 +373,12 @@ const props = defineProps<{
         frMenu.value = false
         axios.post("http://localhost:3001/relation/block/" + user.id, {}, { withCredentials: true } ) 
             .then(data => {})
-            .catch(error =>  console.error( error));
+            .catch(err => {
+                if (err.response.status == 401){
+                  store.state.player.status = 'offline'
+                  window.location.href = '/auth/login';
+                }
+              })
       }
     }
 
@@ -369,7 +393,12 @@ const props = defineProps<{
         frMenu.value = false
         axios.delete("http://localhost:3001/relation/unblock/" + user.id ,{ withCredentials: true } )
             .then(data => {})
-            .catch(error =>  console.error( error));
+            .catch(err => {
+                if (err.response.status == 401){
+                  store.state.player.status = 'offline'
+                  window.location.href = '/auth/login';
+                }
+              })
       }
     }
 

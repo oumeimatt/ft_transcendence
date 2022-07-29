@@ -9,7 +9,7 @@
 					<div v-if="showMenu" id="dropdownLeft" class="z-10 absolute right-8 top-2 divide-y divide-gray-100 rounded shadow w-44 bg-slate-800">
 						<ul class="py-1 text-sm text-gray-700 text-gray-200" aria-labelledby="dropdownLeftButton">
 						<li>
-							<router-link :to="{ name:'User', params: {id: store.methods.usersInfo(name).id}}" class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Profile </router-link>
+							<router-link :to="{ name:'User', params: {username: name}}" class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Profile </router-link>
 						</li>
 						<li>
 							<a href="#" @click="inviteFriend(store.methods.usersInfo(name).id)" class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white">Invite to play game</a>

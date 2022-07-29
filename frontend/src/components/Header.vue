@@ -211,12 +211,22 @@
 			store.state.achievements = data.data.achievements;
 			store.state.blockedUsers = data.data.blockedUsers
 		  } ) 
-		  .catch(err => console.log(err.message))
+		  .catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+		  })
 		await axios
 			.get('http://localhost:3001/users' ,{ withCredentials: true })
 			.then(data =>{ store.state.users = data.data ;
 			})
-			.catch(err => console.log(err.message))
+			.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 		store.state.spinn = false;
 	})
 
@@ -231,7 +241,12 @@
             store.state.userFriends = data.data.friends;
             store.state.userAchievements = data.data.achievements;
             store.state.userBlockedUsers = data.data.blockedUsers })
-          .catch(err => console.log(err.message))
+		.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 
 		getGamesHistory(playerid);
 
@@ -286,7 +301,12 @@
 		await axios
 			.get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
 			.then(data =>{qr.value = "http://localhost:3001/"+data.data; } ) 
-			.catch(err => console.log(err.message))
+			.catch(err => {
+				if (err.response.status == 401){
+					store.state.player.status = 'offline'
+					window.location.href = '/auth/login';
+				}
+				})
 		showScan.value = true
 		console.log(qr.value)
 	}
@@ -297,7 +317,12 @@
 		  .post('http://localhost:3001/settings/2fa/enable', {Password2fa: Password2fa.value } , {withCredentials: true })
 		  .then(() => {
 		  })
-		  .catch((error) => console.log(error.response));
+			.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 	}
 
 
@@ -340,6 +365,10 @@
 							invalidUsername.value = true
 							// console.log('Username already exists');  <!-- ! msg alert  -->
 						}
+						else if (err.response.status == 401){
+							store.state.player.status = 'offline'
+							window.location.href = '/auth/login';
+						}
 					})
 		}
 		
@@ -356,8 +385,12 @@
 		  .post(`http://localhost:3001/settings/avatar/${imageName}`, 
 		  formData, {withCredentials: true , headers })
 		  .then(() => {  })
-		  .catch((error) => console.log(error.response));
-	  store.state.player.avatar = imageName
+		  .catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';}
+			})
+	 	 store.state.player.avatar = imageName
 	}
 
 

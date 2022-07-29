@@ -57,7 +57,12 @@
             store.state.player = data.data.profile;
             console.log("statusss ",store.state.player.status);
           })
-          .catch((error) => { console.log(error) })
+			    .catch(err => {
+			      if (err.response.status == 401){
+			      	store.state.player.status = 'offline'
+              window.location.href =  '/auth/login'
+            }
+			      })
           store.state.spinn = false
     })
 
@@ -67,8 +72,14 @@
         .post('http://localhost:3001/twofactorauthentication', {twoFactorCode: code2fa.value }, {withCredentials: true })
         .then((data) => { 
             window.location.href = '/home';
+
         })
-        .catch(err => {});
+			  .catch(err => {
+			  if (err.response.status == 401){
+			  	store.state.player.status = 'offline'
+          window.location.href =  '/auth/login'
+        }
+			})
     }
   
     function goBackHome(){

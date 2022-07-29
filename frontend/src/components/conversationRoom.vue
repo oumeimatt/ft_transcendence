@@ -88,7 +88,12 @@
         await axios
             .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
             .then(data =>{ store.state.roominfo = data.data ;}) 
-            .catch(err => { console.log(err)})
+            .catch(err => {
+              if (err.response.status == 401){
+                store.state.player.status = 'offline'
+                window.location.href = '/auth/login';
+              }
+			    })
 
         if (store.state.roominfo.playerid != undefined) 
           isMember.value =  true 

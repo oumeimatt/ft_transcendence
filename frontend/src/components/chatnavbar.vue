@@ -265,12 +265,23 @@
 		store.state.spinn = true
 		await axios.get('http://localhost:3001/chat/messages', {params:{roomid:roomid, playerid:store.state.player.id}, withCredentials:true})
 		.then(data=>{store.state.messages = data.data;})
+		.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 		store.state.roomSelected=roomid;
 
 		await axios
 			.get('http://localhost:3001/chat/members' ,{params:{ roomid : roomid, playerid: store.state.player.id}, withCredentials: true })
 			.then((data) => {store.state.roomMembs = data.data; })
-			.catch(err => {})
+			.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 		store.state.spinn = false
 	}
 
@@ -298,6 +309,12 @@
 		store.state.spinn = true
 		await axios.get('http://localhost:3001/chat/DM', {params:{userid:store.state.player.id, receiverid:friendid}, withCredentials:true})
 		.then(data=>{store.state.messages = data.data; })
+		.catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 		store.state.spinn = false
 		//store.state.roomSelected = getRoomId(friendid);
 	}
@@ -328,19 +345,34 @@
             store.state.achievements = data.data.achievements
 
           } ) 
-          .catch(err => {})
+          .catch(err => {
+			if (err.response.status == 401){
+				store.state.player.status = 'offline'
+				window.location.href = '/auth/login';
+			}
+			})
 
 
 		  await axios
 		  	.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 		  	.then(data=> { store.state.rooms = data.data; })
-
+			.catch(err => {
+				if (err.response.status == 401){
+					store.state.player.status = 'offline'
+					window.location.href = '/auth/login';
+				}
+			})
 
 
 		await axios
 			.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 			.then(data=> {store.state.allRooms = data.data; })
-			.catch(err => {})
+			.catch(err => {
+				if (err.response.status == 401){
+					store.state.player.status = 'offline'
+					window.location.href = '/auth/login';
+				}
+			})
 		
 		store.state.spinn = false
 

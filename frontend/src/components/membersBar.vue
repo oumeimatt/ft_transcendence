@@ -157,7 +157,12 @@
         await axios
             .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: userId}, withCredentials: true })
             .then((data) => {member = data.data; store.state.spinn = false})
-            .catch(err => console.log(err.message))
+            .catch(err => {
+                if (err.response.status == 401){
+                    store.state.player.status = 'offline'
+                    window.location.href = '/auth/login';
+                }
+			})
         if (member.role == 'ADMIN' || member.role == 'OWNER')
             isAlreadyAdmin.value = true;
         else
@@ -306,7 +311,12 @@
             await axios
             .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: playerid}, withCredentials: true })
             .then((data) => {membership.value = data.data; store.state.spinn = false})
-            .catch(err => console.log(err.message))
+            .catch(err => {
+                if (err.response.status == 401){
+                    store.state.player.status = 'offline'
+                    window.location.href = '/auth/login';
+                }
+			})
         // if (membership.value == null){
         //     return false;
         // }
@@ -322,7 +332,12 @@
 		await axios
 			.get('http://localhost:3001/chat/members' ,{params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
 			.then((data) => {store.state.roomMembs = data.data;})
-			.catch(err => console.log(err.message))
+			.catch(err => {
+                if (err.response.status == 401){
+                    store.state.player.status = 'offline'
+                    window.location.href = '/auth/login';
+                }
+			})
 
        
         // await axios
