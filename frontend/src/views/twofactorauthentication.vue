@@ -4,7 +4,7 @@
     <div v-if="store.state.spinn == true">
           <LoadingBar :start="store.state.spinn" />
     </div>
-      <div v-if="store.state.player.two_fa == true && store.state.player.status == 'offline' ">
+      <div v-if="store.state.player.two_fa == true && store.state.player.status == 'twofa' || store.state.player.status == 'offline' ">
 
           <div id="notlogged" class=" flex justify-center items-center text-center h-screen"> 
             <div class=" container w-3/5 h-1/5 bg-slate-300 rounded-lg translate-y-1/4">
@@ -46,18 +46,18 @@
     import { inject, ref, onMounted } from 'vue';
     import axios from 'axios';
     import { computed } from '@vue/reactivity';
+    import VueCookies from 'vue-cookies';
     const store = inject('store')
     import LoadingBar from '../components/LoadingBar.vue'
-
     onMounted( async () => {
       store.state.spinn = true
         await axios
           .get('http://localhost:3001/twoFaUser',  {withCredentials: true })
           .then((data) => {
             store.state.player = data.data.profile;
-            console.log("statusss ",store.state.player.status);
           })
 			    .catch(err => {
+            // console.log({err});
 			      if (err.response.status == 401){
 			      	store.state.player.status = 'offline'
               window.location.href =  '/auth/login'

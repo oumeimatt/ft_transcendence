@@ -69,6 +69,7 @@ export class AuthService {
 		}
 		else {
 			console.log('two_factor authentication');
+			this.playerService.updateStatus(id, UserStatus.TWOFA);
 			res.cookie('twofa',[accessToken]);
 			res.redirect('http://localhost:3000/twofactorauthentication');
 		}
