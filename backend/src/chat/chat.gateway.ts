@@ -63,12 +63,14 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
     }
 
     private async getSocketid(id:number):Promise<Socket>{
-
+      
       for (var user of this.user){
+        try{
         let decoded = user.handshake.query.token;
         decoded = await this.userService.verifyToken(decoded);
         if (decoded.id === id)
             return user;
+        }catch{}
       }
       return null;
     }
@@ -135,16 +137,18 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           let members = await this.chatService.getMembersByRoomId(room.id, this.player.id); //banned and muted users
           for (var x of this.user)
           {
-            userid = await x.handshake.query.token;
-            userid =  await this.userService.verifyToken(userid);
-            rooms = await this.chatService.getRoomsForUser(userid.id);
-            allrooms = await this.chatService.getAllRooms(userid.id);
+            try{
+                userid = await x.handshake.query.token;
+                userid =  await this.userService.verifyToken(userid);
+                rooms = await this.chatService.getRoomsForUser(userid.id);
+                allrooms = await this.chatService.getAllRooms(userid.id);
              
-            this.server.to(x.id).emit('message', rooms);
+                this.server.to(x.id).emit('message', rooms);
 
-            this.server.to(x.id).emit('members', members); //only if the channel is selected
+                this.server.to(x.id).emit('members', members); //only if the channel is selected
 
-            this.server.to(x.id).emit('allrooms', allrooms);
+                this.server.to(x.id).emit('allrooms', allrooms);}
+                catch{ }
             //No need the send the messages => there is none
           }
         }
@@ -166,15 +170,19 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           let messages:any;
           for (var x of this.user)
           {
-            userid = await x.handshake.query.token;
-            userid = await this.userService.verifyToken(userid);
+            try{
+              userid = await x.handshake.query.token;
+             
+                 userid = await this.userService.verifyToken(userid);
            // messages = await this.chatService.getMessagesByroomId(messageDto.id, this.player.id);
               // getMessagesByroomId(messageDtoid, userid.id) no need to check if it's a member
-            if ((await this.chatService.isMember(messageDto.id, userid)))
-              {
-                messages = await this.chatService.getMessagesByroomId(messageDto.id, userid.id)
-                this.server.to(x.id).emit('sendMessage', messages); //getMessage for each member
-              }
+                if ((await this.chatService.isMember(messageDto.id, userid)))
+                {
+                  messages = await this.chatService.getMessagesByroomId(messageDto.id, userid.id)
+                  this.server.to(x.id).emit('sendMessage', messages); //getMessage for each member
+                }
+              }catch{}
+          
           } 
         }
       }
@@ -208,14 +216,16 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         let userid:any;
         for (var x of this.user)
         {
-          if (x.handshake.headers.query)
-          {
+          try{
+          
             userid = await x.handshake.headers.query.token;
+            
             userid = await this.userService.verifyToken(userid);
             members = await this.chatService.getMembersByRoomId(roomid, userid.id);
                 if ((await this.chatService.isMember(roomid, userid)))
                   this.server.to(x.id).emit('members', members);
-          }
+            }catch{}
+          
         }
       }
       }
@@ -240,12 +250,14 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           let messages = await this.chatService.getMessagesByroomId(JoinChanneldto.roomid, this.player.id);
           this.server.to(socket.id).emit('sendMessage', messages);
           for (var x of this.user){
-          if(x.handshake.headers.query){
+          try{
             let player = await x.handshake.headers.query.token;
+            
             player = await this.userService.verifyToken(player);
             if ((await this.chatService.isMember(JoinChanneldto.roomid, player)))
               this.server.to(x.id).emit('members', members);
-          }
+            }catch{}
+          
       }
     }
     //else send password error
@@ -330,10 +342,15 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
           let members = await this.chatService.getMembersByRoomId(membershipdto.roomid, this.player.id);
           let userid:any;
           for (var x of this.user){
+            try{
             userid = await x.handshake.query.token;
+          
             userid =await this.userService.verifyToken(userid);
             if ((await this.chatService.isMember(membershipdto.roomid, userid)))
-              this.server.to(x.id).emit('members', members);
+            this.server.to(x.id).emit('members', members);
+            }catch{}
+
+            
           }
         }
       }
@@ -432,10 +449,14 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       }
       let members = await this.chatService.getMembersByRoomId(membershipdto.roomid, this.player.id);
       for (var x of this.user){
+        try{
         let userid = await x.handshake.query.token;
+       
             userid = await this.userService.verifyToken(userid);
             if ((await this.chatService.isMember(membershipdto.roomid, userid.id)))
                 this.server.to(x.id).emit('members', members);
+        }catch{}
+        
       }
     }
 
@@ -463,10 +484,13 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       //send members to all the concerned users(members not banned) => {only if isbanned is returned}
       let members = await this.chatService.getMembersByRoomId(membershipdto.roomid, this.player.id);
       for (var x of this.user){
+        try{
         let userid = await x.handshake.query.token;
             userid = await this.userService.verifyToken(userid);
             if ((await this.chatService.isMember(membershipdto.roomid, userid.id))) //member and not banned
                 this.server.to(x.id).emit('members', members);
+        }catch{}
+        
       }
     }
 
@@ -495,10 +519,14 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       //send members to all the concerned users(members not banned) => {only if isbanned is returned}
       let members = await this.chatService.getMembersByRoomId(membershipdto.roomid, this.player.id);
       for (var x of this.user){
+        try{
         let userid = await x.handshake.query.token;
+        
             userid = await this.userService.verifyToken(userid);
             if ((await this.chatService.isMember(membershipdto.roomid, userid.id))) //member and not banned
                 this.server.to(x.id).emit('members', members);
+        }catch{}
+        
       }
     }
     }
@@ -517,9 +545,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
       //   this.server.to(mutedUser.id).emit('members', members);
       // }
       for (var x of this.user){
-        if (x.handshake.query){
-        let userid = await x.handshake.query.token;
-        
+       try{        let userid = await x.handshake.query.token;
+         
             userid = await this.userService.verifyToken(userid);
             if ((await this.chatService.isMember(mutedto.roomid, userid.id))) //member and not banned
               {
@@ -534,7 +561,8 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
                  // this.server.to(String(roomID)).emit('unmute', { roomID, userID });
                 }, mutedto.duration *60* 1000);
               }
-        }
+        }catch{}
+      
       }
       }
 
@@ -552,14 +580,14 @@ export class ChatGateway implements  OnGatewayConnection, OnGatewayDisconnect{
         this.server.to(unmutedUser.id).emit('members', members);
       }
       for (var x of this.user){
-        if (x.handshake.query){
+        try{
         let userid = await x.handshake.query.token;
-      
+          
             userid = await this.userService.verifyToken(userid);
             if ((await this.chatService.isMember(membershipdto.roomid, userid.id))) //member and not banned
-                this.server.to(x.id).emit('members', members);
+                this.server.to(x.id).emit('members', members);}catch{}
         }
-      }
+      
     }
   }
 }
