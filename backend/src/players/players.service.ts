@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GetPlayersFilterDto } from "./dto-players/get-player-filter.dto";
@@ -51,18 +51,6 @@ export class UsersService {
 	async getUsers(FilterDto: GetPlayersFilterDto): Promise<Player[]> {
 		return this.userRepository.getUsers(FilterDto);
 	}
-
-	// async updateUsersStatus() {
-	// 	const onlineUsers = await this.userRepository.find({ where: { status: UserStatus.ONLINE } });
-	// 	for (const user of onlineUsers) {
-	// 		const now = new Date();
-	// 		const diff = now.getTime() - user.last_activity.getTime();
-	// 		if (diff > 1000 * 60 * 500) {
-	// 			await this.updateStatus(user.id, UserStatus.OFFLINE);
-	// 			console.log('User ' + user.username + ' is offline');
-	// 		}
-	// 	}
-	// }
 
 	async updateUsername(id: number, username: string): Promise<Player> {
 
@@ -181,9 +169,9 @@ export class UsersService {
 			const decoded = await this.jwtService.verify(token.toString());
 			if (typeof decoded === 'object' && 'id' in decoded)
 				return decoded;
-			throw new BadRequestException();
+			throw new UnauthorizedException();
 		} catch(error) {
-			throw new BadRequestException('Token expired');
+			throw new UnauthorizedException('Token expired');
 		}
 	}
 	

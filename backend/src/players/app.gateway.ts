@@ -38,7 +38,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
 	handleDisconnect(client: Socket, ...args: any[]) {
 		const user = this.connectedUsers.find(us => us.clientId === client.id);
-		//console.log('handle disconnect ' + user.playerId + '  -  ' + user.clientId);
+		// console.log('handle disconnect ' + user.playerId + '  -  ' + user.clientId);
 		this.connectedUsers = this.connectedUsers.filter(us => us.clientId !== client.id);
 		this.server.emit('disconnected', { connectedUsers: this.connectedUsers });
 	}
