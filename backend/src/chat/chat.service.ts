@@ -44,7 +44,22 @@ export class ChatService {
     }
 
     async createRoom(RoomDto:RoomDto, creators :Player[]):Promise<chatroom>{
-        return await this.roomRepo.createRoom(RoomDto, creators);
+        const {name,privacy,password} = RoomDto;
+
+        const Room = new chatroom();
+        Room.name = name;
+        Room.ischannel = true;
+        if (privacy === 'Private')
+            Room.ispublic = false;
+        //hash this password
+        Room.salt = await bcrypt.genSalt();
+        Room.password = await bcrypt.hash(password, Room.salt);
+        await Room.save();
+        for (var user of creators)
+        {
+            await this.createMembership(user.id,Room.id);
+        }
+        return await Room;
     }
 
     async createDM(sender:number, receiver:number):Promise<chatroom>{
@@ -115,7 +130,18 @@ export class ChatService {
 
     
     async addMember(room:chatroom, creator:Player, role:RoleStatus):Promise<void>{
-        return await this.roomRepo.addMember(room, creator, role);
+        let found = await this.membershipRepo.findOne({roomid:room.id,playerid:creator.id});
+        if (!found)
+        {
+            const Membership = new membership();
+            Membership.role =role;
+            Membership.Player = creator;
+            Membership.room = room;
+            Membership.ismuted = false;
+            Membership.isbanned = false;
+            await Membership.save();
+        }
+       // return await this.roomRepo.addMember(room, creator, role);
     }
 
     async createMessage(messageDto:messageDto, sender:Player):Promise<message>{
@@ -246,9 +272,11 @@ export class ChatService {
         const found = await this.membershipRepo.find({playerid:playerid, roomid:roomid});
         if (!found)
         {
+            let room = await this.getRoomById(roomid);
+            let user = await this.userService.getUserById(playerid);
             const Membership = new membership();
-            Membership.playerid = playerid;
-            Membership.roomid = roomid;
+            Membership.Player = user;
+            Membership.room = room;
             Membership.isbanned = false;
             Membership.ismuted = false;
             Membership.role =   RoleStatus.USER;
