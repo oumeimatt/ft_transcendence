@@ -13,13 +13,13 @@ services:
       - database:/var/lib/postgresql/data
   backend:
     build:
-      context: ./backend
+      context: ./src/backend
       dockerfile: 'Dockerfile'
     ports:
       - '3001:3001'
   frontend:
     build:
-      context: ./frontend
+      context: ./src/frontend
       dockerfile: 'Dockerfile'
     ports:
       - 80:80
