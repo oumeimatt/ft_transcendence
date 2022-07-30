@@ -8,13 +8,13 @@ export class PongGameController {
   constructor(private pongGameService: PongGameService) {}
 
   @Get('/games-rooms')
-  getRooms(): Promise< { gamesRooms: GameRoom[] } > {
-    return this.pongGameService.getRooms();
+  async getRooms(): Promise< { gamesRooms: GameRoom[] } > {
+    return await this.pongGameService.getRooms();
   }
 
   @Get('/games-history/:id')
   @UsePipes(ValidationPipe)
-  getGamesHistory( @Param('id', ParseIntPipe) id: number ): Promise< { gamesHistory: GameHistory[] } > {
-    return this.pongGameService.getGamesHistory(id);
+  async getGamesHistory( @Param('id', ParseIntPipe) id: number ): Promise< { gamesHistory: GameHistory[] } > {
+    return await this.pongGameService.getGamesHistory(id);
   }
 }

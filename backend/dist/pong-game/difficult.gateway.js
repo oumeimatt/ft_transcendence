@@ -18,14 +18,14 @@ let DifficultGateway = class DifficultGateway {
         this.difficultService = difficultService;
         this.players = [];
     }
-    handleConnection(client) {
-        this.difficultService.handleUserConnected(client, this.players, this.wss);
+    async handleConnection(client) {
+        await this.difficultService.handleUserConnected(client, this.players, this.wss);
     }
-    handleDisconnect(client) {
+    async handleDisconnect(client) {
         this.players = this.players.filter((clt) => {
             return clt.id !== client.id;
         });
-        this.difficultService.handleUserDisconnected(this.wss, client);
+        await this.difficultService.handleUserDisconnected(this.wss, client);
     }
     handleKeyUpPressed(client) {
         if (client.data.playground) {

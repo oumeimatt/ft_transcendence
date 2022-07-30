@@ -19,11 +19,11 @@ let PongGameController = class PongGameController {
     constructor(pongGameService) {
         this.pongGameService = pongGameService;
     }
-    getRooms() {
-        return this.pongGameService.getRooms();
+    async getRooms() {
+        return await this.pongGameService.getRooms();
     }
-    getGamesHistory(id) {
-        return this.pongGameService.getGamesHistory(id);
+    async getGamesHistory(id) {
+        return await this.pongGameService.getGamesHistory(id);
     }
 };
 __decorate([

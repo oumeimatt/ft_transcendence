@@ -6,8 +6,8 @@ export declare class DefaultGateway implements OnGatewayConnection, OnGatewayDis
     wss: Server;
     private players;
     constructor(defaultService: DefaultService);
-    handleConnection(client: Socket): void;
-    handleDisconnect(client: Socket): void;
+    handleConnection(client: Socket): Promise<void>;
+    handleDisconnect(client: Socket): Promise<void>;
     handleKeyUpPressed(client: Socket): void;
     handleKeyDownPressed(client: Socket): void;
     handleKeyUpUnpressed(client: Socket): void;

@@ -6,8 +6,8 @@ export declare class DifficultGateway implements OnGatewayConnection, OnGatewayD
     wss: Server;
     private players;
     constructor(difficultService: DifficultService);
-    handleConnection(client: Socket): void;
-    handleDisconnect(client: Socket): void;
+    handleConnection(client: Socket): Promise<void>;
+    handleDisconnect(client: Socket): Promise<void>;
     handleKeyUpPressed(client: Socket): void;
     handleKeyDownPressed(client: Socket): void;
     handleKeyUpUnpressed(client: Socket): void;

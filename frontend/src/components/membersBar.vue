@@ -68,41 +68,41 @@
                     </div>
                 </div>
             </div>
-          </div>
-                    <div v-if="showMemberOptions && membership " class="z-10 ml-40 -mt-4  bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
-                        <div v-if="userId != store.state.player.id && isMuted == false">
-                            <ul v-if=" membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
-                            
-                            <li v-if="isAlreadyAdmin == false && isBanned == false && isMuted == false" @click.prevent="setAdmin">
-                                <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
-                            </li>
-                            <li @click.prevent="unBan" v-if="(membership.role == 'ADMIN' || membership.role == 'OWNER') && isBanned == true && isMuted == false">
-                                <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white"> Unban </span>
-                            </li>
-                            <li v-if="isBanned == false && isMuted == false" @click.prevent="Ban">
-                                <span  class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Ban</span>
-                            </li>
-                            <li v-if="isBanned == false && isMuted == false" @click.prevent="MuteClick">
-                                <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Mute</span>
-                            </li>
-                            <li class="block px-4 py-2 hover:bg-gray-200 text-white hover:text-black space-x-2 space-y-2" v-if="mute == true">
-                                <label for=""> mute for 
-                                    <input v-model="muteDuration" class="rounded bg-slate-300 text-slate-800 font-semibold" type="number" min="0" max="120">
-                                    mins
-                                </label>
-                                <div class="flex ">
-                                    <button @click.prevent="CancelMute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 font-semibold rounded  hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Cancel </button>
-                                    <button @click.prevent="Mute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 rounded font-semibold hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Save </button>
-
-                                </div>
-                            </li>
-                            <li v-if="isBanned== false && isMuted == false" @click="Remove">
-                                <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Remove</span>
-                            </li>
-                            </ul>
+            <div v-if="showMemberOptions && membership " class="z-10  bg-slate-700 divide-gray-800 rounded shadow w-44 text-center">
+                <div v-if="userId != store.state.player.id && isMuted == false">
+                    <ul v-if=" membership.role == 'ADMIN' || membership.role == 'OWNER'" class="py-1 text-sm text-gray-700 text-gray-200" >
+                    
+                    <li v-if="isAlreadyAdmin == false && isBanned == false && isMuted == false" @click.prevent="setAdmin">
+                        <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Set as admin </span>
+                    </li>
+                    <li @click.prevent="unBan" v-if="(membership.role == 'ADMIN' || membership.role == 'OWNER') && isBanned == true && isMuted == false">
+                        <span class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white"> Unban </span>
+                    </li>
+                    <li v-if="isBanned == false && isMuted == false" @click.prevent="Ban">
+                        <span  class="block px-4 py-2 hover:bg-gray-100 cursor-pointer hover:bg-gray-600 hover:text-white">Ban</span>
+                    </li>
+                    <li v-if="isBanned == false && isMuted == false" @click.prevent="MuteClick">
+                        <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Mute</span>
+                    </li>
+                    <li class="block px-4 py-2 hover:bg-gray-200 text-white hover:text-black space-x-2 space-y-2" v-if="mute == true">
+                        <label for=""> mute for 
+                            <input v-model="muteDuration" class="rounded bg-slate-300 text-slate-800 font-semibold" type="number" min="0" max="120">
+                            mins
+                        </label>
+                        <div class="flex ">
+                            <button @click.prevent="CancelMute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 font-semibold rounded  hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Cancel </button>
+                            <button @click.prevent="Mute" class="block px-2 my-2 py-2 bg-gray-300 text-slate-800 rounded font-semibold hover:text-slate-100  hover:bg-slate-900 mx-auto space-x-2" > Save </button>
 
                         </div>
-                    </div>
+                    </li>
+                    <li v-if="isBanned== false && isMuted == false" @click="Remove">
+                        <span  class="block px-4 py-2 hover:bg-gray-100  cursor-pointer hover:bg-gray-600 hover:text-white">Remove</span>
+                    </li>
+                    </ul>
+
+                </div>
+            </div>
+          </div>
 
           <!-- ******* ADMINS *******  -->
 

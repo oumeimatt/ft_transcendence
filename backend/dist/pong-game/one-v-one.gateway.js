@@ -18,14 +18,14 @@ let OneVOneGateway = class OneVOneGateway {
         this.onevoneService = onevoneService;
         this.players = [];
     }
-    handleConnection(client) {
-        this.onevoneService.handleUserConnected(client, this.players, this.wss);
+    async handleConnection(client) {
+        await this.onevoneService.handleUserConnected(client, this.players, this.wss);
     }
-    handleDisconnect(client) {
+    async handleDisconnect(client) {
         this.players = this.players.filter((clt) => {
             return clt.id !== client.id;
         });
-        this.onevoneService.handleUserDisconnected(this.wss, client);
+        await this.onevoneService.handleUserDisconnected(this.wss, client);
     }
     handleKeyUpPressed(client) {
         if (client.data.playground) {

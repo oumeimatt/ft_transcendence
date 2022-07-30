@@ -16,6 +16,7 @@ exports.ChatService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const room_repository_1 = require("./room.repository");
+const room_entity_1 = require("./room.entity");
 const membership_entity_1 = require("./membership.entity");
 const typeorm_2 = require("typeorm");
 const membership_model_1 = require("./dto/membership.model");
@@ -36,7 +37,19 @@ let ChatService = class ChatService {
         this.relationService = relationService;
     }
     async createRoom(RoomDto, creators) {
-        return await this.roomRepo.createRoom(RoomDto, creators);
+        const { name, privacy, password } = RoomDto;
+        const Room = new room_entity_1.chatroom();
+        Room.name = name;
+        Room.ischannel = true;
+        if (privacy === 'Private')
+            Room.ispublic = false;
+        Room.salt = await bcrypt.genSalt();
+        Room.password = await bcrypt.hash(password, Room.salt);
+        await Room.save();
+        for (var user of creators) {
+            await this.createMembership(user.id, Room.id);
+        }
+        return await Room;
     }
     async createDM(sender, receiver) {
         const chatroom = await this.roomRepo.createDM(sender, receiver);
@@ -82,7 +95,16 @@ let ChatService = class ChatService {
         return rooms;
     }
     async addMember(room, creator, role) {
-        return await this.roomRepo.addMember(room, creator, role);
+        let found = await this.membershipRepo.findOne({ roomid: room.id, playerid: creator.id });
+        if (!found) {
+            const Membership = new membership_entity_1.membership();
+            Membership.role = role;
+            Membership.Player = creator;
+            Membership.room = room;
+            Membership.ismuted = false;
+            Membership.isbanned = false;
+            await Membership.save();
+        }
     }
     async createMessage(messageDto, sender) {
         const { id, content } = messageDto;
@@ -164,11 +186,13 @@ let ChatService = class ChatService {
         return role;
     }
     async createMembership(playerid, roomid) {
-        const found = await this.membershipRepo.find({ playerid: playerid, roomid: roomid });
+        const found = await this.membershipRepo.findOne({ playerid: playerid, roomid: roomid });
         if (!found) {
+            let room = await this.getRoomById(roomid);
+            let user = await this.userService.getUserById(playerid);
             const Membership = new membership_entity_1.membership();
-            Membership.playerid = playerid;
-            Membership.roomid = roomid;
+            Membership.Player = user;
+            Membership.room = room;
             Membership.isbanned = false;
             Membership.ismuted = false;
             Membership.role = membership_model_1.RoleStatus.USER;

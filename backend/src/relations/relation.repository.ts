@@ -24,6 +24,9 @@ export class RelationRepository extends Repository<Relation> {
 
 	async addFriend(user: Player, friend: Player): Promise<Relation> {
 
+		const old_friend = await this.findOne({ where: { sender: user, receiver: friend.id, status: RelationStatus.FRIEND } });
+        if (old_friend)
+            return old_friend;
 		//td: check if the user is not blocked -> add friend
 		const blocked = await this.findOne({ where: { sender: user, receiver: friend.id, status: RelationStatus.BLOCKED } });
 		const blocked2 = await this.findOne({ where: { sender: friend, receiver: user.id, status: RelationStatus.BLOCKED } });

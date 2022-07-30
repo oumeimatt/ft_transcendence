@@ -269,7 +269,7 @@ export class ChatService {
 
     async createMembership(playerid:number, roomid:number){
         //before creating membership => check ppwd
-        const found = await this.membershipRepo.find({playerid:playerid, roomid:roomid});
+        const found = await this.membershipRepo.findOne({playerid:playerid, roomid:roomid});
         if (!found)
         {
             let room = await this.getRoomById(roomid);

@@ -6,8 +6,8 @@ export declare class OneVOneGateway implements OnGatewayConnection, OnGatewayDis
     wss: Server;
     private players;
     constructor(onevoneService: OneVOneService);
-    handleConnection(client: Socket): void;
-    handleDisconnect(client: Socket): void;
+    handleConnection(client: Socket): Promise<void>;
+    handleDisconnect(client: Socket): Promise<void>;
     handleKeyUpPressed(client: Socket): void;
     handleKeyDownPressed(client: Socket): void;
     handleKeyUpUnpressed(client: Socket): void;
