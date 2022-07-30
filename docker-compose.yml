@@ -11,20 +11,18 @@ services:
       - 5432:5432
     volumes: 
       - database:/var/lib/postgresql/data
-  # backend:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: 'Dockerfile'
-  #   ports:
-  #     - '3001:3001'
-
-
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: 'Dockerfile'
-  #   ports:
-  #     - 80:80
+  backend:
+    build:
+      context: ./backend
+      dockerfile: 'Dockerfile'
+    ports:
+      - '3001:3001'
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: 'Dockerfile'
+    ports:
+      - 80:80
 
 
 volumes:
