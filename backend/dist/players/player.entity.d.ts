@@ -12,7 +12,7 @@ export declare class Player extends BaseEntity {
     wins: number;
     losses: number;
     status: UserStatus;
-    last_activity: Date;
+    first_time: boolean;
     two_fa: boolean;
     secret: string;
     senders: Relation[];

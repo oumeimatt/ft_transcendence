@@ -137,7 +137,7 @@
     onMounted( async () => {
 		store.state.spinn = true
 		await axios
-          	.get('http://localhost:3001/profile' ,{ withCredentials: true })
+          	.get('http://10.11.1.2:3001/profile' ,{ withCredentials: true })
           	.then(data =>{store.state.player = data.data.profile;
 			store.state.friends = data.data.friends;
 			store.state.achievements = data.data.achievements;
@@ -158,7 +158,7 @@
           // console.log("playerid::",playerid)
           store.state.spinn = true
           await axios
-                .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
+                .get('http://10.11.1.2:3001/profile/' + playerid ,{ withCredentials: true })
                 .then(data =>{ store.state.user = data.data.profile;
                   store.state.userFriends = data.data.friends;
                   store.state.userAchievements = data.data.achievements;
@@ -212,7 +212,7 @@
 	// function to get history of a player
 	async function getGamesHistory(id: number) {
 		axios
-		.get('http://localhost:3001/pong-game/games-history/' + id)
+		.get('http://10.11.1.2:3001/pong-game/games-history/' + id)
 		.then((data) => {
 			gamesHistory.value = data.data.gamesHistory;
 		})

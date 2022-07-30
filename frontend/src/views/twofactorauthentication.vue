@@ -52,7 +52,7 @@
     onMounted( async () => {
       store.state.spinn = true
         await axios
-          .get('http://localhost:3001/twoFaUser',  {withCredentials: true })
+          .get('http://10.11.1.2:3001/twoFaUser',  {withCredentials: true })
           .then((data) => {
             store.state.player = data.data.profile;
           })
@@ -69,7 +69,7 @@
     const code2fa = ref('')
     function verifyCode(){
         axios
-        .post('http://localhost:3001/twofactorauthentication', {twoFactorCode: code2fa.value }, {withCredentials: true })
+        .post('http://10.11.1.2:3001/twofactorauthentication', {twoFactorCode: code2fa.value }, {withCredentials: true })
         .then((data) => { 
             window.location.href = '/home';
 

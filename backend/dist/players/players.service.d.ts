@@ -12,6 +12,7 @@ export declare class UsersService {
     getUserByUsername(username: string): Promise<Player>;
     getUserByStatusId(id: number): Promise<Player>;
     getUsers(FilterDto: GetPlayersFilterDto): Promise<Player[]>;
+    firstTime(id: number): Promise<any>;
     updateUsername(id: number, username: string): Promise<Player>;
     updateAvatar(id: number, avatar: string): Promise<Player>;
     updateLevel(id: number, difficult: boolean): Promise<Player>;

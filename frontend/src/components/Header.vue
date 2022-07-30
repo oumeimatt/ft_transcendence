@@ -98,7 +98,7 @@
 					px-4 py-2 text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100 
 					border-b border-slate-800">Settings
 					</button>
-					<a  href="http://localhost:3001/auth/logout" class=" w-44 block px-4 py-2 
+					<a  href="http://10.11.1.2:3001/auth/logout" class=" w-44 block px-4 py-2 
 					text-sm text-indigo-100 hover:bg-slate-500 hover:text-indigo-100  ">Logout</a>
 				</div>
 				</button>
@@ -138,7 +138,7 @@
 						font-semibold  hover:bg-black hover:text-white"> Activate 2FA Authentication </button>              
 					</div>
 					<div v-if="showScan" class=" bg-gray-200 rounded"> 
-						<img v-if="qr.length >0 " :src="qr" class="p-8 mx-auto h-30 w-30 rounded" alt="">
+						<img v-if="qr !== ''" :src="qr" class="p-8 mx-auto h-30 w-30 rounded" alt="">
 						<span v-else>Loading Qr...</span>
 						<label class="text-gray-600"> Type authentication code here </label>
 						<input v-model="Password2fa" type="text" maxlength="6" placeholder="123456" 
@@ -202,7 +202,7 @@
 	onMounted(async  () => {
 		// store.state.spinn = true
 		await axios
-			.get('http://localhost:3001/profile' ,{ withCredentials: true })
+			.get('http://10.11.1.2:3001/profile' ,{ withCredentials: true })
 			.then(data =>{
 			localStorage.clear();
 			localStorage.setItem('user', data.data.cookie);
@@ -218,7 +218,7 @@
 			}
 		  })
 		await axios
-			.get('http://localhost:3001/users' ,{ withCredentials: true })
+			.get('http://10.11.1.2:3001/users' ,{ withCredentials: true })
 			.then(data =>{ store.state.users = data.data ;
 			})
 			.catch(err => {
@@ -236,7 +236,7 @@
 	async function getInfos(playerid: number){
 		store.state.spinn = true
 		await axios
-          .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
+          .get('http://10.11.1.2:3001/profile/' + playerid ,{ withCredentials: true })
           .then(data =>{ store.state.user = data.data.profile;
             store.state.userFriends = data.data.friends;
             store.state.userAchievements = data.data.achievements;
@@ -299,8 +299,10 @@
 
 	async function  generateFA(){
 		await axios
-			.get('http://localhost:3001/settings/2fa/generate' ,{ withCredentials: true })
-			.then(data =>{qr.value = "http://localhost:3001/"+data.data; } ) 
+			.get('http://10.11.1.2:3001/settings/2fa/generate' ,{ withCredentials: true })
+			.then(data =>{
+				qr.value = "http://10.11.1.2:3001/"+data.data;
+				} ) 
 			.catch(err => {
 				if (err.response.status == 401){
 					store.state.player.status = 'offline'
@@ -314,7 +316,7 @@
 
 	async function enable2fa(){
 		  await axios
-		  .post('http://localhost:3001/settings/2fa/enable', {Password2fa: Password2fa.value } , {withCredentials: true })
+		  .post('http://10.11.1.2:3001/settings/2fa/enable', {Password2fa: Password2fa.value } , {withCredentials: true })
 		  .then(() => {
 		  })
 			.catch(err => {
@@ -347,7 +349,7 @@
 	  }
 	  if (store.state.player.first_time == true){
 		await axios
-			.get('http://localhost:3001/first_time' ,{ withCredentials: true })
+			.get('http://10.11.1.2:3001/first_time' ,{ withCredentials: true })
 			.then(data =>{ store.state.player.first_time = false} ) 
 			.catch(err => {
 				if (err.response.status == 401){
@@ -366,7 +368,7 @@
 		if (newnickname.length > 0 && newnickname.length <= 10){
 			
 			await axios
-				.patch('http://localhost:3001/settings/username' ,
+				.patch('http://10.11.1.2:3001/settings/username' ,
 				{username: newnickname} ,{ withCredentials: true })
 				.then(data =>{ store.state.player.username = newnickname ; })
 				.catch(
@@ -393,7 +395,7 @@
 	  formData.append('avatar', image.value)
 	  const headers = { 'Content-Type': 'multipart/form-data'};
 	  await axios
-		  .post(`http://localhost:3001/settings/avatar/${imageName}`, 
+		  .post(`http://10.11.1.2:3001/settings/avatar/${imageName}`, 
 		  formData, {withCredentials: true , headers })
 		  .then(() => {  })
 		  .catch(err => {
@@ -435,7 +437,7 @@
 	  invalidUsername.value = false
 	  if (store.state.player.first_time == true){
 		  await axios
-			.get('http://localhost:3001/first_time' ,{ withCredentials: true })
+			.get('http://10.11.1.2:3001/first_time' ,{ withCredentials: true })
 			.then(data =>{ store.state.player.first_time = false ;
 			showModal.value = false} ) 
 			.catch(err => {
@@ -451,7 +453,7 @@
 
 	async function getGamesHistory(playerid: number) {
 		axios
-			.get('http://localhost:3001/pong-game/games-history/' + playerid)
+			.get('http://10.11.1.2:3001/pong-game/games-history/' + playerid)
 			.then((data) => {
 				store.state.usergamesHistory = data.data.gamesHistory;
 			})

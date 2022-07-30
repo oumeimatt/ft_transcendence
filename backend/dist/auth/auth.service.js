@@ -65,6 +65,7 @@ let AuthService = class AuthService {
         }
         else {
             console.log('two_factor authentication');
+            this.playerService.updateStatus(id, player_status_enum_1.UserStatus.TWOFA);
             res.cookie('twofa', [accessToken]);
             res.redirect('http://' + process.env.FRONTEND_HOST + '/twofactorauthentication');
         }

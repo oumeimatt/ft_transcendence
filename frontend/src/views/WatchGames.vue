@@ -53,7 +53,7 @@ onUnmounted(() => {
 
 async function fetchGamesRooms() {
 	axios
-	.get('http://localhost:3001/pong-game/games-rooms/')
+	.get('http://10.11.1.2:3001/pong-game/games-rooms/')
 	.then((data) => { 
 			gameRooms.value = data.data.gamesRooms;
 	})

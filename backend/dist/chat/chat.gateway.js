@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatGateway = void 0;
-const common_1 = require("@nestjs/common");
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 const auth_service_1 = require("../auth/auth.service");
@@ -66,7 +65,6 @@ let ChatGateway = class ChatGateway {
         }
     }
     disconnect(socket) {
-        socket.emit('Error', new common_1.UnauthorizedException());
         socket.disconnect();
     }
     handleDisconnect(client) {
@@ -247,16 +245,14 @@ let ChatGateway = class ChatGateway {
             const status = await this.userService.getStatusByUserId(guest);
             let guestUsername = (await this.userService.getUserById(guest)).username;
             if (status == player_status_enum_1.UserStatus.PLAYING) {
-                ('The User is already playing');
                 this.server.to(client.id).emit('player-playing', guestUsername);
             }
+            else if (status == player_status_enum_1.UserStatus.OFFLINE)
+                this.server.to(client.id).emit('player-offline', guestUsername);
             else {
                 let socketguest = await this.getSocketid(guest);
                 if (socketguest)
                     this.server.to(socketguest.id).emit('invitation', this.player.username);
-                else {
-                    this.server.to(client.id).emit('player-offline', guestUsername);
-                }
             }
         }
     }

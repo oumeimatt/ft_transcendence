@@ -154,7 +154,7 @@
         let member = {} as member
         store.state.spinn = true
         await axios
-            .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: userId}, withCredentials: true })
+            .get('http://10.11.1.2:3001/chat/isMember', {params:{ roomid : props.id, playerid: userId}, withCredentials: true })
             .then((data) => {member = data.data; store.state.spinn = false})
             .catch(err => {
                 if (err.response.status == 401){
@@ -180,6 +180,7 @@
         }
 
         store.state.connection.emit('set-admin', membershipDto );
+        showMemberOptions.value = false
     }
 
     function Ban(){
@@ -308,7 +309,7 @@
                 showEdit.value = ! showEdit.value
             store.state.spinn =  true
             await axios
-            .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: playerid}, withCredentials: true })
+            .get('http://10.11.1.2:3001/chat/isMember', {params:{ roomid : props.id, playerid: playerid}, withCredentials: true })
             .then((data) => {membership.value = data.data; store.state.spinn = false})
             .catch(err => {
                 if (err.response.status == 401){
@@ -329,7 +330,7 @@
     })
     onUpdated(async  () => {
 		await axios
-			.get('http://localhost:3001/chat/members' ,{params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
+			.get('http://10.11.1.2:3001/chat/members' ,{params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
 			.then((data) => {store.state.roomMembs = data.data;})
 			.catch(err => {
                 if (err.response.status == 401){
@@ -340,7 +341,7 @@
 
        
         // await axios
-        //     .get('http://localhost:3001/chat/isMember', {params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
+        //     .get('http://10.11.1.2:3001/chat/isMember', {params:{ roomid : props.id, playerid: store.state.player.id}, withCredentials: true })
         //     .then((data) => {membership.value = data.data;})
         //     .catch(err => console.log(err.message))
 	})

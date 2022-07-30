@@ -263,7 +263,7 @@
 
 	async function getMessagesMembers(roomid : number){
 		store.state.spinn = true
-		await axios.get('http://localhost:3001/chat/messages', {params:{roomid:roomid, playerid:store.state.player.id}, withCredentials:true})
+		await axios.get('http://10.11.1.2:3001/chat/messages', {params:{roomid:roomid, playerid:store.state.player.id}, withCredentials:true})
 		.then(data=>{store.state.messages = data.data;})
 		.catch(err => {
 			if (err.response.status == 401){
@@ -274,7 +274,7 @@
 		store.state.roomSelected=roomid;
 
 		await axios
-			.get('http://localhost:3001/chat/members' ,{params:{ roomid : roomid, playerid: store.state.player.id}, withCredentials: true })
+			.get('http://10.11.1.2:3001/chat/members' ,{params:{ roomid : roomid, playerid: store.state.player.id}, withCredentials: true })
 			.then((data) => {store.state.roomMembs = data.data; })
 			.catch(err => {
 			if (err.response.status == 401){
@@ -286,7 +286,7 @@
 	}
 
 	// function getMembers(id){
-	// 	await axios.get('http://localhost:3001/chat/members', {params:{roomid:id, playerid:store.state.id}, withCredentials:true})
+	// 	await axios.get('http://10.11.1.2:3001/chat/members', {params:{roomid:id, playerid:store.state.id}, withCredentials:true})
 	// 	.then(data=>{})
 	// }
 	function CreateDM(id: number){
@@ -307,7 +307,7 @@
 		store.state.roomSelected = await getRoomId(friendid);
 		// console.log("Room selected  " + store.state.roomSelected);
 		store.state.spinn = true
-		await axios.get('http://localhost:3001/chat/DM', {params:{userid:store.state.player.id, receiverid:friendid}, withCredentials:true})
+		await axios.get('http://10.11.1.2:3001/chat/DM', {params:{userid:store.state.player.id, receiverid:friendid}, withCredentials:true})
 		.then(data=>{store.state.messages = data.data; })
 		.catch(err => {
 			if (err.response.status == 401){
@@ -329,7 +329,7 @@
     }
 	 onMounted(async () => {
 
-		store.state.connection = io('http://localhost:3001/chat',
+		store.state.connection = io('http://10.11.1.2:3001/chat',
 		{
 			query:{
 				'token':localStorage.getItem('user'),
@@ -338,7 +338,7 @@
 
 		store.state.spinn = true
 		await axios
-          .get('http://localhost:3001/profile' ,{ withCredentials: true })
+          .get('http://10.11.1.2:3001/profile' ,{ withCredentials: true })
           .then(data =>{
             store.state.player = data.data.profile;
             store.state.friends = data.data.friends;
@@ -354,7 +354,7 @@
 
 
 		  await axios
-		  	.get('http://localhost:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
+		  	.get('http://10.11.1.2:3001/chat/mychannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 		  	.then(data=> { store.state.rooms = data.data; })
 			.catch(err => {
 				if (err.response.status == 401){
@@ -365,7 +365,7 @@
 
 
 		await axios
-			.get('http://localhost:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
+			.get('http://10.11.1.2:3001/chat/allchannels',{ params:{playerid: store.state.player.id}, withCredentials: true})
 			.then(data=> {store.state.allRooms = data.data; })
 			.catch(err => {
 				if (err.response.status == 401){

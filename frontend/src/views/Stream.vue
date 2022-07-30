@@ -47,7 +47,7 @@ onMounted(() => {
     }
     else {
         console.log(props);
-        socket.value = io('http://' + /* window.loca tion.hostname */ 'localhost' + ':3001/' + props.difficulty, {
+        socket.value = io('http://10.11.1.2:3001/' + props.difficulty, {
             path: '/game/' + props.difficulty,
             query: {
                 'role': 'spectator',

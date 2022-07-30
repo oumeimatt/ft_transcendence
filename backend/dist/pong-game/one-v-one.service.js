@@ -78,14 +78,15 @@ let OneVOneService = class OneVOneService {
             const first = players.find(player => player.handshake.query.opponent === client.data.user.username
                 && player.data.user.username === client.handshake.query.opponent);
             if (!first) {
+                players.push(client);
                 try {
                     await this.usersService.updateStatus(user.id, player_status_enum_1.UserStatus.PLAYING);
                 }
                 catch (err) {
+                    players = players.filter(pl => pl !== client);
                     this.logger.error('Couldn\'t Update Status');
                     return;
                 }
-                players.push(client);
                 client.data.side = 'left';
                 client.data.role = 'player';
                 client.emit('WaitingForPlayer', {
@@ -269,7 +270,7 @@ let OneVOneService = class OneVOneService {
                             mode: interfaces_1.GameMood.ONEVONE,
                             winner: await second,
                             loser: client.data.user,
-                            winnerScore: client.data.playground.win_score,
+                            winnerScore: 13,
                             loserScore: loserScore
                         });
                         wss.to(client.data.roomname).emit('DisplayWinner', { winner: second.username, loser: client.data.user.username });

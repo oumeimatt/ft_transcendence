@@ -105,7 +105,7 @@ export class UsersController {
     ){
 		// console.log('update avatar -> verify');
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
-        fs.writeFileSync(process.cwd().substring(0,process.cwd().length - 7) + "frontend/public/assets/"+imageName, avatar.buffer);
+        fs.writeFileSync(process.cwd() + "/public/" + imageName, avatar.buffer);
 		return await this.usersService.updateAvatar(user.id, imageName);
     }
 
@@ -117,7 +117,7 @@ export class UsersController {
 		// console.log('generate 2fa -> verify');
 		const user = await this.usersService.verifyToken(req.cookies.connect_sid);
 		const imageUrl = await this.usersService.generateSecretQr(user);
-		console.log("imageUrl === ", imageUrl);
+		// console.log("imageUrl === ", imageUrl);
 		return imageUrl;
 	}
 

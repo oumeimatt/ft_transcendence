@@ -4,6 +4,7 @@ exports.UserStatus = void 0;
 var UserStatus;
 (function (UserStatus) {
     UserStatus["ONLINE"] = "online";
+    UserStatus["TWOFA"] = "twofa";
     UserStatus["OFFLINE"] = "offline";
     UserStatus["PLAYING"] = "playing";
 })(UserStatus = exports.UserStatus || (exports.UserStatus = {}));

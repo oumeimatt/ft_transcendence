@@ -86,7 +86,7 @@
       
       onUpdated(async () => {
         await axios
-            .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
+            .get('http://10.11.1.2:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
             .then(data =>{ store.state.roominfo = data.data ;}) 
             .catch(err => {
               if (err.response.status == 401){
@@ -105,7 +105,7 @@
       //   console.log("old",oldValue);
       // })
 		  // await axios
-      //     .get('http://localhost:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
+      //     .get('http://10.11.1.2:3001/chat/isMember' ,{ params: {roomid: props.id, playerid: store.state.player.id}, withCredentials: true })
       //     .then(data =>{ store.state.roominfo = data.data ; }) 
       //     .catch(err => { console.log(err)})
     

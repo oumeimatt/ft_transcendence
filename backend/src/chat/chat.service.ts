@@ -243,13 +243,17 @@ export class ChatService {
 
     async createMembership(playerid:number, roomid:number){
         //before creating membership => check ppwd
-        const Membership = new membership();
-        Membership.playerid = playerid;
-        Membership.roomid = roomid;
-        Membership.isbanned = false;
-        Membership.ismuted = false;
-        Membership.role =   RoleStatus.USER;
-        await Membership.save();
+        const found = await this.membershipRepo.find({playerid:playerid, roomid:roomid});
+        if (!found)
+        {
+            const Membership = new membership();
+            Membership.playerid = playerid;
+            Membership.roomid = roomid;
+            Membership.isbanned = false;
+            Membership.ismuted = false;
+            Membership.role =   RoleStatus.USER;
+            await Membership.save();
+        }
     }
 
     async DMexist(senderid:number, receiverid:number):Promise<chatroom>{

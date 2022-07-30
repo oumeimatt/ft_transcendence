@@ -33,7 +33,7 @@ onMounted(() => {
         window.location.href = '/game';
     }
     else {
-        socket.value = io('http://localhost:3001/' + props.difficulty, {
+        socket.value = io('http://10.11.1.2:3001/' + props.difficulty, {
             path: '/game/' + props.difficulty,
             query: {
                 'accessToken': localStorage.getItem('user'),

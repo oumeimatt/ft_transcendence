@@ -56,6 +56,13 @@ let UsersService = class UsersService {
     async getUsers(FilterDto) {
         return this.userRepository.getUsers(FilterDto);
     }
+    async firstTime(id) {
+        const user = await this.getUserById(id);
+        if (user) {
+            user.first_time = false;
+            await user.save();
+        }
+    }
     async updateUsername(id, username) {
         const updated = await this.getUserById(id);
         var regEx = /^[0-9a-zA-Z]+$/;
@@ -163,10 +170,10 @@ let UsersService = class UsersService {
             const decoded = await this.jwtService.verify(token.toString());
             if (typeof decoded === 'object' && 'id' in decoded)
                 return decoded;
-            throw new common_1.BadRequestException();
+            throw new common_1.UnauthorizedException();
         }
         catch (error) {
-            throw new common_1.BadRequestException('Token expired');
+            throw new common_1.UnauthorizedException('Token expired');
         }
     }
     async generateSecretQr(user) {

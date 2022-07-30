@@ -47,9 +47,9 @@ __decorate([
     __metadata("design:type", String)
 ], Player.prototype, "status", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], Player.prototype, "last_activity", void 0);
+    (0, typeorm_1.Column)({ default: true }),
+    __metadata("design:type", Boolean)
+], Player.prototype, "first_time", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)

@@ -95,10 +95,10 @@ const state = reactive<{
 const methods = reactive({
 
     playerAvatar(player:PlayerProfile ){
-        if (player.avatar.startsWith("https://avatars.dicebear.com") || player.avatar.startsWith("public/assets")){
+        if (player.avatar.startsWith("https://avatars.dicebear.com") || player.avatar.startsWith("http://10.11.1.2:3001")){
             return player.avatar
         }
-        return ("../public/assets/" + player.avatar )
+        return ("http://10.11.1.2:3001/" + player.avatar )
     },
     usersInfo(name: string){
         for (var user of state.users) {

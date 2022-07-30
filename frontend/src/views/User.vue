@@ -247,7 +247,7 @@ const props = defineProps<{
   onMounted( async () => {
     store.state.spinn = true
 		await axios
-			.get('http://localhost:3001/users' ,{ withCredentials: true })
+			.get('http://10.11.1.2:3001/users' ,{ withCredentials: true })
 			.then(data =>{ store.state.users = data.data ;
 			})
 			.catch(err => {
@@ -271,7 +271,7 @@ const props = defineProps<{
           // console.log("playerid::",playerid)
           store.state.spinn = true
           await axios
-                .get('http://localhost:3001/profile/' + playerid ,{ withCredentials: true })
+                .get('http://10.11.1.2:3001/profile/' + playerid ,{ withCredentials: true })
                 .then(data =>{ store.state.user = data.data.profile;
                   store.state.userFriends = data.data.friends;
                   store.state.userAchievements = data.data.achievements;
@@ -333,7 +333,7 @@ const props = defineProps<{
         store.state.userInfo.amIBlocked = false
         frMenu.value = false
           axios
-              .delete("http://localhost:3001/relation/unfollow/" + user.id , { withCredentials: true } )
+              .delete("http://10.11.1.2:3001/relation/unfollow/" + user.id , { withCredentials: true } )
               .then(data => { })
               .catch(err => {
                 if (err.response.status == 401){
@@ -351,7 +351,7 @@ const props = defineProps<{
         store.state.userInfo.isFriend = true
         store.state.userInfo.userIsBlocked = false
         store.state.userInfo.amIBlocked = false
-            axios.post("http://localhost:3001/relation/add/" + user.id , {} , { withCredentials: true } ) 
+            axios.post("http://10.11.1.2:3001/relation/add/" + user.id , {} , { withCredentials: true } ) 
             .then(data => { })
             .catch(err => {
                 if (err.response.status == 401){
@@ -371,7 +371,7 @@ const props = defineProps<{
         store.state.userInfo.userIsBlocked = true
         store.state.userInfo.amIBlocked = false
         frMenu.value = false
-        axios.post("http://localhost:3001/relation/block/" + user.id, {}, { withCredentials: true } ) 
+        axios.post("http://10.11.1.2:3001/relation/block/" + user.id, {}, { withCredentials: true } ) 
             .then(data => {})
             .catch(err => {
                 if (err.response.status == 401){
@@ -391,7 +391,7 @@ const props = defineProps<{
         store.state.userInfo.userIsBlocked = false
         store.state.userInfo.amIBlocked = false
         frMenu.value = false
-        axios.delete("http://localhost:3001/relation/unblock/" + user.id ,{ withCredentials: true } )
+        axios.delete("http://10.11.1.2:3001/relation/unblock/" + user.id ,{ withCredentials: true } )
             .then(data => {})
             .catch(err => {
                 if (err.response.status == 401){
@@ -416,7 +416,7 @@ const props = defineProps<{
       if (user ){
 
         await axios
-            .get('http://localhost:3001/pong-game/games-history/' + user.id)
+            .get('http://10.11.1.2:3001/pong-game/games-history/' + user.id)
             .then((data) => {
                 store.state.usergamesHistory = data.data.gamesHistory;
             })

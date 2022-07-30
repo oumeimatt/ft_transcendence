@@ -11,7 +11,7 @@
 
   provide('store', store);
   onMounted(() => {
-    socketUsers.value = io('http://localhost' + ':3001/connect', {
+    socketUsers.value = io('http://10.11.1.2:3001/connect', {
       path: '/user/connected',
       query: {
         'accessToken': localStorage.getItem('user'),

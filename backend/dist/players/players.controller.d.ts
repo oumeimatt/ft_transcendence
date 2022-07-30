@@ -27,6 +27,7 @@ export declare class UsersController {
         blockedUsers: import("./player.entity").Player[];
         achievements: any;
     }>;
+    firstTime(req: Request): Promise<void>;
     updateUsername(req: Request, username: string): Promise<import("./player.entity").Player>;
     updateAvatar(req: Request, imageName: string, avatar: Express.Multer.File): Promise<import("./player.entity").Player>;
     updateTwoFa(req: Request): Promise<string>;

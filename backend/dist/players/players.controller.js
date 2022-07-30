@@ -64,19 +64,22 @@ let UsersController = class UsersController {
         };
         return data;
     }
+    async firstTime(req) {
+        const user_token = await this.usersService.verifyToken(req.cookies.connect_sid);
+        await this.usersService.firstTime(user_token.id);
+    }
     async updateUsername(req, username) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         return await this.usersService.updateUsername(user.id, username);
     }
     async updateAvatar(req, imageName, avatar) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
-        fs.writeFileSync(process.cwd().substring(0, process.cwd().length - 7) + "frontend/public/assets/" + imageName, avatar.buffer);
+        fs.writeFileSync(process.cwd() + "/public/" + imageName, avatar.buffer);
         return await this.usersService.updateAvatar(user.id, imageName);
     }
     async updateTwoFa(req) {
         const user = await this.usersService.verifyToken(req.cookies.connect_sid);
         const imageUrl = await this.usersService.generateSecretQr(user);
-        console.log("imageUrl === ", imageUrl);
         return imageUrl;
     }
     async twoFactorEnable(req, Password2fa) {
@@ -97,6 +100,7 @@ let UsersController = class UsersController {
         const user = await this.usersService.getUserById(player.id);
         const isValid = await this.usersService.verifyTwoFactorAuthenticationCodeValid(user, code);
         if (!isValid) {
+            await this.usersService.updateStatus(user.id, player_status_enum_1.UserStatus.OFFLINE);
             throw new common_1.UnauthorizedException('Wrong authentication code');
         }
         await res.clearCookie('twofa', { domain: process.env.FRONTEND_HOST, path: '/' });
@@ -136,6 +140,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, Number]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getFriendProfile", null);
+__decorate([
+    (0, common_1.Get)('/first_time'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "firstTime", null);
 __decorate([
     (0, common_1.Patch)('/settings/username'),
     __param(0, (0, common_1.Req)()),

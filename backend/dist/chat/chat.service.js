@@ -164,13 +164,16 @@ let ChatService = class ChatService {
         return role;
     }
     async createMembership(playerid, roomid) {
-        const Membership = new membership_entity_1.membership();
-        Membership.playerid = playerid;
-        Membership.roomid = roomid;
-        Membership.isbanned = false;
-        Membership.ismuted = false;
-        Membership.role = membership_model_1.RoleStatus.USER;
-        await Membership.save();
+        const found = await this.membershipRepo.find({ playerid: playerid, roomid: roomid });
+        if (!found) {
+            const Membership = new membership_entity_1.membership();
+            Membership.playerid = playerid;
+            Membership.roomid = roomid;
+            Membership.isbanned = false;
+            Membership.ismuted = false;
+            Membership.role = membership_model_1.RoleStatus.USER;
+            await Membership.save();
+        }
     }
     async DMexist(senderid, receiverid) {
         let chatroomName = senderid + ":" + receiverid;
