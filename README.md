@@ -18,6 +18,6 @@ This is a multiplayer pong website created using VueJS, NestJS and PostgreSQL.
 <img width="1564" alt="Game" src="https://user-images.githubusercontent.com/52450718/182657166-97e89522-1df4-42ee-a556-55e6c0c3c887.png">
 </p>
 
-### Authors
+## Authors
 
 
