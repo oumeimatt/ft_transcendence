@@ -2,6 +2,12 @@
 This is a multiplayer pong website created using VueJS, NestJS and PostgreSQL.
 
 ## Use case diagram
+
+The diagram below represents all the services provided by this website. A Logged in user is able to:
+  - Invite and play a live Pong game versus other players.
+  - Chat with friends through joined channels or send direct message instantly to friends.
+  
+  
 <p align="center">
 <img width="700" alt="Screen Shot 2022-08-03 at 7 50 42 PM" src="https://user-images.githubusercontent.com/52450718/182686678-54c00bf9-be17-4c1c-bb00-2b039d11c389.png">
 </p>
@@ -13,6 +19,7 @@ This is a multiplayer pong website created using VueJS, NestJS and PostgreSQL.
 
 
 ## Some screenshots
+
 <p align="center">
   <img width="1557" alt="Home" src="https://user-images.githubusercontent.com/52450718/182657124-4e793e56-ab5b-4e6e-b94b-9a891124c240.png">
 
@@ -22,6 +29,11 @@ This is a multiplayer pong website created using VueJS, NestJS and PostgreSQL.
 </p>
 
 ## Authors
+- I was responsible about the real time chat.
+- The Frontend was made by [oumeimatt](https://github.com/oumeimatt).
+- User account and authentication by [iidzim](https://github.com/iidzim). 
+- The game was created by [mlachheb](https://github.com/mohamedamine456).
+
 
 
 
