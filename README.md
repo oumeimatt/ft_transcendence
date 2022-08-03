@@ -2,7 +2,10 @@
 This is a multiplayer pong website created using VueJS, NestJS and PostgreSQL.
 
 ## Use case diagram
+<p align="center">
+<img width="700" alt="Screen Shot 2022-08-03 at 7 50 42 PM" src="https://user-images.githubusercontent.com/52450718/182686678-54c00bf9-be17-4c1c-bb00-2b039d11c389.png">
 
+</p>
 ## Database schema
 <p align="center">
 <img width="600" height="500" alt="Screen Shot 2022-08-03 at 16 54 09" src="https://user-images.githubusercontent.com/52450718/182654124-9cdb46c8-d618-4fdb-bd2e-56ef03cd9bd5.png">
@@ -19,5 +22,6 @@ This is a multiplayer pong website created using VueJS, NestJS and PostgreSQL.
 </p>
 
 ## Authors
+
 
 
