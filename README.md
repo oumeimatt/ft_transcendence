@@ -29,7 +29,7 @@ The diagram below represents all the services provided by this website. A Logged
 </p>
 
 ## Authors
-- I made the real time chat.
+- [framdani](https://github.com/framdani) was responsible for the real time chat.
 - The Frontend was made by [oumeimatt](https://github.com/oumeimatt).
 - User account and authentication by [iidzim](https://github.com/iidzim). 
 - The game was created by [mlachheb](https://github.com/mohamedamine456).
